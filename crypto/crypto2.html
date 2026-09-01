@@ -4,46 +4,41 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow, noarchive" />
-  <meta name="theme-color" content="#ffffff" />
+  <meta name="theme-color" content="#0b3d91" />
   <meta http-equiv="Content-Security-Policy" 
         content="default-src 'none'; script-src 'unsafe-inline' blob:; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'" />
-  <title>Security Sandbox — Local Crypto</title>
+  <title>Local Crypto Sandbox</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      /* Material 3 Expressive Palette */
-      --sys-blue-600: #1a73e8;
-      --sys-blue-700: #1557b0;
-      --sys-blue-50: #e8f0fe;
-      --sys-green-700: #1e8e3e;
-      --sys-green-50: #e6f4ea;
-      --sys-red-700: #d93025;
-      --sys-red-50: #fce8e6;
-      --sys-gray-900: #202124;
-      --sys-gray-700: #5f6368;
-      --sys-gray-500: #9aa0a6;
-      --sys-gray-200: #e8eaed;
-      --sys-gray-100: #f1f3f4;
-      --sys-gray-50: #f8f9fa;
-      --sys-white: #ffffff;
+      --nasa-blue-900: #0b3d91;
+      --nasa-blue-700: #105bd8;
+      --nasa-blue-100: #e8f1ff;
+      --nasa-red-600:  #fc3d21;
+      --nasa-red-50:   #fff0ee;
+      --nasa-green-700: #1b7a3e;
+      --nasa-green-50:  #eaf8ef;
+      --nasa-space-bg:  #080a0f;
+      --nasa-panel-bg:  #111622;
+      --nasa-gray-700:  #8c92a4;
+      --nasa-gray-200:  #232b3e;
+      --nasa-white:     #ffffff;
       
-      /* System Tokens */
       --md-sys-font-sans: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
       --md-sys-font-mono: 'Roboto Mono', monospace;
-      --md-sys-radius-card: 28px;
-      --md-sys-radius-input: 16px;
+      --md-sys-radius-card: 12px;
+      --md-sys-radius-input: 8px;
       --md-sys-radius-pill: 100px;
-      --md-sys-elevation-1: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
-      --md-sys-elevation-2: 0 1px 2px 0 rgba(60,64,67,0.3), 0 2px 6px 2px rgba(60,64,67,0.15);
+      --md-sys-elevation-1: 0 4px 20px rgba(0,0,0,0.5);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     
     body {
-      background-color: var(--sys-gray-50);
-      color: var(--sys-gray-900);
+      background-color: var(--nasa-space-bg);
+      color: var(--nasa-white);
       font-family: var(--md-sys-font-sans);
       display: flex;
       justify-content: center;
@@ -60,7 +55,6 @@
       gap: 20px;
     }
 
-    /* Header Branding */
     .brand-header {
       display: flex;
       align-items: center;
@@ -69,15 +63,17 @@
     }
 
     .brand-title {
-      font-size: 1.25rem;
+      font-size: 1.5rem;
       font-weight: 500;
-      color: var(--sys-gray-900);
-      letter-spacing: -0.2px;
+      color: var(--nasa-white);
+      letter-spacing: 2px;
+      line-height: 1;
     }
 
     .chip-offline {
-      background-color: var(--sys-blue-50);
-      color: var(--sys-blue-700);
+      background-color: rgba(16, 91, 216, 0.2);
+      border: 1px solid var(--nasa-blue-700);
+      color: var(--nasa-blue-100);
       font-size: 0.75rem;
       font-weight: 500;
       padding: 6px 14px;
@@ -85,33 +81,33 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .chip-offline::before {
       content: "";
       width: 8px;
       height: 8px;
-      background-color: var(--sys-blue-600);
+      background-color: var(--nasa-red-600);
       border-radius: 50%;
     }
 
-    /* Material 3 Main Card */
     .m3-card {
-      background-color: var(--sys-white);
+      background-color: var(--nasa-panel-bg);
       border-radius: var(--md-sys-radius-card);
       padding: 32px;
       box-shadow: var(--md-sys-elevation-1);
-      border: 1px solid var(--sys-gray-200);
-      transition: box-shadow 0.2s ease;
+      border: 1px solid var(--nasa-gray-200);
     }
 
-    /* Material Segmented Button */
     .m3-segmented-control {
       display: flex;
-      background-color: var(--sys-gray-100);
+      background-color: rgba(0, 0, 0, 0.4);
       border-radius: var(--md-sys-radius-pill);
       padding: 4px;
       margin-bottom: 24px;
+      border: 1px solid var(--nasa-gray-200);
     }
 
     .m3-segmented-control button {
@@ -122,20 +118,21 @@
       font-family: var(--md-sys-font-sans);
       font-size: 0.875rem;
       font-weight: 500;
-      color: var(--sys-gray-700);
+      color: var(--nasa-gray-700);
       border-radius: var(--md-sys-radius-pill);
       cursor: pointer;
       transition: all 0.2s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .m3-segmented-control button[aria-pressed="true"] {
-      background-color: var(--sys-white);
-      color: var(--sys-blue-600);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      background-color: var(--nasa-blue-900);
+      color: var(--nasa-white);
+      box-shadow: 0 0 10px rgba(16, 91, 216, 0.5);
       font-weight: 700;
     }
 
-    /* Form Controls */
     .m3-field {
       display: flex;
       flex-direction: column;
@@ -146,15 +143,47 @@
     .m3-field label {
       font-size: 0.8rem;
       font-weight: 500;
-      color: var(--sys-gray-700);
+      color: var(--nasa-gray-700);
       margin-left: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    textarea, input[type="password"] {
-      background-color: var(--sys-gray-50);
-      border: 1px solid var(--sys-gray-200);
+    .input-toggle-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-toggle-wrap input {
+      width: 100%;
+      padding-right: 76px;
+    }
+
+    .btn-toggle-pw {
+      position: absolute;
+      right: 8px;
+      background: none;
+      border: none;
+      color: var(--nasa-blue-700);
+      font-family: var(--md-sys-font-sans);
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 6px 10px;
+      border-radius: var(--md-sys-radius-pill);
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .btn-toggle-pw:hover {
+      background-color: rgba(16, 91, 216, 0.15);
+    }
+
+    textarea, input[type="password"], input[type="text"].pw-input {
+      background-color: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--nasa-gray-200);
       border-radius: var(--md-sys-radius-input);
-      color: var(--sys-gray-900);
+      color: var(--nasa-white);
       padding: 16px;
       font-family: var(--md-sys-font-mono);
       font-size: 0.875rem;
@@ -167,13 +196,12 @@
       resize: vertical;
     }
 
-    textarea:focus, input[type="password"]:focus {
-      border-color: var(--sys-blue-600);
-      background-color: var(--sys-white);
-      box-shadow: 0 0 0 2px var(--sys-blue-50);
+    textarea:focus, input:focus {
+      border-color: var(--nasa-blue-700);
+      background-color: rgba(0, 0, 0, 0.8);
+      box-shadow: 0 0 8px rgba(16, 91, 216, 0.3);
     }
 
-    /* Material Buttons */
     .m3-actions {
       display: flex;
       gap: 12px;
@@ -192,31 +220,35 @@
       align-items: center;
       justify-content: center;
       transition: background-color 0.2s, box-shadow 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .m3-btn-primary {
-      background-color: var(--sys-blue-600);
-      color: var(--sys-white);
+      background-color: var(--nasa-blue-900);
+      color: var(--nasa-white);
+      border: 1px solid var(--nasa-blue-700);
       flex: 2;
       box-shadow: var(--md-sys-elevation-1);
     }
 
     .m3-btn-primary:hover {
-      background-color: var(--sys-blue-700);
-      box-shadow: var(--md-sys-elevation-2);
+      background-color: var(--nasa-blue-700);
+      box-shadow: 0 0 12px rgba(16, 91, 216, 0.6);
     }
 
     .m3-btn-tonal {
-      background-color: var(--sys-gray-100);
-      color: var(--sys-gray-700);
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--nasa-gray-200);
+      color: var(--nasa-gray-700);
       flex: 1;
     }
 
     .m3-btn-tonal:hover {
-      background-color: var(--sys-gray-200);
+      background-color: rgba(255, 255, 255, 0.1);
+      color: var(--nasa-white);
     }
 
-    /* Dynamic Banner Notifications */
     .m3-status {
       margin-top: 20px;
       padding: 14px 18px;
@@ -227,10 +259,9 @@
     }
 
     .m3-status.show { display: block; }
-    .m3-status.error { background-color: var(--sys-red-50); color: var(--sys-red-700); }
-    .m3-status.success { background-color: var(--sys-green-50); color: var(--sys-green-700); }
+    .m3-status.error { background-color: var(--nasa-red-50); color: var(--nasa-red-600); border: 1px solid var(--nasa-red-600); }
+    .m3-status.success { background-color: var(--nasa-green-50); color: var(--nasa-green-700); border: 1px solid var(--nasa-green-700); }
 
-    /* Output Card */
     .m3-output-card {
       display: none;
     }
@@ -249,13 +280,15 @@
     .output-header h2 {
       font-size: 1.1rem;
       font-weight: 500;
-      color: var(--sys-gray-900);
+      color: var(--nasa-white);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .meta-footer {
       margin-top: 12px;
       font-size: 0.75rem;
-      color: var(--sys-gray-500);
+      color: var(--nasa-gray-700);
       font-family: var(--md-sys-font-mono);
     }
   </style>
@@ -264,7 +297,7 @@
 
   <main class="app-container">
     <header class="brand-header">
-      <h1 class="brand-title">Crypto Sandbox</h1>
+      <h1 class="brand-title">🇺🇸🤖</h1>
       <span class="chip-offline">Client-Side Engine</span>
     </header>
 
@@ -281,12 +314,18 @@
 
       <div class="m3-field">
         <label for="passphrase">Passphrase</label>
-        <input type="password" id="passphrase" autocomplete="new-password" placeholder="Minimum 12 characters" />
+        <div class="input-toggle-wrap">
+          <input type="password" id="passphrase" class="pw-input" autocomplete="new-password" placeholder="Minimum 12 characters" />
+          <button type="button" class="btn-toggle-pw" id="toggle-passphrase" aria-label="Show passphrase">Show</button>
+        </div>
       </div>
 
       <div class="m3-field" id="confirm-wrap">
         <label for="passphrase-confirm">Confirm Passphrase</label>
-        <input type="password" id="passphrase-confirm" autocomplete="new-password" placeholder="Re-enter passphrase" />
+        <div class="input-toggle-wrap">
+          <input type="password" id="passphrase-confirm" class="pw-input" autocomplete="new-password" placeholder="Re-enter passphrase" />
+          <button type="button" class="btn-toggle-pw" id="toggle-confirm" aria-label="Show passphrase confirmation">Show</button>
+        </div>
       </div>
 
       <div class="m3-actions">
@@ -312,13 +351,12 @@
       const { mode, passphraseBytes, text } = e.data;
       const pwArray = new Uint8Array(passphraseBytes);
 
-      const MAGIC = [0x4E, 0x57, 0x4C, 0x4E];
+      const MAGIC = new Uint8Array([0x4E, 0x57, 0x4C, 0x4E]);
       const FORMAT_VERSION = 1;
       const KDF_ITERATIONS = 600000;
       const SALT_BYTES = 16;
       const IV_BYTES = 12;
       const HEADER_BYTES = 39;
-      const PAD_BLOCK = 256;
       const BEGIN_LINE = '-----BEGIN NOWLIN ENCRYPTED MESSAGE-----';
       const END_LINE = '-----END NOWLIN ENCRYPTED MESSAGE-----';
 
@@ -357,10 +395,6 @@
         if (mode === 'encrypt') {
           const encoder = new TextEncoder();
           const ptBytes = encoder.encode(text);
-          const totalPadded = Math.ceil((4 + ptBytes.length) / PAD_BLOCK) * PAD_BLOCK;
-          const paddedPt = new Uint8Array(totalPadded);
-          new DataView(paddedPt.buffer).setUint32(0, ptBytes.length, false);
-          paddedPt.set(ptBytes, 4);
 
           const salt = self.crypto.getRandomValues(new Uint8Array(SALT_BYTES));
           const iv = self.crypto.getRandomValues(new Uint8Array(IV_BYTES));
@@ -378,7 +412,7 @@
           const ctBuffer = await self.crypto.subtle.encrypt(
             { name: 'AES-GCM', iv, additionalData: header, tagLength: 128 },
             key,
-            paddedPt
+            ptBytes
           );
 
           const ctBytes = new Uint8Array(ctBuffer);
@@ -391,14 +425,16 @@
 
           zeroize(pwArray);
           zeroize(ptBytes);
-          zeroize(paddedPt);
 
           self.postMessage({ success: true, payload: armored, meta: `AES-256-GCM · PBKDF2 (${KDF_ITERATIONS.toLocaleString()} iterations)` });
         } else {
           const cleanB64 = text.replace(BEGIN_LINE, '').replace(END_LINE, '').replace(/\s+/g, '');
           const bytes = base64ToBytes(cleanB64);
+          
+          if (bytes.length < HEADER_BYTES) throw new Error('Invalid payload header.');
+
           const header = bytes.subarray(0, HEADER_BYTES);
-          const iterations = new DataView(header.buffer, header.byteOffset, header.byteLength).getUint32(6, false);
+          const iterations = new DataView(header.buffer, header.byteOffset + 6, 4).getUint32(0, false);
           const salt = bytes.subarray(11, 27);
           const iv = bytes.subarray(27, 39);
           const ciphertext = bytes.subarray(HEADER_BYTES);
@@ -410,15 +446,9 @@
             ciphertext
           );
 
-          const paddedPt = new Uint8Array(ptBuffer);
-          const length = new DataView(paddedPt.buffer).getUint32(0, false);
-          const ptBytes = paddedPt.subarray(4, 4 + length);
-
-          const textDecoder = new TextDecoder('utf-8', { fatal: true });
-          const decodedText = textDecoder.decode(ptBytes);
+          const decodedText = new TextDecoder('utf-8', { fatal: true }).decode(ptBuffer);
 
           zeroize(pwArray);
-          zeroize(paddedPt);
 
           self.postMessage({ success: true, payload: decodedText, meta: `Decrypted & Tag Verified · ${iterations.toLocaleString()} PBKDF2 iterations` });
         }
@@ -451,8 +481,29 @@
         $('input-data').value = '';
         $('passphrase').value = '';
         $('passphrase-confirm').value = '';
+        
+        resetToggle('passphrase', 'toggle-passphrase');
+        resetToggle('passphrase-confirm', 'toggle-confirm');
+
         $('output-card').classList.remove('show');
         $('status-box').className = 'm3-status';
+      }
+
+      function resetToggle(inputId, toggleBtnId) {
+        const input = $(inputId);
+        const btn = $(toggleBtnId);
+        input.type = 'password';
+        btn.textContent = 'Show';
+      }
+
+      function setupPasswordToggle(inputId, toggleBtnId) {
+        const input = $(inputId);
+        const btn = $(toggleBtnId);
+        btn.onclick = () => {
+          const isPassword = input.type === 'password';
+          input.type = isPassword ? 'text' : 'password';
+          btn.textContent = isPassword ? 'Hide' : 'Show';
+        };
       }
 
       function showStatus(text, type) {
@@ -477,8 +528,9 @@
         const workerUrl = URL.createObjectURL(blob);
         const worker = new Worker(workerUrl);
 
+        URL.revokeObjectURL(workerUrl);
+
         worker.onmessage = function(e) {
-          URL.revokeObjectURL(workerUrl);
           worker.terminate();
 
           if (e.data.success) {
@@ -507,6 +559,9 @@
         $('btn-copy').textContent = 'Copied!';
         setTimeout(() => $('btn-copy').textContent = 'Copy Payload', 1500);
       };
+
+      setupPasswordToggle('passphrase', 'toggle-passphrase');
+      setupPasswordToggle('passphrase-confirm', 'toggle-confirm');
 
       window.onpagehide = clearAll;
     })();
