@@ -4,131 +4,170 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow, noarchive" />
-  <meta name="theme-color" content="#1c1b1f" />
+  <meta name="theme-color" content="#ffffff" />
   <meta http-equiv="Content-Security-Policy" 
-        content="default-src 'none'; script-src 'unsafe-inline' blob:; style-src 'unsafe-inline'; img-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'" />
-  <title>Crypto — Local Security Sandbox</title>
+        content="default-src 'none'; script-src 'unsafe-inline' blob:; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'" />
+  <title>Google Security Sandbox — Local Crypto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --md-sys-color-background: #1c1b1f;
-      --md-sys-color-on-background: #e6e1e5;
-      --md-sys-color-surface: #2b292f;
-      --md-sys-color-surface-variant: #49454f;
-      --md-sys-color-on-surface-variant: #cac4d0;
-      --md-sys-color-primary: #d0bcff;
-      --md-sys-color-on-primary: #381e72;
-      --md-sys-color-primary-container: #4f378b;
-      --md-sys-color-on-primary-container: #eaddff;
-      --md-sys-color-outline: #938f96;
-      --md-sys-color-error: #f2b8b5;
-      --md-sys-color-on-error: #601410;
-      --md-sys-color-success: #b8f2b5;
-      --md-sys-color-on-success: #106014;
-      --md-sys-shape-corner-medium: 12px;
-      --md-sys-shape-corner-full: 9999px;
-      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      /* Google Material 3 Expressive Palette */
+      --g-blue-600: #1a73e8;
+      --g-blue-700: #1557b0;
+      --g-blue-50: #e8f0fe;
+      --g-green-700: #1e8e3e;
+      --g-green-50: #e6f4ea;
+      --g-red-700: #d93025;
+      --g-red-50: #fce8e6;
+      --g-gray-900: #202124;
+      --g-gray-700: #5f6368;
+      --g-gray-500: #9aa0a6;
+      --g-gray-200: #e8eaed;
+      --g-gray-100: #f1f3f4;
+      --g-gray-50: #f8f9fa;
+      --g-white: #ffffff;
+      
+      /* M3 System Tokens */
+      --md-sys-font-sans: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+      --md-sys-font-mono: 'Roboto Mono', monospace;
+      --md-sys-radius-card: 28px;
+      --md-sys-radius-input: 16px;
+      --md-sys-radius-pill: 100px;
+      --md-sys-elevation-1: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+      --md-sys-elevation-2: 0 1px 2px 0 rgba(60,64,67,0.3), 0 2px 6px 2px rgba(60,64,67,0.15);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     body {
-      background-color: var(--md-sys-color-background);
-      color: var(--md-sys-color-on-background);
-      font-family: var(--font-sans);
+      background-color: var(--g-gray-50);
+      color: var(--g-gray-900);
+      font-family: var(--md-sys-font-sans);
       display: flex;
       justify-content: center;
-      padding: 32px 16px;
+      align-items: center;
       min-height: 100vh;
+      padding: 24px 16px;
     }
 
-    .container {
+    .app-container {
       width: 100%;
-      max-width: 640px;
+      max-width: 680px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 20px;
     }
 
-    .card {
-      background-color: var(--md-sys-color-surface);
-      border-radius: var(--md-sys-shape-corner-medium);
-      padding: 24px;
-      border: 1px solid var(--md-sys-color-surface-variant);
-    }
-
-    .header {
+    /* Google Header Branding */
+    .brand-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 20px;
+      padding: 0 8px;
     }
 
-    .title {
-      font-size: 1.25rem;
-      font-weight: 600;
-      letter-spacing: 0.1px;
-    }
-
-    .badge-offline {
-      background-color: var(--md-sys-color-surface-variant);
-      color: var(--md-sys-color-on-surface-variant);
-      font-size: 0.75rem;
-      padding: 4px 10px;
-      border-radius: var(--md-sys-shape-corner-full);
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .segmented-button {
+    .brand-logo {
       display: flex;
-      border: 1px solid var(--md-sys-color-outline);
-      border-radius: var(--md-sys-shape-corner-full);
-      overflow: hidden;
-      margin-bottom: 20px;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.35rem;
+      font-weight: 500;
+      color: var(--g-gray-700);
+      letter-spacing: -0.5px;
     }
 
-    .segmented-button button {
+    .brand-logo .google-blue { color: #4285F4; }
+    .brand-logo .google-red { color: #EA4335; }
+    .brand-logo .google-yellow { color: #FBBC05; }
+    .brand-logo .google-green { color: #34A853; }
+
+    .chip-offline {
+      background-color: var(--g-blue-50);
+      color: var(--g-blue-700);
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: var(--md-sys-radius-pill);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chip-offline::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      background-color: var(--g-blue-600);
+      border-radius: 50%;
+    }
+
+    /* Material 3 Main Card */
+    .m3-card {
+      background-color: var(--g-white);
+      border-radius: var(--md-sys-radius-card);
+      padding: 32px;
+      box-shadow: var(--md-sys-elevation-1);
+      border: 1px solid var(--g-gray-200);
+      transition: box-shadow 0.2s ease;
+    }
+
+    /* Material Segmented Button */
+    .m3-segmented-control {
+      display: flex;
+      background-color: var(--g-gray-100);
+      border-radius: var(--md-sys-radius-pill);
+      padding: 4px;
+      margin-bottom: 24px;
+    }
+
+    .m3-segmented-control button {
       flex: 1;
       background: none;
       border: none;
-      color: var(--md-sys-color-on-surface-variant);
-      padding: 10px;
+      padding: 10px 16px;
+      font-family: var(--md-sys-font-sans);
       font-size: 0.875rem;
       font-weight: 500;
+      color: var(--g-gray-700);
+      border-radius: var(--md-sys-radius-pill);
       cursor: pointer;
-      transition: background 0.2s, color 0.2s;
+      transition: all 0.2s ease;
     }
 
-    .segmented-button button[aria-pressed="true"] {
-      background-color: var(--md-sys-color-primary-container);
-      color: var(--md-sys-color-on-primary-container);
+    .m3-segmented-control button[aria-pressed="true"] {
+      background-color: var(--g-white);
+      color: var(--g-blue-600);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      font-weight: 700;
     }
 
-    .field {
+    /* Form Controls */
+    .m3-field {
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      margin-bottom: 16px;
+      gap: 8px;
+      margin-bottom: 20px;
     }
 
-    .field label {
-      font-size: 0.75rem;
+    .m3-field label {
+      font-size: 0.8rem;
       font-weight: 500;
-      color: var(--md-sys-color-on-surface-variant);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      color: var(--g-gray-700);
+      margin-left: 4px;
     }
 
     textarea, input[type="password"] {
-      background-color: var(--md-sys-color-background);
-      border: 1px solid var(--md-sys-color-outline);
-      border-radius: 8px;
-      color: var(--md-sys-color-on-background);
-      padding: 12px;
-      font-family: var(--font-mono);
-      font-size: 0.9rem;
+      background-color: var(--g-gray-50);
+      border: 1px solid var(--g-gray-200);
+      border-radius: var(--md-sys-radius-input);
+      color: var(--g-gray-900);
+      padding: 16px;
+      font-family: var(--md-sys-font-mono);
+      font-size: 0.875rem;
       outline: none;
+      transition: border-color 0.2s, background-color 0.2s;
     }
 
     textarea {
@@ -137,118 +176,145 @@
     }
 
     textarea:focus, input[type="password"]:focus {
-      border-color: var(--md-sys-color-primary);
-      box-shadow: 0 0 0 1px var(--md-sys-color-primary);
+      border-color: var(--g-blue-600);
+      background-color: var(--g-white);
+      box-shadow: 0 0 0 2px var(--g-blue-50);
     }
 
-    .actions {
+    /* Google Material Buttons */
+    .m3-actions {
       display: flex;
       gap: 12px;
-      margin-top: 24px;
+      margin-top: 28px;
     }
 
-    .btn {
-      border: none;
-      border-radius: var(--md-sys-shape-corner-full);
-      padding: 12px 24px;
+    .m3-btn {
+      font-family: var(--md-sys-font-sans);
       font-size: 0.875rem;
-      font-weight: 600;
+      font-weight: 500;
+      padding: 12px 24px;
+      border-radius: var(--md-sys-radius-pill);
+      border: none;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      transition: background-color 0.2s, box-shadow 0.2s;
     }
 
-    .btn-primary {
-      background-color: var(--md-sys-color-primary);
-      color: var(--md-sys-color-on-primary);
+    .m3-btn-primary {
+      background-color: var(--g-blue-600);
+      color: var(--g-white);
       flex: 2;
+      box-shadow: var(--md-sys-elevation-1);
     }
 
-    .btn-secondary {
-      background-color: var(--md-sys-color-surface-variant);
-      color: var(--md-sys-color-on-surface-variant);
+    .m3-btn-primary:hover {
+      background-color: var(--g-blue-700);
+      box-shadow: var(--md-sys-elevation-2);
+    }
+
+    .m3-btn-tonal {
+      background-color: var(--g-gray-100);
+      color: var(--g-gray-700);
       flex: 1;
     }
 
-    .btn:disabled {
-      opacity: 0.38;
-      cursor: not-allowed;
+    .m3-btn-tonal:hover {
+      background-color: var(--g-gray-200);
     }
 
-    .status {
-      margin-top: 16px;
+    /* Dynamic Banner Notifications */
+    .m3-status {
+      margin-top: 20px;
+      padding: 14px 18px;
+      border-radius: var(--md-sys-radius-input);
       font-size: 0.875rem;
-      padding: 12px;
-      border-radius: 8px;
+      display: none;
+      font-weight: 500;
+    }
+
+    .m3-status.show { display: block; }
+    .m3-status.error { background-color: var(--g-red-50); color: var(--g-red-700); }
+    .m3-status.success { background-color: var(--g-green-50); color: var(--g-green-700); }
+
+    /* Output Card */
+    .m3-output-card {
       display: none;
     }
 
-    .status.show { display: block; }
-    .status.error { background-color: var(--md-sys-color-on-error); color: var(--md-sys-color-error); }
-    .status.success { background-color: var(--md-sys-color-on-success); color: var(--md-sys-color-success); }
-
-    .output-card { display: none; }
-    .output-card.show { display: block; }
+    .m3-output-card.show {
+      display: block;
+    }
 
     .output-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
     }
 
-    .meta-text {
-      margin-top: 8px;
+    .output-header h2 {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--g-gray-900);
+    }
+
+    .meta-footer {
+      margin-top: 12px;
       font-size: 0.75rem;
-      color: var(--md-sys-color-on-surface-variant);
+      color: var(--g-gray-500);
+      font-family: var(--md-sys-font-mono);
     }
   </style>
 </head>
 <body>
 
-  <main class="container">
-    <section class="card">
-      <div class="header">
-        <h1 class="title">Crypto Utility</h1>
-        <span class="badge-offline">Local Sandbox</span>
+  <main class="app-container">
+    <header class="brand-header">
+      <div class="brand-logo">
+        <span class="google-blue">G</span><span class="google-red">o</span><span class="google-yellow">o</span><span class="google-blue">g</span><span class="google-green">l</span><span class="google-red">e</span>
+        <span style="margin-left: 4px;">Crypto</span>
       </div>
+      <span class="chip-offline">Client-Side Engine</span>
+    </header>
 
-      <div class="segmented-button" role="group">
+    <section class="m3-card">
+      <div class="m3-segmented-control" role="group">
         <button type="button" id="tab-encrypt" aria-pressed="true">Encrypt</button>
         <button type="button" id="tab-decrypt" aria-pressed="false">Decrypt</button>
       </div>
 
-      <div class="field">
-        <label for="input-data" id="input-label">Plaintext Input</label>
-        <textarea id="input-data" spellcheck="false" placeholder="Enter text..."></textarea>
+      <div class="m3-field">
+        <label for="input-data" id="input-label">Plaintext Message</label>
+        <textarea id="input-data" spellcheck="false" placeholder="Enter text to encrypt..."></textarea>
       </div>
 
-      <div class="field">
+      <div class="m3-field">
         <label for="passphrase">Passphrase</label>
-        <input type="password" id="passphrase" autocomplete="new-password" placeholder="At least 12 characters" />
+        <input type="password" id="passphrase" autocomplete="new-password" placeholder="Minimum 12 characters" />
       </div>
 
-      <div class="field" id="confirm-wrap">
+      <div class="m3-field" id="confirm-wrap">
         <label for="passphrase-confirm">Confirm Passphrase</label>
         <input type="password" id="passphrase-confirm" autocomplete="new-password" placeholder="Re-enter passphrase" />
       </div>
 
-      <div class="actions">
-        <button type="button" class="btn btn-primary" id="btn-run">Encrypt</button>
-        <button type="button" class="btn btn-secondary" id="btn-clear">Clear</button>
+      <div class="m3-actions">
+        <button type="button" class="m3-btn m3-btn-primary" id="btn-run">Encrypt</button>
+        <button type="button" class="m3-btn m3-btn-tonal" id="btn-clear">Reset</button>
       </div>
 
-      <div class="status" id="status-box"></div>
+      <div class="m3-status" id="status-box"></div>
     </section>
 
-    <section class="card output-card" id="output-card">
+    <section class="m3-card m3-output-card" id="output-card">
       <div class="output-header">
-        <span class="title" id="output-title">Output</span>
-        <button type="button" class="btn btn-secondary" id="btn-copy">Copy Result</button>
+        <h2>Result Block</h2>
+        <button type="button" class="m3-btn m3-btn-tonal" id="btn-copy">Copy Payload</button>
       </div>
-      <textarea id="output-data" readonly spellcheck="false"></textarea>
-      <div class="meta-text" id="meta-text"></div>
+      <textarea id="output-data" readonly spellcheck="false" style="width: 100%;"></textarea>
+      <div class="meta-footer" id="meta-text"></div>
     </section>
   </main>
 
@@ -369,7 +435,7 @@
         }
       } catch (err) {
         zeroize(pwArray);
-        self.postMessage({ success: false, error: 'Cryptographic execution failed. Verify passphrase and payload.' });
+        self.postMessage({ success: false, error: 'Execution failed. Check passphrase and payload integrity.' });
       }
     };
   </script>
@@ -385,7 +451,8 @@
         mode = newMode;
         $('tab-encrypt').setAttribute('aria-pressed', mode === 'encrypt');
         $('tab-decrypt').setAttribute('aria-pressed', mode === 'decrypt');
-        $('input-label').textContent = mode === 'encrypt' ? 'Plaintext Input' : 'Encrypted Ciphertext Block';
+        $('input-label').textContent = mode === 'encrypt' ? 'Plaintext Message' : 'Encrypted Block';
+        $('input-data').placeholder = mode === 'encrypt' ? 'Enter text to encrypt...' : 'Paste ASCII message block...';
         $('btn-run').textContent = mode === 'encrypt' ? 'Encrypt' : 'Decrypt';
         $('confirm-wrap').style.display = mode === 'encrypt' ? 'flex' : 'none';
         clearAll();
@@ -396,13 +463,13 @@
         $('passphrase').value = '';
         $('passphrase-confirm').value = '';
         $('output-card').classList.remove('show');
-        $('status-box').className = 'status';
+        $('status-box').className = 'm3-status';
       }
 
       function showStatus(text, type) {
         const box = $('status-box');
         box.textContent = text;
-        box.className = `status show ${type}`;
+        box.className = `m3-status show ${type}`;
       }
 
       function runEngine() {
@@ -410,11 +477,11 @@
         const pass = $('passphrase').value;
         const confirm = $('passphrase-confirm').value;
 
-        if (!input.trim()) return showStatus('Input field cannot be empty.', 'error');
+        if (!input.trim()) return showStatus('Input text is required.', 'error');
         if (pass.length < 12) return showStatus('Passphrase must be at least 12 characters.', 'error');
         if (mode === 'encrypt' && pass !== confirm) return showStatus('Passphrases do not match.', 'error');
 
-        showStatus('Processing key derivation in background worker thread...', 'success');
+        showStatus('Deriving encryption keys on background worker thread...', 'success');
 
         const pwBytes = new TextEncoder().encode(pass.normalize('NFC'));
         const blob = new Blob([$('worker-code').textContent], { type: 'text/javascript' });
@@ -429,7 +496,7 @@
             $('output-data').value = e.data.payload;
             $('meta-text').textContent = e.data.meta;
             $('output-card').classList.add('show');
-            showStatus('Operation completed successfully.', 'success');
+            showStatus('Execution complete.', 'success');
           } else {
             showStatus(e.data.error, 'error');
           }
@@ -448,8 +515,8 @@
       $('btn-clear').onclick = clearAll;
       $('btn-copy').onclick = () => {
         navigator.clipboard.writeText($('output-data').value);
-        $('btn-copy').textContent = 'Copied';
-        setTimeout(() => $('btn-copy').textContent = 'Copy Result', 1500);
+        $('btn-copy').textContent = 'Copied!';
+        setTimeout(() => $('btn-copy').textContent = 'Copy Payload', 1500);
       };
 
       window.onpagehide = clearAll;
