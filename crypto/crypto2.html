@@ -7,29 +7,29 @@
   <meta name="theme-color" content="#ffffff" />
   <meta http-equiv="Content-Security-Policy" 
         content="default-src 'none'; script-src 'unsafe-inline' blob:; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'" />
-  <title>Google Security Sandbox — Local Crypto</title>
+  <title>Security Sandbox — Local Crypto</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      /* Google Material 3 Expressive Palette */
-      --g-blue-600: #1a73e8;
-      --g-blue-700: #1557b0;
-      --g-blue-50: #e8f0fe;
-      --g-green-700: #1e8e3e;
-      --g-green-50: #e6f4ea;
-      --g-red-700: #d93025;
-      --g-red-50: #fce8e6;
-      --g-gray-900: #202124;
-      --g-gray-700: #5f6368;
-      --g-gray-500: #9aa0a6;
-      --g-gray-200: #e8eaed;
-      --g-gray-100: #f1f3f4;
-      --g-gray-50: #f8f9fa;
-      --g-white: #ffffff;
+      /* Material 3 Expressive Palette */
+      --sys-blue-600: #1a73e8;
+      --sys-blue-700: #1557b0;
+      --sys-blue-50: #e8f0fe;
+      --sys-green-700: #1e8e3e;
+      --sys-green-50: #e6f4ea;
+      --sys-red-700: #d93025;
+      --sys-red-50: #fce8e6;
+      --sys-gray-900: #202124;
+      --sys-gray-700: #5f6368;
+      --sys-gray-500: #9aa0a6;
+      --sys-gray-200: #e8eaed;
+      --sys-gray-100: #f1f3f4;
+      --sys-gray-50: #f8f9fa;
+      --sys-white: #ffffff;
       
-      /* M3 System Tokens */
+      /* System Tokens */
       --md-sys-font-sans: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
       --md-sys-font-mono: 'Roboto Mono', monospace;
       --md-sys-radius-card: 28px;
@@ -42,8 +42,8 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     
     body {
-      background-color: var(--g-gray-50);
-      color: var(--g-gray-900);
+      background-color: var(--sys-gray-50);
+      color: var(--sys-gray-900);
       font-family: var(--md-sys-font-sans);
       display: flex;
       justify-content: center;
@@ -60,7 +60,7 @@
       gap: 20px;
     }
 
-    /* Google Header Branding */
+    /* Header Branding */
     .brand-header {
       display: flex;
       align-items: center;
@@ -68,24 +68,16 @@
       padding: 0 8px;
     }
 
-    .brand-logo {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 1.35rem;
+    .brand-title {
+      font-size: 1.25rem;
       font-weight: 500;
-      color: var(--g-gray-700);
-      letter-spacing: -0.5px;
+      color: var(--sys-gray-900);
+      letter-spacing: -0.2px;
     }
 
-    .brand-logo .google-blue { color: #4285F4; }
-    .brand-logo .google-red { color: #EA4335; }
-    .brand-logo .google-yellow { color: #FBBC05; }
-    .brand-logo .google-green { color: #34A853; }
-
     .chip-offline {
-      background-color: var(--g-blue-50);
-      color: var(--g-blue-700);
+      background-color: var(--sys-blue-50);
+      color: var(--sys-blue-700);
       font-size: 0.75rem;
       font-weight: 500;
       padding: 6px 14px;
@@ -99,24 +91,24 @@
       content: "";
       width: 8px;
       height: 8px;
-      background-color: var(--g-blue-600);
+      background-color: var(--sys-blue-600);
       border-radius: 50%;
     }
 
     /* Material 3 Main Card */
     .m3-card {
-      background-color: var(--g-white);
+      background-color: var(--sys-white);
       border-radius: var(--md-sys-radius-card);
       padding: 32px;
       box-shadow: var(--md-sys-elevation-1);
-      border: 1px solid var(--g-gray-200);
+      border: 1px solid var(--sys-gray-200);
       transition: box-shadow 0.2s ease;
     }
 
     /* Material Segmented Button */
     .m3-segmented-control {
       display: flex;
-      background-color: var(--g-gray-100);
+      background-color: var(--sys-gray-100);
       border-radius: var(--md-sys-radius-pill);
       padding: 4px;
       margin-bottom: 24px;
@@ -130,15 +122,15 @@
       font-family: var(--md-sys-font-sans);
       font-size: 0.875rem;
       font-weight: 500;
-      color: var(--g-gray-700);
+      color: var(--sys-gray-700);
       border-radius: var(--md-sys-radius-pill);
       cursor: pointer;
       transition: all 0.2s ease;
     }
 
     .m3-segmented-control button[aria-pressed="true"] {
-      background-color: var(--g-white);
-      color: var(--g-blue-600);
+      background-color: var(--sys-white);
+      color: var(--sys-blue-600);
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
       font-weight: 700;
     }
@@ -154,15 +146,15 @@
     .m3-field label {
       font-size: 0.8rem;
       font-weight: 500;
-      color: var(--g-gray-700);
+      color: var(--sys-gray-700);
       margin-left: 4px;
     }
 
     textarea, input[type="password"] {
-      background-color: var(--g-gray-50);
-      border: 1px solid var(--g-gray-200);
+      background-color: var(--sys-gray-50);
+      border: 1px solid var(--sys-gray-200);
       border-radius: var(--md-sys-radius-input);
-      color: var(--g-gray-900);
+      color: var(--sys-gray-900);
       padding: 16px;
       font-family: var(--md-sys-font-mono);
       font-size: 0.875rem;
@@ -176,12 +168,12 @@
     }
 
     textarea:focus, input[type="password"]:focus {
-      border-color: var(--g-blue-600);
-      background-color: var(--g-white);
-      box-shadow: 0 0 0 2px var(--g-blue-50);
+      border-color: var(--sys-blue-600);
+      background-color: var(--sys-white);
+      box-shadow: 0 0 0 2px var(--sys-blue-50);
     }
 
-    /* Google Material Buttons */
+    /* Material Buttons */
     .m3-actions {
       display: flex;
       gap: 12px;
@@ -203,25 +195,25 @@
     }
 
     .m3-btn-primary {
-      background-color: var(--g-blue-600);
-      color: var(--g-white);
+      background-color: var(--sys-blue-600);
+      color: var(--sys-white);
       flex: 2;
       box-shadow: var(--md-sys-elevation-1);
     }
 
     .m3-btn-primary:hover {
-      background-color: var(--g-blue-700);
+      background-color: var(--sys-blue-700);
       box-shadow: var(--md-sys-elevation-2);
     }
 
     .m3-btn-tonal {
-      background-color: var(--g-gray-100);
-      color: var(--g-gray-700);
+      background-color: var(--sys-gray-100);
+      color: var(--sys-gray-700);
       flex: 1;
     }
 
     .m3-btn-tonal:hover {
-      background-color: var(--g-gray-200);
+      background-color: var(--sys-gray-200);
     }
 
     /* Dynamic Banner Notifications */
@@ -235,8 +227,8 @@
     }
 
     .m3-status.show { display: block; }
-    .m3-status.error { background-color: var(--g-red-50); color: var(--g-red-700); }
-    .m3-status.success { background-color: var(--g-green-50); color: var(--g-green-700); }
+    .m3-status.error { background-color: var(--sys-red-50); color: var(--sys-red-700); }
+    .m3-status.success { background-color: var(--sys-green-50); color: var(--sys-green-700); }
 
     /* Output Card */
     .m3-output-card {
@@ -257,13 +249,13 @@
     .output-header h2 {
       font-size: 1.1rem;
       font-weight: 500;
-      color: var(--g-gray-900);
+      color: var(--sys-gray-900);
     }
 
     .meta-footer {
       margin-top: 12px;
       font-size: 0.75rem;
-      color: var(--g-gray-500);
+      color: var(--sys-gray-500);
       font-family: var(--md-sys-font-mono);
     }
   </style>
@@ -272,10 +264,7 @@
 
   <main class="app-container">
     <header class="brand-header">
-      <div class="brand-logo">
-        <span class="google-blue">G</span><span class="google-red">o</span><span class="google-yellow">o</span><span class="google-blue">g</span><span class="google-green">l</span><span class="google-red">e</span>
-        <span style="margin-left: 4px;">Crypto</span>
-      </div>
+      <h1 class="brand-title">Crypto Sandbox</h1>
       <span class="chip-offline">Client-Side Engine</span>
     </header>
 
