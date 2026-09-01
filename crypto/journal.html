@@ -318,7 +318,6 @@
       <span class="chip-offline">Encrypted Journal</span>
     </header>
 
-    <!-- STEP 1: AUTHENTICATION / ACCESS PANEL -->
     <section class="m3-card" id="auth-panel">
       <div class="m3-segmented-control" role="group">
         <button type="button" id="tab-open" aria-pressed="true">Open Existing</button>
@@ -354,7 +353,6 @@
       <div class="m3-status" id="auth-status"></div>
     </section>
 
-    <!-- STEP 2: ACTIVE JOURNAL INTERFACE -->
     <section class="m3-card journal-section" id="journal-panel">
       <div class="m3-field">
         <label for="new-entry">New Log Entry</label>
@@ -376,7 +374,6 @@
     </section>
   </main>
 
-  <!-- WORKER THREAD SCRIPT -->
   <script id="worker-code" type="text/plain">
     self.onmessage = async function(e) {
       const { mode, passphraseBytes, text } = e.data;
@@ -489,7 +486,6 @@
     };
   </script>
 
-  <!-- MAIN UI LOGIC -->
   <script>
     (function() {
       'use strict';
@@ -567,7 +563,7 @@
           return;
         }
 
-        activeEntries.slice().reverse().forEach(entry => {
+        activeEntries.forEach(entry => {
           const card = document.createElement('div');
           card.className = 'entry-card';
 
@@ -634,7 +630,8 @@
           text: text
         };
 
-        activeEntries.push(newRecord);
+        // Prepend new entry to top of memory array
+        activeEntries.unshift(newRecord);
 
         try {
           const jsonPayload = JSON.stringify(activeEntries);
