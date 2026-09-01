@@ -211,13 +211,14 @@
       display: flex;
       gap: 12px;
       margin-top: 24px;
+      flex-wrap: wrap;
     }
 
     .m3-btn {
       font-family: var(--md-sys-font-sans);
       font-size: 0.875rem;
       font-weight: 500;
-      padding: 12px 24px;
+      padding: 12px 20px;
       border-radius: var(--md-sys-radius-pill);
       border: none;
       cursor: pointer;
@@ -234,6 +235,7 @@
       color: var(--nasa-white);
       border: 1px solid var(--nasa-blue-700);
       flex: 2;
+      min-width: 180px;
       box-shadow: var(--md-sys-elevation-1);
     }
 
@@ -247,6 +249,7 @@
       border: 1px solid var(--nasa-gray-200);
       color: var(--nasa-gray-700);
       flex: 1;
+      min-width: 120px;
     }
 
     .m3-btn-tonal:hover {
@@ -360,6 +363,7 @@
 
       <div class="m3-actions">
         <button type="button" class="m3-btn m3-btn-primary" id="btn-save-entry">Encrypt & Export File</button>
+        <button type="button" class="m3-btn m3-btn-tonal" id="btn-export-txt">Export TXT</button>
         <button type="button" class="m3-btn m3-btn-tonal" id="btn-lock">Lock Session</button>
       </div>
 
@@ -636,7 +640,6 @@
           const jsonPayload = JSON.stringify(activeEntries);
           const encryptedPayload = await runWorker('encrypt', activePassphrase, jsonPayload);
 
-          // Download updated JSON File
           const blob = new Blob([encryptedPayload], { type: 'application/json' });
           const url = URL.createObjectURL(blob);
           const a = document.createElement('a');
@@ -654,6 +657,28 @@
         }
       }
 
+      function exportUnencryptedTxt() {
+        if (activeEntries.length === 0) {
+          return showStatus('journal-status', 'No log entries available to export.', 'error');
+        }
+
+        const formattedText = activeEntries.map(entry => {
+          return `=== [ ${entry.timestamp} ] ===\n\n${entry.text}\n\n`;
+        }).join('----------------------------------------\n\n');
+
+        const blob = new Blob([formattedText], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const dateStr = new Date().toISOString().slice(0, 10);
+        
+        a.href = url;
+        a.download = `journal-export-${dateStr}.txt`;
+        a.click();
+        
+        URL.revokeObjectURL(url);
+        showStatus('journal-status', 'Unencrypted TXT journal exported successfully.', 'success');
+      }
+
       function lockSession() {
         activeEntries = [];
         activePassphrase = '';
@@ -668,6 +693,7 @@
       $('btn-auth').onclick = handleAuth;
       $('btn-clear-auth').onclick = clearAuth;
       $('btn-save-entry').onclick = handleSaveEntry;
+      $('btn-export-txt').onclick = exportUnencryptedTxt;
       $('btn-lock').onclick = lockSession;
 
       setupPasswordToggle('passphrase', 'toggle-passphrase');
