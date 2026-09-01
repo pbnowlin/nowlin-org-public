@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <meta name="theme-color" content="#1c1b1f" />
+  <meta http-equiv="Content-Security-Policy" 
+        content="default-src 'none'; script-src 'unsafe-inline' blob:; style-src 'unsafe-inline'; img-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'" />
+  <title>Crypto — Local Security Sandbox</title>
+  <style>
+    :root {
+      --md-sys-color-background: #1c1b1f;
+      --md-sys-color-on-background: #e6e1e5;
+      --md-sys-color-surface: #2b292f;
+      --md-sys-color-surface-variant: #49454f;
+      --md-sys-color-on-surface-variant: #cac4d0;
+      --md-sys-color-primary: #d0bcff;
+      --md-sys-color-on-primary: #381e72;
+      --md-sys-color-primary-container: #4f378b;
+      --md-sys-color-on-primary-container: #eaddff;
+      --md-sys-color-outline: #938f96;
+      --md-sys-color-error: #f2b8b5;
+      --md-sys-color-on-error: #601410;
+      --md-sys-color-success: #b8f2b5;
+      --md-sys-color-on-success: #106014;
+      --md-sys-shape-corner-medium: 12px;
+      --md-sys-shape-corner-full: 9999px;
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--md-sys-color-background);
+      color: var(--md-sys-color-on-background);
+      font-family: var(--font-sans);
+      display: flex;
+      justify-content: center;
+      padding: 32px 16px;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 640px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card {
+      background-color: var(--md-sys-color-surface);
+      border-radius: var(--md-sys-shape-corner-medium);
+      padding: 24px;
+      border: 1px solid var(--md-sys-color-surface-variant);
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: 0.1px;
+    }
+
+    .badge-offline {
+      background-color: var(--md-sys-color-surface-variant);
+      color: var(--md-sys-color-on-surface-variant);
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: var(--md-sys-shape-corner-full);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .segmented-button {
+      display: flex;
+      border: 1px solid var(--md-sys-color-outline);
+      border-radius: var(--md-sys-shape-corner-full);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .segmented-button button {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--md-sys-color-on-surface-variant);
+      padding: 10px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .segmented-button button[aria-pressed="true"] {
+      background-color: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--md-sys-color-on-surface-variant);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    textarea, input[type="password"] {
+      background-color: var(--md-sys-color-background);
+      border: 1px solid var(--md-sys-color-outline);
+      border-radius: 8px;
+      color: var(--md-sys-color-on-background);
+      padding: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    textarea:focus, input[type="password"]:focus {
+      border-color: var(--md-sys-color-primary);
+      box-shadow: 0 0 0 1px var(--md-sys-color-primary);
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: var(--md-sys-shape-corner-full);
+      padding: 12px 24px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      background-color: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+      flex: 2;
+    }
+
+    .btn-secondary {
+      background-color: var(--md-sys-color-surface-variant);
+      color: var(--md-sys-color-on-surface-variant);
+      flex: 1;
+    }
+
+    .btn:disabled {
+      opacity: 0.38;
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 16px;
+      font-size: 0.875rem;
+      padding: 12px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .status.show { display: block; }
+    .status.error { background-color: var(--md-sys-color-on-error); color: var(--md-sys-color-error); }
+    .status.success { background-color: var(--md-sys-color-on-success); color: var(--md-sys-color-success); }
+
+    .output-card { display: none; }
+    .output-card.show { display: block; }
+
+    .output-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .meta-text {
+      margin-top: 8px;
+      font-size: 0.75rem;
+      color: var(--md-sys-color-on-surface-variant);
+    }
+  </style>
+</head>
+<body>
+
+  <main class="container">
+    <section class="card">
+      <div class="header">
+        <h1 class="title">Crypto Utility</h1>
+        <span class="badge-offline">Local Sandbox</span>
+      </div>
+
+      <div class="segmented-button" role="group">
+        <button type="button" id="tab-encrypt" aria-pressed="true">Encrypt</button>
+        <button type="button" id="tab-decrypt" aria-pressed="false">Decrypt</button>
+      </div>
+
+      <div class="field">
+        <label for="input-data" id="input-label">Plaintext Input</label>
+        <textarea id="input-data" spellcheck="false" placeholder="Enter text..."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="passphrase">Passphrase</label>
+        <input type="password" id="passphrase" autocomplete="new-password" placeholder="At least 12 characters" />
+      </div>
+
+      <div class="field" id="confirm-wrap">
+        <label for="passphrase-confirm">Confirm Passphrase</label>
+        <input type="password" id="passphrase-confirm" autocomplete="new-password" placeholder="Re-enter passphrase" />
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn btn-primary" id="btn-run">Encrypt</button>
+        <button type="button" class="btn btn-secondary" id="btn-clear">Clear</button>
+      </div>
+
+      <div class="status" id="status-box"></div>
+    </section>
+
+    <section class="card output-card" id="output-card">
+      <div class="output-header">
+        <span class="title" id="output-title">Output</span>
+        <button type="button" class="btn btn-secondary" id="btn-copy">Copy Result</button>
+      </div>
+      <textarea id="output-data" readonly spellcheck="false"></textarea>
+      <div class="meta-text" id="meta-text"></div>
+    </section>
+  </main>
+
+  <script id="worker-code" type="text/plain">
+    self.onmessage = async function(e) {
+      const { mode, passphraseBytes, text } = e.data;
+      const pwArray = new Uint8Array(passphraseBytes);
+
+      const MAGIC = [0x4E, 0x57, 0x4C, 0x4E];
+      const FORMAT_VERSION = 1;
+      const KDF_ITERATIONS = 600000;
+      const SALT_BYTES = 16;
+      const IV_BYTES = 12;
+      const HEADER_BYTES = 39;
+      const PAD_BLOCK = 256;
+      const BEGIN_LINE = '-----BEGIN NOWLIN ENCRYPTED MESSAGE-----';
+      const END_LINE = '-----END NOWLIN ENCRYPTED MESSAGE-----';
+
+      function zeroize(buffer) {
+        if (buffer && buffer.fill) buffer.fill(0);
+      }
+
+      function bytesToBase64(bytes) {
+        let bin = '';
+        const chunk = 0x8000;
+        for (let i = 0; i < bytes.length; i += chunk) {
+          bin += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+        }
+        return btoa(bin);
+      }
+
+      function base64ToBytes(b64) {
+        const bin = atob(b64.replace(/\s+/g, ''));
+        const out = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+        return out;
+      }
+
+      async function deriveKey(pwBytes, salt, iterations) {
+        const baseKey = await self.crypto.subtle.importKey('raw', pwBytes, 'PBKDF2', false, ['deriveKey']);
+        return self.crypto.subtle.deriveKey(
+          { name: 'PBKDF2', salt, iterations, hash: 'SHA-256' },
+          baseKey,
+          { name: 'AES-GCM', length: 256 },
+          false,
+          ['encrypt', 'decrypt']
+        );
+      }
+
+      try {
+        if (mode === 'encrypt') {
+          const encoder = new TextEncoder();
+          const ptBytes = encoder.encode(text);
+          const totalPadded = Math.ceil((4 + ptBytes.length) / PAD_BLOCK) * PAD_BLOCK;
+          const paddedPt = new Uint8Array(totalPadded);
+          new DataView(paddedPt.buffer).setUint32(0, ptBytes.length, false);
+          paddedPt.set(ptBytes, 4);
+
+          const salt = self.crypto.getRandomValues(new Uint8Array(SALT_BYTES));
+          const iv = self.crypto.getRandomValues(new Uint8Array(IV_BYTES));
+
+          const header = new Uint8Array(HEADER_BYTES);
+          header.set(MAGIC, 0);
+          header[4] = FORMAT_VERSION;
+          header[5] = 1;
+          new DataView(header.buffer).setUint32(6, KDF_ITERATIONS, false);
+          header[10] = 1;
+          header.set(salt, 11);
+          header.set(iv, 27);
+
+          const key = await deriveKey(pwArray, salt, KDF_ITERATIONS);
+          const ctBuffer = await self.crypto.subtle.encrypt(
+            { name: 'AES-GCM', iv, additionalData: header, tagLength: 128 },
+            key,
+            paddedPt
+          );
+
+          const ctBytes = new Uint8Array(ctBuffer);
+          const finalBuffer = new Uint8Array(header.length + ctBytes.length);
+          finalBuffer.set(header, 0);
+          finalBuffer.set(ctBytes, header.length);
+
+          const b64 = bytesToBase64(finalBuffer);
+          const armored = `${BEGIN_LINE}\n${b64.match(/.{1,64}/g).join('\n')}\n${END_LINE}`;
+
+          zeroize(pwArray);
+          zeroize(ptBytes);
+          zeroize(paddedPt);
+
+          self.postMessage({ success: true, payload: armored, meta: `AES-256-GCM · PBKDF2 (${KDF_ITERATIONS.toLocaleString()} iterations)` });
+        } else {
+          const cleanB64 = text.replace(BEGIN_LINE, '').replace(END_LINE, '').replace(/\s+/g, '');
+          const bytes = base64ToBytes(cleanB64);
+          const header = bytes.subarray(0, HEADER_BYTES);
+          const iterations = new DataView(header.buffer, header.byteOffset, header.byteLength).getUint32(6, false);
+          const salt = bytes.subarray(11, 27);
+          const iv = bytes.subarray(27, 39);
+          const ciphertext = bytes.subarray(HEADER_BYTES);
+
+          const key = await deriveKey(pwArray, salt, iterations);
+          const ptBuffer = await self.crypto.subtle.decrypt(
+            { name: 'AES-GCM', iv, additionalData: header, tagLength: 128 },
+            key,
+            ciphertext
+          );
+
+          const paddedPt = new Uint8Array(ptBuffer);
+          const length = new DataView(paddedPt.buffer).getUint32(0, false);
+          const ptBytes = paddedPt.subarray(4, 4 + length);
+
+          const textDecoder = new TextDecoder('utf-8', { fatal: true });
+          const decodedText = textDecoder.decode(ptBytes);
+
+          zeroize(pwArray);
+          zeroize(paddedPt);
+
+          self.postMessage({ success: true, payload: decodedText, meta: `Decrypted & Tag Verified · ${iterations.toLocaleString()} PBKDF2 iterations` });
+        }
+      } catch (err) {
+        zeroize(pwArray);
+        self.postMessage({ success: false, error: 'Cryptographic execution failed. Verify passphrase and payload.' });
+      }
+    };
+  </script>
+
+  <script>
+    (function() {
+      'use strict';
+
+      const $ = id => document.getElementById(id);
+      let mode = 'encrypt';
+
+      function setMode(newMode) {
+        mode = newMode;
+        $('tab-encrypt').setAttribute('aria-pressed', mode === 'encrypt');
+        $('tab-decrypt').setAttribute('aria-pressed', mode === 'decrypt');
+        $('input-label').textContent = mode === 'encrypt' ? 'Plaintext Input' : 'Encrypted Ciphertext Block';
+        $('btn-run').textContent = mode === 'encrypt' ? 'Encrypt' : 'Decrypt';
+        $('confirm-wrap').style.display = mode === 'encrypt' ? 'flex' : 'none';
+        clearAll();
+      }
+
+      function clearAll() {
+        $('input-data').value = '';
+        $('passphrase').value = '';
+        $('passphrase-confirm').value = '';
+        $('output-card').classList.remove('show');
+        $('status-box').className = 'status';
+      }
+
+      function showStatus(text, type) {
+        const box = $('status-box');
+        box.textContent = text;
+        box.className = `status show ${type}`;
+      }
+
+      function runEngine() {
+        const input = $('input-data').value;
+        const pass = $('passphrase').value;
+        const confirm = $('passphrase-confirm').value;
+
+        if (!input.trim()) return showStatus('Input field cannot be empty.', 'error');
+        if (pass.length < 12) return showStatus('Passphrase must be at least 12 characters.', 'error');
+        if (mode === 'encrypt' && pass !== confirm) return showStatus('Passphrases do not match.', 'error');
+
+        showStatus('Processing key derivation in background worker thread...', 'success');
+
+        const pwBytes = new TextEncoder().encode(pass.normalize('NFC'));
+        const blob = new Blob([$('worker-code').textContent], { type: 'text/javascript' });
+        const workerUrl = URL.createObjectURL(blob);
+        const worker = new Worker(workerUrl);
+
+        worker.onmessage = function(e) {
+          URL.revokeObjectURL(workerUrl);
+          worker.terminate();
+
+          if (e.data.success) {
+            $('output-data').value = e.data.payload;
+            $('meta-text').textContent = e.data.meta;
+            $('output-card').classList.add('show');
+            showStatus('Operation completed successfully.', 'success');
+          } else {
+            showStatus(e.data.error, 'error');
+          }
+        };
+
+        worker.postMessage({
+          mode,
+          passphraseBytes: pwBytes.buffer,
+          text: input
+        }, [pwBytes.buffer]);
+      }
+
+      $('tab-encrypt').onclick = () => setMode('encrypt');
+      $('tab-decrypt').onclick = () => setMode('decrypt');
+      $('btn-run').onclick = runEngine;
+      $('btn-clear').onclick = clearAll;
+      $('btn-copy').onclick = () => {
+        navigator.clipboard.writeText($('output-data').value);
+        $('btn-copy').textContent = 'Copied';
+        setTimeout(() => $('btn-copy').textContent = 'Copy Result', 1500);
+      };
+
+      window.onpagehide = clearAll;
+    })();
+  </script>
+</body>
+</html>
