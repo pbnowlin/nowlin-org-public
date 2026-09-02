@@ -6,11 +6,8 @@
   <meta name="robots" content="noindex, nofollow, noarchive" />
   <meta name="theme-color" content="#0b3d91" />
   <meta http-equiv="Content-Security-Policy" 
-        content="default-src 'none'; script-src 'unsafe-inline' blob:; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'" />
+        content="default-src 'none'; script-src 'unsafe-inline' blob:; style-src 'unsafe-inline'; img-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'" />
   <title>Local Encrypted Journal</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       --nasa-blue-900: #0b3d91;
@@ -26,8 +23,8 @@
       --nasa-gray-200:  #232b3e;
       --nasa-white:     #ffffff;
       
-      --md-sys-font-sans: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
-      --md-sys-font-mono: 'Roboto Mono', monospace;
+      --md-sys-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --md-sys-font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
       --md-sys-radius-card: 12px;
       --md-sys-radius-input: 8px;
       --md-sys-radius-pill: 100px;
@@ -270,6 +267,17 @@
     .m3-status.error { background-color: var(--nasa-red-50); color: var(--nasa-red-600); border: 1px solid var(--nasa-red-600); }
     .m3-status.success { background-color: var(--nasa-green-50); color: var(--nasa-green-700); border: 1px solid var(--nasa-green-700); }
 
+    .m3-status.warning { background-color: #fff8e1; color: #8a6100; border: 1px solid #d99a00; }
+
+    .pw-strength {
+      margin-top: 6px;
+      font-size: 0.75rem;
+      font-family: var(--md-sys-font-mono);
+    }
+    .pw-strength.weak { color: var(--nasa-red-600); }
+    .pw-strength.ok { color: #d99a00; }
+    .pw-strength.strong { color: var(--nasa-green-700); }
+
     .journal-section {
       display: none;
       flex-direction: column;
@@ -335,6 +343,7 @@
           <input type="password" id="passphrase" class="pw-input" autocomplete="new-password" placeholder="Minimum 12 characters" />
           <button type="button" class="btn-toggle-pw" id="toggle-passphrase">Show</button>
         </div>
+        <div class="pw-strength" id="pw-strength-hint"></div>
       </div>
 
       <div class="m3-field" id="confirm-wrap" style="display: none;">
@@ -385,6 +394,7 @@
       const SALT_BYTES = 16;
       const IV_BYTES = 12;
       const HEADER_BYTES = 39;
+      const MAX_KDF_ITERATIONS = 2000000;
 
       function zeroize(buffer) {
         if (buffer && buffer.fill) buffer.fill(0);
@@ -462,7 +472,13 @@
           if (bytes.length < HEADER_BYTES) throw new Error('Invalid header format.');
 
           const header = bytes.subarray(0, HEADER_BYTES);
-          const iterations = new DataView(header.buffer, header.byteOffset + 6, 4).getUint32(0, false);
+          const magicOk = header[0] === MAGIC[0] && header[1] === MAGIC[1] && header[2] === MAGIC[2] && header[3] === MAGIC[3];
+          if (!magicOk) throw new Error('Not a recognized journal file (bad magic bytes).');
+
+          let iterations = new DataView(header.buffer, header.byteOffset + 6, 4).getUint32(0, false);
+          if (!Number.isFinite(iterations) || iterations <= 0) throw new Error('Invalid header format.');
+          if (iterations > MAX_KDF_ITERATIONS) iterations = MAX_KDF_ITERATIONS;
+
           const salt = bytes.subarray(11, 27);
           const iv = bytes.subarray(27, 39);
           const ciphertext = bytes.subarray(HEADER_BYTES);
@@ -481,7 +497,7 @@
         }
       } catch (err) {
         zeroize(pwArray);
-        self.postMessage({ success: false, error: 'Decryption failed. Check passphrase or file.' });
+        self.postMessage({ success: false, error: err && err.message ? err.message : 'Decryption failed. Check passphrase or file.' });
       }
     };
   </script>
@@ -494,6 +510,81 @@
       let mode = 'open';
       let activeEntries = [];
       let activePassphrase = '';
+
+      // ---- Passphrase strength checking ----
+      // Small blocklist of extremely common passwords/patterns. Not exhaustive —
+      // this is a basic guardrail, not a replacement for a full dictionary check.
+      const COMMON_PASSWORDS = [
+        'password', 'passw0rd', 'letmein', 'qwerty', 'iloveyou',
+        '123456789012', 'abcdefghijkl', 'admin1234567', 'welcome1234',
+        'trustno1trustno1', 'changeme1234'
+      ];
+
+      function isSequentialOrRepeated(pw) {
+        // Flags strings that are a single repeated character, or a simple
+        // ascending/descending run (e.g. "abcdefghijkl", "123456789012").
+        if (/^(.)\1+$/.test(pw)) return true;
+
+        const lower = pw.toLowerCase();
+        let ascending = true;
+        let descending = true;
+        for (let i = 1; i < lower.length; i++) {
+          const diff = lower.charCodeAt(i) - lower.charCodeAt(i - 1);
+          if (diff !== 1) ascending = false;
+          if (diff !== -1) descending = false;
+        }
+        return ascending || descending;
+      }
+
+      function estimatePassphraseStrength(pw) {
+        // Returns { level: 'weak'|'ok'|'strong', message: string }
+        if (pw.length < 12) {
+          return { level: 'weak', message: 'Too short — minimum 12 characters.' };
+        }
+
+        const lower = pw.toLowerCase();
+        if (COMMON_PASSWORDS.some(bad => lower.includes(bad))) {
+          return { level: 'weak', message: 'Contains a very common password pattern — choose something less guessable.' };
+        }
+
+        if (isSequentialOrRepeated(pw)) {
+          return { level: 'weak', message: 'Repeated or sequential characters are easy to guess.' };
+        }
+
+        // Rough character-class variety check as a proxy for entropy.
+        let classes = 0;
+        if (/[a-z]/.test(pw)) classes++;
+        if (/[A-Z]/.test(pw)) classes++;
+        if (/[0-9]/.test(pw)) classes++;
+        if (/[^a-zA-Z0-9]/.test(pw)) classes++;
+
+        const uniqueChars = new Set(pw).size;
+
+        if (pw.length >= 20 && uniqueChars >= 8) {
+          return { level: 'strong', message: 'Strong passphrase.' };
+        }
+        if (classes >= 3 && uniqueChars >= 8) {
+          return { level: 'strong', message: 'Strong passphrase.' };
+        }
+        if (pw.length >= 16 || (classes >= 2 && uniqueChars >= 6)) {
+          return { level: 'ok', message: 'Acceptable, but a longer passphrase or passphrase of random words would be stronger.' };
+        }
+
+        return { level: 'weak', message: 'Weak — mix more character types, use more unique characters, or make it longer.' };
+      }
+
+      function updateStrengthHint() {
+        const pw = $('passphrase').value;
+        const hint = $('pw-strength-hint');
+        if (!pw) {
+          hint.textContent = '';
+          hint.className = 'pw-strength';
+          return;
+        }
+        const result = estimatePassphraseStrength(pw);
+        hint.textContent = result.message;
+        hint.className = `pw-strength ${result.level}`;
+      }
 
       function setMode(newMode) {
         mode = newMode;
@@ -510,6 +601,7 @@
         $('passphrase').value = '';
         $('passphrase-confirm').value = '';
         $('auth-status').className = 'm3-status';
+        updateStrengthHint();
       }
 
       function showStatus(elemId, text, type) {
@@ -588,6 +680,10 @@
         if (pass.length < 12) return showStatus('auth-status', 'Passphrase must be at least 12 characters.', 'error');
 
         if (mode === 'create') {
+          const strength = estimatePassphraseStrength(pass);
+          if (strength.level === 'weak') {
+            return showStatus('auth-status', `Passphrase too weak: ${strength.message}`, 'error');
+          }
           if (pass !== confirm) return showStatus('auth-status', 'Passphrases do not match.', 'error');
           activePassphrase = pass;
           activeEntries = [];
@@ -659,6 +755,15 @@
           return showStatus('journal-status', 'No log entries available to export.', 'error');
         }
 
+        const confirmed = window.confirm(
+          'This will save your journal entries as PLAIN, UNENCRYPTED text on disk. ' +
+          'Anyone with access to this file will be able to read it. Continue?'
+        );
+        if (!confirmed) {
+          showStatus('journal-status', 'Unencrypted export cancelled.', 'warning');
+          return;
+        }
+
         const formattedText = activeEntries.map(entry => {
           return `=== [ ${entry.timestamp} ] ===\n\n${entry.text}\n\n`;
         }).join('----------------------------------------\n\n');
@@ -673,7 +778,7 @@
         a.click();
         
         URL.revokeObjectURL(url);
-        showStatus('journal-status', 'Unencrypted TXT journal exported successfully.', 'success');
+        showStatus('journal-status', 'Unencrypted TXT journal exported. Store or delete it carefully.', 'warning');
       }
 
       function lockSession() {
@@ -695,6 +800,8 @@
 
       setupPasswordToggle('passphrase', 'toggle-passphrase');
       setupPasswordToggle('passphrase-confirm', 'toggle-confirm');
+
+      $('passphrase').addEventListener('input', updateStrengthHint);
 
       window.onpagehide = lockSession;
     })();
