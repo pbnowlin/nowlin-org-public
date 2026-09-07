@@ -3,35 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Holy Bible (KJV)</title>
+  <title>Holy Bible</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="app-header">
-    <div class="header-content">
-      <h1>Holy Bible <span class="version-badge">KJV</span></h1>
-      <nav class="controls">
-        <select id="book-select" aria-label="Select Book"></select>
-        <select id="chapter-select" aria-label="Select Chapter"></select>
-      </nav>
+  <header>
+    <h1>Holy Bible <span class="badge">KJV</span></h1>
+    <div class="controls">
+      <select id="book-select"></select>
+      <select id="chapter-select"></select>
     </div>
   </header>
 
-  <main class="reader-container">
-    <!-- Top Chapter Navigation -->
-    <div class="chapter-nav">
-      <button id="prev-btn-top" class="nav-btn" aria-label="Previous Chapter">&larr; Back</button>
-      <button id="next-btn-top" class="nav-btn" aria-label="Next Chapter">Next &rarr;</button>
+  <main>
+    <div class="nav-bar">
+      <button id="prev-btn-top">← Back</button>
+      <button id="next-btn-top">Next →</button>
     </div>
 
-    <div id="verse-container" class="verse-container">
-      <p class="loading">Loading chapter...</p>
-    </div>
+    <div id="verse-container">Loading Bible...</div>
 
-    <!-- Bottom Chapter Navigation -->
-    <div class="chapter-nav bottom-nav">
-      <button id="prev-btn-bottom" class="nav-btn" aria-label="Previous Chapter">&larr; Back</button>
-      <button id="next-btn-bottom" class="nav-btn" aria-label="Next Chapter">Next &rarr;</button>
+    <div class="nav-bar">
+      <button id="prev-btn-bottom">← Back</button>
+      <button id="next-btn-bottom">Next →</button>
     </div>
   </main>
 
