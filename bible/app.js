@@ -1,4 +1,3 @@
-// Map human-readable names to Kaiserlik 3-letter file keys
 const BIBLE_BOOKS = [
   { name: "Genesis", file: "Gen" },
   { name: "Exodus", file: "Exo" },
@@ -70,9 +69,17 @@ const BIBLE_BOOKS = [
 
 const bookCache = {};
 
+// Navigation state tracking
+let currentBookIdx = 0;
+let currentChapterNum = 1;
+let currentTotalChapters = 1;
+
 const bookSelect = document.getElementById('book-select');
 const chapterSelect = document.getElementById('chapter-select');
 const verseContainer = document.getElementById('verse-container');
+
+const prevBtns = [document.getElementById('prev-btn-top'), document.getElementById('prev-btn-bottom')];
+const nextBtns = [document.getElementById('next-btn-top'), document.getElementById('next-btn-bottom')];
 
 function init() {
   populateBookDropdown();
@@ -87,6 +94,9 @@ function init() {
     const selectedChap = parseInt(chapterSelect.value, 10) + 1;
     navigateTo(selectedBook.file, selectedChap);
   });
+
+  prevBtns.forEach(btn => btn.addEventListener('click', handlePrevChapter));
+  nextBtns.forEach(btn => btn.addEventListener('click', handleNextChapter));
 
   window.addEventListener('hashchange', handleRoute);
   handleRoute();
@@ -118,15 +128,17 @@ function navigateTo(fileKey, chapterNum) {
 }
 
 async function handleRoute() {
-  const hash = window.location.hash.replace('#', '').trim();
+  const hash = decodeURIComponent(window.location.hash.replace('#', '')).trim();
   let fileKey = "Gen";
   let chapNum = 1;
 
   if (hash) {
-    const parts = hash.split('-');
-    if (parts.length === 2) {
-      fileKey = parts[0];
-      chapNum = parseInt(parts[1], 10) || 1;
+    const lastDashIdx = hash.lastIndexOf('-');
+    if (lastDashIdx !== -1) {
+      fileKey = hash.substring(0, lastDashIdx);
+      chapNum = parseInt(hash.substring(lastDashIdx + 1), 10) || 1;
+    } else {
+      fileKey = hash;
     }
   }
 
@@ -142,15 +154,28 @@ async function handleRoute() {
   const data = await fetchBookData(activeBook.file);
   if (!data) return;
 
-  // Unify chapters payload format
-  const chapters = Array.isArray(data) ? data : (data.chapters || data.books || []);
-  const totalChapters = chapters.length;
+  let chapters = [];
+  if (Array.isArray(data)) {
+    chapters = data;
+  } else if (data.chapters && Array.isArray(data.chapters)) {
+    chapters = data.chapters;
+  } else if (data.books && Array.isArray(data.books)) {
+    chapters = data.books;
+  }
 
+  const totalChapters = chapters.length;
   let targetChapIdx = chapNum - 1;
+  
   if (targetChapIdx < 0) targetChapIdx = 0;
   if (targetChapIdx >= totalChapters) targetChapIdx = totalChapters - 1;
 
+  // Update navigation state tracking
+  currentBookIdx = bookIdx;
+  currentChapterNum = targetChapIdx + 1;
+  currentTotalChapters = totalChapters;
+
   updateChapterDropdown(totalChapters, targetChapIdx);
+  updateNavButtons();
   renderChapter(activeBook.name, targetChapIdx + 1, chapters[targetChapIdx]);
 }
 
@@ -161,21 +186,64 @@ function updateChapterDropdown(totalChapters, selectedChapIdx) {
   chapterSelect.value = selectedChapIdx;
 }
 
+function updateNavButtons() {
+  const isFirstChapterOverall = (currentBookIdx === 0 && currentChapterNum === 1);
+  const isLastChapterOverall = (currentBookIdx === BIBLE_BOOKS.length - 1 && currentChapterNum === currentTotalChapters);
+
+  prevBtns.forEach(btn => btn.disabled = isFirstChapterOverall);
+  nextBtns.forEach(btn => btn.disabled = isLastChapterOverall);
+}
+
+async function handlePrevChapter() {
+  if (currentChapterNum > 1) {
+    // Previous chapter in current book
+    navigateTo(BIBLE_BOOKS[currentBookIdx].file, currentChapterNum - 1);
+  } else if (currentBookIdx > 0) {
+    // Jump to last chapter of previous book
+    const prevBook = BIBLE_BOOKS[currentBookIdx - 1];
+    const prevBookData = await fetchBookData(prevBook.file);
+    if (!prevBookData) return;
+
+    let prevChapters = Array.isArray(prevBookData) ? prevBookData : (prevBookData.chapters || []);
+    navigateTo(prevBook.file, prevChapters.length);
+  }
+}
+
+function handleNextChapter() {
+  if (currentChapterNum < currentTotalChapters) {
+    // Next chapter in current book
+    navigateTo(BIBLE_BOOKS[currentBookIdx].file, currentChapterNum + 1);
+  } else if (currentBookIdx < BIBLE_BOOKS.length - 1) {
+    // Jump to chapter 1 of next book
+    const nextBook = BIBLE_BOOKS[currentBookIdx + 1];
+    navigateTo(nextBook.file, 1);
+  }
+}
+
 function renderChapter(bookName, chapNum, chapterData) {
   if (!chapterData) {
-    verseContainer.innerHTML = `<p>No content found for chapter ${chapNum}.</p>`;
+    verseContainer.innerHTML = `<p class="error">No content found for chapter ${chapNum}.</p>`;
     return;
   }
 
-  // Handle array of strings or array of verse objects
-  const verses = Array.isArray(chapterData) ? chapterData : (chapterData.verses || []);
-  
+  let verses = [];
+  if (Array.isArray(chapterData)) {
+    verses = chapterData;
+  } else if (chapterData.verses && Array.isArray(chapterData.verses)) {
+    verses = chapterData.verses;
+  }
+
+  if (verses.length === 0) {
+    verseContainer.innerHTML = `<p class="error">No verses found in chapter ${chapNum}.</p>`;
+    return;
+  }
+
   const verseList = verses.map((v, i) => {
     let text = "";
     if (typeof v === 'string') {
       text = v;
     } else if (typeof v === 'object' && v !== null) {
-      text = v.text || v.verse || v.val || JSON.stringify(v);
+      text = v.text || v.verse || v.val || "";
     }
     
     return `
@@ -190,6 +258,8 @@ function renderChapter(bookName, chapNum, chapterData) {
     <h2>${bookName} ${chapNum}</h2>
     <div class="verses">${verseList}</div>
   `;
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 init();
