@@ -69,7 +69,6 @@ const BIBLE_BOOKS = [
 
 const bookCache = {};
 
-// Navigation state tracking
 let currentBookIdx = 0;
 let currentChapterNum = 1;
 let currentTotalChapters = 1;
@@ -91,7 +90,7 @@ function init() {
 
   chapterSelect.addEventListener('change', () => {
     const selectedBook = BIBLE_BOOKS[bookSelect.value];
-    const selectedChap = parseInt(chapterSelect.value, 10) + 1;
+    const selectedChap = parseInt(chapterSelect.value, 10);
     navigateTo(selectedBook.file, selectedChap);
   });
 
@@ -127,6 +126,34 @@ function navigateTo(fileKey, chapterNum) {
   window.location.hash = `${fileKey}-${chapterNum}`;
 }
 
+// Extracts chapters list cleanly from arrays, object keys, or nested structures
+function parseChapters(data) {
+  if (!data) return [];
+  
+  if (Array.isArray(data)) return data;
+  
+  if (data.chapters) {
+    if (Array.isArray(data.chapters)) return data.chapters;
+    if (typeof data.chapters === 'object') return Object.values(data.chapters);
+  }
+  
+  if (data.books) {
+    if (Array.isArray(data.books)) return data.books;
+    if (typeof data.books === 'object') return Object.values(data.books);
+  }
+
+  // Handles raw key-value objects: {"1": [...], "2": [...]}
+  if (typeof data === 'object') {
+    const keys = Object.keys(data).filter(k => !isNaN(parseInt(k, 10)));
+    if (keys.length > 0) {
+      keys.sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
+      return keys.map(k => data[k]);
+    }
+  }
+
+  return [];
+}
+
 async function handleRoute() {
   const hash = decodeURIComponent(window.location.hash.replace('#', '')).trim();
   let fileKey = "Gen";
@@ -136,10 +163,15 @@ async function handleRoute() {
     const lastDashIdx = hash.lastIndexOf('-');
     if (lastDashIdx !== -1) {
       fileKey = hash.substring(0, lastDashIdx);
-      chapNum = parseInt(hash.substring(lastDashIdx + 1), 10) || 1;
+      chapNum = parseInt(hash.substring(lastDashIdx + 1), 10);
     } else {
       fileKey = hash;
     }
+  }
+
+  // Guard against NaN or 0 chapter numbers
+  if (isNaN(chapNum) || chapNum < 1) {
+    chapNum = 1;
   }
 
   const bookIdx = BIBLE_BOOKS.findIndex(b => b.file.toLowerCase() === fileKey.toLowerCase());
@@ -154,36 +186,33 @@ async function handleRoute() {
   const data = await fetchBookData(activeBook.file);
   if (!data) return;
 
-  let chapters = [];
-  if (Array.isArray(data)) {
-    chapters = data;
-  } else if (data.chapters && Array.isArray(data.chapters)) {
-    chapters = data.chapters;
-  } else if (data.books && Array.isArray(data.books)) {
-    chapters = data.books;
+  const chapters = parseChapters(data);
+  const totalChapters = chapters.length;
+
+  if (totalChapters === 0) {
+    verseContainer.innerHTML = `<p class="error">No chapters found in ${activeBook.file}.json.</p>`;
+    return;
   }
 
-  const totalChapters = chapters.length;
-  let targetChapIdx = chapNum - 1;
-  
-  if (targetChapIdx < 0) targetChapIdx = 0;
-  if (targetChapIdx >= totalChapters) targetChapIdx = totalChapters - 1;
+  // Ensure chapter stays within 1 and max chapters
+  if (chapNum > totalChapters) chapNum = totalChapters;
 
-  // Update navigation state tracking
   currentBookIdx = bookIdx;
-  currentChapterNum = targetChapIdx + 1;
+  currentChapterNum = chapNum;
   currentTotalChapters = totalChapters;
 
-  updateChapterDropdown(totalChapters, targetChapIdx);
+  updateChapterDropdown(totalChapters, chapNum);
   updateNavButtons();
-  renderChapter(activeBook.name, targetChapIdx + 1, chapters[targetChapIdx]);
+  
+  // Render array index (chapNum - 1)
+  renderChapter(activeBook.name, chapNum, chapters[chapNum - 1]);
 }
 
-function updateChapterDropdown(totalChapters, selectedChapIdx) {
+function updateChapterDropdown(totalChapters, selectedChapNum) {
   chapterSelect.innerHTML = Array.from({ length: totalChapters }, (_, i) => 
-    `<option value="${i}">Chapter ${i + 1}</option>`
+    `<option value="${i + 1}">Chapter ${i + 1}</option>`
   ).join('');
-  chapterSelect.value = selectedChapIdx;
+  chapterSelect.value = selectedChapNum;
 }
 
 function updateNavButtons() {
@@ -196,25 +225,21 @@ function updateNavButtons() {
 
 async function handlePrevChapter() {
   if (currentChapterNum > 1) {
-    // Previous chapter in current book
     navigateTo(BIBLE_BOOKS[currentBookIdx].file, currentChapterNum - 1);
   } else if (currentBookIdx > 0) {
-    // Jump to last chapter of previous book
     const prevBook = BIBLE_BOOKS[currentBookIdx - 1];
     const prevBookData = await fetchBookData(prevBook.file);
     if (!prevBookData) return;
 
-    let prevChapters = Array.isArray(prevBookData) ? prevBookData : (prevBookData.chapters || []);
-    navigateTo(prevBook.file, prevChapters.length);
+    const prevChapters = parseChapters(prevBookData);
+    navigateTo(prevBook.file, prevChapters.length || 1);
   }
 }
 
 function handleNextChapter() {
   if (currentChapterNum < currentTotalChapters) {
-    // Next chapter in current book
     navigateTo(BIBLE_BOOKS[currentBookIdx].file, currentChapterNum + 1);
   } else if (currentBookIdx < BIBLE_BOOKS.length - 1) {
-    // Jump to chapter 1 of next book
     const nextBook = BIBLE_BOOKS[currentBookIdx + 1];
     navigateTo(nextBook.file, 1);
   }
@@ -229,8 +254,15 @@ function renderChapter(bookName, chapNum, chapterData) {
   let verses = [];
   if (Array.isArray(chapterData)) {
     verses = chapterData;
-  } else if (chapterData.verses && Array.isArray(chapterData.verses)) {
-    verses = chapterData.verses;
+  } else if (typeof chapterData === 'object' && chapterData !== null) {
+    if (chapterData.verses && Array.isArray(chapterData.verses)) {
+      verses = chapterData.verses;
+    } else {
+      // Handles object of verses {"1": "Text...", "2": "Text..."}
+      const keys = Object.keys(chapterData).filter(k => !isNaN(parseInt(k, 10)));
+      keys.sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
+      verses = keys.map(k => chapterData[k]);
+    }
   }
 
   if (verses.length === 0) {
