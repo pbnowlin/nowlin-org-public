@@ -1,0 +1,10 @@
+Content = new Array();
+Content[1] = '[[To the chief Musician [05329] upon Gittith [01665], A Psalm [04210] of David [01732].]] O LORD [03068] our Lord [0113], how excellent [0117] [is] thy name [08034] in all the earth [0776]! who hast set [05414] thy glory [01935] above the heavens [08064].';
+Content[2] = 'Out of the mouth [06310] of babes [05768] and sucklings [03243] hast thou ordained [03245] strength [05797] because of thine enemies [06887] , that thou mightest still [07673] the enemy [0341] and the avenger [05358] .';
+Content[3] = 'When I consider [07200] thy heavens [08064], the work [04639] of thy fingers [0676], the moon [03394] and the stars [03556], which thou hast ordained [03559] ;';
+Content[4] = 'What is man [0582], that thou art mindful [02142] of him? and the son [01121] of man [0120], that thou visitest [06485] him?';
+Content[5] = 'For thou hast made him a little [04592] lower [02637] than the angels [0430], and hast crowned [05849] him with glory [03519] and honour [01926].';
+Content[6] = 'Thou madest him to have dominion [04910] over the works [04639] of thy hands [03027]; thou hast put [07896] all [things] under his feet [07272]:';
+Content[7] = 'All sheep [06792] and oxen [0504], yea, and the beasts [0929] of the field [07704];';
+Content[8] = 'The fowl [06833] of the air [08064], and the fish [01709] of the sea [03220], [and whatsoever] passeth through [05674] the paths [0734] of the seas [03220].';
+Content[9] = 'O LORD [03068] our Lord [0113], how excellent [0117] [is] thy name [08034] in all the earth [0776]!';

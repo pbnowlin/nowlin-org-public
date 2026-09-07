@@ -1,0 +1,12 @@
+Content = new Array();
+Content[1] = 'Come [03212] , and let us return [07725] unto the LORD [03068]: for he hath torn [02963] , and he will heal [07495] us; he hath smitten [05221] , and he will bind us up [02280] .';
+Content[2] = 'After two days [03117] will he revive [02421] us: in the third [07992] day [03117] he will raise us up [06965] , and we shall live [02421] in his sight [06440].';
+Content[3] = 'Then shall we know [03045] , [if] we follow [07291] on to know [03045] the LORD [03068]: his going forth [04161] is prepared [03559] as the morning [07837]; and he shall come [0935] unto us as the rain [01653], as the latter [04456] [and] former rain [03384] unto the earth [0776].';
+Content[4] = 'O Ephraim [0669], what shall I do [06213] unto thee? O Judah [03063], what shall I do [06213] unto thee? for your goodness [02617] [is] as a morning [01242] cloud [06051], and as the early [07925] dew [02919] it goeth away [01980] .';
+Content[5] = 'Therefore have I hewed [02672] [them] by the prophets [05030]; I have slain [02026] them by the words [0561] of my mouth [06310]: and thy judgments [04941] [are as] the light [0216] [that] goeth forth [03318] .';
+Content[6] = 'For I desired [02654] mercy [02617], and not sacrifice [02077]; and the knowledge [01847] of God [0430] more than burnt offerings [05930].';
+Content[7] = 'But they like men [0120] have transgressed [05674] the covenant [01285]: there have they dealt treacherously [0898] against me.';
+Content[8] = 'Gilead [01568] [is] a city [07151] of them that work [06466] iniquity [0205], [and is] polluted [06121] with blood [01818].';
+Content[9] = 'And as troops [01416] of robbers wait [02442] for a man [0376], [so] the company [02267] of priests [03548] murder [07523] in the way [01870] by consent [07926] [07927]: for they commit [06213] lewdness [02154].';
+Content[10] = 'I have seen [07200] an horrible thing [08186] in the house [01004] of Israel [03478]: there [is] the whoredom [02184] of Ephraim [0669], Israel [03478] is defiled [02930] .';
+Content[11] = 'Also, O Judah [03063], he hath set [07896] an harvest [07105] for thee, when I returned [07725] the captivity [07622] of my people [05971].';

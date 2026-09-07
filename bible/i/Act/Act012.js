@@ -1,0 +1,18 @@
+var LOI = [];
+LOI[0] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Saul~~~~Act~12~25~images/maps/Otest/otest_template.html~1c';
+LOI[1] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Jerusalem~~~~Act~12~25~images/maps/Otest/otest_template.html~3a';
+LOI[2] = 'image~Bible~Maps~Modern Jerusalem (map) key=Jerusalem~~~~Act~12~25~images/maps/Otest/otest_template.html~3b';
+LOI[3] = 'image~Bible~Maps~Middle Palestine (map) key=Tyre~~~~Act~12~20~images/maps/Otest/otest_template.html~3c';
+LOI[4] = 'image~Bible~Maps~Southern Palestine (map) key=Jerusalem~~~~Act~12~25~images/maps/Otest/otest_template.html~4';
+LOI[5] = 'image~Bible~Maps~Paul\'s First Missionary Journey (98K map) key=Barnabas~~~~Act~12~25~images/maps/Journeys/journeys_template.html~1';
+LOI[6] = 'image~Bible~Maps~Paul\'s Second Missionary Journey (140K map) key=Barnabas~~~~Act~12~25~images/maps/Journeys/journeys_template.html~2';
+LOI[7] = 'image~Bible~Maps~Paul\'s Second Missionary Journey (140K map) key=Caesarea~~~~Act~12~19~images/maps/Journeys/journeys_template.html~2';
+LOI[8] = 'image~Bible~Maps~Paul\'s Third Missionary Journey (156K map) key=Tyre~~~~Act~12~20~images/maps/Journeys/journeys_template.html~3';
+LOI[9] = 'image~Bible~Places~Tower of David (engraving) key=Jerusalem~~~~Act~12~25~images/places/Israel/israel_template.html~11';
+LOI[10] = 'image~Bible~Places~Damascus Gate (engraving) key=Jerusalem~~~~Act~12~25~images/places/Israel/israel_template.html~12';
+LOI[11] = 'image~Bible~Places~Golden Gate-interior (engraving) key=Jerusalem~~~~Act~12~25~images/places/Israel/israel_template.html~13';
+LOI[12] = 'image~Bible~Places~Golden Gate-exterior (engraving) key=Jerusalem~~~~Act~12~25~images/places/Israel/israel_template.html~14';
+LOI[13] = 'image~Bible~Places~Mt. of Olives and Jerusalem (engraving) key=Jerusalem~~~~Act~12~25~images/places/Israel/israel_template.html~17';
+LOI[14] = 'image~Bible~Images~Saul and David (engraving) key=Saul~~~~Act~12~25~images/bible_images/Kings/kings_template.html~1';
+LOI[15] = 'image~Bible~Images~The Death of Stephen key=Saul~~~~Act~12~25~images/bible_images/Acts/acts_template.html~1';
+LOI[16] = 'image~Bible~Images~The Conversion of St. Paul key=Saul~~~~Act~12~25~images/bible_images/Acts/acts_template.html~2';

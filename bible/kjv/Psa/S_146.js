@@ -1,0 +1,11 @@
+Content = new Array();
+Content[1] = 'Praise [01984] ye the LORD [03050]. Praise [01984] the LORD [03068], O my soul [05315].';
+Content[2] = 'While I live [02416] will I praise [01984] the LORD [03068]: I will sing praises [02167] unto my God [0430] while I have any being.';
+Content[3] = 'Put not your trust [0982] in princes [05081], [nor] in the son [01121] of man [0120], in whom [there is] no help [08668].';
+Content[4] = 'His breath [07307] goeth forth [03318] , he returneth [07725] to his earth [0127]; in that very day [03117] his thoughts [06250] perish [06] .';
+Content[5] = 'Happy [0835] [is he] that [hath] the God [0410] of Jacob [03290] for his help [05828], whose hope [07664] [is] in the LORD [03068] his God [0430]:';
+Content[6] = 'Which made [06213] heaven [08064], and earth [0776], the sea [03220], and all that therein [is]: which keepeth [08104] truth [0571] for ever [05769]:';
+Content[7] = 'Which executeth [06213] judgment [04941] for the oppressed [06231] : which giveth [05414] food [03899] to the hungry [07457]. The LORD [03068] looseth [05425] the prisoners [0631] :';
+Content[8] = 'The LORD [03068] openeth [06491] [the eyes of] the blind [05787]: the LORD [03068] raiseth [02210] them that are bowed down [03721] : the LORD [03068] loveth [0157] the righteous [06662]:';
+Content[9] = 'The LORD [03068] preserveth [08104] the strangers [01616]; he relieveth [05749] the fatherless [03490] and widow [0490]: but the way [01870] of the wicked [07563] he turneth upside down [05791] .';
+Content[10] = 'The LORD [03068] shall reign [04427] for ever [05769], [even] thy God [0430], O Zion [06726], unto all [01755] generations [01755]. Praise [01984] ye the LORD [03050].';

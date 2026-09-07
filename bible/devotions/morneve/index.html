@@ -1,0 +1,70 @@
+<html>
+<head>
+
+<title>Blue Letter Bible: Morning and Evening Devotional -- Charles Spurgeon</title>
+<script src="../../js/basepath.js"  type="text/javascript"></script>
+<script src="./js/nav.js"  type="text/javascript"></script>
+<script src="./js/MainHeader.js"  type="text/javascript"></script>
+
+<DIV CLASS="head">
+	Morning and Evening: Daily Reading
+</DIV>
+<DIV CLASS="subhead">
+	by Charles Haddon Spurgeon
+</DIV>
+<DIV CLASS="desc-just">
+	<DIV CLASS="pad2020">
+	"He wakeneth morning by morning. He wakeneth mine ear to hear as the learned."
+	(<a onClick="return mV('Isa',50,4);">Isa 50:4</A>)
+	<p>"My soul shall be satisfied as with marrow and fatness; and my
+	mouth shall praise thee with joyful lips; when I remember Thee
+	upon my bed, and meditate on Thee in the night watches."
+	(<a onClick="return mV('Psa',63,5,6);">Psa 63:5,6</A>)
+	</DIV>
+</DIV>
+		<script>
+		function pad(padWhat,howMuch) {
+		  padWhat = padWhat.toString();
+		  padLength = padWhat.length;
+		  for(i=padLength;i<howMuch;i++) {
+			padWhat = "0"+padWhat;
+		  }
+		  return padWhat;
+		}
+
+		function goToday(sun) {
+		  var today = new Date();
+		  Month=today.getMonth()+1;
+		  Day=today.getDate();
+		  Month=pad(Month,2);
+		  Day=pad(Day,2);
+		  document.location.href=basePath+'/devotions/morneve/'+Month+"/"+Month+Day+sun+".html";
+		  return false;
+		}
+		</script>
+  <DIV CLASS="main-center">
+    <DIV STYLE="padding:5px">
+		  <form name="Morning_Evening" action="" method="get">
+		  <input type="button" value="This Morning" onClick="return goToday('am');"><br><br>
+		  <input type="button" value="This Evening" onClick="return goToday('pm');">
+		  </form>
+	</DIV>
+  </DIV>
+
+  <DIV CLASS="main-center">
+    <DIV STYLE="padding:5px">
+      Did you miss a day?
+      <a href="./devotions/morneve/date.html">Select a specific day's readings</a>
+	</DIV>
+  </DIV>
+
+  <DIV CLASS="desc-center">
+    <DIV CLASS="pad2020">
+      <A HREF="./devotions/morneve/verse.html"><B>Scripture Index</B></A>
+	</DIV>
+  </DIV>
+
+  <DIV CLASS="return">
+    <A HREF="./d.html">Return to Devotionals Index</A>
+  </DIV>
+<script src="./js/MainFooter.js"  type="text/javascript"></script>

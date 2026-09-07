@@ -1,0 +1,15 @@
+var LOI = [];
+LOI[0] = 'hymn~12~FOR THY DEAR SAINTS~htm_f_t_fthydear.html';
+LOI[1] = 'hymn~15~O GOD, UNSEEN YET EVER NEAR~htm_o_g_ogunseen.html';
+LOI[2] = 'hymn~18~THE CHURCH OF GOD IS ONE~htm_c_h_churogod.html';
+LOI[3] = 'hymn~20~AT THE CROSS THERE&#8217;S ROOM~htm_a_t_athcross.html';
+LOI[4] = 'hymn~20~BLESSED CROSS OF JESUS~htm_b_l_blessedc.html';
+LOI[5] = 'hymn~20~BY THE CROSS OF JESUS STANDING~htm_b_y_bythecro.html';
+LOI[6] = 'image~Bible~Maps~Paul\'s First Missionary Journey (98K map) key=Paul~~~~Col~1~1~images/maps/Journeys/journeys_template.html~1';
+LOI[7] = 'image~Bible~Maps~Paul\'s First Missionary Journey (98K map) key=Paul~~~~Col~1~23~images/maps/Journeys/journeys_template.html~1';
+LOI[8] = 'image~Bible~Maps~Paul\'s Second Missionary Journey (140K map) key=Paul,Timotheus~~~~Col~1~1~images/maps/Journeys/journeys_template.html~2';
+LOI[9] = 'image~Bible~Maps~Paul\'s Second Missionary Journey (140K map) key=Paul~~~~Col~1~23~images/maps/Journeys/journeys_template.html~2';
+LOI[10] = 'image~Bible~Maps~Paul\'s Third Missionary Journey (156K map) key=Paul~~~~Col~1~1~images/maps/Journeys/journeys_template.html~3';
+LOI[11] = 'image~Bible~Maps~Paul\'s Third Missionary Journey (156K map) key=Paul~~~~Col~1~23~images/maps/Journeys/journeys_template.html~3';
+LOI[12] = 'image~Bible~Images~The Conversion of St. Paul key=Paul~~~~Col~1~1~images/bible_images/Acts/acts_template.html~2';
+LOI[13] = 'image~Bible~Images~The Conversion of St. Paul key=Paul~~~~Col~1~23~images/bible_images/Acts/acts_template.html~2';

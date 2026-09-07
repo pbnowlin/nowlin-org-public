@@ -1,0 +1,12 @@
+Content = new Array();
+Content[1] = '[[Michtam [04387] of David [01732].]] Preserve [08104] me, O God [0410]: for in thee do I put my trust [02620] .';
+Content[2] = '[O my soul], thou hast said [0559] unto the LORD [03068], Thou [art] my Lord [0136]: my goodness [02896] [extendeth] not to thee;';
+Content[3] = '[But] to the saints [06918] that [01992] [are] in the earth [0776], and [to] the excellent [0117], in whom [is] all my delight [02656].';
+Content[4] = 'Their sorrows [06094] shall be multiplied [07235] [that] hasten [04116] [after] another [0312] [god]: their drink offerings [05262] of blood [01818] will I not offer [05258] , nor [01077] take up [05375] their names [08034] into my lips [08193].';
+Content[5] = 'The LORD [03068] [is] the portion [04490] of mine inheritance [02506] and of my cup [03563]: thou maintainest [08551] my lot [01486].';
+Content[6] = 'The lines [02256] are fallen [05307] unto me in pleasant [05273] [places]; yea, I have a goodly [08231] heritage [05159].';
+Content[7] = 'I will bless [01288] the LORD [03068], who hath given me counsel [03289] : my reins [03629] also instruct [03256] me in the night seasons [03915].';
+Content[8] = 'I have set [07737] the LORD [03068] always [08548] before me: because [he is] at my right hand [03225], I shall not be moved [04131] .';
+Content[9] = 'Therefore my heart [03820] is glad [08055] , and my glory [03519] rejoiceth [01523] : my flesh [01320] also shall rest [07931] in hope [0983].';
+Content[10] = 'For thou wilt not leave [05800] my soul [05315] in hell [07585]; neither wilt thou suffer [05414] thine Holy One [02623] to see [07200] corruption [07845].';
+Content[11] = 'Thou wilt shew [03045] me the path [0734] of life [02416]: in thy presence [06440] [is] fulness [07648] of joy [08057]; at thy right hand [03225] [there are] pleasures [05273] for evermore [05331].';

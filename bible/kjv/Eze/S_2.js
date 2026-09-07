@@ -1,0 +1,11 @@
+Content = new Array();
+Content[1] = 'And he said [0559] unto me, Son [01121] of man [0120], stand [05975] upon thy feet [07272], and I will speak [01696] unto thee.';
+Content[2] = 'And the spirit [07307] entered [0935] into me when he spake [01696] unto me, and set [05975] me upon my feet [07272], that I heard [08085] him that spake [01696] unto me.';
+Content[3] = 'And he said [0559] unto me, Son [01121] of man [0120], I send [07971] thee to the children [01121] of Israel [03478], to a rebellious [04775] nation [01471] that hath rebelled [04775] against me: they and their fathers [01] have transgressed [06586] against me, [even] unto this very [06106] day [03117].';
+Content[4] = 'For [they are] impudent [07186] [06440] children [01121] and stiffhearted [02389] [03820]. I do send [07971] thee unto them; and thou shalt say [0559] unto them, Thus saith [0559] the Lord [0136] GOD [03069].';
+Content[5] = 'And they, whether they will hear [08085] , or whether they will forbear [02308] , (for they [are] a rebellious [04805] house [01004],) yet shall know [03045] that there hath been a prophet [05030] among [08432] them.';
+Content[6] = 'And thou, son [01121] of man [0120], be not afraid [03372] of them, neither be afraid [03372] of their words [01697], though briers [05621] and thorns [05544] [be] with thee, and thou dost dwell [03427] among scorpions [06137]: be not afraid [03372] of their words [01697], nor be dismayed [02865] at their looks [06440], though they [be] a rebellious [04805] house [01004].';
+Content[7] = 'And thou shalt speak [01696] my words [01697] unto them, whether they will hear [08085] , or whether they will forbear [02308] : for they [are] most rebellious [04805].';
+Content[8] = 'But thou, son [01121] of man [0120], hear [08085] what I say [01696] unto thee; Be not [01961] thou rebellious [04805] like that rebellious [04805] house [01004]: open [06475] thy mouth [06310], and eat [0398] that I give [05414] thee.';
+Content[9] = 'And when I looked [07200] , behold, an hand [03027] [was] sent [07971] unto me; and, lo, a roll [04039] of a book [05612] [was] therein;';
+Content[10] = 'And he spread [06566] it before [06440] me; and it [was] written [03789] within [06440] and without [0268]: and [there was] written [03789] therein lamentations [07015], and mourning [01899], and woe [01958].';

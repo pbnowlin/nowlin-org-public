@@ -1,0 +1,13 @@
+var LOI = [];
+LOI[0] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Temple~~~~2Ki~11~10~images/maps/Otest/otest_template.html~3a';
+LOI[1] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Temple~~~~2Ki~11~11~images/maps/Otest/otest_template.html~3a';
+LOI[2] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Temple~~~~2Ki~11~13~images/maps/Otest/otest_template.html~3a';
+LOI[3] = 'image~Bible~Maps~Modern Jerusalem (map) key=Temple~~~~2Ki~11~10~images/maps/Otest/otest_template.html~3b';
+LOI[4] = 'image~Bible~Maps~Modern Jerusalem (map) key=Temple~~~~2Ki~11~11~images/maps/Otest/otest_template.html~3b';
+LOI[5] = 'image~Bible~Maps~Modern Jerusalem (map) key=Temple~~~~2Ki~11~13~images/maps/Otest/otest_template.html~3b';
+LOI[6] = 'image~Bible~Images~The Jews Wailing Place (engraving) key=temple~~~~2Ki~11~10~images/bible_images/Temple/temple_template.html~1';
+LOI[7] = 'image~Bible~Images~The Jews Wailing Place (engraving) key=temple~~~~2Ki~11~11~images/bible_images/Temple/temple_template.html~1';
+LOI[8] = 'image~Bible~Images~The Jews Wailing Place (engraving) key=temple~~~~2Ki~11~13~images/bible_images/Temple/temple_template.html~1';
+LOI[9] = 'image~Bible~Images~The Tabernacle (engraving) key=temple~~~~2Ki~11~10~images/bible_images/Temple/temple_template.html~2';
+LOI[10] = 'image~Bible~Images~The Tabernacle (engraving) key=temple~~~~2Ki~11~11~images/bible_images/Temple/temple_template.html~2';
+LOI[11] = 'image~Bible~Images~The Tabernacle (engraving) key=temple~~~~2Ki~11~13~images/bible_images/Temple/temple_template.html~2';

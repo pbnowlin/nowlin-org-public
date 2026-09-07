@@ -1,0 +1,15 @@
+var LOI = [];
+LOI[0] = 'image~Bible~Charts~The Revelation of Jesus (Ironside\'s chart)~~~~Rev~0~0~images/charts/Bible/bible_template.html~1';
+LOI[1] = 'image~Bible~Images~The Leper Healed (engraving) key=miracles~~~~Rev~13~14~images/bible_images/Miracles/miracles_template.html~1';
+LOI[2] = 'image~Bible~Images~Man With Palsy Healed (engraving) key=miracles~~~~Rev~13~14~images/bible_images/Miracles/miracles_template.html~2';
+LOI[3] = 'image~Bible~Images~The Raising of Jairus\' Daughter (engraving) key=miracles~~~~Rev~13~14~images/bible_images/Miracles/miracles_template.html~3';
+LOI[4] = 'image~Bible~Images~The Paralytic Healed (engraving) key=miracles~~~~Rev~13~14~images/bible_images/Miracles/miracles_template.html~4';
+LOI[5] = 'image~Bible~Images~The Miracle of the Loaves and Fishes (engraving) key=miracles~~~~Rev~13~14~images/bible_images/Miracles/miracles_template.html~5';
+LOI[6] = 'image~Bible~Images~Jesus Walking on the Sea (engraving) key=miracles~~~~Rev~13~14~images/bible_images/Miracles/miracles_template.html~6';
+LOI[7] = 'image~Bible~Images~Healing Demoniac Daughter (engraving) key=miracles~~~~Rev~13~14~images/bible_images/Miracles/miracles_template.html~7';
+LOI[8] = 'image~Bible~Images~Deaf Man Hears (engraving) key=miracles~~~~Rev~13~14~images/bible_images/Miracles/miracles_template.html~8';
+LOI[9] = 'image~Bible~Images~Man Born Blind Healed (engraving) key=miracles~~~~Rev~13~14~images/bible_images/Miracles/miracles_template.html~9';
+LOI[10] = 'image~Bible~Images~Jesus Healing Ten Lepers (engraving) key=miracles~~~~Rev~13~14~images/bible_images/Miracles/miracles_template.html~10';
+LOI[11] = 'image~Bible~Images~Jesus Heals Bartimaeus (engraving) key=miracles~~~~Rev~13~14~images/bible_images/Miracles/miracles_template.html~11';
+LOI[12] = 'image~Bible~Images~The Tabernacle (engraving) key=tabernacle~~~~Rev~13~6~images/bible_images/Temple/temple_template.html~2';
+LOI[13] = 'image~Bible~Images~Tabernacle in the Midst of the Encampment (illustration) key=Tabernacle~~~~Rev~13~6~images/bible_images/Temple/temple_template.html~3';

@@ -1,0 +1,15 @@
+var LOI = [];
+LOI[0] = 'hymn~8~JESUS ONLY, LET ME SEE~htm_j_e_jesonly.html';
+LOI[1] = 'image~Bible~Maps~Middle Palestine (map) key=Galilee~~~~Mat~17~22~images/maps/Otest/otest_template.html~3c';
+LOI[2] = 'image~Bible~Maps~Divisions of Palestine (map) key=Galilee~~~~Mat~17~22~images/maps/Christ/christ_template.html~1';
+LOI[3] = 'image~Bible~Images~The Exposure of Moses (engraving) key=Moses~~~~Mat~17~3~images/bible_images/Moses/moses_template.html~6';
+LOI[4] = 'image~Bible~Images~The Exposure of Moses (engraving) key=Moses~~~~Mat~17~4~images/bible_images/Moses/moses_template.html~6';
+LOI[5] = 'image~Bible~Images~The Finding of Moses (engraving) key=Moses~~~~Mat~17~3~images/bible_images/Moses/moses_template.html~7';
+LOI[6] = 'image~Bible~Images~The Finding of Moses (engraving) key=Moses~~~~Mat~17~4~images/bible_images/Moses/moses_template.html~7';
+LOI[7] = 'image~Bible~Images~Moses and the Brazen Serpent (engraving) key=Moses~~~~Mat~17~3~images/bible_images/Moses/moses_template.html~9';
+LOI[8] = 'image~Bible~Images~Moses and the Brazen Serpent (engraving) key=Moses~~~~Mat~17~4~images/bible_images/Moses/moses_template.html~9';
+LOI[9] = 'image~Bible~Images~Moses on Mount Pisgah (engraving) key=Moses~~~~Mat~17~3~images/bible_images/Moses/moses_template.html~10';
+LOI[10] = 'image~Bible~Images~Moses on Mount Pisgah (engraving) key=Moses~~~~Mat~17~4~images/bible_images/Moses/moses_template.html~10';
+LOI[11] = 'image~Bible~Images~Death of Moses on Mount Nebo (engraving) key=Moses~~~~Mat~17~3~images/bible_images/Moses/moses_template.html~11';
+LOI[12] = 'image~Bible~Images~Death of Moses on Mount Nebo (engraving) key=Moses~~~~Mat~17~4~images/bible_images/Moses/moses_template.html~11';
+LOI[13] = 'image~Bible~Images~John the Baptist Asks (engraving) key=Baptist~~~~Mat~17~13~images/bible_images/Taylor/taylor_template.html~3';

@@ -1,0 +1,13 @@
+var LOI = [];
+LOI[0] = 'hymn~2~ETERNAL FATHER, STRONG TO SAVE~htm_e_t_eternalf.html';
+LOI[1] = 'hymn~2~STRONG, RIGHTEOUS MAN OF GALILEE~htm_s_t_stronrmg.html';
+LOI[2] = 'hymn~8~FILL THOU MY LIFE~htm_f_i_fillthou.html';
+LOI[3] = 'hymn~18~O GRACIOUS GOD, FORSAKE ME NOT~htm_o_g_g_oggfmnot.html';
+LOI[4] = 'hymn~23~JOYFUL, JOYFUL, WE ADORE THEE~htm_j_o_joyful.html';
+LOI[5] = 'hymn~23~SINCE I HAVE BEEN REDEEMED~htm_s_i_sinceihb.html';
+LOI[6] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Israel~~~~Psa~71~22~images/maps/Otest/otest_template.html~1b';
+LOI[7] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Israel~~~~Psa~71~22~images/maps/Otest/otest_template.html~1c';
+LOI[8] = 'image~Bible~Maps~Cities of Refuge (map) key=refuge~~~~Psa~71~7~images/maps/Otest/otest_template.html~2';
+LOI[9] = 'image~Bible~Maps~Middle Palestine (map) key=Israel~~~~Psa~71~22~images/maps/Otest/otest_template.html~3c';
+LOI[10] = 'image~Bible~Maps~Southern Palestine (map) key=Israel~~~~Psa~71~22~images/maps/Otest/otest_template.html~4';
+LOI[11] = 'image~Bible~Maps~Divisions of Palestine (map) key=Israel~~~~Psa~71~22~images/maps/Christ/christ_template.html~1';

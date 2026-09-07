@@ -1,0 +1,12 @@
+var LOI = [];
+LOI[0] = 'hymn~2~CHRIST RECEIVETH SINFUL MEN~htm_c_h_chrisrec.html';
+LOI[1] = 'hymn~2~JESUS, THE SINNER&#8217;S FRIEND~htm_j_e_jesustsf.html';
+LOI[2] = 'hymn~2~SINNERS, BELIEVE THE GOSPEL WORD~htm_s_i_sinnersb.html';
+LOI[3] = 'hymn~6~&#8217;TWAS A GLAD DAY WHEN JESUS FOUND ME~htm_t_w_twasglad.html';
+LOI[4] = 'hymn~10~WHY DO THE HOLY ANGELS SING?~htm_w_d_wdangels.html';
+LOI[5] = 'hymn~17~AFFLICTIONS, THOUGH THEY SEEM SEVERE~htm_a_f_afflictt.html';
+LOI[6] = 'hymn~18~LIKE A WAYWARD CHILD I WANDERED~htm_l_w_lwayward.html';
+LOI[7] = 'hymn~18~LORD, I&#8217;M COMING HOME~htm_l_c_lcomingh.html';
+LOI[8] = 'hymn~19~RING THE BELLS OF HEAVEN~htm_r_i_ringbell.html';
+LOI[9] = 'hymn~20~FATHER, AGAIN IN JESUS&#8217; NAME WE MEET~htm_f_a_fatagain.html';
+LOI[10] = 'hymn~24~ABBA, FATHER! WE APPROACH THEE~htm_a_b_abbafath.html';

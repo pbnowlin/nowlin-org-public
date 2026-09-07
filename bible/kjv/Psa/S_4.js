@@ -1,0 +1,9 @@
+Content = new Array();
+Content[1] = '[[To the chief Musician [05329] on Neginoth [05058], A Psalm [04210] of David [01732].]] Hear [06030] me when I call [07121] , O God [0430] of my righteousness [06664]: thou hast enlarged [07337] me [when I was] in distress [06862]; have mercy [02603] upon me, and hear [08085] my prayer [08605].';
+Content[2] = 'O ye sons [01121] of men [0376], how long [05704] [will ye turn] my glory [03519] into shame [03639]? [how long] will ye love [0157] vanity [07385], [and] seek [01245] after leasing [03577]? Selah [05542].';
+Content[3] = 'But know [03045] that the LORD [03068] hath set apart [06395] him that is godly [02623] for himself: the LORD [03068] will hear [08085] when I call [07121] unto him.';
+Content[4] = 'Stand in awe [07264] , and sin [02398] not: commune [0559] with your own heart [03824] upon your bed [04904], and be still [01826] . Selah [05542].';
+Content[5] = 'Offer [02076] the sacrifices [02077] of righteousness [06664], and put your trust [0982] in the LORD [03068].';
+Content[6] = '[There be] many [07227] that say [0559] , Who will shew [07200] us [any] good [02896]? LORD [03068], lift thou up [05375] the light [0216] of thy countenance [06440] upon us.';
+Content[7] = 'Thou hast put [05414] gladness [08057] in my heart [03820], more than in the time [06256] [that] their corn [01715] and their wine [08492] increased [07231] .';
+Content[8] = 'I will both [03162] lay me down [07901] in peace [07965], and sleep [03462] : for thou, LORD [03068], only [0910] makest me dwell [03427] in safety [0983].';

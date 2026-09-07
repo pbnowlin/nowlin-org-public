@@ -1,0 +1,18 @@
+var LOI = [];
+LOI[0] = 'hymn~1~LOOKING THIS WAY~htm_l_o_lookingt.html';
+LOI[1] = 'hymn~2~AUTHOR OF FAITH, ETERNAL WORD~htm_a_u_authorof.html';
+LOI[2] = 'hymn~2~TURN YOUR EYES UPON JESUS~htm_t_u_turnyour.html';
+LOI[3] = 'hymn~14~MORE HOLINESS GIVE ME~htm_m_o_moreholi.html';
+LOI[4] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Jerusalem~~~~Hbr~12~22~images/maps/Otest/otest_template.html~3a';
+LOI[5] = 'image~Bible~Maps~Modern Jerusalem (map) key=Jerusalem~~~~Hbr~12~22~images/maps/Otest/otest_template.html~3b';
+LOI[6] = 'image~Bible~Maps~Southern Palestine (map) key=Jerusalem~~~~Hbr~12~22~images/maps/Otest/otest_template.html~4';
+LOI[7] = 'image~Bible~Places~Tower of David (engraving) key=Jerusalem~~~~Hbr~12~22~images/places/Israel/israel_template.html~11';
+LOI[8] = 'image~Bible~Places~Damascus Gate (engraving) key=Jerusalem~~~~Hbr~12~22~images/places/Israel/israel_template.html~12';
+LOI[9] = 'image~Bible~Places~Golden Gate-interior (engraving) key=Jerusalem~~~~Hbr~12~22~images/places/Israel/israel_template.html~13';
+LOI[10] = 'image~Bible~Places~Golden Gate-exterior (engraving) key=Jerusalem~~~~Hbr~12~22~images/places/Israel/israel_template.html~14';
+LOI[11] = 'image~Bible~Places~Mt. of Olives and Jerusalem (engraving) key=Jerusalem~~~~Hbr~12~22~images/places/Israel/israel_template.html~17';
+LOI[12] = 'image~Bible~Images~The Exposure of Moses (engraving) key=Moses~~~~Hbr~12~21~images/bible_images/Moses/moses_template.html~6';
+LOI[13] = 'image~Bible~Images~The Finding of Moses (engraving) key=Moses~~~~Hbr~12~21~images/bible_images/Moses/moses_template.html~7';
+LOI[14] = 'image~Bible~Images~Moses and the Brazen Serpent (engraving) key=Moses~~~~Hbr~12~21~images/bible_images/Moses/moses_template.html~9';
+LOI[15] = 'image~Bible~Images~Moses on Mount Pisgah (engraving) key=Moses~~~~Hbr~12~21~images/bible_images/Moses/moses_template.html~10';
+LOI[16] = 'image~Bible~Images~Death of Moses on Mount Nebo (engraving) key=Moses~~~~Hbr~12~21~images/bible_images/Moses/moses_template.html~11';

@@ -1,0 +1,16 @@
+var LOI = [];
+LOI[0] = 'hymn~3~CHRIST A REDEEMER AND FRIEND~htm_c_a_caredeem.html';
+LOI[1] = 'hymn~3~ONE THERE IS, ABOVE ALL OTHERS~htm_o_n_onethere.html';
+LOI[2] = 'hymn~5~JESUS, MY FRIEND~htm_j_m_jmfriend.html';
+LOI[3] = 'hymn~13~I VOW TO THEE, MY COUNTRY~htm_i_v_ivow2the.html';
+LOI[4] = 'hymn~13~WHAT A FRIEND WE HAVE IN JESUS~htm_w_a_wafwhij.html';
+LOI[5] = 'hymn~13~WHAT WONDROUS LOVE IS THIS?~htm_w_h_a_whatwond.html';
+LOI[6] = 'hymn~14~THE BEST FRIEND TO HAVE IS JESUS~htm_b_e_befriend.html';
+LOI[7] = 'hymn~14~SINCE JESUS IS MY FRIEND~htm_s_j_sijismyf.html';
+LOI[8] = 'hymn~15~FRIENDSHIP WITH JESUS~htm_f_r_friendwj.html';
+LOI[9] = 'hymn~15~HE WANTS NOT FRIENDS THAT HATH THY LOVE~htm_h_e_helacksn.html';
+LOI[10] = 'hymn~15~JESUS IS THE FRIEND YOU NEED~htm_j_i_jisfyoun.html';
+LOI[11] = 'hymn~15~O THOU GREAT FRIEND~htm_o_t_othougfr.html';
+LOI[12] = 'hymn~15~THERE&#8217;S NO FRIEND LIKE JESUS~htm_n_o_nofriend.html';
+LOI[13] = 'hymn~16~MY LORD, I DID NOT CHOOSE YOU~htm_m_l_mlidncyo.html';
+LOI[14] = 'hymn~16~&#8217;TIS NOT THAT I DID CHOOSE THEE~htm_t_i_tisnotti.html';

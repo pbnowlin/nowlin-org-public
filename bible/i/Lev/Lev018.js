@@ -1,0 +1,12 @@
+var LOI = [];
+LOI[0] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Israel~~~~Lev~18~2~images/maps/Otest/otest_template.html~1b';
+LOI[1] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Israel~~~~Lev~18~2~images/maps/Otest/otest_template.html~1c';
+LOI[2] = 'image~Bible~Maps~Middle Palestine (map) key=Israel~~~~Lev~18~2~images/maps/Otest/otest_template.html~3c';
+LOI[3] = 'image~Bible~Maps~Southern Palestine (map) key=Israel~~~~Lev~18~2~images/maps/Otest/otest_template.html~4';
+LOI[4] = 'image~Bible~Maps~The Sinai Peninsula (map) key=Egypt~~~~Lev~18~3~images/maps/Otest/otest_template.html~5';
+LOI[5] = 'image~Bible~Maps~Divisions of Palestine (map) key=Israel~~~~Lev~18~2~images/maps/Christ/christ_template.html~1';
+LOI[6] = 'image~Bible~Images~The Exposure of Moses (engraving) key=Moses~~~~Lev~18~1~images/bible_images/Moses/moses_template.html~6';
+LOI[7] = 'image~Bible~Images~The Finding of Moses (engraving) key=Moses~~~~Lev~18~1~images/bible_images/Moses/moses_template.html~7';
+LOI[8] = 'image~Bible~Images~Moses and the Brazen Serpent (engraving) key=Moses~~~~Lev~18~1~images/bible_images/Moses/moses_template.html~9';
+LOI[9] = 'image~Bible~Images~Moses on Mount Pisgah (engraving) key=Moses~~~~Lev~18~1~images/bible_images/Moses/moses_template.html~10';
+LOI[10] = 'image~Bible~Images~Death of Moses on Mount Nebo (engraving) key=Moses~~~~Lev~18~1~images/bible_images/Moses/moses_template.html~11';

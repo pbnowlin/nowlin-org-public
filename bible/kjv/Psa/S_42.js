@@ -1,0 +1,12 @@
+Content = new Array();
+Content[1] = '[[To the chief Musician [05329] , Maschil [04905] , for the sons [01121] of Korah [07141].]] As the hart [0354] panteth [06165] after the water [04325] brooks [0650], so panteth [06165] my soul [05315] after thee, O God [0430].';
+Content[2] = 'My soul [05315] thirsteth [06770] for God [0430], for the living [02416] God [0410]: when shall I come [0935] and appear [07200] before [06440] God [0430]?';
+Content[3] = 'My tears [01832] have been my meat [03899] day [03119] and night [03915], while they continually [03117] say [0559] unto me, Where [is] thy God [0430]?';
+Content[4] = 'When I remember [02142] these [things], I pour out [08210] my soul [05315] in me: for I had gone [05674] with the multitude [05519], I went [01718] with them to the house [01004] of God [0430], with the voice [06963] of joy [07440] and praise [08426], with a multitude [01995] that kept holyday [02287] .';
+Content[5] = 'Why art thou cast down [07817] , O my soul [05315]? and [why] art thou disquieted [01993] in me? hope [03176] thou in God [0430]: for I shall yet praise [03034] him [for] the help [03444] of his countenance [06440].';
+Content[6] = 'O my God [0430], my soul [05315] is cast down [07817] within me: therefore will I remember [02142] thee from the land [0776] of Jordan [03383], and of the Hermonites [02769], from the hill [02022] Mizar [04706].';
+Content[7] = 'Deep [08415] calleth [07121] unto deep [08415] at the noise [06963] of thy waterspouts [06794]: all thy waves [04867] and thy billows [01530] are gone [05674] over me.';
+Content[8] = '[Yet] the LORD [03068] will command [06680] his lovingkindness [02617] in the daytime [03119], and in the night [03915] his song [07892] [shall be] with me, [and] my prayer [08605] unto the God [0410] of my life [02416].';
+Content[9] = 'I will say [0559] unto God [0410] my rock [05553], Why hast thou forgotten [07911] me? why go [03212] I mourning [06937] because of the oppression [03906] of the enemy [0341] ?';
+Content[10] = '[As] with a sword [07524] in my bones [06106], mine enemies [06887] reproach [02778] me; while they say [0559] daily [03117] unto me, Where [is] thy God [0430]?';
+Content[11] = 'Why art thou cast down [07817] , O my soul [05315]? and why art thou disquieted [01993] within me? hope [03176] thou in God [0430]: for I shall yet praise [03034] him, [who is] the health [03444] of my countenance [06440], and my God [0430].';

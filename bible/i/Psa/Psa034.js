@@ -1,0 +1,10 @@
+var LOI = [];
+LOI[0] = 'hymn~1~LORD I WILL AT ALL TIMES BLESS, THE~htm_l_i_w_liwaatib.html';
+LOI[1] = 'hymn~1~MY SONG SHALL BE OF JESUS~htm_m_y_mysongsb.html';
+LOI[2] = 'hymn~3~THROUGH ALL THE CHANGING SCENES OF LIFE~htm_t_h_througha.html';
+LOI[3] = 'hymn~4~GIVE TO THE WINDS THY FEARS~htm_g_i_givetotw.html';
+LOI[4] = 'hymn~18~LORD, WHEN WE BEND BEFORE THY THRONE~htm_l_w_lwhenwbb.html';
+LOI[5] = 'hymn~18~WITH BROKEN HEART AND CONTRITE SIGH~htm_w_i_withbrok.html';
+LOI[6] = 'hymn~19~I ASKED THE LORD THAT I MIGHT GROW~htm_i_a_iaskedtl.html';
+LOI[7] = 'image~Bible~Images~Saul and David (engraving) key=David~~~~Psa~34~1~images/bible_images/Kings/kings_template.html~1';
+LOI[8] = 'image~Bible~Images~David Mourning for Absalom (engraving) key=David~~~~Psa~34~1~images/bible_images/Kings/kings_template.html~2';

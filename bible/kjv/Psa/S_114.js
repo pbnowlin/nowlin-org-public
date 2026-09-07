@@ -1,0 +1,9 @@
+Content = new Array();
+Content[1] = 'When Israel [03478] went out [03318] of Egypt [04714], the house [01004] of Jacob [03290] from a people [05971] of strange language [03937] ;';
+Content[2] = 'Judah [03063] was his sanctuary [06944], [and] Israel [03478] his dominion [04475].';
+Content[3] = 'The sea [03220] saw [07200] [it], and fled [05127] : Jordan [03383] was driven [05437] back [0268].';
+Content[4] = 'The mountains [02022] skipped [07540] like rams [0352], [and] the little hills [01389] like lambs [01121] [06629].';
+Content[5] = 'What [ailed] thee, O thou sea [03220], that thou fleddest [05127] ? thou Jordan [03383], [that] thou wast driven [05437] back [0268]?';
+Content[6] = 'Ye mountains [02022], [that] ye skipped [07540] like rams [0352]; [and] ye little hills [01389], like lambs [01121] [06629]?';
+Content[7] = 'Tremble [02342] , thou earth [0776], at the presence [06440] of the Lord [0113], at the presence [06440] of the God [0433] of Jacob [03290];';
+Content[8] = 'Which turned [02015] the rock [06697] [into] a standing [098] water [04325], the flint [02496] into a fountain [04599] of waters [04325].';

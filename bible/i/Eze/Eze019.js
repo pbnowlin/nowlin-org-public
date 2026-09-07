@@ -1,0 +1,13 @@
+var LOI = [];
+LOI[0] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Israel~~~~Eze~19~1~images/maps/Otest/otest_template.html~1b';
+LOI[1] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Israel~~~~Eze~19~9~images/maps/Otest/otest_template.html~1b';
+LOI[2] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Israel~~~~Eze~19~1~images/maps/Otest/otest_template.html~1c';
+LOI[3] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Israel~~~~Eze~19~9~images/maps/Otest/otest_template.html~1c';
+LOI[4] = 'image~Bible~Maps~Middle Palestine (map) key=Israel~~~~Eze~19~1~images/maps/Otest/otest_template.html~3c';
+LOI[5] = 'image~Bible~Maps~Middle Palestine (map) key=Israel~~~~Eze~19~9~images/maps/Otest/otest_template.html~3c';
+LOI[6] = 'image~Bible~Maps~Southern Palestine (map) key=Israel~~~~Eze~19~1~images/maps/Otest/otest_template.html~4';
+LOI[7] = 'image~Bible~Maps~Southern Palestine (map) key=Israel~~~~Eze~19~9~images/maps/Otest/otest_template.html~4';
+LOI[8] = 'image~Bible~Maps~The Sinai Peninsula (map) key=Egypt~~~~Eze~19~4~images/maps/Otest/otest_template.html~5';
+LOI[9] = 'image~Bible~Maps~Divisions of Palestine (map) key=Israel~~~~Eze~19~1~images/maps/Christ/christ_template.html~1';
+LOI[10] = 'image~Bible~Maps~Divisions of Palestine (map) key=Israel~~~~Eze~19~9~images/maps/Christ/christ_template.html~1';
+LOI[11] = 'image~Bible~Images~Jerusalem Taken Captive Into Babylon (engraving) key=Babylon~~~~Eze~19~9~images/bible_images/Kings/kings_template.html~7';

@@ -1,0 +1,17 @@
+var LOI = [];
+LOI[0] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Judah~~~~Gen~44~14~images/maps/Otest/otest_template.html~1b';
+LOI[1] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Judah~~~~Gen~44~16~images/maps/Otest/otest_template.html~1b';
+LOI[2] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Judah~~~~Gen~44~18~images/maps/Otest/otest_template.html~1b';
+LOI[3] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Joseph~~~~Gen~44~2~images/maps/Otest/otest_template.html~1b';
+LOI[4] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Joseph~~~~Gen~44~4~images/maps/Otest/otest_template.html~1b';
+LOI[5] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Joseph~~~~Gen~44~15~images/maps/Otest/otest_template.html~1b';
+LOI[6] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Judah~~~~Gen~44~14~images/maps/Otest/otest_template.html~1c';
+LOI[7] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Judah~~~~Gen~44~16~images/maps/Otest/otest_template.html~1c';
+LOI[8] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Judah~~~~Gen~44~18~images/maps/Otest/otest_template.html~1c';
+LOI[9] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Joseph~~~~Gen~44~2~images/maps/Otest/otest_template.html~1c';
+LOI[10] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Joseph~~~~Gen~44~4~images/maps/Otest/otest_template.html~1c';
+LOI[11] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Joseph~~~~Gen~44~15~images/maps/Otest/otest_template.html~1c';
+LOI[12] = 'image~Bible~Images~Joseph Interprets Pharaoh\'s Dream (engraving) key=Joseph~~~~Gen~44~2~images/bible_images/Moses/moses_template.html~5';
+LOI[13] = 'image~Bible~Images~Joseph Interprets Pharaoh\'s Dream (engraving) key=Joseph~~~~Gen~44~4~images/bible_images/Moses/moses_template.html~5';
+LOI[14] = 'image~Bible~Images~Joseph Interprets Pharaoh\'s Dream (engraving) key=Joseph~~~~Gen~44~15~images/bible_images/Moses/moses_template.html~5';
+LOI[15] = 'image~Bible~Images~Joseph Interprets Pharaoh\'s Dream (engraving) key=Pharaoh~~~~Gen~44~18~images/bible_images/Moses/moses_template.html~5';

@@ -1,0 +1,11 @@
+var LOI = [];
+LOI[0] = 'hymn~9~GOD, IN THE GOSPEL OF HIS SON~htm_g_i_gitgospl.html';
+LOI[1] = 'hymn~16~ETERNAL GOD, WHOSE POWER UPHOLDS~htm_e_g_egwpowuh.html';
+LOI[2] = 'hymn~17~IF, ON A QUIET SEA~htm_i_f_ifaquiet.html';
+LOI[3] = 'image~Bible~Maps~Paul\'s First Missionary Journey (98K map) key=Paul~~~~Rom~1~1~images/maps/Journeys/journeys_template.html~1';
+LOI[4] = 'image~Bible~Maps~Paul\'s Second Missionary Journey (140K map) key=Paul~~~~Rom~1~1~images/maps/Journeys/journeys_template.html~2';
+LOI[5] = 'image~Bible~Maps~Paul\'s Third Missionary Journey (156K map) key=Paul~~~~Rom~1~1~images/maps/Journeys/journeys_template.html~3';
+LOI[6] = 'image~Bible~Images~The Creation (engraving) key=creation~~~~Rom~1~20~images/bible_images/Moses/moses_template.html~1a';
+LOI[7] = 'image~Bible~Images~Saul and David (engraving) key=David~~~~Rom~1~3~images/bible_images/Kings/kings_template.html~1';
+LOI[8] = 'image~Bible~Images~David Mourning for Absalom (engraving) key=David~~~~Rom~1~3~images/bible_images/Kings/kings_template.html~2';
+LOI[9] = 'image~Bible~Images~The Conversion of St. Paul key=Paul~~~~Rom~1~1~images/bible_images/Acts/acts_template.html~2';

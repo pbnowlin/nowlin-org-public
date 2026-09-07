@@ -1,0 +1,16 @@
+var LOD = [];
+LOD[0] = 'naves~KING~- Chief officers of~~~3~NT0002934~33824';
+LOD[1] = 'naves~MINISTER, Civil~- Mordecai~~~3~NT0003380~37265';
+LOD[2] = 'naves~MORDECAI~- Promoted in Haman\'s place~~~1~NT0003435~38648';
+LOD[3] = 'naves~MORDECAI~- Promoted in Haman\'s place~~~3~NT0003435~38648';
+LOD[4] = 'naves~PEACE~- Exemplified~~~3~NT0003767~41427';
+LOD[5] = 'torreys~Peace~- Saints Should~~~3~TT0000420~21044';
+LOD[6] = 'torreys~Peace~- Exemplified~~~3~TT0000420~21068';
+LOD[7] = 'subject~Peace~~~~3~SPeace~8456';
+LOD[8] = 'hitchcock~Ahasuerus~~~~1~HAhasuerus~0';
+LOD[9] = 'hitchcock~Ahasuerus~~~~3~HAhasuerus~0';
+LOD[10] = 'hitchcock~Jew~~~~3~HJew~0';
+LOD[11] = 'hitchcock~Media~~~~2~HMedia~0';
+LOD[12] = 'hitchcock~Mordecai~~~~2~HMordecai~0';
+LOD[13] = 'hitchcock~Mordecai~~~~3~HMordecai~0';
+LOD[14] = 'hitchcock~Persia~~~~2~HPersia~0';

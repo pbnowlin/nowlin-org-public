@@ -1,0 +1,13 @@
+var LOI = [];
+LOI[0] = 'hymn~8~ARISE, O LORD, OUR GOD, ARISE~htm_a_o_aologari.html';
+LOI[1] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Zion~~~~Psa~132~13~images/maps/Otest/otest_template.html~3a';
+LOI[2] = 'image~Bible~Maps~Modern Jerusalem (map) key=Zion~~~~Psa~132~13~images/maps/Otest/otest_template.html~3b';
+LOI[3] = 'image~Bible~Images~Saul and David (engraving) key=David~~~~Psa~132~1~images/bible_images/Kings/kings_template.html~1';
+LOI[4] = 'image~Bible~Images~Saul and David (engraving) key=David~~~~Psa~132~11~images/bible_images/Kings/kings_template.html~1';
+LOI[5] = 'image~Bible~Images~Saul and David (engraving) key=David~~~~Psa~132~17~images/bible_images/Kings/kings_template.html~1';
+LOI[6] = 'image~Bible~Images~David Mourning for Absalom (engraving) key=David~~~~Psa~132~1~images/bible_images/Kings/kings_template.html~2';
+LOI[7] = 'image~Bible~Images~David Mourning for Absalom (engraving) key=David~~~~Psa~132~11~images/bible_images/Kings/kings_template.html~2';
+LOI[8] = 'image~Bible~Images~David Mourning for Absalom (engraving) key=David~~~~Psa~132~17~images/bible_images/Kings/kings_template.html~2';
+LOI[9] = 'image~Bible~Images~The Tabernacle (engraving) key=tabernacle~~~~Psa~132~3~images/bible_images/Temple/temple_template.html~2';
+LOI[10] = 'image~Bible~Images~Tabernacle in the Midst of the Encampment (illustration) key=Tabernacle~~~~Psa~132~3~images/bible_images/Temple/temple_template.html~3';
+LOI[11] = 'image~Bible~Images~The Ark and Mercy Seat (engraving) key=Ark~~~~Psa~132~8~images/bible_images/Temple/temple_template.html~4';

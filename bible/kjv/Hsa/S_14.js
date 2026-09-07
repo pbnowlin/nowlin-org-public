@@ -1,0 +1,10 @@
+Content = new Array();
+Content[1] = 'O Israel [03478], return [07725] unto the LORD [03068] thy God [0430]; for thou hast fallen [03782] by thine iniquity [05771].';
+Content[2] = 'Take [03947] with you words [01697], and turn [07725] to the LORD [03068]: say [0559] unto him, Take away [05375] all iniquity [05771], and receive [03947] [us] graciously [02896]: so will we render [07999] the calves [06499] of our lips [08193].';
+Content[3] = 'Asshur [0804] shall not save [03467] us; we will not ride [07392] upon horses [05483]: neither will we say [0559] any more to the work [04639] of our hands [03027], [Ye are] our gods [0430]: for in thee the fatherless [03490] findeth mercy [07355] .';
+Content[4] = 'I will heal [07495] their backsliding [04878], I will love [0157] them freely [05071]: for mine anger [0639] is turned away [07725] from him.';
+Content[5] = 'I will be as the dew [02919] unto Israel [03478]: he shall grow [06524] as the lily [07799], and cast forth [05221] his roots [08328] as Lebanon [03844].';
+Content[6] = 'His branches [03127] shall spread [03212] , and his beauty [01935] shall be as the olive tree [02132], and his smell [07381] as Lebanon [03844].';
+Content[7] = 'They that dwell [03427] under his shadow [06738] shall return [07725] ; they shall revive [02421] [as] the corn [01715], and grow [06524] as the vine [01612]: the scent [02143] thereof [shall be] as the wine [03196] of Lebanon [03844].';
+Content[8] = 'Ephraim [0669] [shall say], What have I to do any more with idols [06091]? I have heard [06030] [him], and observed [07789] him: I [am] like a green [07488] fir tree [01265]. From me is thy fruit [06529] found [04672] .';
+Content[9] = 'Who [is] wise [02450], and he shall understand [0995] these [things]? prudent [0995] , and he shall know [03045] them? for the ways [01870] of the LORD [03068] [are] right [03477], and the just [06662] shall walk [03212] in them: but the transgressors [06586] shall fall [03782] therein.';

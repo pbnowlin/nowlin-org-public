@@ -1,0 +1,14 @@
+Content = new Array();
+Content[1] = 'O sing [07891] unto the LORD [03068] a new [02319] song [07892]: sing [07891] unto the LORD [03068], all the earth [0776].';
+Content[2] = 'Sing [07891] unto the LORD [03068], bless [01288] his name [08034]; shew forth [01319] his salvation [03444] from day [03117] to day [03117].';
+Content[3] = 'Declare [05608] his glory [03519] among the heathen [01471], his wonders [06381] among all people [05971].';
+Content[4] = 'For the LORD [03068] [is] great [01419], and greatly [03966] to be praised [01984] : he [is] to be feared [03372] above all gods [0430].';
+Content[5] = 'For all the gods [0430] of the nations [05971] [are] idols [0457]: but the LORD [03068] made [06213] the heavens [08064].';
+Content[6] = 'Honour [01935] and majesty [01926] [are] before [06440] him: strength [05797] and beauty [08597] [are] in his sanctuary [04720].';
+Content[7] = 'Give [03051] unto the LORD [03068], O ye kindreds [04940] of the people [05971], give [03051] unto the LORD [03068] glory [03519] and strength [05797].';
+Content[8] = 'Give [03051] unto the LORD [03068] the glory [03519] [due unto] his name [08034]: bring [05375] an offering [04503], and come [0935] into his courts [02691].';
+Content[9] = 'O worship [07812] the LORD [03068] in the beauty [01927] of holiness [06944]: fear [02342] before [06440] him, all the earth [0776].';
+Content[10] = 'Say [0559] among the heathen [01471] [that] the LORD [03068] reigneth [04427] : the world [08398] also shall be established [03559] that it shall not be moved [04131] : he shall judge [01777] the people [05971] righteously [04339].';
+Content[11] = 'Let the heavens [08064] rejoice [08055] , and let the earth [0776] be glad [01523] ; let the sea [03220] roar [07481] , and the fulness [04393] thereof.';
+Content[12] = 'Let the field [07704] be joyful [05937] , and all that [is] therein: then shall all the trees [06086] of the wood [03293] rejoice [07442]';
+Content[13] = 'Before [06440] the LORD [03068]: for he cometh [0935] , for he cometh [0935] to judge [08199] the earth [0776]: he shall judge [08199] the world [08398] with righteousness [06664], and the people [05971] with his truth [0530].';

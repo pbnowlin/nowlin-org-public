@@ -1,0 +1,58 @@
+
+  body {
+    background-image:url('../gifs/blue_marble_ramp2.gif');
+    }
+  
+  .hide {
+    display:none;
+    }
+
+  .notice {
+    font-size:13px;}
+
+  div.underlie {
+    width:450px;
+    }
+
+  div.head {
+    font-size:20px;
+    font-weight:bold;
+    margin-bottom:20px;
+    }
+
+  div.subhead {
+    font-size:16px;
+    font-weight:bold;
+    margin-bottom:15px;
+    }
+
+  div.pad30 {
+    margin-bottom:12px;
+    }
+
+  div.block {
+    text-align:justify;
+    padding:10px 45px 10px 40px;
+    }
+
+  div.return {
+    padding-top:20px;
+    font-weight:bold;
+    margin-top:28px;
+    }
+
+  div.end {
+    margin-top:28px;
+    }
+ 
+  a {
+    color:324395;
+    }
+
+  a:visited {
+    color:0069b3;
+    }
+
+  a:active {
+    color:c40026;
+    }

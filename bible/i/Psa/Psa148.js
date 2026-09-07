@@ -1,0 +1,13 @@
+var LOI = [];
+LOI[0] = 'hymn~1~HALLELUJAH, PRAISE JEHOVAH (2)~htm_h_p_hpraisj2.html';
+LOI[1] = 'hymn~1~PRAISE THE LORD OF HEAVEN~htm_p_l_plheaven.html';
+LOI[2] = 'hymn~1~PRAISE THE LORD~ YE HEAVENS, ADORE HIM~htm_p_t_pthelyeh.html';
+LOI[3] = 'hymn~1~PRAISE TO THE HOLIEST IN THE HEIGHT~htm_p_r_praiseto.html';
+LOI[4] = 'hymn~5~LET THE WHOLE CREATION CRY~htm_l_e_letthewc.html';
+LOI[5] = 'hymn~12~YOUNG MEN AND MAIDENS, RAISE~htm_y_m_ymenmaid.html';
+LOI[6] = 'hymn~13~THEE WE ADORE, ETERNAL LORD~htm_t_h_e_theewead.html';
+LOI[7] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Israel~~~~Psa~148~14~images/maps/Otest/otest_template.html~1b';
+LOI[8] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Israel~~~~Psa~148~14~images/maps/Otest/otest_template.html~1c';
+LOI[9] = 'image~Bible~Maps~Middle Palestine (map) key=Israel~~~~Psa~148~14~images/maps/Otest/otest_template.html~3c';
+LOI[10] = 'image~Bible~Maps~Southern Palestine (map) key=Israel~~~~Psa~148~14~images/maps/Otest/otest_template.html~4';
+LOI[11] = 'image~Bible~Maps~Divisions of Palestine (map) key=Israel~~~~Psa~148~14~images/maps/Christ/christ_template.html~1';

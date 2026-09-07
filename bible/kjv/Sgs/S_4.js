@@ -1,0 +1,17 @@
+Content = new Array();
+Content[1] = 'Behold, thou [art] fair [03303], my love [07474]; behold, thou [art] fair [03303]; thou [hast] doves [03123]\' eyes [05869] within [01157] thy locks [06777]: thy hair [08181] [is] as a flock [05739] of goats [05795], that appear [01570] from mount [02022] Gilead [01568].';
+Content[2] = 'Thy teeth [08127] [are] like a flock [05739] [of sheep that are even] shorn [07094] , which came up [05927] from the washing [07367]; whereof every one bear twins [08382] , and none [is] barren [07909] among them.';
+Content[3] = 'Thy lips [08193] [are] like a thread [02339] of scarlet [08144], and thy speech [04057] [is] comely [05000]: thy temples [07541] [are] like a piece [06400] of a pomegranate [07416] within [01157] thy locks [06777].';
+Content[4] = 'Thy neck [06677] [is] like the tower [04026] of David [01732] builded [01129] for an armoury [08530], whereon there hang [08518] a thousand [0505] bucklers [04043], all shields [07982] of mighty men [01368].';
+Content[5] = 'Thy two [08147] breasts [07699] [are] like two [08147] young [06082] roes [06646] that are twins [08380], which feed [07462] among the lilies [07799].';
+Content[6] = 'Until the day [03117] break [06315] , and the shadows [06752] flee away [05127] , I will get [03212] me to the mountain [02022] of myrrh [04753], and to the hill [01389] of frankincense [03828].';
+Content[7] = 'Thou [art] all fair [03303], my love [07474]; [there is] no spot [03971] in thee.';
+Content[8] = 'Come [0935] with me from Lebanon [03844], [my] spouse [03618], with me from Lebanon [03844]: look [07789] from the top [07218] of Amana [0549], from the top [07218] of Shenir [08149] and Hermon [02768], from the lions [0738]\' dens [04585], from the mountains [02042] of the leopards [05246].';
+Content[9] = 'Thou hast ravished my heart [03823] , my sister [0269], [my] spouse [03618]; thou hast ravished my heart [03823] with one [0259] of thine eyes [05869], with one [0259] chain [06060] of thy neck [06677].';
+Content[10] = 'How fair [03302] is thy love [01730], my sister [0269], [my] spouse [03618]! how much better [02895] is thy love [01730] than wine [03196]! and the smell [07381] of thine ointments [08081] than all spices [01314]!';
+Content[11] = 'Thy lips [08193], O [my] spouse [03618], drop [05197] [as] the honeycomb [05317]: honey [01706] and milk [02461] [are] under thy tongue [03956]; and the smell [07381] of thy garments [08008] [is] like the smell [07381] of Lebanon [03844].';
+Content[12] = 'A garden [01588] inclosed [05274] [is] my sister [0269], [my] spouse [03618]; a spring [01530] shut up [05274] , a fountain [04599] sealed [02856] .';
+Content[13] = 'Thy plants [07973] [are] an orchard [06508] of pomegranates [07416], with pleasant [04022] fruits [06529]; camphire [03724], with spikenard [05373],';
+Content[14] = 'Spikenard [05373] and saffron [03750]; calamus [07070] and cinnamon [07076], with all trees [06086] of frankincense [03828]; myrrh [04753] and aloes [0174], with all the chief [07218] spices [01314]:';
+Content[15] = 'A fountain [04599] of gardens [01588], a well [0875] of living [02416] waters [04325], and streams [05140] from Lebanon [03844].';
+Content[16] = 'Awake [05782] , O north wind [06828]; and come [0935] , thou south [08486]; blow [06315] upon my garden [01588], [that] the spices [01314] thereof may flow out [05140] . Let my beloved [01730] come [0935] into his garden [01588], and eat [0398] his pleasant [04022] fruits [06529].';

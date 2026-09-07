@@ -1,0 +1,44 @@
+td {font-family:trebuchet ms,arial,helvetica}
+
+a {
+  text-decoration:none;
+  color:324395;
+  }
+
+a:hover {
+  text-decoration:underline;
+  color:C40026;
+  }
+  
+a:hover {
+  text-decoration:underline;
+  color:C40026;
+  }
+  
+h2 {
+  font-family:trebuchet ms,arial,helvetica;
+  }
+  
+h3 {
+  font-family:trebuchet ms,arial,helvetica;
+  }
+  
+select {
+   font-size:12px;
+   font-family:trebuchet ms,arial,helvetica
+  }
+
+
+/* This is used for para symbol  */  
+td.par {
+        color:#aaaaaa;
+        text-align:center;
+        padding:0px 5px 0px 2px;
+}
+
+
+/* This is used for mid-verse para break  */  
+p.par {
+        text-indent:15px;
+        margin:0px;
+}

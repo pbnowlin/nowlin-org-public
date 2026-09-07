@@ -1,0 +1,11 @@
+var LOI = [];
+LOI[0] = 'hymn~13~GOOD KING WENCESLAS~htm_g_o_goodking.html';
+LOI[1] = 'hymn~15~COME AND DINE~htm_c_o_comedine.html';
+LOI[2] = 'hymn~15~COME, SINNERS, TO THE GOSPEL FEAST~htm_c_o_comsinrs.html';
+LOI[3] = 'hymn~15~KING OF HEAV&#8217;N HIS TABLE SPREADS, THE~htm_k_i_kinghhts.html';
+LOI[4] = 'hymn~16~HOW SWEET AND AWESOME IS THIS PLACE~htm_h_s_hsweetaw.html';
+LOI[5] = 'hymn~17~THE BLESSED FEAST~htm_b_l_blessedf.html';
+LOI[6] = 'hymn~22~ROOM FOR THE PENITENT~htm_r_o_roomfpen.html';
+LOI[7] = 'hymn~22~YET THERE IS ROOM~htm_y_e_yettroom.html';
+LOI[8] = 'hymn~33~GIVE OF YOUR BEST TO THE MASTER~htm_g_i_giveofyb.html';
+LOI[9] = 'hymn~33~I SURRENDER ALL~htm_i_s_isurrend.html';

@@ -1,0 +1,15 @@
+var LOD = [];
+LOD[0] = 'naves~FAITH~- Exemplified~~~8~NT0001783~16634';
+LOD[1] = 'naves~GOD~- Creator~~~8~NT0002043~19762';
+LOD[2] = 'naves~GOD~- Preserver~~~1~NT0002043~21445';
+LOD[3] = 'naves~GOD~- Preserver~~~8~NT0002043~21445';
+LOD[4] = 'naves~PERSECUTION~- Of The Righteous~~~1~NT0003811~41900';
+LOD[5] = 'torreys~Birds~- Illustrative~~~7~TT0000056~3049';
+LOD[6] = 'torreys~Creation~- Leads to confidence~~~8~TT0000128~6326';
+LOD[7] = 'torreys~Praise~- Is Due To God On Account Of~~~6~TT0000438~22013';
+LOD[8] = 'torreys~Water~- Illustrative~~~4~TT0000609~32714';
+LOD[9] = 'torreys~Water~- Illustrative~~~5~TT0000609~32714';
+LOD[10] = 'easton~Bird~~~~7~ET0000588~3142';
+LOD[11] = 'subject~God the Creator~~~~8~SGod_the_Creator~3350';
+LOD[12] = 'hitchcock~David~~~~1~HDavid~0';
+LOD[13] = 'hitchcock~Israel~~~~1~HIsrael~0';

@@ -1,0 +1,26 @@
+#htaTableHead table tbody tr td:first-child {
+  display:none;
+  }
+
+#htaTableHead table tbody tr td+td {
+  }
+
+#changeForm {
+  padding-left:17px;
+  }
+
+#mark2ndRefs {
+	position:relative;
+	left:36px;
+  }
+
+#htaTable tr td span:first-child  {
+  margin-left:20px;;
+  }
+#htaTable tr td span:first-child img:first-child {
+  display:none;
+  }
+  
+#htaTable tr td+td  {
+  text-indent:0px;
+  }

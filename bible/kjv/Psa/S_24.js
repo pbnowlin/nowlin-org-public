@@ -1,0 +1,11 @@
+Content = new Array();
+Content[1] = '[[A Psalm [04210] of David [01732].]] The earth [0776] [is] the LORD\'S [03068], and the fulness [04393] thereof; the world [08398], and they that dwell [03427] therein.';
+Content[2] = 'For he hath founded [03245] it upon the seas [03220], and established [03559] it upon the floods [05104].';
+Content[3] = 'Who shall ascend [05927] into the hill [02022] of the LORD [03068]? or who shall stand [06965] in his holy [06944] place [04725]?';
+Content[4] = 'He that hath clean [05355] hands [03709], and a pure [01249] heart [03824]; who hath not lifted up [05375] his soul [05315] unto vanity [07723], nor sworn [07650] deceitfully [04820].';
+Content[5] = 'He shall receive [05375] the blessing [01293] from the LORD [03068], and righteousness [06666] from the God [0430] of his salvation [03468].';
+Content[6] = 'This [is] the generation [01755] of them that seek [01875] him, that seek [01245] thy face [06440], O Jacob [03290]. Selah [05542].';
+Content[7] = 'Lift up [05375] your heads [07218], O ye gates [08179]; and be ye lift up [05375] , ye everlasting [05769] doors [06607]; and the King [04428] of glory [03519] shall come in [0935] .';
+Content[8] = 'Who [is] this King [04428] of glory [03519]? The LORD [03068] strong [05808] and mighty [01368], the LORD [03068] mighty [01368] in battle [04421].';
+Content[9] = 'Lift up [05375] your heads [07218], O ye gates [08179]; even lift [them] up [05375] , ye everlasting [05769] doors [06607]; and the King [04428] of glory [03519] shall come in [0935] .';
+Content[10] = 'Who is this King [04428] of glory [03519]? The LORD [03068] of hosts [06635], he [is] the King [04428] of glory [03519]. Selah [05542].';

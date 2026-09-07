@@ -1,0 +1,16 @@
+Content = new Array();
+Content[1] = 'But [1161] speak [2980] thou [4771] the things which [3739] become [4241] sound [5198] doctrine [1319]:';
+Content[2] = 'That the aged men [4246] be [1511] sober [3524], grave [4586], temperate [4998], sound [5198] in faith [4102], in charity [26], in patience [5281].';
+Content[3] = 'The aged women [4247] likewise [5615], that [they be] in [1722] behaviour [2688] as becometh holiness [2412], not [3361] false accusers [1228], not [3361] given [1402] to much [4183] wine [3631], teachers of good things [2567];';
+Content[4] = 'That [2443] they may teach [4994] [0] the young women [3501] to be [1511] sober [4994] , to love their husbands [5362], to love their children [5388],';
+Content[5] = '[To be] discreet [4998], chaste [53], keepers at home [3626], good [18], obedient [5293] to their own [2398] husbands [435], that [3363] [0] the word [3056] of God [2316] be [987] [0] not [3363] blasphemed [987] .';
+Content[6] = 'Young men [3501] likewise [5615] exhort [3870] to be sober minded [4993] .';
+Content[7] = 'In [4012] all things [3956] shewing [3930] thyself [4572] a pattern [5179] of good [2570] works [2041]: in [1722] doctrine [1319] [shewing] uncorruptness [90], gravity [4587], sincerity [861],';
+Content[8] = 'Sound [5199] speech [3056], that cannot be condemned [176]; that [2443] he that is of [1537] the contrary part [1727] may be ashamed [1788] , having [2192] no [3367] [0] evil [5337] thing [3367] to say [3004] of [4012] you [5216].';
+Content[9] = '[Exhort] servants [1401] to be obedient [5293] unto their own [2398] masters [1203], [and] to [1511] please [them] well [2101] in [1722] all [3956] [things]; not [3361] answering again [483] ;';
+Content[10] = 'Not [3361] purloining [3557] , but [235] shewing [1731] all [3956] good [18] fidelity [4102]; that [2443] they may adorn [2885] the doctrine [1319] of God [2316] our [2257] Saviour [4990] in [1722] all things [3956].';
+Content[11] = 'For [1063] the grace [5485] of God [2316] that bringeth salvation [4992] hath appeared [2014] to all [3956] men [444],';
+Content[12] = 'Teaching [3811] us [2248] that [2443], denying [720] ungodliness [763] and [2532] worldly [2886] lusts [1939], we should live [2198] soberly [4996], [2532] righteously [1346], and [2532] godly [2153], in [1722] this present [3568] world [165];';
+Content[13] = 'Looking for [4327] that blessed [3107] hope [1680], and [2532] the glorious [1391] appearing [2015] of the great [3173] God [2316] and [2532] our [2257] Saviour [4990] Jesus [2424] Christ [5547];';
+Content[14] = 'Who [3739] gave [1325] himself [1438] for [5228] us [2257], that [2443] he might redeem [3084] us [2248] from [575] all [3956] iniquity [458], and [2532] purify [2511] unto himself [1438] a peculiar [4041] people [2992], zealous [2207] of good [2570] works [2041].';
+Content[15] = 'These things [5023] speak [2980] , and [2532] exhort [3870] , and [2532] rebuke [1651] with [3326] all [3956] authority [2003]. Let [4065] [0] no man [3367] despise [4065] thee [4675].';

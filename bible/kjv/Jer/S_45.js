@@ -1,0 +1,6 @@
+Content = new Array();
+Content[1] = 'The word [01697] that Jeremiah [03414] the prophet [05030] spake [01696] unto Baruch [01263] the son [01121] of Neriah [05374], when he had written [03789] these words [01697] in a book [05612] at the mouth [06310] of Jeremiah [03414], in the fourth [07243] year [08141] of Jehoiakim [03079] the son [01121] of Josiah [02977] king [04428] of Judah [03063], saying [0559] ,';
+Content[2] = 'Thus saith [0559] the LORD [03068], the God [0430] of Israel [03478], unto thee, O Baruch [01263];';
+Content[3] = 'Thou didst say [0559] , Woe [0188] is me now! for the LORD [03068] hath added [03254] grief [03015] to my sorrow [04341]; I fainted [03021] in my sighing [0585], and I find [04672] no rest [04496].';
+Content[4] = 'Thus shalt thou say [0559] unto him, The LORD [03068] saith [0559] thus; Behold, [that] which I have built [01129] will I break down [02040] , and that which I have planted [05193] I will pluck up [05428] , even this whole land [0776].';
+Content[5] = 'And seekest [01245] thou great things [01419] for thyself? seek [01245] [them] not: for, behold, I will bring [0935] evil [07451] upon all flesh [01320], saith [05002] the LORD [03068]: but thy life [05315] will I give [05414] unto thee for a prey [07998] in all places [04725] whither thou goest [03212] .';

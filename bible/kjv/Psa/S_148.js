@@ -1,0 +1,15 @@
+Content = new Array();
+Content[1] = 'Praise [01984] ye the LORD [03050]. Praise [01984] ye the LORD [03068] from the heavens [08064]: praise [01984] him in the heights [04791].';
+Content[2] = 'Praise [01984] ye him, all his angels [04397]: praise [01984] ye him, all his hosts [06635].';
+Content[3] = 'Praise [01984] ye him, sun [08121] and moon [03394]: praise [01984] him, all ye stars [03556] of light [0216].';
+Content[4] = 'Praise [01984] him, ye heavens [08064] of heavens [08064], and ye waters [04325] that [be] above the heavens [08064].';
+Content[5] = 'Let them praise [01984] the name [08034] of the LORD [03068]: for he commanded [06680] , and they were created [01254] .';
+Content[6] = 'He hath also stablished [05975] them for ever [05703] and ever [05769]: he hath made [05414] a decree [02706] which shall not pass [05674] .';
+Content[7] = 'Praise [01984] the LORD [03068] from the earth [0776], ye dragons [08577], and all deeps [08415]:';
+Content[8] = 'Fire [0784], and hail [01259]; snow [07950], and vapour [07008]; stormy [05591] wind [07307] fulfilling [06213] his word [01697]:';
+Content[9] = 'Mountains [02022], and all hills [01389]; fruitful [06529] trees [06086], and all cedars [0730]:';
+Content[10] = 'Beasts [02416], and all cattle [0929]; creeping things [07431], and flying [03671] fowl [06833]:';
+Content[11] = 'Kings [04428] of the earth [0776], and all people [03816]; princes [08269], and all judges [08199] of the earth [0776]:';
+Content[12] = 'Both young men [0970], and maidens [01330]; old men [02205], and children [05288]:';
+Content[13] = 'Let them praise [01984] the name [08034] of the LORD [03068]: for his name [08034] alone is excellent [07682] ; his glory [01935] [is] above the earth [0776] and heaven [08064].';
+Content[14] = 'He also exalteth [07311] the horn [07161] of his people [05971], the praise [08416] of all his saints [02623]; [even] of the children [01121] of Israel [03478], a people [05971] near [07138] unto him. Praise [01984] ye the LORD [03050].';

@@ -1,0 +1,16 @@
+var LOI = [];
+LOI[0] = 'hymn~1~HEAR MY WORDS, O GRACIOUS LORD~htm_h_e_hearmywo.html';
+LOI[1] = 'hymn~1~O JEHOVAH, HEAR MY WORDS~htm_o_j_ojhearmy.html';
+LOI[2] = 'hymn~3~AS THE SUN DOTH DAILY RISE~htm_a_s_asthesun.html';
+LOI[3] = 'hymn~3~NOW THAT THE DAYLIGHT FILLS THE SKY~htm_n_o_nowthatt.html';
+LOI[4] = 'hymn~8~JESUS, STILL LEAD ON~htm_j_s_jstilllo.html';
+LOI[5] = 'hymn~10~THIS IS THY WILL, I KNOW~htm_t_h_i_thisithy.html';
+LOI[6] = 'hymn~11~COME YE THAT LOVE THE SAVIOR&#8217;S NAME~htm_c_o_comeyetl.html';
+LOI[7] = 'hymn~11~JESUS, I LOVE THY CHARMING NAME~htm_j_i_jilthycn.html';
+LOI[8] = 'hymn~11~JESUS, THY NAME I LOVE~htm_j_t_jthyname.html';
+LOI[9] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Temple~~~~Psa~5~7~images/maps/Otest/otest_template.html~3a';
+LOI[10] = 'image~Bible~Maps~Modern Jerusalem (map) key=Temple~~~~Psa~5~7~images/maps/Otest/otest_template.html~3b';
+LOI[11] = 'image~Bible~Images~Saul and David (engraving) key=David~~~~Psa~5~1~images/bible_images/Kings/kings_template.html~1';
+LOI[12] = 'image~Bible~Images~David Mourning for Absalom (engraving) key=David~~~~Psa~5~1~images/bible_images/Kings/kings_template.html~2';
+LOI[13] = 'image~Bible~Images~The Jews Wailing Place (engraving) key=temple~~~~Psa~5~7~images/bible_images/Temple/temple_template.html~1';
+LOI[14] = 'image~Bible~Images~The Tabernacle (engraving) key=temple~~~~Psa~5~7~images/bible_images/Temple/temple_template.html~2';

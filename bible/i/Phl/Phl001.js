@@ -1,0 +1,13 @@
+var LOI = [];
+LOI[0] = 'hymn~4~CHRISTMAS BRINGS JOY TO EVERY HEART~htm_c_b_cbringsj.html';
+LOI[1] = 'hymn~6~DEBTOR TO MERCY ALONE, A~htm_d_e_debtorto.html';
+LOI[2] = 'hymn~6~LORD GOD OF HOSTS, WHOSE PURPOSE, NEVER SWERVING~htm_l_g_lgohwpns.html';
+LOI[3] = 'hymn~21~LET THOUGHTLESS THOUSANDS CHOOSE~htm_l_t_lthought.html';
+LOI[4] = 'hymn~21~NO, NO, IT IS NOT DYING~htm_n_n_nnitisnd.html';
+LOI[5] = 'hymn~21~O JESUS, WHEN I THINK OF THEE~htm_o_j_ojesuswi.html';
+LOI[6] = 'hymn~27~WE ARE SOLDIERS OF CHRIST~htm_w_e_wearesol.html';
+LOI[7] = 'image~Bible~Maps~Paul\'s First Missionary Journey (98K map) key=Paul~~~~Phl~1~1~images/maps/Journeys/journeys_template.html~1';
+LOI[8] = 'image~Bible~Maps~Paul\'s Second Missionary Journey (140K map) key=Paul,Timotheus~~~~Phl~1~1~images/maps/Journeys/journeys_template.html~2';
+LOI[9] = 'image~Bible~Maps~Paul\'s Third Missionary Journey (156K map) key=Paul,Philippi~~~~Phl~1~1~images/maps/Journeys/journeys_template.html~3';
+LOI[10] = 'image~Bible~Charts~The Revelation of Jesus (Ironside\'s chart) key=perdition~~~~Phl~1~28~images/charts/Bible/bible_template.html~1';
+LOI[11] = 'image~Bible~Images~The Conversion of St. Paul key=Paul~~~~Phl~1~1~images/bible_images/Acts/acts_template.html~2';

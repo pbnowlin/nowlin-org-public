@@ -1,0 +1,12 @@
+Content = new Array();
+Content[1] = '[[To the chief Musician [05329] , Altaschith [0516] , Michtam [04387] of David [01732].]] Do ye indeed [0552] speak [01696] righteousness [06664], O congregation [0482]? do ye judge [08199] uprightly [04339], O ye sons [01121] of men [0120]?';
+Content[2] = 'Yea, in heart [03820] ye work [06466] wickedness [05766]; ye weigh [06424] the violence [02555] of your hands [03027] in the earth [0776].';
+Content[3] = 'The wicked [07563] are estranged [02114] from the womb [07358]: they go astray [08582] as soon as they be born [0990], speaking [01696] lies [03577].';
+Content[4] = 'Their poison [02534] [is] like [01823] the poison [02534] of a serpent [05175]: [they are] like the deaf [02795] adder [06620] [that] stoppeth [0331] her ear [0241];';
+Content[5] = 'Which will not hearken [08085] to the voice [06963] of charmers [03907] , charming [02266] [02267] never so wisely [02449] .';
+Content[6] = 'Break [02040] their teeth [08127], O God [0430], in their mouth [06310]: break out [05422] the great teeth [04459] of the young lions [03715], O LORD [03068].';
+Content[7] = 'Let them melt away [03988] as waters [04325] [which] run continually [01980] : [when] he bendeth [01869] [his bow to shoot] his arrows [02671], let them be as cut in pieces [04135] .';
+Content[8] = 'As a snail [07642] [which] melteth [08557], let [every one of them] pass away [01980] : [like] the untimely birth [05309] of a woman [0802], [that] they may not see [02372] the sun [08121].';
+Content[9] = 'Before your pots [05518] can feel [0995] the thorns [0329], he shall take them away as with a whirlwind [08175] , both living [02416], and in [his] wrath [02740].';
+Content[10] = 'The righteous [06662] shall rejoice [08055] when he seeth [02372] the vengeance [05359]: he shall wash [07364] his feet [06471] in the blood [01818] of the wicked [07563].';
+Content[11] = 'So that a man [0120] shall say [0559] , Verily [there is] a reward [06529] for the righteous [06662]: verily he is [03426] a God [0430] that judgeth [08199] in the earth [0776].';

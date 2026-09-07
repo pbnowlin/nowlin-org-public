@@ -1,0 +1,11 @@
+var LOI = [];
+LOI[0] = 'hymn~2~HEARKEN TO THE SOLEMN VOICE~htm_h_e_hearken.html';
+LOI[1] = 'hymn~5~FATHER, WHO THE LIGHT THIS DAY~htm_f_a_fatherwl.html';
+LOI[2] = 'hymn~17~DID YOU THINK TO PRAY?~htm_d_i_didyouth.html';
+LOI[3] = 'hymn~17~PRAYING ALWAYS~htm_p_r_prayinga.html';
+LOI[4] = 'hymn~17~SWEET HOUR OF PRAYER~htm_s_h_shop.html';
+LOI[5] = 'hymn~17~&#8217;TIS THE BLESSED HOUR OF PRAYER~htm_t_i_tisthebl.html';
+LOI[6] = 'hymn~18~THANKS TO GOD~htm_t_h_thankstg.html';
+LOI[7] = 'hymn~23~O VERY GOD OF VERY GOD~htm_o_v_overygod.html';
+LOI[8] = 'hymn~28~O JESUS, LORD OF HEAVENLY GRACE~htm_o_j_ojlhgrac.html';
+LOI[9] = 'image~Bible~Maps~Paul\'s Second Missionary Journey (140K map) key=Athens~~~~1Th~5~28~images/maps/Journeys/journeys_template.html~2';

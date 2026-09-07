@@ -1,0 +1,17 @@
+Content = new Array();
+Content[1] = 'When I would have healed [07495] Israel [03478], then the iniquity [05771] of Ephraim [0669] was discovered [01540] , and the wickedness [07451] of Samaria [08111]: for they commit [06466] falsehood [08267]; and the thief [01590] cometh in [0935] , [and] the troop [01416] of robbers spoileth [06584] without [02351].';
+Content[2] = 'And they consider [0559] not in their hearts [03824] [that] I remember [02142] all their wickedness [07451]: now their own doings [04611] have beset them about [05437] ; they are before my face [06440].';
+Content[3] = 'They make the king [04428] glad [08055] with their wickedness [07451], and the princes [08269] with their lies [03585].';
+Content[4] = 'They [are] all adulterers [05003] , as an oven [08574] heated [01197] by the baker [0644] , [who] ceaseth [07673] from raising [05782] after he hath kneaded [03888] the dough [01217], until it be leavened [02556] .';
+Content[5] = 'In the day [03117] of our king [04428] the princes [08269] have made [him] sick [02470] with bottles [02534] of wine [03196]; he stretched out [04900] his hand [03027] with scorners [03945] .';
+Content[6] = 'For they have made ready [07126] their heart [03820] like an oven [08574], whiles they lie in wait [0693] : their baker [0644] sleepeth [03463] all the night [03915]; in the morning [01242] it burneth [01197] as a flaming [03852] fire [0784].';
+Content[7] = 'They are all hot [02552] as an oven [08574], and have devoured [0398] their judges [08199] ; all their kings [04428] are fallen [05307] : [there is] none among them that calleth [07121] unto me.';
+Content[8] = 'Ephraim [0669], he hath mixed [01101] himself among the people [05971]; Ephraim [0669] is a cake [05692] not turned [02015] .';
+Content[9] = 'Strangers [02114] have devoured [0398] his strength [03581], and he knoweth [03045] [it] not: yea, gray hairs [07872] are here and there [02236] upon him, yet he knoweth [03045] not.';
+Content[10] = 'And the pride [01347] of Israel [03478] testifieth [06030] to his face [06440]: and they do not return [07725] to the LORD [03068] their God [0430], nor seek [01245] him for all this.';
+Content[11] = 'Ephraim [0669] also is like a silly [06601] dove [03123] without heart [03820]: they call [07121] to Egypt [04714], they go [01980] to Assyria [0804].';
+Content[12] = 'When they shall go [03212] , I will spread [06566] my net [07568] upon them; I will bring them down [03381] as the fowls [05775] of the heaven [08064]; I will chastise [03256] them, as their congregation [05712] hath heard [08088].';
+Content[13] = 'Woe [0188] unto them! for they have fled [05074] from me: destruction [07701] unto them! because they have transgressed [06586] against me: though I have redeemed [06299] them, yet they have spoken [01696] lies [03577] against me.';
+Content[14] = 'And they have not cried [02199] unto me with their heart [03820], when they howled [03213] upon their beds [04904]: they assemble [01481] themselves for corn [01715] and wine [08492], [and] they rebel [05493] against me.';
+Content[15] = 'Though I have bound [03256] [and] strengthened [02388] their arms [02220], yet do they imagine [02803] mischief [07451] against me.';
+Content[16] = 'They return [07725] , [but] not to the most High [05920]: they are like a deceitful [07423] bow [07198]: their princes [08269] shall fall [05307] by the sword [02719] for the rage [02195] of their tongue [03956]: this [02097] [shall be] their derision [03933] in the land [0776] of Egypt [04714].';

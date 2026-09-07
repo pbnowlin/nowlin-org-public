@@ -1,0 +1,9 @@
+Content = new Array();
+Content[1] = '[[A Psalm [04210] of David [01732], when he fled [01272] from [06440] Absalom [053] his son [01121].]] LORD [03068], how are they increased [07231] that trouble [06862] me! many [07227] [are] they that rise up [06965] against me.';
+Content[2] = 'Many [07227] [there be] which say [0559] of my soul [05315], [There is] no help [03444] for him in God [0430]. Selah [05542].';
+Content[3] = 'But thou, O LORD [03068], [art] a shield [04043] for me; my glory [03519], and the lifter up [07311] of mine head [07218].';
+Content[4] = 'I cried [07121] unto the LORD [03068] with my voice [06963], and he heard [06030] me out of his holy [06944] hill [02022]. Selah [05542].';
+Content[5] = 'I laid me down [07901] and slept [03462] ; I awaked [06974] ; for the LORD [03068] sustained [05564] me.';
+Content[6] = 'I will not be afraid [03372] of ten thousands [07233] of people [05971], that have set [07896] [themselves] against me round about [05439].';
+Content[7] = 'Arise [06965] , O LORD [03068]; save [03467] me, O my God [0430]: for thou hast smitten [05221] all mine enemies [0341] [upon] the cheek bone [03895]; thou hast broken [07665] the teeth [08127] of the ungodly [07563].';
+Content[8] = 'Salvation [03444] [belongeth] unto the LORD [03068]: thy blessing [01293] [is] upon thy people [05971]. Selah [05542].';

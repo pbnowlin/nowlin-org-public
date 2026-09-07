@@ -1,0 +1,9 @@
+Content = new Array();
+Content[1] = '[[A Song [07892] of degrees [04609] of David [01732].]] If [03884] [it had not been] the LORD [03068] who was on our side, now may Israel [03478] say [0559] ;';
+Content[2] = 'If [03884] [it had not been] the LORD [03068] who was on our side, when men [0120] rose up [06965] against us:';
+Content[3] = 'Then [0233] they had swallowed us up [01104] quick [02416], when their wrath [0639] was kindled [02734] against us:';
+Content[4] = 'Then [0233] the waters [04325] had overwhelmed [07857] us, the stream [05158] had gone over [05674] our soul [05315]:';
+Content[5] = 'Then [0233] the proud [02121] waters [04325] had gone over [05674] our soul [05315].';
+Content[6] = 'Blessed [01288] [be] the LORD [03068], who hath not given [05414] us [as] a prey [02964] to their teeth [08127].';
+Content[7] = 'Our soul [05315] is escaped [04422] as a bird [06833] out of the snare [06341] of the fowlers [03369] : the snare [06341] is broken [07665] , and we are escaped [04422] .';
+Content[8] = 'Our help [05828] [is] in the name [08034] of the LORD [03068], who made [06213] heaven [08064] and earth [0776].';

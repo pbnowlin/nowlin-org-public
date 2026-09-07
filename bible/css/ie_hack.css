@@ -1,0 +1,62 @@
+  
+  #indexform1 {
+    margin-bottom:-20px;
+    }
+
+  #indexform2 {
+    margin-bottom:0px;
+    }
+
+  div.pad30 {
+    width:98%;
+    }
+    
+  div.pad2030 {
+    width:98%;
+    }
+    
+  div.pad2030a {
+    width:98%;
+    }
+    
+  div.pad2020 {
+    width:98%;
+    }
+    
+  div.pad1020 {
+    width:98%;
+    }
+
+  div.end {
+    border-width:1px 0px 0px 0px;
+    margin-bottom:0px;
+    }
+
+  div.cite {
+    color:#000000;
+    font-size:85%;
+    text-align:left;
+    text-indent:-11px;
+    background-color:#efefef;
+    width:100%;
+    padding:10px 15px 10px 26px;
+    border-style:solid;
+    border-color:#000000;
+    border-width:1px 1px 1px 1px;
+    margin:0px 20px 20px 20px;
+    }
+
+  div.cite2 {
+    color:#000000;
+    font-size:85%;
+    text-align:left;
+    text-indent:-11px;
+    background-color:#efefef;
+    width:100%;
+    padding:10px 15px 10px 26px;
+    border-style:solid;
+    border-color:#000000;
+    border-width:1px 1px 1px 1px;
+    margin:4px 0px 0px 0px;
+    }
+

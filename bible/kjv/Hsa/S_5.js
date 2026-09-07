@@ -1,0 +1,16 @@
+Content = new Array();
+Content[1] = 'Hear [08085] ye this, O priests [03548]; and hearken [07181] , ye house [01004] of Israel [03478]; and give ye ear [0238] , O house [01004] of the king [04428]; for judgment [04941] [is] toward you, because ye have been a snare [06341] on Mizpah [04709], and a net [07568] spread [06566] upon Tabor [08396].';
+Content[2] = 'And the revolters [07846] are profound [06009] to make slaughter [07819] , though I [have been] a rebuker [04148] of them all.';
+Content[3] = 'I know [03045] Ephraim [0669], and Israel [03478] is not hid [03582] from me: for now, O Ephraim [0669], thou committest whoredom [02181] , [and] Israel [03478] is defiled [02930] .';
+Content[4] = 'They will not frame [05414] their doings [04611] to turn [07725] unto their God [0430]: for the spirit [07307] of whoredoms [02183] [is] in the midst [07130] of them, and they have not known [03045] the LORD [03068].';
+Content[5] = 'And the pride [01347] of Israel [03478] doth testify [06030] to his face [06440]: therefore shall Israel [03478] and Ephraim [0669] fall [03782] in their iniquity [05771]; Judah [03063] also shall fall [03782] with them.';
+Content[6] = 'They shall go [03212] with their flocks [06629] and with their herds [01241] to seek [01245] the LORD [03068]; but they shall not find [04672] [him]; he hath withdrawn [02502] himself from them.';
+Content[7] = 'They have dealt treacherously [0898] against the LORD [03068]: for they have begotten [03205] strange [02114] children [01121]: now shall a month [02320] devour [0398] them with their portions [02506].';
+Content[8] = 'Blow [08628] ye the cornet [07782] in Gibeah [01390], [and] the trumpet [02689] in Ramah [07414]: cry aloud [07321] [at] Bethaven [01007], after [0310] thee, O Benjamin [01144].';
+Content[9] = 'Ephraim [0669] shall be desolate [08047] in the day [03117] of rebuke [08433]: among the tribes [07626] of Israel [03478] have I made known [03045] that which shall surely be [0539] .';
+Content[10] = 'The princes [08269] of Judah [03063] were like them that remove [05253] the bound [01366]: [therefore] I will pour out [08210] my wrath [05678] upon them like water [04325].';
+Content[11] = 'Ephraim [0669] [is] oppressed [06231] [and] broken [07533] in judgment [04941], because he willingly [02974] walked [01980] after [0310] the commandment [06673].';
+Content[12] = 'Therefore [will] I [be] unto Ephraim [0669] as a moth [06211], and to the house [01004] of Judah [03063] as rottenness [07538].';
+Content[13] = 'When Ephraim [0669] saw [07200] his sickness [02483], and Judah [03063] [saw] his wound [04205], then went [03212] Ephraim [0669] to the Assyrian [0804], and sent [07971] to king [04428] Jareb [03377] [07378] : yet could [03201] he not heal [07495] you, nor cure [01455] you of your wound [04205].';
+Content[14] = 'For I [will be] unto Ephraim [0669] as a lion [07826], and as a young lion [03715] to the house [01004] of Judah [03063]: I, [even] I, will tear [02963] and go away [03212] ; I will take away [05375] , and none shall rescue [05337] [him].';
+Content[15] = 'I will go [03212] [and] return [07725] to my place [04725], till they acknowledge their offence [0816] , and seek [01245] my face [06440]: in their affliction [06862] they will seek me early [07836] .';

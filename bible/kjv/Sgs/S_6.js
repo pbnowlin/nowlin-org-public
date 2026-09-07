@@ -1,0 +1,14 @@
+Content = new Array();
+Content[1] = 'Whither is thy beloved [01730] gone [01980] , O thou fairest [03303] among women [0802]? whither is thy beloved [01730] turned aside [06437] ? that we may seek [01245] him with thee.';
+Content[2] = 'My beloved [01730] is gone down [03381] into his garden [01588], to the beds [06170] of spices [01314], to feed [07462] in the gardens [01588], and to gather [03950] lilies [07799].';
+Content[3] = 'I [am] my beloved\'s [01730], and my beloved [01730] [is] mine: he feedeth [07462] among the lilies [07799].';
+Content[4] = 'Thou [art] beautiful [03303], O my love [07474], as Tirzah [08656], comely [05000] as Jerusalem [03389], terrible [0366] as [an army] with banners [01713] .';
+Content[5] = 'Turn away [05437] thine eyes [05869] from me, for they [01992] have overcome [07292] me: thy hair [08181] [is] as a flock [05739] of goats [05795] that appear [01570] from Gilead [01568].';
+Content[6] = 'Thy teeth [08127] [are] as a flock [05739] of sheep [07353] which go up [05927] from the washing [07367], whereof every one beareth twins [08382] , and [there is] not one barren [07909] among them.';
+Content[7] = 'As a piece [06400] of a pomegranate [07416] [are] thy temples [07541] within [01157] thy locks [06777].';
+Content[8] = 'There are threescore [08346] queens [04436], and fourscore [08084] concubines [06370], and virgins [05959] without number [04557].';
+Content[9] = 'My dove [03123], my undefiled [08535] is [but] one [0259]; she [is] the [only] one [0259] of her mother [0517], she [is] the choice [01249] [one] of her that bare [03205] her. The daughters [01323] saw [07200] her, and blessed [0833] her; [yea], the queens [04436] and the concubines [06370], and they praised [01984] her.';
+Content[10] = 'Who [is] she [that] looketh forth [08259] as the morning [07837], fair [03303] as the moon [03842], clear [01249] as the sun [02535], [and] terrible [0366] as [an army] with banners [01713] ?';
+Content[11] = 'I went down [03381] into the garden [01594] of nuts [093] to see [07200] the fruits [03] of the valley [05158], [and] to see [07200] whether the vine [01612] flourished [06524] , [and] the pomegranates [07416] budded [05132] .';
+Content[12] = 'Or ever I was aware [03045] , my soul [05315] made [07760] me [like] the chariots [04818] of Amminadib [05993].';
+Content[13] = 'Return [07725] , return [07725] , O Shulamite [07759]; return [07725] , return [07725] , that we may look [02372] upon thee. What will ye see [02372] in the Shulamite [07759]? As it were the company [04246] of two armies [04264].';

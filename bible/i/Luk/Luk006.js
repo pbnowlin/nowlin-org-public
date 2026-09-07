@@ -1,0 +1,13 @@
+var LOI = [];
+LOI[0] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Jerusalem~~~~Luk~6~17~images/maps/Otest/otest_template.html~3a';
+LOI[1] = 'image~Bible~Maps~Modern Jerusalem (map) key=Jerusalem~~~~Luk~6~17~images/maps/Otest/otest_template.html~3b';
+LOI[2] = 'image~Bible~Maps~Middle Palestine (map) key=Tyre~~~~Luk~6~17~images/maps/Otest/otest_template.html~3c';
+LOI[3] = 'image~Bible~Maps~Southern Palestine (map) key=Jerusalem~~~~Luk~6~17~images/maps/Otest/otest_template.html~4';
+LOI[4] = 'image~Bible~Maps~Paul\'s Third Missionary Journey (156K map) key=Tyre~~~~Luk~6~17~images/maps/Journeys/journeys_template.html~3';
+LOI[5] = 'image~Bible~Places~Tower of David (engraving) key=Jerusalem~~~~Luk~6~17~images/places/Israel/israel_template.html~11';
+LOI[6] = 'image~Bible~Places~Damascus Gate (engraving) key=Jerusalem~~~~Luk~6~17~images/places/Israel/israel_template.html~12';
+LOI[7] = 'image~Bible~Places~Golden Gate-interior (engraving) key=Jerusalem~~~~Luk~6~17~images/places/Israel/israel_template.html~13';
+LOI[8] = 'image~Bible~Places~Golden Gate-exterior (engraving) key=Jerusalem~~~~Luk~6~17~images/places/Israel/israel_template.html~14';
+LOI[9] = 'image~Bible~Places~Mt. of Olives and Jerusalem (engraving) key=Jerusalem~~~~Luk~6~17~images/places/Israel/israel_template.html~17';
+LOI[10] = 'image~Bible~Images~Saul and David (engraving) key=David~~~~Luk~6~3~images/bible_images/Kings/kings_template.html~1';
+LOI[11] = 'image~Bible~Images~David Mourning for Absalom (engraving) key=David~~~~Luk~6~3~images/bible_images/Kings/kings_template.html~2';

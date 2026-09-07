@@ -1,0 +1,12 @@
+Content = new Array();
+Content[1] = '[[A Psalm [04210] of David [01732].]] Give [03051] unto the LORD [03068], O ye mighty [01121] [0410], give [03051] unto the LORD [03068] glory [03519] and strength [05797].';
+Content[2] = 'Give [03051] unto the LORD [03068] the glory [03519] due unto his name [08034]; worship [07812] the LORD [03068] in the beauty [01927] of holiness [06944].';
+Content[3] = 'The voice [06963] of the LORD [03068] [is] upon the waters [04325]: the God [0410] of glory [03519] thundereth [07481] : the LORD [03068] [is] upon many [07227] waters [04325].';
+Content[4] = 'The voice [06963] of the LORD [03068] [is] powerful [03581]; the voice [06963] of the LORD [03068] [is] full of majesty [01926].';
+Content[5] = 'The voice [06963] of the LORD [03068] breaketh [07665] the cedars [0730]; yea, the LORD [03068] breaketh [07665] the cedars [0730] of Lebanon [03844].';
+Content[6] = 'He maketh them also to skip [07540] like a calf [05695]; Lebanon [03844] and Sirion [08303] like a young [01121] unicorn [07214].';
+Content[7] = 'The voice [06963] of the LORD [03068] divideth [02672] the flames [03852] of fire [0784].';
+Content[8] = 'The voice [06963] of the LORD [03068] shaketh [02342] the wilderness [04057]; the LORD [03068] shaketh [02342] the wilderness [04057] of Kadesh [06946].';
+Content[9] = 'The voice [06963] of the LORD [03068] maketh the hinds [0355] to calve [02342] , and discovereth [02834] the forests [03295]: and in his temple [01964] doth every one speak [0559] of [his] glory [03519].';
+Content[10] = 'The LORD [03068] sitteth [03427] upon the flood [03999]; yea, the LORD [03068] sitteth [03427] King [04428] for ever [05769].';
+Content[11] = 'The LORD [03068] will give [05414] strength [05797] unto his people [05971]; the LORD [03068] will bless [01288] his people [05971] with peace [07965].';

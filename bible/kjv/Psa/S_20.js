@@ -1,0 +1,10 @@
+Content = new Array();
+Content[1] = '[[To the chief Musician [05329] , A Psalm [04210] of David [01732].]] The LORD [03068] hear [06030] thee in the day [03117] of trouble [06869]; the name [08034] of the God [0430] of Jacob [03290] defend [07682] thee;';
+Content[2] = 'Send [07971] thee help [05828] from the sanctuary [06944], and strengthen [05582] thee out of Zion [06726];';
+Content[3] = 'Remember [02142] all thy offerings [04503], and accept [01878] thy burnt sacrifice [05930]; Selah [05542].';
+Content[4] = 'Grant [05414] thee according to thine own heart [03824], and fulfil [04390] all thy counsel [06098].';
+Content[5] = 'We will rejoice [07442] in thy salvation [03444], and in the name [08034] of our God [0430] we will set up [our] banners [01713] : the LORD [03068] fulfil [04390] all thy petitions [04862].';
+Content[6] = 'Now know [03045] I that the LORD [03068] saveth [03467] his anointed [04899]; he will hear [06030] him from his holy [06944] heaven [08064] with the saving [03468] strength [01369] of his right hand [03225].';
+Content[7] = 'Some [trust] in chariots [07393], and some in horses [05483]: but we will remember [02142] the name [08034] of the LORD [03068] our God [0430].';
+Content[8] = 'They are brought down [03766] and fallen [05307] : but we are risen [06965] , and stand upright [05749] .';
+Content[9] = 'Save [03467] , LORD [03068]: let the king [04428] hear [06030] us when [03117] we call [07121] .';

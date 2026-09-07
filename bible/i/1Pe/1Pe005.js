@@ -1,0 +1,14 @@
+var LOI = [];
+LOI[0] = 'hymn~4~IS IT THE CROWNING DAY?~htm_i_s_isitthec.html';
+LOI[1] = 'hymn~4~O THE CROWN~htm_o_t_othcrown.html';
+LOI[2] = 'hymn~4~SOMETIME!~htm_s_o_m_sometim2.html';
+LOI[3] = 'hymn~4~WILL THERE BE ANY STARS?~htm_w_i_willther.html';
+LOI[4] = 'hymn~7~DEAR SHEPHERD OF THY PEOPLE, HEAR~htm_d_e_dearshep.html';
+LOI[5] = 'hymn~7~DOES JESUS CARE?~htm_d_o_doesjeca.html';
+LOI[6] = 'hymn~7~GOD, WHO MADE THE EARTH~htm_g_w_gwhomade.html';
+LOI[7] = 'hymn~7~I LEFT IT ALL WITH JESUS~htm_i_l_ilefiawj.html';
+LOI[8] = 'hymn~7~I MUST TELL JESUS~htm_i_m_imustell.html';
+LOI[9] = 'hymn~7~JESUS, REFUGE OF THE WEARY~htm_j_e_jesusref.html';
+LOI[10] = 'hymn~7~SOMEBODY CARES~htm_s_o_m_somecare.html';
+LOI[11] = 'hymn~8~MY SOUL BE ON THY GUARD~htm_m_y_mysoulbe.html';
+LOI[12] = 'image~Bible~Images~Jerusalem Taken Captive Into Babylon (engraving) key=Babylon~~~~1Pe~5~13~images/bible_images/Kings/kings_template.html~7';

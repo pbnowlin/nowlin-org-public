@@ -1,0 +1,12 @@
+var LOI = [];
+LOI[0] = 'hymn~10~FAIREST LORD JESUS~htm_f_a_faljesus.html';
+LOI[1] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Jerusalem~~~~Sgs~6~4~images/maps/Otest/otest_template.html~3a';
+LOI[2] = 'image~Bible~Maps~Modern Jerusalem (map) key=Jerusalem~~~~Sgs~6~4~images/maps/Otest/otest_template.html~3b';
+LOI[3] = 'image~Bible~Maps~Middle Palestine (map) key=Gilead~~~~Sgs~6~5~images/maps/Otest/otest_template.html~3c';
+LOI[4] = 'image~Bible~Maps~Southern Palestine (map) key=Jerusalem~~~~Sgs~6~4~images/maps/Otest/otest_template.html~4';
+LOI[5] = 'image~Bible~Maps~Southern Palestine (map) key=Gilead~~~~Sgs~6~5~images/maps/Otest/otest_template.html~4';
+LOI[6] = 'image~Bible~Places~Tower of David (engraving) key=Jerusalem~~~~Sgs~6~4~images/places/Israel/israel_template.html~11';
+LOI[7] = 'image~Bible~Places~Damascus Gate (engraving) key=Jerusalem~~~~Sgs~6~4~images/places/Israel/israel_template.html~12';
+LOI[8] = 'image~Bible~Places~Golden Gate-interior (engraving) key=Jerusalem~~~~Sgs~6~4~images/places/Israel/israel_template.html~13';
+LOI[9] = 'image~Bible~Places~Golden Gate-exterior (engraving) key=Jerusalem~~~~Sgs~6~4~images/places/Israel/israel_template.html~14';
+LOI[10] = 'image~Bible~Places~Mt. of Olives and Jerusalem (engraving) key=Jerusalem~~~~Sgs~6~4~images/places/Israel/israel_template.html~17';

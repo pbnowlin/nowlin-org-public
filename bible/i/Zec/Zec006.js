@@ -1,0 +1,18 @@
+var LOI = [];
+LOI[0] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Temple~~~~Zec~6~12~images/maps/Otest/otest_template.html~3a';
+LOI[1] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Temple~~~~Zec~6~13~images/maps/Otest/otest_template.html~3a';
+LOI[2] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Temple~~~~Zec~6~14~images/maps/Otest/otest_template.html~3a';
+LOI[3] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Temple~~~~Zec~6~15~images/maps/Otest/otest_template.html~3a';
+LOI[4] = 'image~Bible~Maps~Modern Jerusalem (map) key=Temple~~~~Zec~6~12~images/maps/Otest/otest_template.html~3b';
+LOI[5] = 'image~Bible~Maps~Modern Jerusalem (map) key=Temple~~~~Zec~6~13~images/maps/Otest/otest_template.html~3b';
+LOI[6] = 'image~Bible~Maps~Modern Jerusalem (map) key=Temple~~~~Zec~6~14~images/maps/Otest/otest_template.html~3b';
+LOI[7] = 'image~Bible~Maps~Modern Jerusalem (map) key=Temple~~~~Zec~6~15~images/maps/Otest/otest_template.html~3b';
+LOI[8] = 'image~Bible~Images~Jerusalem Taken Captive Into Babylon (engraving) key=Babylon~~~~Zec~6~10~images/bible_images/Kings/kings_template.html~7';
+LOI[9] = 'image~Bible~Images~The Jews Wailing Place (engraving) key=temple~~~~Zec~6~12~images/bible_images/Temple/temple_template.html~1';
+LOI[10] = 'image~Bible~Images~The Jews Wailing Place (engraving) key=temple~~~~Zec~6~13~images/bible_images/Temple/temple_template.html~1';
+LOI[11] = 'image~Bible~Images~The Jews Wailing Place (engraving) key=temple~~~~Zec~6~14~images/bible_images/Temple/temple_template.html~1';
+LOI[12] = 'image~Bible~Images~The Jews Wailing Place (engraving) key=temple~~~~Zec~6~15~images/bible_images/Temple/temple_template.html~1';
+LOI[13] = 'image~Bible~Images~The Tabernacle (engraving) key=temple~~~~Zec~6~12~images/bible_images/Temple/temple_template.html~2';
+LOI[14] = 'image~Bible~Images~The Tabernacle (engraving) key=temple~~~~Zec~6~13~images/bible_images/Temple/temple_template.html~2';
+LOI[15] = 'image~Bible~Images~The Tabernacle (engraving) key=temple~~~~Zec~6~14~images/bible_images/Temple/temple_template.html~2';
+LOI[16] = 'image~Bible~Images~The Tabernacle (engraving) key=temple~~~~Zec~6~15~images/bible_images/Temple/temple_template.html~2';

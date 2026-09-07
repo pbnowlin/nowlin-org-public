@@ -1,0 +1,13 @@
+var LOI = [];
+LOI[0] = 'hymn~4~NOT ALL THE BLOOD OF BEASTS~htm_n_a_nalblood.html';
+LOI[1] = 'hymn~10~ONCE, ONLY ONCE~htm_o_o_oonlonce.html';
+LOI[2] = 'hymn~21~BLESSED ASSURANCE~htm_b_l_blesseda.html';
+LOI[3] = 'hymn~22~I AM THINE, O LORD~htm_i_a_iatolord.html';
+LOI[4] = 'hymn~23~I WAS MADE A CHRISTIAN~htm_i_w_iwasmade.html';
+LOI[5] = 'hymn~23~STANDING ON THE PROMISES~htm_s_o_sotpogod.html';
+LOI[6] = 'image~Bible~Charts~The Revelation of Jesus (Ironside\'s chart) key=perdition~~~~Hbr~10~39~images/charts/Bible/bible_template.html~1';
+LOI[7] = 'image~Bible~Images~The Exposure of Moses (engraving) key=Moses~~~~Hbr~10~28~images/bible_images/Moses/moses_template.html~6';
+LOI[8] = 'image~Bible~Images~The Finding of Moses (engraving) key=Moses~~~~Hbr~10~28~images/bible_images/Moses/moses_template.html~7';
+LOI[9] = 'image~Bible~Images~Moses and the Brazen Serpent (engraving) key=Moses~~~~Hbr~10~28~images/bible_images/Moses/moses_template.html~9';
+LOI[10] = 'image~Bible~Images~Moses on Mount Pisgah (engraving) key=Moses~~~~Hbr~10~28~images/bible_images/Moses/moses_template.html~10';
+LOI[11] = 'image~Bible~Images~Death of Moses on Mount Nebo (engraving) key=Moses~~~~Hbr~10~28~images/bible_images/Moses/moses_template.html~11';

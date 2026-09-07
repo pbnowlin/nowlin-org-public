@@ -1,0 +1,10 @@
+var LOI = [];
+LOI[0] = 'hymn~1~ALL LANDS, TO GOD IN JOYFUL SOUNDS~htm_a_l_alllands.html';
+LOI[1] = 'hymn~1~JOYFULLY SING~htm_j_o_joyfully.html';
+LOI[2] = 'hymn~2~COME, ALL YE PEOPLE, BLESS OUR GOD~htm_c_a_caypblog.html';
+LOI[3] = 'hymn~4~LET ALL THE WORLD IN EVERY CORNER SING~htm_l_e_letalltw.html';
+LOI[4] = 'hymn~4~LORD GOD, WE WORSHIP THEE~htm_l_g_lgwwthee.html';
+LOI[5] = 'hymn~4~SING TO THE GREAT JEHOVAH&#8217;S PRAISE~htm_s_g_sgjprais.html';
+LOI[6] = 'hymn~16~COME, YE THAT FEAR THE LORD~htm_c_y_cytftlor.html';
+LOI[7] = 'hymn~16~I LOVE TO TELL THE STORY~htm_i_l_ilttts.html';
+LOI[8] = 'hymn~19~GOD FROM ON HIGH HATH HEARD~htm_g_f_gfromonh.html';

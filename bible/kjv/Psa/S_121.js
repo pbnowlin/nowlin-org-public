@@ -1,0 +1,9 @@
+Content = new Array();
+Content[1] = '[[A Song [07892] of degrees [04609].]] I will lift up [05375] mine eyes [05869] unto the hills [02022], from whence [0370] cometh [0935] my help [05828].';
+Content[2] = 'My help [05828] [cometh] from the LORD [03068], which made [06213] heaven [08064] and earth [0776].';
+Content[3] = 'He will not suffer [05414] thy foot [07272] to be moved [04132]: he that keepeth [08104] thee will not slumber [05123] .';
+Content[4] = 'Behold, he that keepeth [08104] Israel [03478] shall neither slumber [05123] nor sleep [03462] .';
+Content[5] = 'The LORD [03068] [is] thy keeper [08104] : the LORD [03068] [is] thy shade [06738] upon thy right [03225] hand [03027].';
+Content[6] = 'The sun [08121] shall not smite [05221] thee by day [03119], nor the moon [03394] by night [03915].';
+Content[7] = 'The LORD [03068] shall preserve [08104] thee from all evil [07451]: he shall preserve [08104] thy soul [05315].';
+Content[8] = 'The LORD [03068] shall preserve [08104] thy going out [03318] and thy coming in [0935] from this time forth, and even for [05704] evermore [05769].';

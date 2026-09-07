@@ -1,0 +1,16 @@
+Content = new Array();
+Content[1] = '[[A Prayer [08605] of David [01732].]] Hear [08085] the right [06664], O LORD [03068], attend [07181] unto my cry [07440], give ear [0238] unto my prayer [08605], [that goeth] not [03808] out of feigned [04820] lips [08193].';
+Content[2] = 'Let my sentence [04941] come forth [03318] from thy presence [06440]; let thine eyes [05869] behold [02372] the things that are equal [04339].';
+Content[3] = 'Thou hast proved [0974] mine heart [03820]; thou hast visited [06485] [me] in the night [03915]; thou hast tried [06884] me, [and] shalt find [04672] nothing; I am purposed [02161] [that] my mouth [06310] shall not transgress [05674] .';
+Content[4] = 'Concerning the works [06468] of men [0120], by the word [01697] of thy lips [08193] I have kept [08104] [me from] the paths [0734] of the destroyer [06530].';
+Content[5] = 'Hold up [08551] my goings [0838] in thy paths [04570], [that] my footsteps [06471] slip [04131] not.';
+Content[6] = 'I have called [07121] upon thee, for thou wilt hear [06030] me, O God [0410]: incline [05186] thine ear [0241] unto me, [and hear [08085] ] my speech [0565].';
+Content[7] = 'Shew thy marvellous [06395] lovingkindness [02617], O thou that savest [03467] by thy right hand [03225] them which put their trust [02620] [in thee] from those that rise up [06965] [against them].';
+Content[8] = 'Keep [08104] me as the apple [0380] of the eye [01323] [05869], hide [05641] me under the shadow [06738] of thy wings [03671],';
+Content[9] = 'From [06440] the wicked [07563] that [02098] oppress [07703] me, [from] my deadly [05315] enemies [0341] , [who] compass me about [05362] .';
+Content[10] = 'They are inclosed [05462] in their own fat [02459]: with their mouth [06310] they speak [01696] proudly [01348].';
+Content[11] = 'They have now compassed [05437] us in our steps [0838]: they have set [07896] their eyes [05869] bowing down [05186] to the earth [0776];';
+Content[12] = 'Like [01825] as a lion [0738] [that] is greedy [03700] of his prey [02963] , and as it were a young lion [03715] lurking [03427] in secret places [04565].';
+Content[13] = 'Arise [06965] , O LORD [03068], disappoint [06923] him [06440], cast him down [03766] : deliver [06403] my soul [05315] from the wicked [07563], [which is] thy sword [02719]:';
+Content[14] = 'From men [04962] [which are] thy hand [03027], O LORD [03068], from men [04962] of the world [02465], [which have] their portion [02506] in [this] life [02416], and whose belly [0990] thou fillest [04390] with thy hid [06840] [treasure]: they are full [07646] of children [01121], and leave [03240] the rest [03499] of their [substance] to their babes [05768].';
+Content[15] = 'As for me, I will behold [02372] thy face [06440] in righteousness [06664]: I shall be satisfied [07646] , when I awake [06974] , with thy likeness [08544].';

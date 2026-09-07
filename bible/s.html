@@ -1,0 +1,110 @@
+<html>
+<head>
+<title>Search: Blue Letter Bible</title>
+<title>Blue Letter Bible</title>
+<script src="./js/basepath.js"></script>
+<script src="./js/nav.js"></script>
+<script src="./js/MainHeader.js"></script>
+<!--hides the Show Strong's input checkbox-->
+<style>
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    outline: none;
+}
+</style>
+<div class="head">Search Tools</div>
+<div class="main-left">
+  <div class="pad2020">
+    <script>document.write('<a href="'+localBase);</script>#search"><img src="./gifs/bluesquare.gif" border="0" absalign="middle"></a> <script>document.write('<a href="'+localBase);</script>#search"><strong>Word and Phrase Search</strong></a>
+    <p style="margin-top:0px; margin-left:25px;">Word/Phrase Search through the KJV Bible</p>
+    <a href="./search1.html"><img src="./gifs/bluesquare.gif" border="0" absalign="middle"></a> <a href="./search1.html"><strong>Detailed Word Search</strong></a>
+    <p style="margin-top:0px; margin-left:25px;">Browse through an alphabetical listing of 10,000+ entries for the above six Bible Dictionaries</p>
+    <script>document.write('<a href="'+localBase);</script>#strongs"><img src="./gifs/bluesquare.gif" border="0" absalign="middle"></a> <script>document.write('<a href="'+localBase);</script>#strongs"><strong>Strong's Search</strong></a>
+    <p style="margin-top:0px; margin-left:25px;">A Strong's Number Search Tool that searches a Hebrew/Greek Concordance plus a Lexicon, for any Strong's Number</p>
+    <a href="./f.html"><img src="./gifs/bluesquare.gif" border="0" absalign="middle"></a> <a href="./f.html"><strong>Free Offer</strong></a>
+    <p style="margin-top:0px; margin-left:25px;">Place these Blue Letter Bible Search Features on your own Website: Free Downloadable Code!</p>
+  </div>
+</div>
+<div class="desc-left">
+  <div class="pad2020">
+    <p>Many of these Search Features are available while reading the Blue Letter Bible, simply by clicking on the <img src="./gifs/baby_c.gif" height="12"> button next to any verse in the Bible to view an English or Strong's Concordance Search Results. Other tools may be available on later verions of the BLB-CD.</p>
+  </div>
+</div>
+<div class="return">
+  <a href="#top">Return to Top</A>
+</div>
+
+<img src="./gifs/clearpixel.gif" height="600" width="1" border="0"><br />
+
+
+<div class="subhead">
+  <a name="search"></a>Word Search / Concordance
+</div>
+<div class="main-center">
+  <div class="pad2020">
+    <p style="text-align:left;">Searches the KJV of the Bible and returns a listing of all occurences of the English words chosen and their combinations.</p>
+
+    <div class="subhead" style="width:450;">
+      Enter word or phrase such as<br /><em>Jesus faith love</em>, <br />or <em>God of my salvation</em>, or <em>believ* ever*</em>
+    </div>
+    <div class="main-left" style="width:450;border-width:1px;">
+      <div class="pad2020">
+        <table align="center" border="0" cellspacing="0" cellpadding="0" width="100%">
+        <form name="words" action="./index.html" onSubmit="return W_Nav(document.words.word.value, document.words.show.checked);" method="get">
+        <tr><td colspan="4" align="left"><img src="./gifs/clearpixel.gif" width="1" height="7"><br /></td></tr>
+        <tr><td align="center"><img src="./gifs/clearpixel.gif" width="10" height="1"><br /></td>
+        <td align="left"><input type="text" size="35" name="word" style="font-size:12px;font-family:trebuchet ms,arial,helvetica"><span style="font-size:1%"><input  type="checkbox" name="show" value="" >&nbsp;&nbsp;</span></td><td align="right"><input type="image" border="0" src="./gifs/searchb.gif" alt="Word Search"><br /></td><td align="center"><img src="./gifs/clearpixel.gif" width="10" height="1"><br /></td></tr>
+        <tr><td colspan="4" align="left"><img src="./gifs/clearpixel.gif" width="1" height="7"><br /></td></tr>
+        </form>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="return">
+  <a href="#top">Search Tool Index</a>
+</div>
+
+
+
+
+
+
+		<img src="./gifs/clearpixel.gif" height="600" width="1" border="0"><br>
+
+
+<div class="subhead">
+  <a name="strongs"></a>Strong's Search
+</div>
+<div class="main-center">
+  <div class="pad2020">
+    <p style="text-align:center;">If you know a Strong's number and would like to look up the word, enter it here.</p>
+        <form action="./s.html" name="strongssearch" onSubmit="return W_Nav('#'+document.strongssearch.strongs.value, document.strongssearch.show.checked);">
+        <input type="hidden" name="show_strongs" value="">
+          <table align="center" width="450" cellspacing="1" cellpadding="2" border="0" bgcolor="#000000">
+          <tr>
+          <td width="349" style="background:#0069b3 url(./gifs/strongs_sb.gif) no-repeat" align="center" valign="middle">
+            <p style="color:#fff;font-weight:bold;">Enter a Strong's Number e.g. 2424 Greek</p>
+          </td>
+          <td bgcolor="#ffffff" align="center" valign="top" width="81">
+              <input type="text" size="4" name="strongs"><br />
+              <b>Greek</b><input type="radio" name="language" value="G" checked onClick="this.form.strongs.value = this.form.strongs.value.replace(/^0*/, '');"><br />
+              <b>Hebrew</b><input type="radio" name="language" value="H" onClick="this.form.strongs.value = this.form.strongs.value.replace(/^0*/, '0');">
+          </td>
+          <td bgcolor="#ffffff" align="center" valign="center">
+              <input type="image" border="0" src="./gifs/searchb.gif" alt="Strong's Search"><span style="font-size:0px"><input type="checkbox" border:none name="show" value=""></span>
+          </td>
+          </tr>
+          </table>
+        </form>
+
+ </div>
+</div>
+<div class="return">
+  <a href="#top">Search Tool Index</a>
+</div>
+
+<script src="./js/MainFooter.js"></script>

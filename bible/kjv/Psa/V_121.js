@@ -1,0 +1,9 @@
+Content = new Array();
+Content[1]="[[A Song of degrees.]] I will lift up mine eyes unto the hills, from whence cometh my help.";
+Content[2]="My help [cometh] from the LORD, which made heaven and earth.";
+Content[3]="He will not suffer thy foot to be moved: he that keepeth thee will not slumber.";
+Content[4]="Behold, he that keepeth Israel shall neither slumber nor sleep.";
+Content[5]="The LORD [is] thy keeper: the LORD [is] thy shade upon thy right hand.";
+Content[6]="The sun shall not smite thee by day, nor the moon by night.";
+Content[7]="The LORD shall preserve thee from all evil: he shall preserve thy soul.";
+Content[8]="The LORD shall preserve thy going out and thy coming in from this time forth, and even for evermore.";

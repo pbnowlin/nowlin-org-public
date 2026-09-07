@@ -1,0 +1,13 @@
+Content = new Array();
+Content[1] = '[[To the chief Musician [05329] , [A Psalm] of David [01732] the servant [05650] of the LORD [03068].]] The transgression [06588] of the wicked [07563] saith [05002] within [07130] my heart [03820], [that there is] no fear [06343] of God [0430] before his eyes [05869].';
+Content[2] = 'For he flattereth [02505] himself in his own eyes [05869], until his iniquity [05771] be found [04672] to be hateful [08130] .';
+Content[3] = 'The words [01697] of his mouth [06310] [are] iniquity [0205] and deceit [04820]: he hath left off [02308] to be wise [07919] , [and] to do good [03190] .';
+Content[4] = 'He deviseth [02803] mischief [0205] upon his bed [04904]; he setteth [03320] himself in a way [01870] [that is] not good [02896]; he abhorreth [03988] not evil [07451].';
+Content[5] = 'Thy mercy [02617], O LORD [03068], [is] in the heavens [08064]; [and] thy faithfulness [0530] [reacheth] unto the clouds [07834].';
+Content[6] = 'Thy righteousness [06666] [is] like the great [0410] mountains [02042]; thy judgments [04941] [are] a great [07227] deep [08415]: O LORD [03068], thou preservest [03467] man [0120] and beast [0929].';
+Content[7] = 'How excellent [03368] [is] thy lovingkindness [02617], O God [0430]! therefore the children [01121] of men [0120] put their trust [02620] under the shadow [06738] of thy wings [03671].';
+Content[8] = 'They shall be abundantly satisfied [07301] with the fatness [01880] of thy house [01004]; and thou shalt make them drink [08248] of the river [05158] of thy pleasures [05730].';
+Content[9] = 'For with thee [is] the fountain [04726] of life [02416]: in thy light [0216] shall we see [07200] light [0216].';
+Content[10] = 'O continue [04900] thy lovingkindness [02617] unto them that know [03045] thee; and thy righteousness [06666] to the upright [03477] in heart [03820].';
+Content[11] = 'Let not the foot [07272] of pride [01346] come [0935] against me, and let not the hand [03027] of the wicked [07563] remove [05110] me.';
+Content[12] = 'There are the workers [06466] of iniquity [0205] fallen [05307] : they are cast down [01760] , and shall not be able [03201] to rise [06965] .';

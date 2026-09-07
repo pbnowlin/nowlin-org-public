@@ -1,0 +1,15 @@
+Content = new Array();
+Content[1] = '[Set] the trumpet [07782] to thy mouth [02441]. [He shall come] as an eagle [05404] against the house [01004] of the LORD [03068], because they have transgressed [05674] my covenant [01285], and trespassed [06586] against my law [08451].';
+Content[2] = 'Israel [03478] shall cry [02199] unto me, My God [0430], we know [03045] thee.';
+Content[3] = 'Israel [03478] hath cast off [02186] [the thing that is] good [02896]: the enemy [0341] shall pursue [07291] him.';
+Content[4] = 'They have set up kings [04427] , but not by me: they have made princes [07786] , and I knew [03045] [it] not: of their silver [03701] and their gold [02091] have they made [06213] them idols [06091], that they may be cut off [03772] .';
+Content[5] = 'Thy calf [05695], O Samaria [08111], hath cast [02186] [thee] off; mine anger [0639] is kindled [02734] against them: how long [will it be] ere [03808] they attain [03201] to innocency [05356]?';
+Content[6] = 'For from Israel [03478] [was] it also: the workman [02796] made [06213] it; therefore it [is] not God [0430]: but the calf [05695] of Samaria [08111] shall be broken in pieces [07616].';
+Content[7] = 'For they have sown [02232] the wind [07307], and they shall reap [07114] the whirlwind [05492]: it hath no stalk [07054]: the bud [06780] shall yield [06213] no meal [07058]: if [0194] so be it yield [06213] , the strangers [02114] shall swallow it up [01104] .';
+Content[8] = 'Israel [03478] is swallowed up [01104] : now shall they be among the Gentiles [01471] as a vessel [03627] wherein [is] no pleasure [02656].';
+Content[9] = 'For they are gone up [05927] to Assyria [0804], a wild ass [06501] alone [0909] by himself: Ephraim [0669] hath hired [08566] lovers [0158].';
+Content[10] = 'Yea, though they have hired [08566] among the nations [01471], now will I gather [06908] them, and they shall sorrow [02490] a little [04592] for the burden [04853] of the king [04428] of princes [08269].';
+Content[11] = 'Because Ephraim [0669] hath made many [07235] altars [04196] to sin [02398] , altars [04196] shall be unto him to sin [02398] .';
+Content[12] = 'I have written [03789] to him the great things [07230] [07239] of my law [08451], [but] they were counted [02803] as a strange thing [02114] .';
+Content[13] = 'They sacrifice [02076] flesh [01320] [for] the sacrifices [02077] of mine offerings [01890], and eat [0398] [it; but] the LORD [03068] accepteth [07521] them not; now will he remember [02142] their iniquity [05771], and visit [06485] their sins [02403]: they shall return [07725] to Egypt [04714].';
+Content[14] = 'For Israel [03478] hath forgotten [07911] his Maker [06213] , and buildeth [01129] temples [01964]; and Judah [03063] hath multiplied [07235] fenced [01219] cities [05892]: but I will send [07971] a fire [0784] upon his cities [05892], and it shall devour [0398] the palaces [0759] thereof.';

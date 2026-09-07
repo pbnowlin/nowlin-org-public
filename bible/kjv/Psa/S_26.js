@@ -1,0 +1,13 @@
+Content = new Array();
+Content[1] = '[[[A Psalm] of David [01732].]] Judge [08199] me, O LORD [03068]; for I have walked [01980] in mine integrity [08537]: I have trusted [0982] also in the LORD [03068]; [therefore] I shall not slide [04571] .';
+Content[2] = 'Examine [0974] me, O LORD [03068], and prove [05254] me; try [06884] my reins [03629] and my heart [03820].';
+Content[3] = 'For thy lovingkindness [02617] [is] before mine eyes [05869]: and I have walked [01980] in thy truth [0571].';
+Content[4] = 'I have not sat [03427] with vain [07723] persons [04962], neither will I go in [0935] with dissemblers [05956] .';
+Content[5] = 'I have hated [08130] the congregation [06951] of evil doers [07489] ; and will not sit [03427] with the wicked [07563].';
+Content[6] = 'I will wash [07364] mine hands [03709] in innocency [05356]: so will I compass [05437] thine altar [04196], O LORD [03068]:';
+Content[7] = 'That I may publish [08085] with the voice [06963] of thanksgiving [08426], and tell [05608] of all thy wondrous works [06381] .';
+Content[8] = 'LORD [03068], I have loved [0157] the habitation [04583] of thy house [01004], and the place [04725] where thine honour [03519] dwelleth [04908].';
+Content[9] = 'Gather [0622] not my soul [05315] with sinners [02400], nor my life [02416] with bloody [01818] men [0582]:';
+Content[10] = 'In whose hands [03027] [is] mischief [02154], and their right hand [03225] is full [04390] of bribes [07810].';
+Content[11] = 'But as for me, I will walk [03212] in mine integrity [08537]: redeem [06299] me, and be merciful [02603] unto me.';
+Content[12] = 'My foot [07272] standeth [05975] in an even place [04334]: in the congregations [04721] will I bless [01288] the LORD [03068].';

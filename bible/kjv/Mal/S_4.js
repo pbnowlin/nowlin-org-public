@@ -1,0 +1,7 @@
+Content = new Array();
+Content[1] = 'For, behold, the day [03117] cometh [0935] , that shall burn [01197] as an oven [08574]; and all the proud [02086], yea, and all that do [06213] wickedly [07564], shall be stubble [07179]: and the day [03117] that cometh [0935] shall burn them up [03857] , saith [0559] the LORD [03068] of hosts [06635], that it shall leave [05800] them neither root [08328] nor branch [06057].';
+Content[2] = 'But unto you that fear [03373] my name [08034] shall the Sun [08121] of righteousness [06666] arise [02224] with healing [04832] in his wings [03671]; and ye shall go forth [03318] , and grow up [06335] as calves [05695] of the stall [04770].';
+Content[3] = 'And ye shall tread down [06072] the wicked [07563]; for they shall be ashes [0665] under the soles [03709] of your feet [07272] in the day [03117] that I shall do [06213] [this], saith [0559] the LORD [03068] of hosts [06635].';
+Content[4] = 'Remember [02142] ye the law [08451] of Moses [04872] my servant [05650], which I commanded [06680] unto him in Horeb [02722] for all Israel [03478], [with] the statutes [02706] and judgments [04941].';
+Content[5] = 'Behold, I will send [07971] you Elijah [0452] the prophet [05030] before [06440] the coming [0935] of the great [01419] and dreadful [03372] day [03117] of the LORD [03068]:';
+Content[6] = 'And he shall turn [07725] the heart [03820] of the fathers [01] to the children [01121], and the heart [03820] of the children [01121] to their fathers [01], lest I come [0935] and smite [05221] the earth [0776] with a curse [02764].';

@@ -1,0 +1,11 @@
+var LOI = [];
+LOI[0] = 'hymn~6~SAVED, SAVED~htm_s_a_savdsavd.html';
+LOI[1] = 'hymn~7~COME, SOUL, AND FIND THY REST~htm_c_o_comesoul.html';
+LOI[2] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Jerusalem~~~~Psa~116~19~images/maps/Otest/otest_template.html~3a';
+LOI[3] = 'image~Bible~Maps~Modern Jerusalem (map) key=Jerusalem~~~~Psa~116~19~images/maps/Otest/otest_template.html~3b';
+LOI[4] = 'image~Bible~Maps~Southern Palestine (map) key=Jerusalem~~~~Psa~116~19~images/maps/Otest/otest_template.html~4';
+LOI[5] = 'image~Bible~Places~Tower of David (engraving) key=Jerusalem~~~~Psa~116~19~images/places/Israel/israel_template.html~11';
+LOI[6] = 'image~Bible~Places~Damascus Gate (engraving) key=Jerusalem~~~~Psa~116~19~images/places/Israel/israel_template.html~12';
+LOI[7] = 'image~Bible~Places~Golden Gate-interior (engraving) key=Jerusalem~~~~Psa~116~19~images/places/Israel/israel_template.html~13';
+LOI[8] = 'image~Bible~Places~Golden Gate-exterior (engraving) key=Jerusalem~~~~Psa~116~19~images/places/Israel/israel_template.html~14';
+LOI[9] = 'image~Bible~Places~Mt. of Olives and Jerusalem (engraving) key=Jerusalem~~~~Psa~116~19~images/places/Israel/israel_template.html~17';

@@ -1,0 +1,17 @@
+var LOD = [];
+LOD[0] = 'naves~AFFLICTIONS AND ADVERSITIES~- Prayer In~~~1~NT0000130~1747';
+LOD[1] = 'naves~AFFLICTIONS AND ADVERSITIES~- Prayer In~~~2~NT0000130~1747';
+LOD[2] = 'naves~AFFLICTIONS AND ADVERSITIES~- Prayer In~~~5~NT0000130~1747';
+LOD[3] = 'naves~AFFLICTIONS AND ADVERSITIES~- Prayer In~~~6~NT0000130~1747';
+LOD[4] = 'naves~AFFLICTIONS AND ADVERSITIES~- Prayer In~~~7~NT0000130~1747';
+LOD[5] = 'naves~FAITH~- Exemplified~~~3~NT0001783~16639';
+LOD[6] = 'naves~FAITH~- Exemplified~~~5~NT0001783~16639';
+LOD[7] = 'naves~GOD~- Knowledge Of~~~3~NT0002043~20738';
+LOD[8] = 'naves~MUSIC~- Maschil~~~1~NT0003466~39093';
+LOD[9] = 'naves~PRAYER~- Importunity In~~~1~NT0003935~43725';
+LOD[10] = 'naves~PRAYER~- Importunity In~~~2~NT0003935~43725';
+LOD[11] = 'torreys~Prisons~- Illustrative Of~~~7~TT0000451~22990';
+LOD[12] = 'torreys~Wisdom of God, The~- Exhibited In Knowing~~~3~TT0000620~33268';
+LOD[13] = 'easton~Prison~~~~7~ET0003004~17325';
+LOD[14] = 'subject~God s knowledge~~~~3~SGod_s_knowledge~3737';
+LOD[15] = 'hitchcock~David~~~~1~HDavid~0';

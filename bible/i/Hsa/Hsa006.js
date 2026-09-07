@@ -1,0 +1,13 @@
+var LOI = [];
+LOI[0] = 'hymn~3~FOLLOW ON~htm_f_o_followon.html';
+LOI[1] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Israel,Ephraim~~~~Hsa~6~10~images/maps/Otest/otest_template.html~1b';
+LOI[2] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Judah,Ephraim~~~~Hsa~6~4~images/maps/Otest/otest_template.html~1b';
+LOI[3] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Judah~~~~Hsa~6~11~images/maps/Otest/otest_template.html~1b';
+LOI[4] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Israel,Ephraim~~~~Hsa~6~10~images/maps/Otest/otest_template.html~1c';
+LOI[5] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Judah,Ephraim~~~~Hsa~6~4~images/maps/Otest/otest_template.html~1c';
+LOI[6] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Judah~~~~Hsa~6~11~images/maps/Otest/otest_template.html~1c';
+LOI[7] = 'image~Bible~Maps~Middle Palestine (map) key=Israel~~~~Hsa~6~10~images/maps/Otest/otest_template.html~3c';
+LOI[8] = 'image~Bible~Maps~Middle Palestine (map) key=Gilead~~~~Hsa~6~8~images/maps/Otest/otest_template.html~3c';
+LOI[9] = 'image~Bible~Maps~Southern Palestine (map) key=Israel~~~~Hsa~6~10~images/maps/Otest/otest_template.html~4';
+LOI[10] = 'image~Bible~Maps~Southern Palestine (map) key=Gilead~~~~Hsa~6~8~images/maps/Otest/otest_template.html~4';
+LOI[11] = 'image~Bible~Maps~Divisions of Palestine (map) key=Israel~~~~Hsa~6~10~images/maps/Christ/christ_template.html~1';

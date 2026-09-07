@@ -1,0 +1,15 @@
+Content = new Array();
+Content[1] = 'And the angel [04397] that talked [01696] with me came again [07725] , and waked [05782] me, as a man [0376] that is wakened [05782] out of his sleep [08142],';
+Content[2] = 'And said [0559] unto me, What seest [07200] thou? And I said [0559] , I have looked [07200] , and behold a candlestick [04501] all [of] gold [02091], with a bowl [01531] upon the top [07218] of it, and his seven [07651] lamps [05216] thereon, and seven [07651] pipes [04166] to the seven [07651] lamps [05216], which [are] upon the top [07218] thereof:';
+Content[3] = 'And two [08147] olive trees [02132] by it, one [0259] upon the right [03225] [side] of the bowl [01543], and the other [0259] upon the left [08040] [side] thereof.';
+Content[4] = 'So I answered [06030] and spake [0559] to the angel [04397] that talked [01696] with me, saying [0559] , What [are] these, my lord [0113]?';
+Content[5] = 'Then the angel [04397] that talked [01696] with me answered [06030] and said [0559] unto me, Knowest [03045] thou not what these be? And I said [0559] , No, my lord [0113].';
+Content[6] = 'Then he answered [06030] and spake [0559] unto me, saying [0559] , This [is] the word [01697] of the LORD [03068] unto Zerubbabel [02216], saying [0559] , Not by might [02428], nor by power [03581], but by my spirit [07307], saith [0559] the LORD [03068] of hosts [06635].';
+Content[7] = 'Who [art] thou, O great [01419] mountain [02022]? before [06440] Zerubbabel [02216] [thou shalt become] a plain [04334]: and he shall bring forth [03318] the headstone [068] [07222] [thereof with] shoutings [08663], [crying], Grace [02580], grace [02580] unto it.';
+Content[8] = 'Moreover the word [01697] of the LORD [03068] came unto me, saying [0559] ,';
+Content[9] = 'The hands [03027] of Zerubbabel [02216] have laid the foundation [03245] of this house [01004]; his hands [03027] shall also finish [01214] it; and thou shalt know [03045] that the LORD [03068] of hosts [06635] hath sent [07971] me unto you.';
+Content[10] = 'For who hath despised [0936] the day [03117] of small things [06996]? for they shall rejoice [08055] , and shall see [07200] the plummet [068] [0913] in the hand [03027] of Zerubbabel [02216] [with] those seven [07651]; they [are] the eyes [05869] of the LORD [03068], which run to and fro [07751] through the whole earth [0776].';
+Content[11] = 'Then answered [06030] I, and said [0559] unto him, What [are] these two [08147] olive trees [02132] upon the right [03225] [side] of the candlestick [04501] and upon the left [08040] [side] thereof?';
+Content[12] = 'And I answered [06030] again [08145], and said [0559] unto him, What [be these] two [08147] olive [02132] branches [07641] which through [03027] the two [08147] golden [02091] pipes [06804] empty [07324] the golden [02091] [oil] out of themselves?';
+Content[13] = 'And he answered [0559] me and said [0559] , Knowest [03045] thou not what these [be]? And I said [0559] , No, my lord [0113].';
+Content[14] = 'Then said [0559] he, These [are] the two [08147] anointed [03323] ones [01121], that stand [05975] by the Lord [0113] of the whole earth [0776].';

@@ -1,0 +1,15 @@
+var LOI = [];
+LOI[0] = 'hymn~29~AGAIN THE LORD OF LIGHT AND LIFE~htm_a_g_againthe.html';
+LOI[1] = 'hymn~50~COME, AND LET US SWEETLY JOIN~htm_c_o_comelusj.html';
+LOI[2] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Saul~~~~2Sa~22~1~images/maps/Otest/otest_template.html~1c';
+LOI[3] = 'image~Bible~Maps~Cities of Refuge (map) key=refuge~~~~2Sa~22~3~images/maps/Otest/otest_template.html~2';
+LOI[4] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Temple~~~~2Sa~22~7~images/maps/Otest/otest_template.html~3a';
+LOI[5] = 'image~Bible~Maps~Modern Jerusalem (map) key=Temple~~~~2Sa~22~7~images/maps/Otest/otest_template.html~3b';
+LOI[6] = 'image~Bible~Images~Saul and David (engraving) key=Saul,David~~~~2Sa~22~1~images/bible_images/Kings/kings_template.html~1';
+LOI[7] = 'image~Bible~Images~Saul and David (engraving) key=David~~~~2Sa~22~51~images/bible_images/Kings/kings_template.html~1';
+LOI[8] = 'image~Bible~Images~David Mourning for Absalom (engraving) key=David~~~~2Sa~22~1~images/bible_images/Kings/kings_template.html~2';
+LOI[9] = 'image~Bible~Images~David Mourning for Absalom (engraving) key=David~~~~2Sa~22~51~images/bible_images/Kings/kings_template.html~2';
+LOI[10] = 'image~Bible~Images~The Death of Stephen key=Saul~~~~2Sa~22~1~images/bible_images/Acts/acts_template.html~1';
+LOI[11] = 'image~Bible~Images~The Conversion of St. Paul key=Saul~~~~2Sa~22~1~images/bible_images/Acts/acts_template.html~2';
+LOI[12] = 'image~Bible~Images~The Jews Wailing Place (engraving) key=temple~~~~2Sa~22~7~images/bible_images/Temple/temple_template.html~1';
+LOI[13] = 'image~Bible~Images~The Tabernacle (engraving) key=temple~~~~2Sa~22~7~images/bible_images/Temple/temple_template.html~2';

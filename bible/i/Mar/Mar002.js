@@ -1,0 +1,17 @@
+var LOI = [];
+LOI[0] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Levi~~~~Mar~2~14~images/maps/Otest/otest_template.html~1b';
+LOI[1] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Levi~~~~Mar~2~14~images/maps/Otest/otest_template.html~1c';
+LOI[2] = 'image~Bible~Images~Saul and David (engraving) key=David~~~~Mar~2~25~images/bible_images/Kings/kings_template.html~1';
+LOI[3] = 'image~Bible~Images~David Mourning for Absalom (engraving) key=David~~~~Mar~2~25~images/bible_images/Kings/kings_template.html~2';
+LOI[4] = 'image~Bible~Images~Man With Palsy Healed (engraving)~~~~Mar~2~1~images/bible_images/Miracles/miracles_template.html~2';
+LOI[5] = 'image~Bible~Images~Man With Palsy Healed (engraving)~~~~Mar~2~2~images/bible_images/Miracles/miracles_template.html~2';
+LOI[6] = 'image~Bible~Images~Man With Palsy Healed (engraving)~~~~Mar~2~3~images/bible_images/Miracles/miracles_template.html~2';
+LOI[7] = 'image~Bible~Images~Man With Palsy Healed (engraving)~~~~Mar~2~4~images/bible_images/Miracles/miracles_template.html~2';
+LOI[8] = 'image~Bible~Images~Man With Palsy Healed (engraving)~~~~Mar~2~5~images/bible_images/Miracles/miracles_template.html~2';
+LOI[9] = 'image~Bible~Images~Man With Palsy Healed (engraving)~~~~Mar~2~6~images/bible_images/Miracles/miracles_template.html~2';
+LOI[10] = 'image~Bible~Images~Man With Palsy Healed (engraving)~~~~Mar~2~7~images/bible_images/Miracles/miracles_template.html~2';
+LOI[11] = 'image~Bible~Images~Man With Palsy Healed (engraving)~~~~Mar~2~8~images/bible_images/Miracles/miracles_template.html~2';
+LOI[12] = 'image~Bible~Images~Man With Palsy Healed (engraving)~~~~Mar~2~9~images/bible_images/Miracles/miracles_template.html~2';
+LOI[13] = 'image~Bible~Images~Man With Palsy Healed (engraving)~~~~Mar~2~10~images/bible_images/Miracles/miracles_template.html~2';
+LOI[14] = 'image~Bible~Images~Man With Palsy Healed (engraving)~~~~Mar~2~11~images/bible_images/Miracles/miracles_template.html~2';
+LOI[15] = 'image~Bible~Images~Man With Palsy Healed (engraving)~~~~Mar~2~12~images/bible_images/Miracles/miracles_template.html~2';

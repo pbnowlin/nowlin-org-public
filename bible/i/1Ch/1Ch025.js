@@ -1,0 +1,10 @@
+var LOI = [];
+LOI[0] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Joseph~~~~1Ch~25~2~images/maps/Otest/otest_template.html~1b';
+LOI[1] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Joseph~~~~1Ch~25~9~images/maps/Otest/otest_template.html~1b';
+LOI[2] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Joseph~~~~1Ch~25~2~images/maps/Otest/otest_template.html~1c';
+LOI[3] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Joseph~~~~1Ch~25~9~images/maps/Otest/otest_template.html~1c';
+LOI[4] = 'image~Bible~Images~Parting of Lot and Abraham (engraving) key=Lot~~~~1Ch~25~9~images/bible_images/Moses/moses_template.html~3i';
+LOI[5] = 'image~Bible~Images~Joseph Interprets Pharaoh\'s Dream (engraving) key=Joseph~~~~1Ch~25~2~images/bible_images/Moses/moses_template.html~5';
+LOI[6] = 'image~Bible~Images~Joseph Interprets Pharaoh\'s Dream (engraving) key=Joseph~~~~1Ch~25~9~images/bible_images/Moses/moses_template.html~5';
+LOI[7] = 'image~Bible~Images~Saul and David (engraving) key=David~~~~1Ch~25~1~images/bible_images/Kings/kings_template.html~1';
+LOI[8] = 'image~Bible~Images~David Mourning for Absalom (engraving) key=David~~~~1Ch~25~1~images/bible_images/Kings/kings_template.html~2';

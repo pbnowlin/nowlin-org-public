@@ -1,0 +1,733 @@
+<html>
+<head>
+<TITLE>BLB Phrase Search</TITLE>
+<script type="text/javascript">
+browserName=navigator.userAgent;
+if(browserName.search(/Netscape/) >=0) {browserName="Netscape";}
+else if(browserName.search(/MSIE/) >=0) {browserName="Internet Explorer";}
+else if(browserName.search(/Safari/) >=0) {browserName="Safari";}
+browserVer=parseInt(navigator.appVersion, 10);
+var wait=1;
+OTitle = new String(window.location);
+Title = unescape(OTitle);
+Title = Title.split("?")[1];
+
+if(Title) {
+  tLength = Title.split("&").length;
+	for(tItem=0;tItem<tLength;tItem++) {
+	  tempItem = Title.split("&")[tItem].split("=");
+		switch(tempItem[0])	{
+			case "wait":
+				wait = tempItem[1].toLowerCase();
+				break;
+		}
+	}
+
+	if(browserName != "Safari" && wait == 1) {
+		setTimeout("window.location = OTitle+'&wait=0'", 500);
+		if(browserName == "Netscape") { window.stop(); }
+		else if(browserName == "Internet Explorer") { document.execCommand('Stop'); }
+	}
+
+}
+
+</script>
+
+<script src="./w/words.js" type="text/javascript"></script>
+<script type="text/javascript">
+//**Start Encode**
+// This is what gets us going
+var Title = new String(window.location);
+var keywords,epage,iepage,show;
+Title = new String(window.location);
+Title = unescape(Title);
+Title = Title.split("?")[1];
+if(Title) {
+  tLength = Title.split("&").length;
+	for(tItem=0;tItem<tLength;tItem++) {
+	  tempItem = Title.split("&")[tItem].split("=");
+		switch(tempItem[0])	{
+			case "word":
+				keywords = tempItem[1].toLowerCase();
+				break;
+			case "epage":
+				epage = tempItem[1];
+				break;
+			case "iepage":
+				iepage = tempItem[1];
+				break;
+			case "show_strongs":
+				show = tempItem[1];
+				break;
+		}
+	}
+}
+if(browserName != "Internet Explorer") browserName="Netscape";
+//browserName="Netscape";
+if(!keywords) keywords='jesus';
+if(!epage) epage=1;
+if(!iepage) iepage=1;
+if(!show) show = 'V';
+BookNums = new Array();
+BookNums["Gen"] = "00";
+BookNums["Exd"] = "01";
+BookNums["Lev"] = "02";
+BookNums["Num"] = "03";
+BookNums["Deu"] = "04";
+BookNums["Jos"] = "05";
+BookNums["Jdg"] = "06";
+BookNums["Rth"] = "07";
+BookNums["1Sa"] = "08";
+BookNums["2Sa"] = "09";
+BookNums["1Ki"] = "10";
+BookNums["2Ki"] = "11";
+BookNums["1Ch"] = "12";
+BookNums["2Ch"] = "13";
+BookNums["Ezr"] = "14";
+BookNums["Neh"] = "15";
+BookNums["Est"] = "16";
+BookNums["Job"] = "17";
+BookNums["Psa"] = "18";
+BookNums["Pro"] = "19";
+BookNums["Ecc"] = "20";
+BookNums["Sgs"] = "21";
+BookNums["Isa"] = "22";
+BookNums["Jer"] = "23";
+BookNums["Lam"] = "24";
+BookNums["Eze"] = "25";
+BookNums["Dan"] = "26";
+BookNums["Hsa"] = "27";
+BookNums["Joe"] = "28";
+BookNums["Amo"] = "29";
+BookNums["Oba"] = "30";
+BookNums["Jon"] = "31";
+BookNums["Mic"] = "32";
+BookNums["Nah"] = "33";
+BookNums["Hab"] = "34";
+BookNums["Zep"] = "35";
+BookNums["Hag"] = "36";
+BookNums["Zec"] = "37";
+BookNums["Mal"] = "38";
+BookNums["Mat"] = "39";
+BookNums["Mar"] = "40";
+BookNums["Luk"] = "41";
+BookNums["Jhn"] = "42";
+BookNums["Act"] = "43";
+BookNums["Rom"] = "44";
+BookNums["1Cr"] = "45";
+BookNums["2Cr"] = "46";
+BookNums["Gal"] = "47";
+BookNums["Eph"] = "48";
+BookNums["Phl"] = "49";
+BookNums["Col"] = "50";
+BookNums["1Th"] = "51";
+BookNums["2Th"] = "52";
+BookNums["1Ti"] = "53";
+BookNums["2Ti"] = "54";
+BookNums["Tts"] = "55";
+BookNums["Phm"] = "56";
+BookNums["Hbr"] = "57";
+BookNums["Jam"] = "58";
+BookNums["1Pe"] = "59";
+BookNums["2Pe"] = "60";
+BookNums["1Jo"] = "61";
+BookNums["2Jo"] = "62";
+BookNums["3Jo"] = "63";
+BookNums["Jud"] = "64";
+BookNums["Rev"] = "65";
+
+BookNames = new Array();
+BookNames[0] = "Gen";
+BookNames[1] = "Exd";
+BookNames[2] = "Lev";
+BookNames[3] = "Num";
+BookNames[4] = "Deu";
+BookNames[5] = "Jos";
+BookNames[6] = "Jdg";
+BookNames[7] = "Rth";
+BookNames[8] = "1Sa";
+BookNames[9] = "2Sa";
+BookNames[10] = "1Ki";
+BookNames[11] = "2Ki";
+BookNames[12] = "1Ch";
+BookNames[13] = "2Ch";
+BookNames[14] = "Ezr";
+BookNames[15] = "Neh";
+BookNames[16] = "Est";
+BookNames[17] = "Job";
+BookNames[18] = "Psa";
+BookNames[19] = "Pro";
+BookNames[20] = "Ecc";
+BookNames[21] = "Sgs";
+BookNames[22] = "Isa";
+BookNames[23] = "Jer";
+BookNames[24] = "Lam";
+BookNames[25] = "Eze";
+BookNames[26] = "Dan";
+BookNames[27] = "Hsa";
+BookNames[28] = "Joe";
+BookNames[29] = "Amo";
+BookNames[30] = "Oba";
+BookNames[31] = "Jon";
+BookNames[32] = "Mic";
+BookNames[33] = "Nah";
+BookNames[34] = "Hab";
+BookNames[35] = "Zep";
+BookNames[36] = "Hag";
+BookNames[37] = "Zec";
+BookNames[38] = "Mal";
+BookNames[39] = "Mat";
+BookNames[40] = "Mar";
+BookNames[41] = "Luk";
+BookNames[42] = "Jhn";
+BookNames[43] = "Act";
+BookNames[44] = "Rom";
+BookNames[45] = "1Cr";
+BookNames[46] = "2Cr";
+BookNames[47] = "Gal";
+BookNames[48] = "Eph";
+BookNames[49] = "Phl";
+BookNames[50] = "Col";
+BookNames[51] = "1Th";
+BookNames[52] = "2Th";
+BookNames[53] = "1Ti";
+BookNames[54] = "2Ti";
+BookNames[55] = "Tts";
+BookNames[56] = "Phm";
+BookNames[57] = "Hbr";
+BookNames[58] = "Jam";
+BookNames[59] = "1Pe";
+BookNames[60] = "2Pe";
+BookNames[61] = "1Jo";
+BookNames[62] = "2Jo";
+BookNames[63] = "3Jo";
+BookNames[64] = "Jud";
+BookNames[65] = "Rev";
+
+//Clean up the matched words and split out the Bible referrences
+function find_matches(matches, line) {
+  var matchesByNumber = new Array();
+	var item = new String();
+	var i = 0;
+  matchesByNumber = line.split("|");
+  mbnLength = matchesByNumber.length;
+  for(i=0; i<mbnLength; i++) {
+  	item = matchesByNumber[i];
+    if (!matches[item]){matches[item] = 1; }
+		else{matches[item] += 1;}
+  }
+  return matches;
+}
+
+// Open the page for the word and collect the Bible referrences
+function collectRefs(matches, word) {
+  var lineEntry = new String();
+  var lineEnd = new String();
+	word = word.replace("'", "\\'");
+
+// Collect wildcard maybes
+	if (word.indexOf("*")>2) { // Number + 1 determines minimum length of word required before * is allowed
+  	var wildCardTest = new String(word.replace("*", "[a-z-\']*"));
+	  var RegEx = new RegExp(wildCardTest);
+		var firstLetter = word.charAt(0);
+		var closeList = letters[firstLetter].split(",");
+		var item = String();
+
+		for (item in closeList) {
+			if(closeList[item] == "length") alert(":"+closeList[item]+":");
+			if (RegEx.test(closeList[item])){
+				document.closeCalls[closeList[item]] = words[closeList[item]].split("|").length;
+				matches = find_matches(matches, words[closeList[item]]);
+			}
+		}
+	} else {
+	  word = word.replace("*", "");
+		if(word == "length") word = "length ";
+		if(eval("words['"+word+"']")) {
+	  	lineEnd = eval("words['"+word+"']");
+	  	matches = find_matches(matches, lineEnd);
+		}
+	}
+  return matches;
+}
+
+function wildCards() {
+  var RegEx = new RegExp("...\\*");
+  var tmpArray = new Array();
+  var item, line = String();
+	someString = "";
+	dome = document.getElementById("wildCards");
+  //RegEx.compile(RegEx);
+  if (!RegEx.test(document.keywordsArray.join(" "))) return -1;
+	  someString += '<DIV CLASS="desc-left"><DIV CLASS="pad1010">';
+	  for(j=0;j<document.keywordsArray.length;j++) {
+			if (RegEx.test(document.keywordsArray[j])) {
+			  someString += 'The wildcard word <b>'+document.keywordsArray[j].replace("'", "\'")+'</b> matches ';
+			  for (item in document.closeCalls)
+			    if (item.substring(0,3) == document.keywordsArray[j].toLowerCase().substring(0,3))
+				  	someString += '<b style="cursor:pointer; color:3930C0" onClick="kwOpener(1,1,\''+item.replace("'", "\\'")+'\');">'+item.replace("'", "\'")+'</b>('+document.closeCalls[item]+') &nbsp;&nbsp;';
+			  someString += '<br>';
+			}
+	  }
+  someString += '</DIV></DIV>';
+	dome.innerHTML = someString;
+  return;
+}
+
+//Display the results
+function do_temp() {
+  var item, temp_line = String();
+  document.Matches = 0;
+  document.iecolorIndex = 0;
+  document.ecolorIndex = 0;
+ 	stemResearch = (browserName == "Netscape")?0:1;
+	lastbook = 0;
+	lastchapt = 0;
+  if(browserName!="Netscape") searchResults = window.open('','searchResults','width=5,height=4,top=2000,left=2000,scrollbars=yes');
+//Pop-ups are being blocked
+  if(browserName!="Netscape" && !searchResults) {
+  	alert('Failed to stem worker window!\n\nYou may have a pop-up blocker installed.  Please allow for pop-ups for the Blue Letter Bible CD.');
+  	stemResearch = 0;
+  }
+  //This creates the global document array with the Verses that match
+  for(i=0;i<document.keywordsArray.length;i++) collectRefs(document.matchesByName, document.keywordsArray[i]);
+  document.matchesByName = BibleSort(document.matchesByName);
+  for (item in document.matchesByName) {
+    if(document.matchesByName[item] >= document.keywordsArray.length) {
+			  colon = item.indexOf(":");
+			  book = item.substring(0,3);
+			  chapt = item.substring(4, colon);
+				if ((lastbook != book || lastchapt != chapt) && stemResearch) {
+					scriptFile = './kjv/'+book+'/'+show+'_'+chapt+'.js';
+			  	searchResults.document.writeln('<script src=\"'+scriptFile+'\"\></script\>');
+					lastbook = book;
+					lastchapt = chapt;
+				}
+			href(item);
+		}
+  }
+	if(stemResearch) searchResults.close();
+  document.Matches = document.exactMatches.length + document.inexactMatches.length;
+  return;
+}
+
+// Sort by first padding the Chapter and verse numbers,
+// then unpad when finished.
+function BibleSort(unsortedArray) {
+  var item = new String();
+  var sortingArray = new Array();
+  var sortedArray = new Array();
+
+  // Convert BookNames to BookNums so sorting will work
+  for (item in unsortedArray) {
+    var colon = item.indexOf(":");
+		var book = item.substring(0,3);
+		var chapt = pad(item.substring(4, colon));
+		var verse = pad(item.substring(colon+1));
+    sortingArray[sortingArray.length] = BookNums[book]+" "+chapt+":"+verse+"!"+unsortedArray[item];
+  }
+  sortingArray.sort();
+// Now put it back from BookNums to BookNames
+  for (item in sortingArray) {
+    var colon = sortingArray[item].indexOf(":");
+    var bang = sortingArray[item].indexOf("!");
+		var book = parseInt(sortingArray[item].substring(0,2), 10);
+		var chapt = parseInt(sortingArray[item].substring(3, colon), 10);
+		var verse = parseInt(sortingArray[item].substring(colon+1, bang), 10);
+		var count = parseInt(sortingArray[item].substring(bang+1), 10);
+		sortedArray[BookNames[book]+" "+chapt+":"+verse] = count;
+  }
+  return sortedArray;
+}
+
+//Wrap keywords in <b></b> tags
+function bold(stringToBold) {
+  for(index=0;index<document.keywordsArray.length; index++) {
+	var RegEx = new RegExp("([^a-zA-Z]|^)("+document.keywordsArray[index]+"[a-zA-Z]*)([^a-zA-Z]?)", "gi");
+//    stringToBold = stringToBold.replace(RegEx.compile(RegEx), "$1"+"$2".bold()+"$3");
+    stringToBold = stringToBold.replace(RegEx, "$1"+"$2".bold()+"$3");
+  }
+  return stringToBold;
+}
+
+//Make the <a href="link">link</a> passage
+function href(link) {
+  var colorArray = new Array();
+  var item = new String();
+  var wcTest=1;
+  var colon = link.indexOf(":");
+  verse = link.substring(colon+1);
+  wildcard = (document.keywordsArray.join(",").indexOf("\*")+1) ?1:0;
+  var joinedRegEx = new RegExp("([^a-z]|^)"+document.keywordsArray.join("[^a-z]")+"[^a-z]?", "gi");
+// Netscape hack
+	if (!stemResearch) {
+		tmpPassage = "";
+	} else {
+	  tmpPassage = eval("searchResults.Content["+verse+"]");
+		if(show == 'S' ) {
+			tmpArray = tmpPassage.split(" ");
+			for(item in tmpArray)
+				if(tmpArray[item].search(/^\[[0-9]/) >= 0)
+					tmpArray[item] = tmpArray[item].replace(/^\[([0-9]+)\]/, '<sup><a href="#top" onClick="return S_Nav(\'$1\');">$1</a></sup>');
+			tmpPassage = tmpArray.join(" ");
+		}
+		tmpPassage = bold(tmpPassage);
+	}
+ 	passage = '<a href="#top" onClick="return hrefOpener(\''+book+'\','+chapt+','+verse+');">'+link+'</a> '+tmpPassage;
+//  joinedRegEx.compile(joinedRegEx);
+  if(wildcard && browserName != "Netscape" && stemResearch) {
+    for (item in document.keywordsArray) {
+		  var wildCardTest = new String("([^a-z]|^)"+document.keywordsArray[item].toLowerCase().replace("*", "[a-z-]*"));
+		  var wcRegEx = new RegExp(wildCardTest, "i");
+		  wcTest = wcTest & (wcRegEx.test(tmpPassage))?1:0;
+		}
+		if(wcTest){
+		  var joinedRegString = new String("([^a-z]|^)"+document.keywordsArray.join("[^a-z]")+"[^a-z]?");
+		  joinedRegString = joinedRegString.replace("*", "[a-z-]*");
+		  var joinedRegEx = new RegExp(joinedRegString, "gi");
+		    if (joinedRegEx.test(tmpPassage)) {
+		      document.exactMatches[document.exactMatches.length] = link+"!"+passage;
+					document.ecolorIndex ^= 1;
+			} else {
+				document.inexactMatches[document.inexactMatches.length] = link+"!"+passage;
+			  document.iecolorIndex ^= 1;
+			}
+		}
+  } else {
+    if (joinedRegEx.test(tmpPassage)) {
+      document.exactMatches[document.exactMatches.length] = link+"!"+passage;
+			document.ecolorIndex ^= 1;
+		} else {
+	    document.inexactMatches[document.inexactMatches.length] = link+"!"+passage;
+			document.iecolorIndex ^= 1;
+		}
+  }
+  return;
+}
+
+function preChain(keywords) {
+  var tmpArray = new Array();
+  var count = 0;
+  var item = new String();
+
+  for(j=0;j<keywords.length;j++) collectRefs(tmpArray, keywords[j]);
+  for(item in tmpArray) if(tmpArray[item] >= keywords.length) count++;
+  chain(keywords, count, 0);
+  return;
+}
+
+//Generate the chain link for the keywords
+function chain(theArray, count, exact){
+  if(theArray.length > 5) {
+    document.writeln('<TR BGCOLOR="#ffffff"><TD ALIGN="center" WIDTH="300"><b>'+count+' <nobr>verse(s) </nobr>below</b></TD></TR>');
+    return -1;
+  }
+  if (exact) { document.writeln('<TR BGCOLOR="#ffffff"><TD ALIGN="center" WIDTH="300">'+theArray.join(" + ")+'</TD><TD ALIGN="center">'+count+' <nobr>verse(s) </nobr>below</b></TD></TR>'); }
+  else { document.writeln('<TR BGCOLOR="#ffffff"><TD ALIGN="center" WIDTH="300"><b style="cursor:pointer; color:3930C0" onClick="kwOpener(1,1,\''+theArray.join(" ")+'\');">'+theArray.join(" + ")+'</TD><TD ALIGN="center"><b style="cursor:pointer; color:3930C0" onClick="kwOpener(1,1,\''+theArray.join(" ")+'\');">Click for '+count+' <nobr>verse(s) </nobr></b></TD></TR>'); }
+  return;
+}
+
+//Generate exact and inexact table rows
+function exact(whichPage) {
+	if (document.exactMatches.length > 0){
+		var Pages = Math.ceil(document.exactMatches.length/25);
+		dome = document.getElementById("exact");
+		someString = '';
+    if (document.inexactMatches.length > 0) {
+			someString = '</div><DIV CLASS="subhead">The word(s) <b><i>'+document.keywordsArray.join(" ")+'</b></i> occur in <b>'+document.Matches+'</b> verse(s), including <b>'+document.exactMatches.length+'</b> exact phrase <nobr>match(es) </nobr>shown first:</DIV><div class="main-left">';
+		} else {
+			someString = '</div><DIV CLASS="subhead">The <b>exact phrase</b> of <b><i>'+document.keywordsArray.join(" ")+'</b></i> was found in <b>'+document.Matches+'</b> verse(s), shown below: this is the only appearance of these words.</DIV><div class="main-left">';
+		}
+		var first = (whichPage - 1)*25;
+		var last = whichPage*25-1;
+		if(last >= document.exactMatches.length) last = document.exactMatches.length -1;
+    for (i=first;i<=last;i++)
+			someString += '<DIV CLASS="strongs-list" >'+document.exactMatches[i].substring(document.exactMatches[i].indexOf("!")+1)+'</DIV><DIV CLASS="notice"><HR SIZE=1></DIV>';
+		dome.innerHTML = someString;
+		return ePages(whichPage, Pages);
+  }
+  return false;
+}
+
+//Generate the table row for multple pages view
+function ePages(whichPage, Pages) {
+	if (Pages > 1) {
+		dome = document.getElementById("ePages");
+		someString = '</div><DIV CLASS="subhead" style="border-bottom-width:1px;">You are on page '+whichPage+' of '+Pages+' for exact matches. To view other pages, select page number. (Verse range also shown)</DIV>';
+    someString += '<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="0"><TR BGCOLOR="#ffffff"><TD COLSPAN="5"><IMG SRC="./gifs/clearpixel.gif" HEIGHT="3" WIDTH="3" BORDER="0"><BR></TD></tr><tr BGCOLOR="#ffffff">';
+		for(thisPage=1;thisPage<=Pages;thisPage++) {
+			first = (thisPage - 1)*25;
+			last = thisPage*25-1;
+			if(last >= document.exactMatches.length) last = document.exactMatches.length -1;
+			if(thisPage == whichPage) {
+				someString += '<TD WIDTH="158" bgcolor="FFFFFF" CLASS="strongs-links-red" ><b>'+thisPage+' ('+document.exactMatches[first].substring(0, document.exactMatches[first].indexOf("!"))+' - '+document.exactMatches[last].substring(0, document.exactMatches[last].indexOf("!"))+')</b></td>';
+			} else {
+				someString += '<TD WIDTH="158" bgcolor="FFFFFF" CLASS="strongs-links"><A HREF="#top" onClick=\"return exact('+thisPage+');"><b>'+thisPage+' ('+document.exactMatches[first].substring(0, document.exactMatches[first].indexOf("!"))+' - '+document.exactMatches[last].substring(0, document.exactMatches[last].indexOf("!"))+')</b></A></td>';
+			}
+			if ((thisPage)%3==0) {
+				someString += '</tr><tr BGCOLOR="#ffffff"><TD COLSPAN="5"><IMG SRC="./gifs/clearpixel.gif" HEIGHT="3" WIDTH="3" BORDER="0"><BR></TD></tr><tr BGCOLOR="#ffffff">';
+			} else {
+				someString += '<TD WIDTH="3"><IMG SRC="./gifs/clearpixel.gif" HEIGHT="1" WIDTH="3" BORDER="0"><BR></TD>';
+			}
+		}
+		if(Pages%3 < 2) someString += '<TD WIDTH="158" bgcolor="FFFFFF"></TD><TD WIDTH="3"><IMG SRC="./gifs/clearpixel.gif" HEIGHT="1" WIDTH="3" BORDER="0"><BR></TD>';
+		if(Pages%3 < 3) someString += '<TD WIDTH="158" bgcolor="FFFFFF"></TD>';
+    someString += '</TR></TABLE>';
+		dome.innerHTML = someString;
+  }
+  window.scrollTo(0,0);
+  return false;
+}
+
+//Write out all the verses for the inexact matches
+function verses(whichPage) {
+	if(document.inexactMatches.length > 0) {
+	  var Pages = Math.ceil(document.inexactMatches.length/25);
+		dome = document.getElementById("verses");
+		someString = '';
+	  if (document.exactMatches.length > 0) {
+	    someString += '</div><DIV CLASS="subhead"><br><b>Here are the <b>'+document.inexactMatches.length+'</b> remaining <i>inexact</i> <nobr>match(es):</nobr></b> Page '+whichPage+'</DIV><div class="main-left">';
+	  } else if (browserName == "Netscape") {
+			someString += '</div><DIV CLASS="subhead"><nobr>The word(s) </nobr><b><i>'+document.keywordsArray.join(" ")+'</b></i> occur in <b>'+document.Matches+'</b> <nobr>verse(s):</nobr></DIV><div class="main-left">';
+		} else {
+	    someString += '</div><DIV CLASS="subhead"><nobr>The word(s) </nobr><b><i>'+document.keywordsArray.join(" ")+'</b></i> occur in <b>'+document.Matches+'</b> <nobr>verse(s),</nobr> None are an exact phrase match:</DIV><div class="main-left">';
+		}
+		var first = (whichPage - 1)*25;
+		var last = whichPage*25-1;
+		if(last >= document.inexactMatches.length) last = document.inexactMatches.length -1;
+	  for (i=first;i<=last;i++)
+			someString += '<DIV CLASS="strongs-list" >'+document.inexactMatches[i].substring(document.inexactMatches[i].indexOf("!")+1)+'</DIV><DIV CLASS="notice"><HR SIZE=1></DIV>';
+		dome.innerHTML = someString;
+	  return iePages(whichPage, Pages);
+	} else {
+		if (document.keywordsArray.length > 1) {
+			someString += '</div><DIV CLASS="subhead"><nobr>Sorry, the words </nobr><b><i>'+document.keywordsArray.join(" ")+'</b></i> don\'t occur together in the KJV.</DIV><div class="main-left">';
+		} else {
+			someString += '</div><DIV CLASS="subhead"><nobr>Sorry, the word </nobr><b><i>'+document.keywordsArray.join(" ")+'</b></i> does not occur in the KJV.</DIV><div class="main-left">';
+		}
+	}
+	return false;
+}
+
+//Generate the table row for multple pages view
+//This can probably be rebuilt to better handle paging
+function iePages(whichPage, Pages) {
+	if (Pages > 1) {
+		dome = document.getElementById("iePages");
+		if (browserName == "Netscape") {
+			someString = '</div><DIV CLASS="subhead">You are on page '+whichPage+' of '+Pages+'. To view other pages, select page number. (Verse range also shown)</DIV>';
+		} else {
+			someString = '</div><DIV CLASS="subhead">You are on page '+whichPage+' of '+Pages+' for inexact matches. To view other pages, select page number. (Verse range also shown)</DIV>';
+		}
+    someString += '<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="0"><TR BGCOLOR="#ffffff"><TD COLSPAN="5"><IMG SRC="./gifs/clearpixel.gif" HEIGHT="3" WIDTH="3" BORDER="0"><BR></TD></tr><tr BGCOLOR="#ffffff">';
+		for(thisPage=1;thisPage<=Pages;thisPage++) {
+			first = (thisPage - 1)*25;
+			last = thisPage*25-1;
+			if(last >= document.inexactMatches.length) last = document.inexactMatches.length -1;
+			if(thisPage == whichPage) {
+				someString += '<TD WIDTH="158" bgcolor="FFFFFF" CLASS="strongs-links-red" ><b>'+thisPage+' ('+document.inexactMatches[first].substring(0, document.inexactMatches[first].indexOf("!"))+' - '+document.inexactMatches[last].substring(0, document.inexactMatches[last].indexOf("!"))+')</b></td>';
+			} else {
+				someString += '<TD WIDTH="158" bgcolor="FFFFFF" CLASS="strongs-links" ><A HREF="#top" onClick="return verses('+thisPage+');"><b>'+thisPage+' ('+document.inexactMatches[first].substring(0, document.inexactMatches[first].indexOf("!"))+' - '+document.inexactMatches[last].substring(0, document.inexactMatches[last].indexOf("!"))+')</b></A></td>';
+			}
+			if ((thisPage)%3==0) {
+				someString += '</tr><tr BGCOLOR="#ffffff"><TD COLSPAN="5"><IMG SRC="./gifs/clearpixel.gif" HEIGHT="3" WIDTH="3" BORDER="0"><BR></TD></tr><tr BGCOLOR="#ffffff">';
+			} else {
+				someString += '<TD WIDTH="3"><IMG SRC="./gifs/clearpixel.gif" HEIGHT="1" WIDTH="3" BORDER="0"><BR></TD>';
+			}
+		}
+		if(Pages%3 < 2) someString += '<TD WIDTH="158" bgcolor="FFFFFF"></TD><TD WIDTH="3"><IMG SRC="./gifs/clearpixel.gif" HEIGHT="1" WIDTH="3" BORDER="0"><BR></TD>';
+		if(Pages%3 < 3) someString += '<TD WIDTH="158" bgcolor="FFFFFF"></TD>';
+    someString += '</TR></TABLE>';
+		dome.innerHTML = someString;
+  }
+  window.scrollTo(0,0);
+  return false;
+}
+
+function pad(number) {
+  if (number < 10){return "00" + number;}
+  else if (number > 9 && number < 100) {return "0" + number;}
+  return number;
+}
+
+//Collect the keywords from the form
+function pNavigate(iepage, epage, keywords) {
+  document.iePage = iepage;
+  document.ePage = epage;
+  document.matchesByName = new Array();
+  document.exactMatches = new Array();
+  document.inexactMatches = new Array();
+  document.keywordCombinations = new Array();
+  document.closeCalls = new Array();
+  document.keywordsArray = new Array(); //An array of the words
+
+  keywords = keywords.toLowerCase();
+  keywords = keywords.replace(/%../g, " ");
+  keywords = keywords.replace(/[^a-zA-Z\'*]+/g, " ");
+  keywords = keywords.replace(/\s+/g, " ");
+  keywords = keywords.replace(/\s+$/g, "");
+  keywords = keywords.replace(/^\s+/g, "");
+
+  document.keywordsArray = keywords.split(" ");
+  if(document.keywordsArray.length>5 && !confirm("More than 5 keywords can take a considerable amount of time to search and can even crash your machine.\n\n Are you feeling brave?")){	return -1; }
+  if (document.keywordsArray[0] == "" || document.keywordsArray.length == 0) {
+    document.keywordsArray.length = 1;
+	  document.keywordsArray[0] = "jesus";
+  }
+  if(document.keywordsArray.length>5) {
+    document.keywordsArray = document.keywordsArray.join(" ").replace(/\*/g, "").split(" ");
+  } else {
+    for (i=document.keywordsArray.length-1; i>1; i--) document.keywordCombinations = document.keywordCombinations.concat(docomb(document.keywordsArray.length, i));
+  }
+  do_temp();
+}
+
+function clickShortcut() {
+  if (window.event.keyCode == 13) { navigate() }
+  return;
+}
+
+function makeArray(n) {
+  this.length = n
+  for (var i=0; i <= n; i++)
+    this[i] = "";
+  return this
+}
+
+function makeArraynum(n) {
+  this.length = n
+  for (var i=0; i <= n; i++)
+    this[i] = 0;
+  return this
+}
+
+function docomb(n, r) {
+
+	var p=1
+	for (var w=1; w <= r-1; w++) { p = (n-w)*p }
+	p=n*p
+	var rf=1
+	for (var w=1; w <= r; w++) { rf = w*rf }
+	var c=p/rf
+	var px = new makeArraynum(n);
+	var v = new makeArray(n);
+	var result = new Array();
+	var mark = r;
+	var v = new Array(" ");
+	v = v.concat(document.keywordsArray);
+	var bk = 0;
+	result[0] = new Array();
+	for (var k=1; k<=r; k++) {
+		px[k] = k;
+		result[0][k-1] = v[px[k]];
+	}
+	for (var z=1;z<=c;z++) {
+		for (var m=1;m<100;m++) {
+			px[mark]++;
+			var e=0;
+			if (px[mark] > n-(r-mark)) {
+				e=1;
+				mark--;
+				if (mark<=0) { return result; }
+				px[mark]++;
+				for (k = mark+1; k<=r; k++) {
+					px[k] = px[k - 1] + 1;
+				} //end for k
+				//new mark
+				bk=0;
+				for (k = r; k>=mark; k--) {
+					if (px[k] < n - (r - k) + 1) {
+						mark = k;
+						bk=1;
+						break; //out of k
+					} //END IF
+				} //end for k
+			} // end if (px[mark] > n-(r-mark))
+			if (bk==1) {
+				bk=0;
+				break; //get out of for m
+			}
+			if (e==0) {break;} //if miss then goto llb
+		} //next m
+		result[z] = new Array();
+		for (k=1;k<=r;k++) { result[z][k-1] = v[px[k]]; }
+			var getout = 0;
+			for (w=1;w<=r;w++) {
+				if (px[w] != n - (r - w)) {
+				getout=1;
+				break;
+			}
+		}// end for w
+		if (getout==0) {break;} //get out of for z
+	} //end for z
+	return result;
+} //end function
+
+function hrefOpener(thisBook, thisChapt, thisVerse) {
+	if(browserName != "Netscape" && stemResearch) { M(thisBook, thisChapt, thisVerse);	}
+	else { mV(thisBook, thisChapt, thisVerse); }
+	return false;
+}
+
+function kwOpener(one, two, words) {
+	page = './phrase_search.html?word='+words;
+  window.location.href=page;
+}
+
+function S_Nav(strongs) {
+	if(strongs.search(/^0\d/) >=0) {
+		link = './strongs_hebrew.html?strongs='+strongs+'&page=1';
+	}	else if(strongs.search(/^[0-9]/) >=0) {
+		link = './strongs_greek.html?strongs='+strongs+'&page=1';
+	}
+  strWindow=window.open(link,'strWindow','scrollbars=yes,resizable=yes,width=550,height=600');
+  strWindow.focus();
+  return;
+}
+
+window.setTimeout("window.focus()",700);
+pNavigate(iepage, epage, keywords);
+</script>
+<script src="./js/basepath.js" type="text/javascript"></script>
+<script src="./js/nav.js" type="text/javascript"></script><link rel="stylesheet" href="./css/standard.css" type="text/css">
+<STYLE>
+body{background-image:url('./gifs/clearpixel.gif');}
+</STYLE>
+</head>
+<body bgcolor="ffffff" onLoad="wildCards();	exact(1);	verses(1);">
+<a name="top"></a>
+<DIV ALIGN="center">
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+	<TR><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="480">
+		<DIV CLASS="head">Word / Phrase Search</DIV>
+		<DIV CLASS="subhead">KJV Results for <i><script type="text/javascript">document.write(document.keywordsArray.join(" "));</script></i></DIV>
+		<DIV CLASS="main-left">
+			<TABLE CELLSPACING="0" CELLPADDING="3" WIDTH="100%" style="border-bottom:solid #000 1px;margin-bottom:1px;font-weight:bold">
+				<script type="text/javascript">
+				chain(document.keywordsArray, document.Matches, 1);
+				for (i=0; i<document.keywordCombinations.length; i++) preChain(document.keywordCombinations[i]);
+				if(browserName != "Netscape" && ! stemResearch && document.Matches > 0)
+				document.writeln('<TR BGCOLOR="#ffffff">'+
+				 '<TD ALIGN="center" WIDTH="100%" COLSPAN=2 style="border-top:solid #000 1px;margin-bottom:1px;font-weight:normal;font-size:10px;">'+
+						 'You may have a pop-up blocker installed.  If so and you would like to see the text for each verse below, please allow for pop-ups for the Blue Letter Bible CD.</TD></TR>');
+				</script>
+			</TABLE>
+		</DIV>
+		<DIV CLASS="strongs-underlie">
+			<span id="wildCards"></span>
+			<span id="exact"></span>
+			<span id="ePages"></span>
+			<span id="verses"></span>
+			<span id="iePages"></span>
+		</DIV>
+<!--		<IMG SRC="./gifs/clearpixel.gif" BORDER="0" WIDTH="1" HEIGHT="5"><BR>
+		<div class="subhead">
+		<button onclick="history.go(-1)">Go back</button>
+		</div>
+-->
+		</TD></TR>
+
+</TABLE>
+</div>
+</body>
+</html>

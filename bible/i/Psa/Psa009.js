@@ -1,0 +1,13 @@
+var LOI = [];
+LOI[0] = 'hymn~1~O LORD MOST HIGH~htm_o_l_olormost.html';
+LOI[1] = 'hymn~1~WHOLE-HEARTED THANKSGIVING TO THEE I WILL~htm_w_h_wht2tiwb.html';
+LOI[2] = 'hymn~7~O LIGHT, FROM AGE TO AGE THE SAME~htm_o_l_olfageto.html';
+LOI[3] = 'hymn~10~HE&#8217;LL WALK WITH ME ALL THE WAY~htm_h_e_hellwalk.html';
+LOI[4] = 'hymn~11~THE LORD IN ZION REIGNETH~htm_l_z_lzionrei.html';
+LOI[5] = 'image~Bible~Maps~Cities of Refuge (map) key=refuge~~~~Psa~9~9~images/maps/Otest/otest_template.html~2';
+LOI[6] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Zion~~~~Psa~9~11~images/maps/Otest/otest_template.html~3a';
+LOI[7] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Zion~~~~Psa~9~14~images/maps/Otest/otest_template.html~3a';
+LOI[8] = 'image~Bible~Maps~Modern Jerusalem (map) key=Zion~~~~Psa~9~11~images/maps/Otest/otest_template.html~3b';
+LOI[9] = 'image~Bible~Maps~Modern Jerusalem (map) key=Zion~~~~Psa~9~14~images/maps/Otest/otest_template.html~3b';
+LOI[10] = 'image~Bible~Images~Saul and David (engraving) key=David~~~~Psa~9~1~images/bible_images/Kings/kings_template.html~1';
+LOI[11] = 'image~Bible~Images~David Mourning for Absalom (engraving) key=David~~~~Psa~9~1~images/bible_images/Kings/kings_template.html~2';

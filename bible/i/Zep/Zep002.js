@@ -1,0 +1,11 @@
+var LOI = [];
+LOI[0] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Israel~~~~Zep~2~9~images/maps/Otest/otest_template.html~1b';
+LOI[1] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Judah~~~~Zep~2~7~images/maps/Otest/otest_template.html~1b';
+LOI[2] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Israel~~~~Zep~2~9~images/maps/Otest/otest_template.html~1c';
+LOI[3] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Judah~~~~Zep~2~7~images/maps/Otest/otest_template.html~1c';
+LOI[4] = 'image~Bible~Maps~Middle Palestine (map) key=Israel~~~~Zep~2~9~images/maps/Otest/otest_template.html~3c';
+LOI[5] = 'image~Bible~Maps~Southern Palestine (map) key=Israel,Moab~~~~Zep~2~9~images/maps/Otest/otest_template.html~4';
+LOI[6] = 'image~Bible~Maps~Southern Palestine (map) key=Moab~~~~Zep~2~8~images/maps/Otest/otest_template.html~4';
+LOI[7] = 'image~Bible~Maps~Southern Palestine (map) key=Gaza~~~~Zep~2~4~images/maps/Otest/otest_template.html~4';
+LOI[8] = 'image~Bible~Maps~Divisions of Palestine (map) key=Israel~~~~Zep~2~9~images/maps/Christ/christ_template.html~1';
+LOI[9] = 'image~Bible~Images~Samson Taken by the Philstines (engraving) key=Philistines~~~~Zep~2~5~images/bible_images/Samson/samson_template.html~6';

@@ -1,0 +1,23 @@
+.td1 {border-color: #000; border-style: solid; border-width:1px 1px 0px 1px; color:#000; padding:2px 5px 2px 5px; font-size:80%; text-align:left;}
+.td2 {border-color: #000; border-style: solid; border-width:1px 1px 0px 0px; color:#000; padding:2px 5px 2px 5px; font-size:80%; text-align:left;}
+.td3 {border-color: #000; border-style: solid; border-width:1px 1px 1px 1px; color:#000; padding:2px 5px 2px 5px; font-size:80%; text-align:left;}
+.td4 {border-color: #000; border-style: solid; border-width:1px 1px 1px 0px; color:#000; padding:2px 5px 2px 5px;f ont-size:80%; text-align:left;}
+
+.center {margin: auto;
+			border:solid #000 1px;
+			color:#000;
+			padding:5px 5px 5px 5px;
+			background:#fff;
+			width:350px;
+			text-align:justify;
+		}
+.centertable {
+	margin-left: auto;
+	margin-right: auto;
+	width: 363px;
+	border: 0px;
+	padding: 0px;
+	border-spacing: 0px;
+	}
+
+

@@ -1,0 +1,439 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<link type="text/css" rel="stylesheet" href="./css/strongsstyle.css" />
+
+<TITLE>BLB Strongs Search Results</TITLE>
+<script type="text/javascript">
+
+browserName=navigator.userAgent;
+if(browserName.search(/Netscape/) >=0) {browserName="Netscape";}
+else if(browserName.search(/MSIE/) >=0) {browserName="Internet Explorer";}
+else if(browserName.search(/Safari/) >=0) {browserName="Safari";}
+browserVer=parseInt(navigator.appVersion, 10);
+var wait=1;
+OTitle = new String(window.location);
+Title = unescape(OTitle);
+Title = Title.split("?")[1];
+if(Title) {
+  tLength = Title.split("&").length;
+	for(tItem=0;tItem<tLength;tItem++) {
+	  tempItem = Title.split("&")[tItem].split("=");
+		switch(tempItem[0])	{
+			case "wait":
+				wait = tempItem[1].toLowerCase();
+				break;
+		}
+	}
+}
+</script>
+
+<script src="./js/basepath.js" type="text/javascript"></script>
+<script src="./js/nav.js" type="text/javascript"></script>
+<script src="./s/GrkImg.js" type="text/javascript"></script>
+<script src="./s/GrkLex.js" type="text/javascript"></script>
+<script src="./s/GrkConc.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="./css/standard.css" type="text/css">
+<link rel="stylesheet" href="./css/strongs_standard.css" type="text/css">
+<link rel="stylesheet" href="./css/citation.css" type="text/css">
+
+<script type="text/javascript">
+// This is what gets us going
+var strongs,page,show;
+Title = new String(window.location);
+Title = unescape(Title);
+Title = Title.split("?")[1];
+if(Title) {
+  tLength = Title.split("&").length;
+	for(tItem=0;tItem<tLength;tItem++) {
+	  tempItem = Title.split("&")[tItem].split("=");
+		switch(tempItem[0])	{
+			case "word":
+				strongs = tempItem[1];
+				break;
+			case "strongs":
+				strongs = tempItem[1];
+				break;
+			case "page":
+				page = tempItem[1];
+				break;
+			case "show_strongs":
+				show = tempItem[1];
+				break;
+		}
+	}
+}
+if(!strongs) strongs="1";
+if(!page) page=1;
+if(!show) show='S';
+strongs = strongs.replace(/^[^0-9]*([0-9]+).*$/, '$1');
+if(strongs.search(/[0-9]/) == -1) strongs = "1";
+strongs = strongs.replace(/^0+(\d+)/, '$1');
+
+if(browserName != "Internet Explorer") browserName="Netscape";
+
+var VAR_REF = "TDNT";
+var VAR_TWOT = "Not Available";
+
+
+var TITLE_BLURB = "";
+var VAR_NUM_HDR = "";
+var VAR_NUM_TD = "";
+var VAR_FROM = "";
+var VAR_TENSE = "Not Available";
+var VAR_OUTLINE = "";
+var VAR_AV_TOTAL = 0;
+var VAR_AV_TD = "";
+var THAYER_BLURB = "";
+
+// [02] = "ab (Aramaic) {ab}|AV - father 9; 9|corresponding to 01|TWOT - 2553|n m|INDENT0--<b>1)</b> father";
+LexArray = Lex[strongs].split("|");
+var num = LexArray[0];
+var av = LexArray[1];
+var from = LexArray[2];
+var twot = LexArray[3];
+var tense = LexArray[4];
+var outline = LexArray[5];
+
+
+
+var VAR_OUT_START = 'strongs-main-left';
+if (outline.search(/SPECIAL_TAG/) + 1) {
+	outline = outline.replace(/SPECIAL_TAG/, '');
+	VAR_OUT_START = 'strongs-desc-left';
+}
+
+// TITLE_BLURB
+TITLE_BLURB = num.split(" ")[0]+' (Strong\'s '+strongs+')';
+
+// VAR_NUM_HDR
+VAR_NUM_HDR = "Greek for "+strongs;
+
+// VAR_NUM_TD
+if (num.search(/<BR>./i) > 0) { var LEFT_OR_CENTER = 'strongs-main-left'; }
+else { var LEFT_OR_CENTER = 'strongs-main-center'; }
+VAR_NUM_TD = '<TD bgcolor="E9F1FA" CLASS="'+LEFT_OR_CENTER+'" COLSPAN="2">' + num;
+
+// VAR_TWOT
+twot = twot.replace(/^TDNT/, '<a href="./help/tdnt.html" target="_help">TDNT</a>');
+if (twot != "") VAR_TWOT = twot;
+
+// VAR_FROM
+var item = new String();
+fromer = from.split(" ");
+for(item in fromer) {
+	if(fromer[item].search(/^0\d/) >=0) {
+		fromer[item] = fromer[item].replace(/^([0-9]+)/, '<a href="./strongs_hebrew.html?strongs=$1&page=1"><b>$1</b></a>');
+	}	else if(fromer[item].search(/^[0-9]/) >=0) {
+		fromer[item] = fromer[item].replace(/^([0-9]+)/, '<a href="./strongs_greek.html?strongs=$1&page=1"><b>$1</b></a>');
+	}
+}
+from = fromer.join(" ");
+VAR_FROM = from;
+
+// VAR_TENSE
+if (tense != "") VAR_TENSE = tense;
+
+// VAR_OUTLINE
+outline = outline.replace(/(<BR>)?INDENT0\-\-/ig, '<P CLASS="lex1">');
+outline = outline.replace(/(<BR>)?INDENT3\-\-/ig, '<P CLASS="lex2">');
+outline = outline.replace(/(<BR>)?INDENT7\-\-/ig, '<P CLASS="lex3">');
+outline = outline.replace(/(<BR>)?INDENT12\-\-/ig, '<P CLASS="lex4">');
+outline = outline.replace(/(<BR>)?INDENT18\-\-/ig, '<P CLASS="lex5">');
+outline = outline.replace(/(<BR>)?START_TAG/g, '<br><br></TD></TR><TR><TD CLASS="strongs-desc-left" style="margin-top:5px;" COLSPAN="2">');
+outline = outline.replace(/(<BR>)?END_TAG/g, '</TD></TR><TR><TD CLASS="strongs-main-left" COLSPAN="2">');
+<!-- VAR_OUTLINE = '<TD bgcolor="E9F1FA" CLASS="'+VAR_OUT_START+'" style="margin-top:5px;" COLSPAN="2">' + outline; -->
+VAR_OUTLINE = '<TD bgcolor="E9F1FA" CLASS="'+VAR_OUT_START+'" style="margin-top:5px;" COLSPAN="2">' + '<br><b>Outline of Biblical Usage</b>' + outline + '<br>';
+// VAR_AV_TOTAL
+if (av.split(";")[av.split(";").length - 1] != "") VAR_AV_TOTAL = av.split(";")[av.split(";").length - 1];
+
+// VAR_AV_TD
+// non translated variant
+// '$1<a href="./phrase_search.html?word=$2*&epage=1&iepage=1">$2</a>$3'
+av = av.replace(/non translated varia[a-z]+/, '5:5');
+av = av.replace(/( synonym for |nbsp;| | ?\.+ ?)([A-Za-z ]+)( |,|;)/g, '$1<a href="#top" onClick="return W_Nav(\'$2*\', \''+show+'\');">$2</a>$3');
+av = av.replace(/^AV/, '<a href="./help/av.html" target="_help">AV</a>');
+av = av.replace(/5:5/, 'non translated variant');
+VAR_AV_TD = av;
+
+// THAYER_BLURB
+THAYER_BLURB = '<A Href="#Thayers"><b>Thayer\'s Lexicon Help and Information</b></a>';
+
+function img_tags() {
+	var	whom = new Array();
+	var sEntry = eval("Greek['"+strongs+"']");
+	if (sEntry == "") sEntry = 'gs040';
+	var Images = sEntry.split("|").join('.gif"><IMG align="absmiddle" src = "./bg/');
+	document.write('&nbsp;&nbsp;<nobr><IMG align="absmiddle" src = "./bg/'+Images+'.gif">');
+}
+//"
+function grabBText(item) {
+  colon = item.indexOf(":");
+  book = item.substring(0,3);
+  chapt = item.substring(4, colon);
+	verse = item.substring(colon+1);
+	lastbook = 0;
+	lastchapt = 0;
+	if ((lastbook != book || lastchapt != chapt) && browserName!="Netscape") {
+		scriptFile = './kjv/'+book+'/'+show+'_'+chapt+'.js';
+  	ConcResults.document.writeln('<script src=\"'+scriptFile+'\"\></script\>');
+		lastbook = book;
+		lastchapt = chapt;
+	}
+	tmpPassage = eval("ConcResults.Content["+verse+"]");
+	tmpArray = tmpPassage.split(" ");
+	for(item in tmpArray) {
+		if(tmpArray[item].search(/^\[0\d/) >=0) {
+			if(tmpArray[item].search('\\['+strongs+'\\]') >=0) { tmpArray[item] = tmpArray[item].replace(/^\[([0-9]+)\]/, '<sup class="red">$1</sup>'); }
+			else { tmpArray[item] = tmpArray[item].replace(/^\[([0-9]+)\]/, '<sup><a href="./strongs_hebrew.html?strongs=$1&page=1">$1</a></sup>'); }
+		}	else if(tmpArray[item].search(/^\[[0-9]/) >=0) {
+			if(tmpArray[item].search('\\['+strongs+'\\]') >=0) { tmpArray[item] = tmpArray[item].replace(/^\[([0-9]+)\]/, '<sup class="red">$1</sup>'); }
+			else { tmpArray[item] = tmpArray[item].replace(/^\[([0-9]+)\]/, '<sup><a href="./strongs_greek.html?strongs=$1&page=1">$1</a></sup>'); }
+		}
+	}
+	tmpPassage = tmpArray.join(" ");
+	return tmpPassage;
+}
+
+function ConcFull(whichPage) {
+	dome = document.getElementById("ConcFullSpan");
+	someString = "";
+	var sEntry = eval("Conc['"+strongs+"']");
+	ConcArray = sEntry.split("|");
+	Pages = Math.ceil(ConcArray.length/25);
+	someString += '<DIV  CLASS="strongs-desc-center" >There are '+ConcArray.length+' instances of verses containing Strong\'s number <b>'+strongs+'</b>. ';
+	if (Pages > 1) {
+		var first = (whichPage - 1)*25;
+		var last = whichPage*25-1;
+		if(last >= ConcArray.length) last = ConcArray.length -1;
+		someString += 'Page '+whichPage+', verses '+(first+1)+' - '+(last+1)+'.</div><DIV CLASS="notice"><HR SIZE=1></DIV>';
+	}else{
+		var first = 0;
+		var last = ConcArray.length - 1;
+		someString += 'Here they are:</DIV><DIV CLASS="notice"><HR SIZE=1></DIV>';
+	}
+	if(browserName!="Netscape") ConcResults = window.open('','ConcResults','width=10,height=10,top=2000,left=2000,scrollbars=no');
+	for(i=first;i<=last;i++) {
+	  colon = ConcArray[i].indexOf(":");
+	  book = ConcArray[i].substring(0,3);
+	  chapt = ConcArray[i].substring(4, colon);
+  	verse = ConcArray[i].substring(colon+1);
+		someString += '<DIV CLASS="strongs-list" >';
+		someString += '<a href="#top" onClick="return hrefOpener(\''+book+'\','+chapt+','+verse+');">'+ConcArray[i]+'</a> ';
+		if(browserName!="Netscape") someString += grabBText(ConcArray[i]);
+		someString += '</DIV><DIV CLASS="notice"><HR SIZE=1></DIV>';
+	}
+	if(browserName!="Netscape") ConcResults.close();
+	if (Pages > 1) {
+		someString += '<DIV  CLASS="strongs-desc-center" STYLE="margin-bottom:0px" >You are on page '+whichPage+' of '+Pages+'. To view other pages, select page number. (Verse range also shown)</div>';
+	}
+	dome.innerHTML = someString;
+	ConcPage(whichPage, Pages, ConcArray);
+  window.scrollTo(0,0);
+  adjustAnchors();
+  return false;
+}
+
+function ConcPage(whichPage, Pages, ConcArray) {
+	if (Pages > 1) {
+		dome = document.getElementById("ConcPageSpan");
+		someString = "";
+		someString += '<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="0"><TR>';
+		for(thisPage=1;thisPage<=Pages;thisPage++) {
+			var first = (thisPage - 1)*25;
+			var last = thisPage*25-1;
+			if(last >= ConcArray.length) last = ConcArray.length -1;
+			if(thisPage == whichPage) {
+				someString += '<TD  WIDTH="158" bgcolor="FFFFFF"  CLASS="strongs-links-red" ><b>'+thisPage+' ('+ConcArray[first]+' - '+ConcArray[last]+')</b></td>';
+			} else {
+				someString += '<TD  WIDTH="158" bgcolor="FFFFFF"  CLASS="strongs-links" ><A HREF="#top" onClick="return ConcFull('+thisPage+');"><b>'+thisPage+' ('+ConcArray[first]+' - '+ConcArray[last]+')</b></A></td>';
+			}
+			if ((thisPage)%3==0) {
+				someString += '</tr><tr><TD COLSPAN="5"><IMG SRC="./gifs/clearpixel.gif" HEIGHT="3" WIDTH="3" BORDER="0"><BR></TD></tr><tr>';
+			} else {
+				someString += '<TD WIDTH="3"><IMG SRC="./gifs/clearpixel.gif" HEIGHT="1" WIDTH="3" BORDER="0"><BR></TD>';
+			}
+		}
+		someString += '</TR></TABLE>';
+		dome.innerHTML = someString;
+	}
+}
+
+function hrefOpener(thisBook, thisChapt, thisVerse) {
+	if(browserName != "Netscape") { M(thisBook, thisChapt, thisVerse);	}
+	else { mV(thisBook, thisChapt, thisVerse); }
+	return false;
+}
+
+
+
+function hrefOpener_old(thisBook, thisChapt, thisVerse) {
+	if(browserName != "Netscape") { M(thisBook, thisChapt, thisVerse);	}
+	else { multiVerse(thisBook, thisChapt, thisVerse); }
+	return false;
+}
+
+function hrefOpener(thisBook, thisChapt, thisVerse) {
+	if(browserName != "Netscape") { M(thisBook, thisChapt, thisVerse);	}
+	else { mV(thisBook, thisChapt, thisVerse); }
+	return false;
+}
+
+setTimeout("window.focus()", 500);
+</script>
+<STYLE>
+body{background-image:url('./gifs/clearpixel.gif');}
+</STYLE>
+</head>
+<body bgcolor="FFFFFF" text = "000000" link="0000FF" vlink="A000A0"  TOPMARGIN="8" LEFTMARGIN="8" onLoad="ConcFull(1);">
+<A NAME="top"></A>
+<DIV ALIGN="CENTER">
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+	<TR>
+	<TD VALIGN="TOP" ALIGN="LEFT" WIDTH="480">
+		<A NAME="top"></A>
+		<TABLE WIDTH="480" CELLSPACING="0" CELLPADDING="0" BORDER="0">
+			<TR><TD>
+				<TABLE WIDTH="100%" CELLSPACING="1" CELLPADDING="2" BORDER="0" BGCOLOR="#000000">
+					<TR><TD bgcolor="89B4EA" CLASS="strongs-head" COLSPAN="2"><b>Lexicon Results for <script>document.write(TITLE_BLURB);</script></b></TD></TR>
+					<TR><TD bgcolor="749FCC" CLASS="strongs-subhead" COLSPAN="2"><script>document.write(VAR_NUM_HDR);</script></TD></TR>
+					<tr><TD bgcolor="E9F1FA" CLASS="strongs-main-center-nobottom" COLSPAN="2"><script>img_tags();</script></TD></tr>
+					<TR><TD bgcolor="749FCC" CLASS="strongs-subhead" COLSPAN="2">Pronunciation Guide</TD></tr>
+					<tr><script>document.write(VAR_NUM_TD);</script></TD></tr>
+					<tr><TD bgcolor="749FCC" CLASS="strongs-subhead" STYLE="width:40%"><script>document.write(VAR_REF);</script> Reference</TD>
+						<TD bgcolor="749FCC" CLASS="strongs-subhead" STYLE="width:60%">Root Word</TD></TR>
+					<TR><TD bgcolor="E9F1FA" CLASS="strongs-main-center"><script>document.write(VAR_TWOT);</script></TD>
+						<TD bgcolor="D6E5F7" CLASS="strongs-main-left" ROWSPAN="3"><script>document.write(VAR_FROM);</script></TD> </TR>
+					<TR><TD bgcolor="749FCC" CLASS="strongs-subhead">Part of Speech</TD> </TR>
+					<TR><TD bgcolor="E9F1FA" CLASS="strongs-main-center"><script>document.write(VAR_TENSE);</script></TD> </TR>
+					<TR><TD bgcolor="749FCC" CLASS="strongs-subhead" COLSPAN="2">Ouline of Biblical Usage and Strong's Definition</TD> </TR>
+					<TR><script>document.write(VAR_OUTLINE);</script><br><br></TD> </TR>
+					<tr><TD align="right" colspan="2" bgcolor="FFFFFF"><a href="#strongs-legend"><span style="font-size:75%">Strong's Definition Legend</span></a></td></tr>
+					<TR><TD bgcolor="749FCC" CLASS="strongs-subhead" COLSPAN="2">Authorized Version (KJV) Translation Count &#151; Total: <script>document.write(VAR_AV_TOTAL);</script></TD> </TR>
+					<TR><TD bgcolor="E9F1FA" CLASS="strongs-main-left" COLSPAN="2"><script>document.write(VAR_AV_TD);</script></TD> </TR>
+					<!--<TR><TD Align="left" colspan = "3" bgcolor="89B4EA" CLASS="strongs-subhead"><script>document.write(THAYER_BLURB)</script></TD></TR>-->
+				</TABLE>
+				<br>
+			</TD></TR>
+		</TABLE>
+		<IMG SRC="./gifs/clearpixel.gif" HEIGHT="1" WIDTH="1" BORDER="0"><BR>
+		<DIV CLASS="strongs-underlie">
+			<DIV CLASS="strongs-head">Concordance for Strong's Number <script>document.write(strongs);</script></DIV>
+			<DIV CLASS="strongs-subhead"><A HREF="#about1">Learn More About Our Strong's Numbered Concordance</A></DIV>
+			<span id="ConcFullSpan"></span>
+		</DIV>
+
+
+		<span id="ConcPageSpan"></span>
+  	<IMG SRC="./gifs/clearpixel.gif" HEIGHT="800" WIDTH="1" BORDER="0"><BR>
+		<A NAME="Thayers"></A>
+	  <IMG SRC="./gifs/clearpixel.gif" HEIGHT="10" WIDTH="1" BORDER="0"><BR>
+	  <table width="100%">
+			<tr><td bgcolor="D6E5F7">
+			  <DIV CLASS="strongs-underlie">
+			    <DIV CLASS="head">Greek and Hebrew Lexicon Info</DIV>
+			    <DIV CLASS="main-just">
+			      <DIV CLASS="pad1020">
+							More help with understanding the Lexicon <a href="./help/strong.html" target="_help"><b>here</b></a><br><br>
+							<b>The Blue Letter Bible staff has completed the task of displaying Thayer's Greek Lexicon on our website.
+							We have also prepared images of a Hebrew Lexicon as well.<br><br>
+							This version of Thayer's Lexicon on was prepared by the Blue Letter Bible staff, from a
+							public domain copy. Thayer's work was derived (translated, revised, and enlarged) in
+							the 1880's from Grimm's Lexicon of 1868. The Blue Letter Bible staff is using the
+							corrected edition of 1889. Thayer's additions to Grimm's work are generally marked
+							with a set of brackets [...]. <br><br>Caution: According to Baker's modern copyright
+							edition, Thayer was apparently NOT doctrinally sound in all areas, particularly in the
+							area of the trinity, and so the user must be on guard.  We would be appreciative of any
+							actual examples of doctrinal error, so they can be marked with "caution" tags.</b><br><br>
+			      </DIV>
+			    </DIV>
+			    <DIV CLASS="strongs-subhead"><A HREF="#top">Return to Top</A></DIV>
+			  </DIV>
+			</td></tr>
+		</table>
+		<div class="strongs-underlie">
+			<div id="strongs-legend" class="strongs-head">Strong's Definitions Legend</div>
+			    <DIV CLASS="main-just">
+			     	<DIV CLASS="pad1020">
+					<p>&dagger; &mdash; Indicates that the form listed is a variant spelling or variant form of the Greek word found in Strong's Greek Dictionary under that number.
+					<br><br>&plus; &mdash; Denotes a rendering of one or more Greek/Hebrew words in connection with the one under consideration.
+					<br><br>X &mdash; Denotes a rendering that results from an idiom peculiar to the Greek or Hebrew.
+					<br><br>( ) &mdash; Denotes a word or syllable sometimes given in connection with the principal word to which it is annexed.
+					<br><br>[ ] &mdash; Denotes the inclusion of an additional word in the Greek/Hebrew.
+					</p>
+					</div>
+				</div>
+				<DIV CLASS="strongs-subhead"><A HREF="#top">Return to Top</A></DIV>
+			</div>
+		</div>
+
+	  <IMG SRC="./gifs/clearpixel.gif" HEIGHT="40" WIDTH="1" BORDER="0"><BR>
+	  <IMG SRC="./gifs/clearpixel.gif" HEIGHT="800" WIDTH="1" BORDER="0"><BR>
+	  <A NAME="about1"></A>
+	  <IMG SRC="./gifs/clearpixel.gif" HEIGHT="10" WIDTH="1" BORDER="0"><BR>
+		<table width = "100%">
+			<tr><td   bgcolor="D6E5F7" >
+			  <DIV bgcolor="FFFFDD" CLASS="strongs-underlie">
+			    <DIV CLASS="head">Concordance Information</DIV>
+			    <DIV CLASS="desc-center">
+			      <DIV CLASS="pad2030">
+			        1769 King James Authorized Version</B> <BR> <BR>
+			        with <BR>
+			        <B>Wigram's Englishman's Hebrew and Chaldee Concordance</B> (1843/1890) <BR>
+			        <B>Wigram's Englishman's Greek Concordance</B> (1839/1903)  <BR>
+			        <BR>
+			        identified using <BR>
+			        <B>James Strong's numbers</B> (1890) <BR>
+			        Corrections to Strong's numbers copyright by others <BR>
+			      </DIV>
+			    </DIV>
+			    <DIV CLASS="main-just">
+			      <DIV CLASS="pad1020">
+			        "<B>George Wigram's Englishman's Greek and Hebrew Concordances</B> were
+			        produced in 1839 and 43 respectively and contain a complete listing of
+			        all occurrences of each unique Greek and Hebrew word in the New and
+			        Old Testaments.  It was not until fifty years later that James Strong
+			        assigned numbers to each unique word in the Old and New Testaments
+			        and produced a dictionary listing each word with its number.  This
+			        electronic text combines Wigram's identification (of each unique
+			        word's occurrence) and Strong's numbering system, using Strong's
+			        numbers to mark each location where Wigram identified a particular
+			        word.  The result is a 100% accurate Strong's Concordance imbedded
+			        within the KJV." <SPAN STYLE="font-size:80%">Courtesy of the good folks at Online Bible (Used with Permission).</SPAN>
+			      </DIV>
+			    </DIV>
+			    <DIV CLASS="strongs-subhead"><A HREF="#top">Return to Top</A></DIV>
+			  </DIV>
+			</td></tr>
+		</table>
+	  <IMG SRC="./gifs/clearpixel.gif" HEIGHT="40" WIDTH="1" BORDER="0"><BR>
+	  <IMG SRC="./gifs/clearpixel.gif" HEIGHT="800" WIDTH="1" BORDER="0"><BR>
+	  <A NAME="str"></A><A NAME="ges"></A>
+	  <IMG SRC="./gifs/clearpixel.gif" HEIGHT="10" WIDTH="1" BORDER="0"><BR>
+		<table width = "100%">
+			<tr><td   bgcolor="D6E5F7" >
+			  <DIV CLASS="strongs-underlie">
+			    <DIV CLASS="head">
+			      Strong's Dictionary and Gesenius' Lexicon
+			    </DIV>
+			    <DIV CLASS="main-left">
+			      <DIV CLASS="pad1020">
+							The Blue Letter Bible staff has begun the task of searching each Hebrew / Greek word in several different Lexicons / Dictionaries,
+							and researching the different root forms that each word can take.<br><br>
+							When you see <b>(Str.)</b> next to a Hebrew or Greek word, it means that this word is represented as a root form in "A Concise
+							Dictionary of the Words in The Hebrew Bible", by James Strongs (19th Century)<br><br>
+							When you see <b>(Ges.)</b> next to a Hebrew word, it means that this word is represented as a root form in "Gesenius' Hebrew and
+							Chaldee Lexicon to the Old Testament Scriptures", edited by Samuel Tregelles (circa 1846)<br><br></b>
+			      </DIV>
+			    </DIV>
+			    <DIV CLASS="strongs-subhead"><A HREF="#top">Return to Top</A></DIV>
+			  </DIV>
+			</td></tr>
+		</table>
+	  <IMG SRC="./gifs/clearpixel.gif" HEIGHT="800" WIDTH="1" BORDER="0"><BR>
+	</TD></TR>
+</TABLE>
+</DIV>
+</body>
+</html>

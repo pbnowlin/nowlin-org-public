@@ -1,0 +1,10 @@
+var LOI = [];
+LOI[0] = 'hymn~1~HALLELUJAH, PRAISE JEHOVAH (1)~htm_h_p_hpraisj1.html';
+LOI[1] = 'hymn~1~I&#8217;LL PRAISE MY MAKER~htm_i_l_illprais.html';
+LOI[2] = 'hymn~1~IT IS WELL WITH MY SOUL~htm_i_t_itiswell.html';
+LOI[3] = 'hymn~1~PRAISE THOU THE LORD, O MY SOUL~htm_p_t_pttlomys.html';
+LOI[4] = 'hymn~1~PRAISE YE THE LORD, MY HEART SHALL JOIN~htm_p_y_pyetlord.html';
+LOI[5] = 'hymn~2~HOW CAN I KEEP FROM SINGING?~htm_h_c_hcaikeep.html';
+LOI[6] = 'hymn~2~PRAISE HIM, PRAISE HIM~htm_p_h_phimphim.html';
+LOI[7] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Zion~~~~Psa~146~10~images/maps/Otest/otest_template.html~3a';
+LOI[8] = 'image~Bible~Maps~Modern Jerusalem (map) key=Zion~~~~Psa~146~10~images/maps/Otest/otest_template.html~3b';

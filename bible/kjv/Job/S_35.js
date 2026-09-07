@@ -1,0 +1,17 @@
+Content = new Array();
+Content[1] = 'Elihu [0453] spake [06030] moreover, and said [0559] ,';
+Content[2] = 'Thinkest [02803] thou this to be right [04941], [that] thou saidst [0559] , My righteousness [06664] [is] more than God\'s [0410]?';
+Content[3] = 'For thou saidst [0559] , What advantage [05532] will it be unto thee? [and], What profit [03276] shall I have, [if I be cleansed] from my sin [02403]?';
+Content[4] = 'I will answer [07725] [04405] thee, and thy companions [07453] with thee.';
+Content[5] = 'Look [05027] unto the heavens [08064], and see [07200] ; and behold [07789] the clouds [07834] [which] are higher [01361] than thou.';
+Content[6] = 'If thou sinnest [02398] , what doest [06466] thou against him? or [if] thy transgressions [06588] be multiplied [07231] , what doest [06213] thou unto him?';
+Content[7] = 'If thou be righteous [06663] , what givest [05414] thou him? or what receiveth [03947] he of thine hand [03027]?';
+Content[8] = 'Thy wickedness [07562] [may hurt] a man [0376] as thou [art]; and thy righteousness [06666] [may profit] the son [01121] of man [0120].';
+Content[9] = 'By reason of the multitude [07230] of oppressions [06217] they make [the oppressed] to cry [02199] : they cry out [07768] by reason of the arm [02220] of the mighty [07227].';
+Content[10] = 'But none saith [0559] , Where [is] God [0433] my maker [06213] , who giveth [05414] songs [02158] in the night [03915];';
+Content[11] = 'Who teacheth [0502] us more than the beasts [0929] of the earth [0776], and maketh us wiser [02449] than the fowls [05775] of heaven [08064]?';
+Content[12] = 'There they cry [06817] , but none giveth answer [06030] , because [06440] of the pride [01347] of evil men [07451].';
+Content[13] = 'Surely God [0410] will not hear [08085] vanity [07723], neither will the Almighty [07706] regard [07789] it.';
+Content[14] = 'Although [0637] thou sayest [0559] thou shalt not see [07789] him, [yet] judgment [01779] [is] before [06440] him; therefore trust [02342] thou in him.';
+Content[15] = 'But now, because [it is] not [so], he hath visited [06485] in his anger [0639]; yet he knoweth [03045] [it] not in great [03966] extremity [06580]:';
+Content[16] = 'Therefore doth Job [0347] open [06475] his mouth [06310] in vain [01892]; he multiplieth [03527] words [04405] without [01097] knowledge [01847].';

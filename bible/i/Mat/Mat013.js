@@ -1,0 +1,13 @@
+var LOI = [];
+LOI[0] = 'hymn~8~ARE YOU SOWING THE SEED?~htm_a_y_aysowing.html';
+LOI[1] = 'hymn~8~SOW THE SEED BESIDE ALL WATERS~htm_s_o_sowtseed.html';
+LOI[2] = 'hymn~23~ALMIGHTY GOD, YOUR WORD IS CAST~htm_a_l_algyword.html';
+LOI[3] = 'hymn~23~ONLY ONCE YOU PASS THIS WAY~htm_o_n_onloyptw.html';
+LOI[4] = 'hymn~38~WE PLOW THE FIELDS~htm_w_e_p_weplowtf.html';
+LOI[5] = 'hymn~39~WINTER IN HIS HEART OF GLOOM~htm_w_i_wininhis.html';
+LOI[6] = 'hymn~40~THIS IS THE FIELD~htm_t_h_thisistf.html';
+LOI[7] = 'hymn~44~GOD IN HEAVEN HATH A TREASURE~htm_g_i_giheaven.html';
+LOI[8] = 'hymn~44~JESUS, PRICELESS TREASURE~htm_j_p_jpricelt.html';
+LOI[9] = 'hymn~46~I&#8217;VE FOUND THE PEARL OF GREATEST PRICE~htm_i_f_iftpearl.html';
+LOI[10] = 'hymn~46~LADEN WITH GUILT, AND FULL OF FEARS~htm_l_a_ladenwig.html';
+LOI[11] = 'image~Bible~Charts~The Revelation of Jesus (Ironside\'s chart) key=tribulation~~~~Mat~13~21~images/charts/Bible/bible_template.html~1';

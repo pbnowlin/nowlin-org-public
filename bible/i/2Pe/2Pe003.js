@@ -1,0 +1,13 @@
+var LOI = [];
+LOI[0] = 'hymn~8~NOT SO IN HASTE, MY HEART~htm_n_s_nsinhamh.html';
+LOI[1] = 'hymn~9~IMPATIENT HEART, BE STILL~htm_i_m_impatnhr.html';
+LOI[2] = 'hymn~10~THAT DAY OF WRATH~htm_t_h_thatdayo.html';
+LOI[3] = 'hymn~12~STAND THE OMNIPOTENT DECREE~htm_s_t_standomni.html';
+LOI[4] = 'hymn~18~ALL GLORY TO JESUS~htm_a_g_ag2jesus.html';
+LOI[5] = 'hymn~18~O JESUS, LORD AND SAVIOR~htm_o_j_ojlorsav.html';
+LOI[6] = 'image~Bible~Maps~Paul\'s First Missionary Journey (98K map) key=Paul~~~~2Pe~3~15~images/maps/Journeys/journeys_template.html~1';
+LOI[7] = 'image~Bible~Maps~Paul\'s Second Missionary Journey (140K map) key=Paul~~~~2Pe~3~15~images/maps/Journeys/journeys_template.html~2';
+LOI[8] = 'image~Bible~Maps~Paul\'s Third Missionary Journey (156K map) key=Paul~~~~2Pe~3~15~images/maps/Journeys/journeys_template.html~3';
+LOI[9] = 'image~Bible~Charts~The Revelation of Jesus (Ironside\'s chart) key=perdition~~~~2Pe~3~7~images/charts/Bible/bible_template.html~1';
+LOI[10] = 'image~Bible~Images~The Creation (engraving) key=creation~~~~2Pe~3~4~images/bible_images/Moses/moses_template.html~1a';
+LOI[11] = 'image~Bible~Images~The Conversion of St. Paul key=Paul~~~~2Pe~3~15~images/bible_images/Acts/acts_template.html~2';

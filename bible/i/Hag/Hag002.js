@@ -1,0 +1,15 @@
+var LOI = [];
+LOI[0] = 'hymn~7~COME, THOU LONG EXPECTED JESUS~htm_c_o_comtlong.html';
+LOI[1] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Judah~~~~Hag~2~2~images/maps/Otest/otest_template.html~1b';
+LOI[2] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Judah~~~~Hag~2~21~images/maps/Otest/otest_template.html~1b';
+LOI[3] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Judah~~~~Hag~2~2~images/maps/Otest/otest_template.html~1c';
+LOI[4] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Judah~~~~Hag~2~21~images/maps/Otest/otest_template.html~1c';
+LOI[5] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Temple~~~~Hag~2~15~images/maps/Otest/otest_template.html~3a';
+LOI[6] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Temple~~~~Hag~2~18~images/maps/Otest/otest_template.html~3a';
+LOI[7] = 'image~Bible~Maps~Modern Jerusalem (map) key=Temple~~~~Hag~2~15~images/maps/Otest/otest_template.html~3b';
+LOI[8] = 'image~Bible~Maps~Modern Jerusalem (map) key=Temple~~~~Hag~2~18~images/maps/Otest/otest_template.html~3b';
+LOI[9] = 'image~Bible~Maps~The Sinai Peninsula (map) key=Egypt~~~~Hag~2~5~images/maps/Otest/otest_template.html~5';
+LOI[10] = 'image~Bible~Images~The Jews Wailing Place (engraving) key=temple~~~~Hag~2~15~images/bible_images/Temple/temple_template.html~1';
+LOI[11] = 'image~Bible~Images~The Jews Wailing Place (engraving) key=temple~~~~Hag~2~18~images/bible_images/Temple/temple_template.html~1';
+LOI[12] = 'image~Bible~Images~The Tabernacle (engraving) key=temple~~~~Hag~2~15~images/bible_images/Temple/temple_template.html~2';
+LOI[13] = 'image~Bible~Images~The Tabernacle (engraving) key=temple~~~~Hag~2~18~images/bible_images/Temple/temple_template.html~2';

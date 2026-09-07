@@ -1,0 +1,10 @@
+var LOI = [];
+LOI[0] = 'hymn~1~HARK! THE SOUNDS OF SINGING~htm_h_t_htsounds.html';
+LOI[1] = 'hymn~6~SAVIOR, BLESSED SAVIOR~htm_s_a_saviorbs.html';
+LOI[2] = 'hymn~6~SING WE THE KING~htm_s_i_singking.html';
+LOI[3] = 'hymn~7~MIGHTY GOD, WHILE ANGELS BLESS THEE~htm_m_i_mightygo.html';
+LOI[4] = 'hymn~7~O GOD OF EARTH AND ALTAR~htm_o_g_ogodofea.html';
+LOI[5] = 'image~Bible~Places~Abraham\'s House (engraving) key=Abraham~~~~Psa~47~9~images/places/Israel/israel_template.html~8';
+LOI[6] = 'image~Bible~Images~Melchizedek Blessing Abraham (engraving) key=Abraham~~~~Psa~47~9~images/bible_images/Moses/moses_template.html~3';
+LOI[7] = 'image~Bible~Images~Parting of Lot and Abraham (engraving) key=Abraham~~~~Psa~47~9~images/bible_images/Moses/moses_template.html~3i';
+LOI[8] = 'image~Bible~Images~Abraham\'s Sacrifice: Jehovah Jirah (engraving) key=Abraham~~~~Psa~47~9~images/bible_images/Moses/moses_template.html~3a';

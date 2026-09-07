@@ -1,0 +1,14 @@
+var LOI = [];
+LOI[0] = 'hymn~4~RESTING IN YOU~htm_r_e_restinin.html';
+LOI[1] = 'hymn~4~A SHELTER IN THE TIME OF STORM~htm_s_h_sheltime.html';
+LOI[2] = 'hymn~5~BEYOND THIS LAND OF PARTING~htm_b_e_beyondtl.html';
+LOI[3] = 'hymn~5~THERE&#8217;S NO DISAPPOINTMENT IN HEAVEN~htm_t_h_e_theresno.html';
+LOI[4] = 'hymn~5~WHEN I CAN READ MY TITLE CLEAR~htm_w_h_e_whenican.html';
+LOI[5] = 'hymn~5~WHEN THEY RING THE GOLDEN BELLS~htm_w_h_e_whenthey.html';
+LOI[6] = 'hymn~8~GENTLE SHEPHERD, THOU HAST STILLED~htm_g_e_gesthast.html';
+LOI[7] = 'hymn~8~HAIL, MIGHTY VICTOR~htm_h_a_hailmivi.html';
+LOI[8] = 'hymn~8~LONG HAST THOU WEPT AND SORROWED~htm_l_o_longhast.html';
+LOI[9] = 'hymn~8~SOMETIME WE&#8217;LL UNDERSTAND~htm_s_o_sometiwu.html';
+LOI[10] = 'hymn~8~THINE IS THE GLORY~htm_t_h_i_thineist.html';
+LOI[11] = 'image~Bible~Maps~Cities of Refuge (map) key=refuge~~~~Isa~25~4~images/maps/Otest/otest_template.html~2';
+LOI[12] = 'image~Bible~Maps~Southern Palestine (map) key=Moab~~~~Isa~25~10~images/maps/Otest/otest_template.html~4';

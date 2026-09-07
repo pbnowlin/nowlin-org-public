@@ -1,0 +1,13 @@
+Content = new Array();
+Content[1] = '[[To the chief Musician [05329] upon Gittith [01665], A Psalm [04210] for the sons [01121] of Korah [07141].]] How amiable [03039] [are] thy tabernacles [04908], O LORD [03068] of hosts [06635]!';
+Content[2] = 'My soul [05315] longeth [03700] , yea, even fainteth [03615] for the courts [02691] of the LORD [03068]: my heart [03820] and my flesh [01320] crieth out [07442] for the living [02416] God [0410].';
+Content[3] = 'Yea, the sparrow [06833] hath found [04672] an house [01004], and the swallow [01866] a nest [07064] for herself, where she may lay [07896] her young [0667], [even] thine altars [04196], O LORD [03068] of hosts [06635], my King [04428], and my God [0430].';
+Content[4] = 'Blessed [0835] [are] they that dwell [03427] in thy house [01004]: they will be still praising [01984] thee. Selah [05542].';
+Content[5] = 'Blessed [0835] [is] the man [0120] whose strength [05797] [is] in thee; in whose heart [03824] [are] the ways [04546] [of them].';
+Content[6] = '[Who] passing [05674] through the valley [06010] of Baca [01056] [01057] make [07896] it a well [04599]; the rain [04175] also filleth [05844] the pools [01293].';
+Content[7] = 'They go [03212] from strength [02428] to strength [02428], [every one of them] in Zion [06726] appeareth [07200] before God [0430].';
+Content[8] = 'O LORD [03068] God [0430] of hosts [06635], hear [08085] my prayer [08605]: give ear [0238] , O God [0430] of Jacob [03290]. Selah [05542].';
+Content[9] = 'Behold [07200] , O God [0430] our shield [04043], and look [05027] upon the face [06440] of thine anointed [04899].';
+Content[10] = 'For a day [03117] in thy courts [02691] [is] better [02896] than a thousand [0505]. I had rather [0977] be a doorkeeper [05605] in the house [01004] of my God [0430], than to dwell [01752] in the tents [0168] of wickedness [07562].';
+Content[11] = 'For the LORD [03068] God [0430] [is] a sun [08121] and shield [04043]: the LORD [03068] will give [05414] grace [02580] and glory [03519]: no good [02896] [thing] will he withhold [04513] from them that walk [01980] uprightly [08549].';
+Content[12] = 'O LORD [03068] of hosts [06635], blessed [0835] [is] the man [0120] that trusteth [0982] in thee.';

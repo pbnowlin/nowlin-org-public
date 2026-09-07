@@ -1,0 +1,12 @@
+Content = new Array();
+Content[1] = 'By night [03915] on my bed [04904] I sought [01245] him whom my soul [05315] loveth [0157] : I sought [01245] him, but I found [04672] him not.';
+Content[2] = 'I will rise [06965] now, and go about [05437] the city [05892] in the streets [07784], and in the broad ways [07339] I will seek [01245] him whom my soul [05315] loveth [0157] : I sought [01245] him, but I found [04672] him not.';
+Content[3] = 'The watchmen [08104] that go about [05437] the city [05892] found [04672] me: [to whom I said], Saw [07200] ye him whom my soul [05315] loveth [0157] ?';
+Content[4] = '[It was] but a little [04592] that I passed [05674] from them, but I found [04672] him whom my soul [05315] loveth [0157] : I held [0270] him, and would not let him go [07503] , until I had brought [0935] him into my mother\'s [0517] house [01004], and into the chamber [02315] of her that conceived [02029] me.';
+Content[5] = 'I charge [07650] you, O ye daughters [01323] of Jerusalem [03389], by the roes [06643], and [0176] by the hinds [0355] of the field [07704], that ye stir not up [05782] , nor awake [05782] [my] love [0160], till he please [02654] .';
+Content[6] = 'Who [is] this that cometh [05927] out of the wilderness [04057] like pillars [08490] of smoke [06227], perfumed [06999] with myrrh [04753] and frankincense [03828], with all powders [081] of the merchant [07402] ?';
+Content[7] = 'Behold his bed [04296], which [is] Solomon\'s [08010]; threescore [08346] valiant [01368] men [are] about [05439] it, of the valiant [01368] of Israel [03478].';
+Content[8] = 'They all hold [0270] swords [02719], [being] expert [03925] in war [04421]: every man [0376] [hath] his sword [02719] upon his thigh [03409] because of fear [06343] in the night [03915].';
+Content[9] = 'King [04428] Solomon [08010] made [06213] himself a chariot [0668] of the wood [06086] of Lebanon [03844].';
+Content[10] = 'He made [06213] the pillars [05982] thereof [of] silver [03701], the bottom [07507] thereof [of] gold [02091], the covering [04817] of it [of] purple [0713], the midst [08432] thereof being paved [07528] [with] love [0160], for the daughters [01323] of Jerusalem [03389].';
+Content[11] = 'Go forth [03318] , O ye daughters [01323] of Zion [06726], and behold [07200] king [04428] Solomon [08010] with the crown [05850] wherewith his mother [0517] crowned [05849] him in the day [03117] of his espousals [02861], and in the day [03117] of the gladness [08057] of his heart [03820].';

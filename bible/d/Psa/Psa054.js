@@ -1,0 +1,17 @@
+var LOD = [];
+LOD[0] = 'naves~AFFLICTIONS AND ADVERSITIES~- Prayer In~~~1~NT0000130~1713';
+LOD[1] = 'naves~AFFLICTIONS AND ADVERSITIES~- Prayer In~~~3~NT0000130~1713';
+LOD[2] = 'naves~DAVID~- 1. King of Israel~~~1~NT0001341~12855';
+LOD[3] = 'naves~FAITH~- Exemplified~~~4~NT0001783~16604';
+LOD[4] = 'naves~GODLESSNESS~- General scriptures concerning~~~3~NT0002044~22246';
+LOD[5] = 'naves~MUSIC~- Maschil~~~1~NT0003466~39087';
+LOD[6] = 'naves~MUSIC~- Neginah and Neginoth~~~1~NT0003466~39102';
+LOD[7] = 'naves~PRAYER~- Miscellany Of Minor Sub-topics~~~5~NT0003935~43369';
+LOD[8] = 'naves~TESTIMONY~- Religious, Exemplified~~~7~NT0004874~54721';
+LOD[9] = 'naves~THANKFULNESS~- Exemplified~~~6~NT0004880~54852';
+LOD[10] = 'naves~THANKFULNESS~- Exemplified~~~7~NT0004880~54852';
+LOD[11] = 'subject~Prayer in affliction~~~~1~SPrayer_in_affliction~9336';
+LOD[12] = 'hitchcock~David~~~~1~HDavid~0';
+LOD[13] = 'hitchcock~Neginoth~~~~1~HNeginoth~0';
+LOD[14] = 'hitchcock~Saul~~~~1~HSaul~0';
+LOD[15] = 'hitchcock~Selah~~~~3~HSelah~0';

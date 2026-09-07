@@ -1,0 +1,13 @@
+Content = new Array();
+Content[1] = '[[A Psalm [04210] of David [01732].]] Hear [08085] my prayer [08605], O LORD [03068], give ear [0238] to my supplications [08469]: in thy faithfulness [0530] answer [06030] me, [and] in thy righteousness [06666].';
+Content[2] = 'And enter [0935] not into judgment [04941] with thy servant [05650]: for in thy sight [06440] shall no man living [02416] be justified [06663] .';
+Content[3] = 'For the enemy [0341] hath persecuted [07291] my soul [05315]; he hath smitten [01792] [00] my life [02416] down [01792] to the ground [0776]; he hath made me to dwell [03427] in darkness [04285], as those that have been long [05769] dead [04191] .';
+Content[4] = 'Therefore is my spirit [07307] overwhelmed [05848] within me; my heart [03820] within [08432] me is desolate [08074] .';
+Content[5] = 'I remember [02142] the days [03117] of old [06924]; I meditate [01897] on all thy works [06467]; I muse [07878] on the work [04639] of thy hands [03027].';
+Content[6] = 'I stretch forth [06566] my hands [03027] unto thee: my soul [05315] [thirsteth] after thee, as a thirsty [05889] land [0776]. Selah [05542].';
+Content[7] = 'Hear [06030] me speedily [04118], O LORD [03068]: my spirit [07307] faileth [03615] : hide [05641] not thy face [06440] from me, lest I be like [04911] unto them that go down [03381] into the pit [0953].';
+Content[8] = 'Cause me to hear [08085] thy lovingkindness [02617] in the morning [01242]; for in thee do I trust [0982] : cause me to know [03045] the way [01870] wherein [02098] I should walk [03212] ; for I lift up [05375] my soul [05315] unto thee.';
+Content[9] = 'Deliver [05337] me, O LORD [03068], from mine enemies [0341] : I flee unto thee to hide [03680] me.';
+Content[10] = 'Teach [03925] me to do [06213] thy will [07522]; for thou [art] my God [0430]: thy spirit [07307] [is] good [02896]; lead [05148] me into the land [0776] of uprightness [04334].';
+Content[11] = 'Quicken [02421] me, O LORD [03068], for thy name\'s [08034] sake: for thy righteousness [06666]\' sake bring [03318] my soul [05315] out of trouble [06869].';
+Content[12] = 'And of thy mercy [02617] cut off [06789] mine enemies [0341] , and destroy [06] all them that afflict [06887] my soul [05315]: for I [am] thy servant [05650].';

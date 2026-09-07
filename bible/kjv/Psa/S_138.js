@@ -1,0 +1,9 @@
+Content = new Array();
+Content[1] = '[[[A Psalm] of David [01732].]] I will praise [03034] thee with my whole heart [03820]: before the gods [0430] will I sing praise [02167] unto thee.';
+Content[2] = 'I will worship [07812] toward thy holy [06944] temple [01964], and praise [03034] thy name [08034] for thy lovingkindness [02617] and for thy truth [0571]: for thou hast magnified [01431] thy word [0565] above all thy name [08034].';
+Content[3] = 'In the day [03117] when I cried [07121] thou answeredst [06030] me, [and] strengthenedst [07292] me [with] strength [05797] in my soul [05315].';
+Content[4] = 'All the kings [04428] of the earth [0776] shall praise [03034] thee, O LORD [03068], when they hear [08085] the words [0561] of thy mouth [06310].';
+Content[5] = 'Yea, they shall sing [07891] in the ways [01870] of the LORD [03068]: for great [01419] [is] the glory [03519] of the LORD [03068].';
+Content[6] = 'Though the LORD [03068] [be] high [07311] , yet hath he respect [07200] unto the lowly [08217]: but the proud [01364] he knoweth [03045] afar off [04801].';
+Content[7] = 'Though I walk [03212] in the midst [07130] of trouble [06869], thou wilt revive [02421] me: thou shalt stretch forth [07971] thine hand [03027] against the wrath [0639] of mine enemies [0341] , and thy right hand [03225] shall save [03467] me.';
+Content[8] = 'The LORD [03068] will perfect [01584] [that which] concerneth me: thy mercy [02617], O LORD [03068], [endureth] for ever [05769]: forsake [07503] not the works [04639] of thine own hands [03027].';

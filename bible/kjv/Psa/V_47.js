@@ -1,0 +1,10 @@
+Content = new Array();
+Content[1]="[[To the chief Musician, A Psalm for the sons of Korah.]] O clap your hands, all ye people; shout unto God with the voice of triumph.";
+Content[2]="For the LORD most high [is] terrible; [he is] a great King over all the earth.";
+Content[3]="He shall subdue the people under us, and the nations under our feet.";
+Content[4]="He shall choose our inheritance for us, the excellency of Jacob whom he loved. Selah.";
+Content[5]="God is gone up with a shout, the LORD with the sound of a trumpet.";
+Content[6]="Sing praises to God, sing praises: sing praises unto our King, sing praises.";
+Content[7]="For God [is] the King of all the earth: sing ye praises with understanding.";
+Content[8]="God reigneth over the heathen: God sitteth upon the throne of his holiness.";
+Content[9]="The princes of the people are gathered together, [even] the people of the God of Abraham: for the shields of the earth [belong] unto God: he is greatly exalted.";

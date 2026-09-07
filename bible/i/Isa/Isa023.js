@@ -1,0 +1,12 @@
+var LOI = [];
+LOI[0] = 'image~Bible~Maps~Middle Palestine (map) key=Tyre~~~~Isa~23~1~images/maps/Otest/otest_template.html~3c';
+LOI[1] = 'image~Bible~Maps~Middle Palestine (map) key=Tyre~~~~Isa~23~5~images/maps/Otest/otest_template.html~3c';
+LOI[2] = 'image~Bible~Maps~Middle Palestine (map) key=Tyre~~~~Isa~23~8~images/maps/Otest/otest_template.html~3c';
+LOI[3] = 'image~Bible~Maps~Middle Palestine (map) key=Tyre~~~~Isa~23~15~images/maps/Otest/otest_template.html~3c';
+LOI[4] = 'image~Bible~Maps~Middle Palestine (map) key=Tyre~~~~Isa~23~17~images/maps/Otest/otest_template.html~3c';
+LOI[5] = 'image~Bible~Maps~The Sinai Peninsula (map) key=Egypt~~~~Isa~23~5~images/maps/Otest/otest_template.html~5';
+LOI[6] = 'image~Bible~Maps~Paul\'s Third Missionary Journey (156K map) key=Tyre~~~~Isa~23~1~images/maps/Journeys/journeys_template.html~3';
+LOI[7] = 'image~Bible~Maps~Paul\'s Third Missionary Journey (156K map) key=Tyre~~~~Isa~23~5~images/maps/Journeys/journeys_template.html~3';
+LOI[8] = 'image~Bible~Maps~Paul\'s Third Missionary Journey (156K map) key=Tyre~~~~Isa~23~8~images/maps/Journeys/journeys_template.html~3';
+LOI[9] = 'image~Bible~Maps~Paul\'s Third Missionary Journey (156K map) key=Tyre~~~~Isa~23~15~images/maps/Journeys/journeys_template.html~3';
+LOI[10] = 'image~Bible~Maps~Paul\'s Third Missionary Journey (156K map) key=Tyre~~~~Isa~23~17~images/maps/Journeys/journeys_template.html~3';

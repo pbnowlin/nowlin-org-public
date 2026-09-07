@@ -1,0 +1,12 @@
+var LOI = [];
+LOI[0] = 'hymn~1~GOD THE LORD IS KING~htm_g_l_glorking.html';
+LOI[1] = 'hymn~7~NOW, WHEN THE DUSKY SHADES OF NIGHT~htm_n_w_nwduskys.html';
+LOI[2] = 'hymn~9~O THOU, WHOM ALL THY SAINTS ADORE~htm_o_t_othouwat.html';
+LOI[3] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Samuel~~~~Psa~99~6~images/maps/Otest/otest_template.html~1c';
+LOI[4] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Zion~~~~Psa~99~2~images/maps/Otest/otest_template.html~3a';
+LOI[5] = 'image~Bible~Maps~Modern Jerusalem (map) key=Zion~~~~Psa~99~2~images/maps/Otest/otest_template.html~3b';
+LOI[6] = 'image~Bible~Images~The Exposure of Moses (engraving) key=Moses~~~~Psa~99~6~images/bible_images/Moses/moses_template.html~6';
+LOI[7] = 'image~Bible~Images~The Finding of Moses (engraving) key=Moses~~~~Psa~99~6~images/bible_images/Moses/moses_template.html~7';
+LOI[8] = 'image~Bible~Images~Moses and the Brazen Serpent (engraving) key=Moses~~~~Psa~99~6~images/bible_images/Moses/moses_template.html~9';
+LOI[9] = 'image~Bible~Images~Moses on Mount Pisgah (engraving) key=Moses~~~~Psa~99~6~images/bible_images/Moses/moses_template.html~10';
+LOI[10] = 'image~Bible~Images~Death of Moses on Mount Nebo (engraving) key=Moses~~~~Psa~99~6~images/bible_images/Moses/moses_template.html~11';

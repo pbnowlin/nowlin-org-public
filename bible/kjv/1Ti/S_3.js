@@ -1,0 +1,17 @@
+Content = new Array();
+Content[1] = 'This [is] a true [4103] saying [3056], If a man [1536] desire [3713] the office of a bishop [1984], he desireth [1937] a good [2570] work [2041].';
+Content[2] = 'A bishop [1985] then [3767] must [1163] be [1511] blameless [423], the husband [435] of one [3391] wife [1135], vigilant [3524], sober [4998], of good behaviour [2887], given to hospitality [5382], apt to teach [1317];';
+Content[3] = 'Not [3361] given to wine [3943], no [3361] striker [4131], not [3361] greedy of filthy lucre [146]; but [235] patient [1933], not a brawler [269], not covetous [866];';
+Content[4] = 'One that ruleth [4291] well [2573] his own [2398] house [3624], having [2192] his children [5043] in [1722] subjection [5292] with [3326] all [3956] gravity [4587];';
+Content[5] = '(For [1161] if a man [1536] know [1492] [0] not [3756] how [1492] to rule [4291] his own [2398] house [3624], how [4459] shall he take care of [1959] the church [1577] of God [2316]?)';
+Content[6] = 'Not [3361] a novice [3504], lest [3363] being lifted up with pride [5187] he fall [1706] into [1519] the condemnation [2917] of the devil [1228].';
+Content[7] = 'Moreover [1161] [2532] he [846] must [1163] have [2192] a good [2570] report [3141] of [575] them which are without [1855]; lest [3363] he fall [1706] into [1519] reproach [3680] and [2532] the snare [3803] of the devil [1228].';
+Content[8] = 'Likewise [5615] [must] the deacons [1249] [be] grave [4586], not [3361] doubletongued [1351], not [3361] given [4337] to much [4183] wine [3631], not [3361] greedy of filthy lucre [146];';
+Content[9] = 'Holding [2192] the mystery [3466] of the faith [4102] in [1722] a pure [2513] conscience [4893].';
+Content[10] = 'And [1161] let [1381] [0] these [3778] also [2532] first [4412] be proved [1381] ; then [1534] let them use the office of a deacon [1247] , being [5607] [found] blameless [410].';
+Content[11] = 'Even so [5615] [must their] wives [1135] [be] grave [4586], not [3361] slanderers [1228], sober [3524], faithful [4103] in [1722] all things [3956].';
+Content[12] = 'Let [2077] [0] the deacons [1249] be [2077] the husbands [435] of one [3391] wife [1135], ruling [4291] their children [5043] and [2532] their own [2398] houses [3624] well [2573].';
+Content[13] = 'For [1063] they that have used the office of a deacon [1247] well [2573] purchase [4046] to themselves [1438] a good [2570] degree [898], and [2532] great [4183] boldness [3954] in [1722] the faith [4102] which [3588] is in [1722] Christ [5547] Jesus [2424].';
+Content[14] = 'These things [5023] write I [1125] unto thee [4671], hoping [1679] to come [2064] unto [4314] thee [4571] shortly [5032]:';
+Content[15] = 'But [1161] if [1437] I tarry long [1019] , that [2443] thou mayest know [1492] how [4459] thou oughtest [1163] to behave thyself [390] in [1722] the house [3624] of God [2316], which [3748] is [2076] the church [1577] of the living [2198] God [2316], the pillar [4769] and [2532] ground [1477] of the truth [225].';
+Content[16] = 'And [2532] without controversy [3672] great [3173] is [2076] the mystery [3466] of godliness [2150]: God [2316] was manifest [5319] in [1722] the flesh [4561], justified [1344] in [1722] the Spirit [4151], seen [3700] of angels [32], preached [2784] unto [1722] the Gentiles [1484], believed on [4100] in [1722] the world [2889], received up [353] into [1722] glory [1391].';

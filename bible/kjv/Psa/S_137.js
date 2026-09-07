@@ -1,0 +1,10 @@
+Content = new Array();
+Content[1] = 'By the rivers [05104] of Babylon [0894], there we sat down [03427] , yea, we wept [01058] , when we remembered [02142] Zion [06726].';
+Content[2] = 'We hanged [08518] our harps [03658] upon the willows [06155] in the midst [08432] thereof.';
+Content[3] = 'For there they that carried us away captive [07617] required [07592] of us a song [01697] [07892]; and they that wasted [08437] us [required of us] mirth [08057], [saying], Sing [07891] us [one] of the songs [07892] of Zion [06726].';
+Content[4] = 'How shall we sing [07891] the LORD\'S [03068] song [07892] in a strange [05236] land [0127]?';
+Content[5] = 'If I forget [07911] thee, O Jerusalem [03389], let my right hand [03225] forget [07911] [her cunning].';
+Content[6] = 'If I do not remember [02142] thee, let my tongue [03956] cleave [01692] to the roof of my mouth [02441]; if I prefer [05927] not Jerusalem [03389] above my chief [07218] joy [08057].';
+Content[7] = 'Remember [02142] , O LORD [03068], the children [01121] of Edom [0123] in the day [03117] of Jerusalem [03389]; who said [0559] , Rase [06168] [it], rase [06168] [it, even] to the foundation [03247] thereof.';
+Content[8] = 'O daughter [01323] of Babylon [0894], who art to be destroyed [07703] ; happy [0835] [shall he be], that rewardeth [07999] thee as thou hast served [01580] [01576] us.';
+Content[9] = 'Happy [0835] [shall he be], that taketh [0270] and dasheth [05310] thy little ones [05768] against the stones [05553].';

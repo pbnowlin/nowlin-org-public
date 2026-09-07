@@ -1,0 +1,10 @@
+var LOI = [];
+LOI[0] = 'hymn~1~GIVE THANKS~htm_g_i_givthank.html';
+LOI[1] = 'hymn~1~PRAISE THE LORD, FOR HE IS GOOD~htm_p_r_prtlfhig.html';
+LOI[2] = 'hymn~2~REDEEMED~htm_r_e_redeemed.html';
+LOI[3] = 'hymn~8~BREAK FORTH, O JOYFUL HEART~htm_b_r_breakfor.html';
+LOI[4] = 'hymn~9~SATISFIED~htm_s_a_satsfied.html';
+LOI[5] = 'hymn~16~LIFT UP YOUR HEADS, YE GATES OF BRASS~htm_l_u_luyheads.html';
+LOI[6] = 'hymn~22~COME WITH REJOICING~htm_c_o_comewith.html';
+LOI[7] = 'hymn~29~THE HAVEN OF REST~htm_h_a_havenres.html';
+LOI[8] = 'hymn~29~SAVED FROM THE WRECK~htm_s_a_savedftw.html';

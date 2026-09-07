@@ -1,0 +1,15 @@
+var LOI = [];
+LOI[0] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Jerusalem~~~~Lam~4~12~images/maps/Otest/otest_template.html~3a';
+LOI[1] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Zion~~~~Lam~4~2~images/maps/Otest/otest_template.html~3a';
+LOI[2] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Zion~~~~Lam~4~11~images/maps/Otest/otest_template.html~3a';
+LOI[3] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Zion~~~~Lam~4~22~images/maps/Otest/otest_template.html~3a';
+LOI[4] = 'image~Bible~Maps~Modern Jerusalem (map) key=Jerusalem~~~~Lam~4~12~images/maps/Otest/otest_template.html~3b';
+LOI[5] = 'image~Bible~Maps~Modern Jerusalem (map) key=Zion~~~~Lam~4~2~images/maps/Otest/otest_template.html~3b';
+LOI[6] = 'image~Bible~Maps~Modern Jerusalem (map) key=Zion~~~~Lam~4~11~images/maps/Otest/otest_template.html~3b';
+LOI[7] = 'image~Bible~Maps~Modern Jerusalem (map) key=Zion~~~~Lam~4~22~images/maps/Otest/otest_template.html~3b';
+LOI[8] = 'image~Bible~Maps~Southern Palestine (map) key=Jerusalem~~~~Lam~4~12~images/maps/Otest/otest_template.html~4';
+LOI[9] = 'image~Bible~Places~Tower of David (engraving) key=Jerusalem~~~~Lam~4~12~images/places/Israel/israel_template.html~11';
+LOI[10] = 'image~Bible~Places~Damascus Gate (engraving) key=Jerusalem~~~~Lam~4~12~images/places/Israel/israel_template.html~12';
+LOI[11] = 'image~Bible~Places~Golden Gate-interior (engraving) key=Jerusalem~~~~Lam~4~12~images/places/Israel/israel_template.html~13';
+LOI[12] = 'image~Bible~Places~Golden Gate-exterior (engraving) key=Jerusalem~~~~Lam~4~12~images/places/Israel/israel_template.html~14';
+LOI[13] = 'image~Bible~Places~Mt. of Olives and Jerusalem (engraving) key=Jerusalem~~~~Lam~4~12~images/places/Israel/israel_template.html~17';

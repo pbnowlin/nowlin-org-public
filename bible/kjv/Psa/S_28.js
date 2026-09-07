@@ -1,0 +1,10 @@
+Content = new Array();
+Content[1] = '[[[A Psalm] of David [01732].]] Unto thee will I cry [07121] , O LORD [03068] my rock [06697]; be not silent [02814] to me: lest, [if] thou be silent [02790] to me, I become [04911] like them that go down [03381] into the pit [0953].';
+Content[2] = 'Hear [08085] the voice [06963] of my supplications [08469], when I cry [07768] unto thee, when I lift up [05375] my hands [03027] toward thy holy [06944] oracle [01687].';
+Content[3] = 'Draw me not away [04900] with the wicked [07563], and with the workers [06466] of iniquity [0205], which speak [01696] peace [07965] to their neighbours [07453], but mischief [07451] [is] in their hearts [03824].';
+Content[4] = 'Give [05414] them according to their deeds [06467], and according to the wickedness [07455] of their endeavours [04611]: give [05414] them after the work [04639] of their hands [03027]; render [07725] to them their desert [01576].';
+Content[5] = 'Because they regard [0995] not the works [06468] of the LORD [03068], nor the operation [04639] of his hands [03027], he shall destroy [02040] them, and not build them up [01129] .';
+Content[6] = 'Blessed [01288] [be] the LORD [03068], because he hath heard [08085] the voice [06963] of my supplications [08469].';
+Content[7] = 'The LORD [03068] [is] my strength [05797] and my shield [04043]; my heart [03820] trusted [0982] in him, and I am helped [05826] : therefore my heart [03820] greatly rejoiceth [05937] ; and with my song [07892] will I praise [03034] him.';
+Content[8] = 'The LORD [03068] [is] their strength [05797], and he [is] the saving [03444] strength [04581] of his anointed [04899].';
+Content[9] = 'Save [03467] thy people [05971], and bless [01288] thine inheritance [05159]: feed [07462] them also, and lift them up [05375] for ever [05769].';

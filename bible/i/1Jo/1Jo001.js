@@ -1,0 +1,12 @@
+var LOI = [];
+LOI[0] = 'hymn~3~HOW CAN WE SINNERS KNOW~htm_h_c_hcanwesk.html';
+LOI[1] = 'hymn~5~FATHER OF LIGHT, WE SING IN THY PRAISE~htm_f_a_fatlitew.html';
+LOI[2] = 'hymn~5~FATHER OF LIGHTS~htm_f_a_fatlites.html';
+LOI[3] = 'hymn~5~HEAVENLY SUNLIGHT~htm_h_e_heavenly.html';
+LOI[4] = 'hymn~5~LIGHT OF LIGHT, ENLIGHTEN ME~htm_l_i_litelite.html';
+LOI[5] = 'hymn~5~O LIGHT THAT KNEW NO DAWN~htm_o_l_olitknew.html';
+LOI[6] = 'hymn~5~WALK IN THE LIGHT~htm_w_a_walkintl.html';
+LOI[7] = 'hymn~7~WALKING IN THE GOOD OLD WAY~htm_w_a_walking.html';
+LOI[8] = 'hymn~7~YES, I KNOW!~htm_y_e_yesiknow.html';
+LOI[9] = 'hymn~9~NO, NOT DESPAIRINGLY~htm_n_o_nonotdes.html';
+LOI[10] = 'hymn~9~SEARCH ME, O GOD~htm_s_e_searchme.html';

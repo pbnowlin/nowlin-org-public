@@ -1,0 +1,27 @@
+  body {
+    font-family:trebuchet ms,arial,helvetica;
+    background-image:url('../gifs/clearpixel.gif');
+    background-repeat:repeat-y;
+    background-color:#fff;
+    margin:8px 0px 8px 0px;
+    }
+
+  .a {
+    margin-bottom:-10px;
+    }
+
+  .b {
+    margin-top:8px;
+    margin-left:25px;
+    margin-bottom:-10px;
+    }
+
+  .m-left {
+    padding:2px 10px 40px 10px;
+    }
+
+  .d-left {
+    font-weight:bold;
+    padding:2px 0px 2px 6px;
+    }
+

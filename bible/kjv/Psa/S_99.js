@@ -1,0 +1,10 @@
+Content = new Array();
+Content[1] = 'The LORD [03068] reigneth [04427] ; let the people [05971] tremble [07264] : he sitteth [03427] [between] the cherubims [03742]; let the earth [0776] be moved [05120] .';
+Content[2] = 'The LORD [03068] [is] great [01419] in Zion [06726]; and he [is] high [07311] above all the people [05971].';
+Content[3] = 'Let them praise [03034] thy great [01419] and terrible [03372] name [08034]; [for] it [is] holy [06918].';
+Content[4] = 'The king\'s [04428] strength [05797] also loveth [0157] judgment [04941]; thou dost establish [03559] equity [04339], thou executest [06213] judgment [04941] and righteousness [06666] in Jacob [03290].';
+Content[5] = 'Exalt [07311] ye the LORD [03068] our God [0430], and worship [07812] at his footstool [07272] [01916]; [for] he [is] holy [06918].';
+Content[6] = 'Moses [04872] and Aaron [0175] among his priests [03548], and Samuel [08050] among them that call [07121] upon his name [08034]; they called [07121] upon the LORD [03068], and he answered [06030] them.';
+Content[7] = 'He spake [01696] unto them in the cloudy [06051] pillar [05982]: they kept [08104] his testimonies [05713], and the ordinance [02706] [that] he gave [05414] them.';
+Content[8] = 'Thou answeredst [06030] them, O LORD [03068] our God [0430]: thou wast a God [0410] that forgavest [05375] them, though thou tookest vengeance [05358] of their inventions [05949].';
+Content[9] = 'Exalt [07311] the LORD [03068] our God [0430], and worship [07812] at his holy [06944] hill [02022]; for the LORD [03068] our God [0430] [is] holy [06918].';

@@ -1,0 +1,16 @@
+var LOI = [];
+LOI[0] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Israel~~~~1Ch~24~19~images/maps/Otest/otest_template.html~1b';
+LOI[1] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Levi~~~~1Ch~24~20~images/maps/Otest/otest_template.html~1b';
+LOI[2] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Israel~~~~1Ch~24~19~images/maps/Otest/otest_template.html~1c';
+LOI[3] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Levi~~~~1Ch~24~20~images/maps/Otest/otest_template.html~1c';
+LOI[4] = 'image~Bible~Maps~Cities of Refuge (map) key=Hebron~~~~1Ch~24~23~images/maps/Otest/otest_template.html~2';
+LOI[5] = 'image~Bible~Maps~Middle Palestine (map) key=Israel~~~~1Ch~24~19~images/maps/Otest/otest_template.html~3c';
+LOI[6] = 'image~Bible~Maps~Southern Palestine (map) key=Israel~~~~1Ch~24~19~images/maps/Otest/otest_template.html~4';
+LOI[7] = 'image~Bible~Maps~Divisions of Palestine (map) key=Israel~~~~1Ch~24~19~images/maps/Christ/christ_template.html~1';
+LOI[8] = 'image~Bible~Places~Hebron (engraving) key=Hebron~~~~1Ch~24~23~images/places/Israel/israel_template.html~16';
+LOI[9] = 'image~Bible~Images~Parting of Lot and Abraham (engraving) key=Lot~~~~1Ch~24~5~images/bible_images/Moses/moses_template.html~3i';
+LOI[10] = 'image~Bible~Images~Parting of Lot and Abraham (engraving) key=Lot~~~~1Ch~24~7~images/bible_images/Moses/moses_template.html~3i';
+LOI[11] = 'image~Bible~Images~Saul and David (engraving) key=David~~~~1Ch~24~3~images/bible_images/Kings/kings_template.html~1';
+LOI[12] = 'image~Bible~Images~Saul and David (engraving) key=David~~~~1Ch~24~31~images/bible_images/Kings/kings_template.html~1';
+LOI[13] = 'image~Bible~Images~David Mourning for Absalom (engraving) key=David~~~~1Ch~24~3~images/bible_images/Kings/kings_template.html~2';
+LOI[14] = 'image~Bible~Images~David Mourning for Absalom (engraving) key=David~~~~1Ch~24~31~images/bible_images/Kings/kings_template.html~2';

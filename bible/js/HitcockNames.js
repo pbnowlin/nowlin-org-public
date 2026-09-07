@@ -1,0 +1,3 @@
+document.write(
+"<table border=\"0\" cellspacing=\"1\" cellpadding=\"4\" width=\"100%\"><tr><td bgcolor=efefef><font size=2><b>Cite the BLB CD:</b><br><br><i>The Blue Letter Bible CD.</i> CD-ROM, version " +CDVERSION+ ". Blue Letter Bible, "+RELEASEDATE+".<br><br><strong>CONTENT DISCLAIMER</strong><br><br>The Blue Letter Bible ministry and the BLB Institute hold to the historical, conservative Christian faith, which includes a firm belief in the inerrancy of Scripture. Since the text and audio content provided by BLB represent a range of evangelical traditions, all of the ideas and principles conveyed in the resource materials are not necessarily affirmed, in total, by this ministry.</td></tr>"
+);

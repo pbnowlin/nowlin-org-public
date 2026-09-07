@@ -1,0 +1,9 @@
+Content = new Array();
+Content[1]="[[A Song of degrees of David.]] If [it had not been] the LORD who was on our side, now may Israel say;";
+Content[2]="If [it had not been] the LORD who was on our side, when men rose up against us:";
+Content[3]="Then they had swallowed us up quick, when their wrath was kindled against us:";
+Content[4]="Then the waters had overwhelmed us, the stream had gone over our soul:";
+Content[5]="Then the proud waters had gone over our soul.";
+Content[6]="Blessed [be] the LORD, who hath not given us [as] a prey to their teeth.";
+Content[7]="Our soul is escaped as a bird out of the snare of the fowlers: the snare is broken, and we are escaped.";
+Content[8]="Our help [is] in the name of the LORD, who made heaven and earth.";

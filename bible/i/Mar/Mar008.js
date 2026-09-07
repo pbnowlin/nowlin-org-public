@@ -1,0 +1,16 @@
+var LOI = [];
+LOI[0] = 'hymn~34~WHERE HE LEADS ME~htm_w_h_e_wherehlm.html';
+LOI[1] = 'hymn~36~TAKE THE WORLD, BUT GIVE ME JESUS~htm_t_t_ttwbgmej.html';
+LOI[2] = 'hymn~38~JESUS, AND SHALL IT EVER BE~htm_j_a_janshall.html';
+LOI[3] = 'image~Bible~Maps~Paul\'s Second Missionary Journey (140K map) key=Caesarea~~~~Mar~8~27~images/maps/Journeys/journeys_template.html~2';
+LOI[4] = 'image~Bible~Maps~Paul\'s Third Missionary Journey (156K map) key=Philippi~~~~Mar~8~27~images/maps/Journeys/journeys_template.html~3';
+LOI[5] = 'image~Bible~Images~John the Baptist Asks (engraving) key=Baptist~~~~Mar~8~28~images/bible_images/Taylor/taylor_template.html~3';
+LOI[6] = 'image~Bible~Images~The Miracle of the Loaves and Fishes (engraving)~~~~Mar~8~1~images/bible_images/Miracles/miracles_template.html~5';
+LOI[7] = 'image~Bible~Images~The Miracle of the Loaves and Fishes (engraving)~~~~Mar~8~2~images/bible_images/Miracles/miracles_template.html~5';
+LOI[8] = 'image~Bible~Images~The Miracle of the Loaves and Fishes (engraving)~~~~Mar~8~3~images/bible_images/Miracles/miracles_template.html~5';
+LOI[9] = 'image~Bible~Images~The Miracle of the Loaves and Fishes (engraving)~~~~Mar~8~4~images/bible_images/Miracles/miracles_template.html~5';
+LOI[10] = 'image~Bible~Images~The Miracle of the Loaves and Fishes (engraving)~~~~Mar~8~5~images/bible_images/Miracles/miracles_template.html~5';
+LOI[11] = 'image~Bible~Images~The Miracle of the Loaves and Fishes (engraving)~~~~Mar~8~6~images/bible_images/Miracles/miracles_template.html~5';
+LOI[12] = 'image~Bible~Images~The Miracle of the Loaves and Fishes (engraving)~~~~Mar~8~7~images/bible_images/Miracles/miracles_template.html~5';
+LOI[13] = 'image~Bible~Images~The Miracle of the Loaves and Fishes (engraving)~~~~Mar~8~8~images/bible_images/Miracles/miracles_template.html~5';
+LOI[14] = 'image~Bible~Images~The Miracle of the Loaves and Fishes (engraving)~~~~Mar~8~9~images/bible_images/Miracles/miracles_template.html~5';

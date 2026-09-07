@@ -1,0 +1,12 @@
+Content = new Array();
+Content[1] = '[[To the chief Musician [05329] , Altaschith [0516] , Michtam [04387] of David [01732], when he fled [01272] from [06440] Saul [07586] in the cave [04631].]] Be merciful [02603] unto me, O God [0430], be merciful [02603] unto me: for my soul [05315] trusteth [02620] in thee: yea, in the shadow [06738] of thy wings [03671] will I make my refuge [02620] , until [these] calamities [01942] be overpast [05674] .';
+Content[2] = 'I will cry [07121] unto God [0430] most high [05945]; unto God [0410] that performeth [01584] [all things] for me.';
+Content[3] = 'He shall send [07971] from heaven [08064], and save [03467] me [from] the reproach [02778] of him that would swallow me up [07602] . Selah [05542]. God [0430] shall send forth [07971] his mercy [02617] and his truth [0571].';
+Content[4] = 'My soul [05315] [is] among [08432] lions [03833]: [and] I lie [07901] [even among] them that are set on fire [03857] , [even] the sons [01121] of men [0120], whose teeth [08127] [are] spears [02595] and arrows [02671], and their tongue [03956] a sharp [02299] sword [02719].';
+Content[5] = 'Be thou exalted [07311] , O God [0430], above the heavens [08064]; [let] thy glory [03519] [be] above all the earth [0776].';
+Content[6] = 'They have prepared [03559] a net [07568] for my steps [06471]; my soul [05315] is bowed down [03721] : they have digged [03738] a pit [07882] before [06440] me, into the midst [08432] whereof they are fallen [05307] [themselves]. Selah [05542].';
+Content[7] = 'My heart [03820] is fixed [03559] , O God [0430], my heart [03820] is fixed [03559] : I will sing [07891] and give praise [02167] .';
+Content[8] = 'Awake up [05782] , my glory [03519]; awake [05782] , psaltery [05035] and harp [03658]: I [myself] will awake [05782] early [07837].';
+Content[9] = 'I will praise [03034] thee, O Lord [0136], among the people [05971]: I will sing [02167] unto thee among the nations [03816].';
+Content[10] = 'For thy mercy [02617] [is] great [01419] unto the heavens [08064], and thy truth [0571] unto the clouds [07834].';
+Content[11] = 'Be thou exalted [07311] , O God [0430], above the heavens [08064]: [let] thy glory [03519] [be] above all the earth [0776].';

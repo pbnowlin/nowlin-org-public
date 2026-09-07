@@ -1,0 +1,4 @@
+Content = new Array();
+Content[1] = 'And the king [04428] Ahasuerus [0325] laid [07760] a tribute [04522] upon the land [0776], and [upon] the isles [0339] of the sea [03220].';
+Content[2] = 'And all the acts [04639] of his power [08633] and of his might [01369], and the declaration [06575] of the greatness [01420] of Mordecai [04782], whereunto the king [04428] advanced [01431] him, [are] they not written [03789] in the book [05612] of the chronicles [01697] [03117] of the kings [04428] of Media [04074] and Persia [06539]?';
+Content[3] = 'For Mordecai [04782] the Jew [03064] [was] next [04932] unto king [04428] Ahasuerus [0325], and great [01419] among the Jews [03064], and accepted [07521] of the multitude [07230] of his brethren [0251], seeking [01875] the wealth [02896] of his people [05971], and speaking [01696] peace [07965] to all his seed [02233].';

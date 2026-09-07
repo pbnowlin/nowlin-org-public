@@ -1,0 +1,6 @@
+Content = new Array();
+Content[1] = 'Then said [0559] the LORD [03068] unto me, Go [03212] yet, love [0157] a woman [0802] beloved [0157] of [her] friend [07453], yet an adulteress [05003] , according to the love [0160] of the LORD [03068] toward the children [01121] of Israel [03478], who look [06437] to other [0312] gods [0430], and love [0157] flagons [0809] of wine [06025].';
+Content[2] = 'So I bought [03739] her to me for fifteen [06240] [02568] [pieces] of silver [03701], and [for] an homer [02563] of barley [08184], and an half homer [03963] of barley [08184]:';
+Content[3] = 'And I said [0559] unto her, Thou shalt abide [03427] for me many [07227] days [03117]; thou shalt not play the harlot [02181] , and thou shalt not be [01961] for [another] man [0376]: so [will] I also [be] for thee.';
+Content[4] = 'For the children [01121] of Israel [03478] shall abide [03427] many [07227] days [03117] without a king [04428], and without a prince [08269], and without a sacrifice [02077], and without an image [04676], and without an ephod [0646], and [without] teraphim [08655]:';
+Content[5] = 'Afterward [0310] shall the children [01121] of Israel [03478] return [07725] , and seek [01245] the LORD [03068] their God [0430], and David [01732] their king [04428]; and shall fear [06342] the LORD [03068] and his goodness [02898] in the latter [0319] days [03117].';

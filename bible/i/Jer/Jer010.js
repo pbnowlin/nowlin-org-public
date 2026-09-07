@@ -1,0 +1,17 @@
+var LOI = [];
+LOI[0] = 'hymn~10~LEAD ON, O KING ETERNAL~htm_l_e_leadonok.html';
+LOI[1] = 'hymn~12~I SING THE MIGHTY POWER OF GOD~htm_i_s_isingthe.html';
+LOI[2] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Israel~~~~Jer~10~1~images/maps/Otest/otest_template.html~1b';
+LOI[3] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Israel~~~~Jer~10~16~images/maps/Otest/otest_template.html~1b';
+LOI[4] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Judah~~~~Jer~10~22~images/maps/Otest/otest_template.html~1b';
+LOI[5] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Israel~~~~Jer~10~1~images/maps/Otest/otest_template.html~1c';
+LOI[6] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Israel~~~~Jer~10~16~images/maps/Otest/otest_template.html~1c';
+LOI[7] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Judah~~~~Jer~10~22~images/maps/Otest/otest_template.html~1c';
+LOI[8] = 'image~Bible~Maps~Middle Palestine (map) key=Israel~~~~Jer~10~1~images/maps/Otest/otest_template.html~3c';
+LOI[9] = 'image~Bible~Maps~Middle Palestine (map) key=Israel~~~~Jer~10~16~images/maps/Otest/otest_template.html~3c';
+LOI[10] = 'image~Bible~Maps~Southern Palestine (map) key=Israel~~~~Jer~10~1~images/maps/Otest/otest_template.html~4';
+LOI[11] = 'image~Bible~Maps~Southern Palestine (map) key=Israel~~~~Jer~10~16~images/maps/Otest/otest_template.html~4';
+LOI[12] = 'image~Bible~Maps~Divisions of Palestine (map) key=Israel~~~~Jer~10~1~images/maps/Christ/christ_template.html~1';
+LOI[13] = 'image~Bible~Maps~Divisions of Palestine (map) key=Israel~~~~Jer~10~16~images/maps/Christ/christ_template.html~1';
+LOI[14] = 'image~Bible~Images~The Tabernacle (engraving) key=tabernacle~~~~Jer~10~20~images/bible_images/Temple/temple_template.html~2';
+LOI[15] = 'image~Bible~Images~Tabernacle in the Midst of the Encampment (illustration) key=Tabernacle~~~~Jer~10~20~images/bible_images/Temple/temple_template.html~3';

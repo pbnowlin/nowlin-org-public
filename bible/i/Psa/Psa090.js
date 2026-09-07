@@ -1,0 +1,10 @@
+var LOI = [];
+LOI[0] = 'hymn~1~LORD, THOU HAST BEEN OUR DWELLING PLACE~htm_l_t_lthabodp.html';
+LOI[1] = 'hymn~1~OUR GOD, OUR HELP IN AGES PAST~htm_o_g_ogohiap.html';
+LOI[2] = 'hymn~10~AND LET THIS FEEBLE BODY FAIL~htm_a_l_aletthis.html';
+LOI[3] = 'hymn~10~ALL MEN LIVING ARE BUT MORTAL~htm_a_l_allmeliv.html';
+LOI[4] = 'image~Bible~Images~The Exposure of Moses (engraving) key=Moses~~~~Psa~90~1~images/bible_images/Moses/moses_template.html~6';
+LOI[5] = 'image~Bible~Images~The Finding of Moses (engraving) key=Moses~~~~Psa~90~1~images/bible_images/Moses/moses_template.html~7';
+LOI[6] = 'image~Bible~Images~Moses and the Brazen Serpent (engraving) key=Moses~~~~Psa~90~1~images/bible_images/Moses/moses_template.html~9';
+LOI[7] = 'image~Bible~Images~Moses on Mount Pisgah (engraving) key=Moses~~~~Psa~90~1~images/bible_images/Moses/moses_template.html~10';
+LOI[8] = 'image~Bible~Images~Death of Moses on Mount Nebo (engraving) key=Moses~~~~Psa~90~1~images/bible_images/Moses/moses_template.html~11';

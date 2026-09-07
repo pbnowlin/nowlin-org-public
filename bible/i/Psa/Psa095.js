@@ -1,0 +1,15 @@
+var LOI = [];
+LOI[0] = 'hymn~1~COME, CHRISTIANS, JOIN TO SING~htm_c_o_cochrist.html';
+LOI[1] = 'hymn~1~COME, LET US TUNE OUR LOFTIEST SONG~htm_c_o_colutune.html';
+LOI[2] = 'hymn~1~COME, SOUND HIS PRAISE ABROAD~htm_c_o_comesoun.html';
+LOI[3] = 'hymn~1~O COME AND SING TO GOD, THE LORD~htm_o_c_ocomas2g.html';
+LOI[4] = 'hymn~1~O COME, LOUD ANTHEMS LET US SING~htm_o_c_ocomelan.html';
+LOI[5] = 'hymn~1~PRAISE THE ROCK OF OUR SALVATION~htm_p_r_procksal.html';
+LOI[6] = 'hymn~3~GREAT GOD, WE GIVE THEE PRAISE~htm_g_g_ggwegitp.html';
+LOI[7] = 'hymn~2~COME, YE THANKFUL PEOPLE, COME~htm_c_o_comeytpc.html';
+LOI[8] = 'hymn~2~NOT ALONE FOR MIGHTY EMPIRE~htm_n_a_nalonfme.html';
+LOI[9] = 'hymn~2~ONCE MORE WE COME BEFORE OUR GOD~htm_o_n_oncemwco.html';
+LOI[10] = 'hymn~2~SONGS OF THANKFULNESS AND PRAISE~htm_s_o_songsoft.html';
+LOI[11] = 'hymn~6~BRETHREN, WE HAVE MET TO WORSHIP~htm_b_r_brethren.html';
+LOI[12] = 'hymn~6~MAKER, IN WHOM WE LIVE~htm_m_a_makerin.html';
+LOI[13] = 'hymn~7~TODAY THE SAVIOR CALLS~htm_t_o_todatsav.html';

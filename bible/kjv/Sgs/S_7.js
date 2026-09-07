@@ -1,0 +1,14 @@
+Content = new Array();
+Content[1] = 'How beautiful [03302] are thy feet [06471] with shoes [05275], O prince\'s [05081] daughter [01323]! the joints [02542] of thy thighs [03409] [are] like jewels [02481], the work [04639] of the hands [03027] of a cunning workman [0542].';
+Content[2] = 'Thy navel [08326] [is like] a round [05469] goblet [0101], [which] wanteth [02637] not liquor [04197]: thy belly [0990] [is like] an heap [06194] of wheat [02406] set about [05473] with lilies [07799].';
+Content[3] = 'Thy two [08147] breasts [07699] [are] like two [08147] young [06082] roes [06646] [that are] twins [08380].';
+Content[4] = 'Thy neck [06677] [is] as a tower [04026] of ivory [08127]; thine eyes [05869] [like] the fishpools [01295] in Heshbon [02809], by the gate [08179] of Bathrabbim [01337]: thy nose [0639] [is] as the tower [04026] of Lebanon [03844] which looketh [06822] toward [06440] Damascus [01834].';
+Content[5] = 'Thine head [07218] upon thee [is] like Carmel [03760], and the hair [01803] of thine head [07218] like purple [0713]; the king [04428] [is] held [0631] in the galleries [07298].';
+Content[6] = 'How fair [03302] and how pleasant [05276] art thou, O love [0160], for delights [08588]!';
+Content[7] = 'This thy stature [06967] is like [01819] to a palm tree [08558], and thy breasts [07699] to clusters [0811] [of grapes].';
+Content[8] = 'I said [0559] , I will go up [05927] to the palm tree [08558], I will take hold [0270] of the boughs [05577] thereof: now also thy breasts [07699] shall be as clusters [0811] of the vine [01612], and the smell [07381] of thy nose [0639] like apples [08598];';
+Content[9] = 'And the roof of thy mouth [02441] like the best [02896] wine [03196] for my beloved [01730], that goeth [01980] [down] sweetly [04339], causing the lips [08193] of those that are asleep [03463] to speak [01680] .';
+Content[10] = 'I [am] my beloved\'s [01730], and his desire [08669] [is] toward me.';
+Content[11] = 'Come [03212] , my beloved [01730], let us go forth [03318] into the field [07704]; let us lodge [03885] in the villages [03723].';
+Content[12] = 'Let us get up early [07925] to the vineyards [03754]; let us see [07200] if the vine [01612] flourish [06524] , [whether] the tender grape [05563] appear [06605] , [and] the pomegranates [07416] bud forth [05132] : there will I give [05414] thee my loves [01730].';
+Content[13] = 'The mandrakes [01736] give [05414] a smell [07381], and at our gates [06607] [are] all manner of pleasant [04022] [fruits], new [02319] and old [03465], [which] I have laid up [06845] for thee, O my beloved [01730].';

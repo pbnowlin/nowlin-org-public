@@ -1,0 +1,12 @@
+var LOI = [];
+LOI[0] = 'hymn~2~IN TIME OF TRIBULATION~htm_i_n_intimeof.html';
+LOI[1] = 'hymn~13~O GOD, MOST HOLY ARE THY WAYS~htm_o_g_ogodmost.html';
+LOI[2] = 'hymn~18~STEAL AWAY TO JESUS~htm_s_t_stealatj.html';
+LOI[3] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Joseph~~~~Psa~77~15~images/maps/Otest/otest_template.html~1b';
+LOI[4] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Joseph~~~~Psa~77~15~images/maps/Otest/otest_template.html~1c';
+LOI[5] = 'image~Bible~Images~Joseph Interprets Pharaoh\'s Dream (engraving) key=Joseph~~~~Psa~77~15~images/bible_images/Moses/moses_template.html~5';
+LOI[6] = 'image~Bible~Images~The Exposure of Moses (engraving) key=Moses~~~~Psa~77~20~images/bible_images/Moses/moses_template.html~6';
+LOI[7] = 'image~Bible~Images~The Finding of Moses (engraving) key=Moses~~~~Psa~77~20~images/bible_images/Moses/moses_template.html~7';
+LOI[8] = 'image~Bible~Images~Moses and the Brazen Serpent (engraving) key=Moses~~~~Psa~77~20~images/bible_images/Moses/moses_template.html~9';
+LOI[9] = 'image~Bible~Images~Moses on Mount Pisgah (engraving) key=Moses~~~~Psa~77~20~images/bible_images/Moses/moses_template.html~10';
+LOI[10] = 'image~Bible~Images~Death of Moses on Mount Nebo (engraving) key=Moses~~~~Psa~77~20~images/bible_images/Moses/moses_template.html~11';

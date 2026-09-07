@@ -1,0 +1,13 @@
+Content = new Array();
+Content[1] = 'The LORD [03068] reigneth [04427] ; let the earth [0776] rejoice [01523] ; let the multitude [07227] of isles [0339] be glad [08055] [thereof].';
+Content[2] = 'Clouds [06051] and darkness [06205] [are] round about [05439] him: righteousness [06664] and judgment [04941] [are] the habitation [04349] of his throne [03678].';
+Content[3] = 'A fire [0784] goeth [03212] before [06440] him, and burneth up [03857] his enemies [06862] round about [05439].';
+Content[4] = 'His lightnings [01300] enlightened [0215] the world [08398]: the earth [0776] saw [07200] , and trembled [02342] .';
+Content[5] = 'The hills [02022] melted [04549] like wax [01749] at the presence [06440] of the LORD [03068], at the presence [06440] of the Lord [0113] of the whole earth [0776].';
+Content[6] = 'The heavens [08064] declare [05046] his righteousness [06664], and all the people [05971] see [07200] his glory [03519].';
+Content[7] = 'Confounded [0954] be all they that serve [05647] graven images [06459], that boast [01984] themselves of idols [0457]: worship [07812] him, all [ye] gods [0430].';
+Content[8] = 'Zion [06726] heard [08085] , and was glad [08055] ; and the daughters [01323] of Judah [03063] rejoiced [01523] because of thy judgments [04941], O LORD [03068].';
+Content[9] = 'For thou, LORD [03068], [art] high above [05945] all the earth [0776]: thou art exalted [05927] far above [03966] all gods [0430].';
+Content[10] = 'Ye that love [0157] the LORD [03068], hate [08130] evil [07451]: he preserveth [08104] the souls [05315] of his saints [02623]; he delivereth [05337] them out of the hand [03027] of the wicked [07563].';
+Content[11] = 'Light [0216] is sown [02232] for the righteous [06662], and gladness [08057] for the upright [03477] in heart [03820].';
+Content[12] = 'Rejoice [08055] in the LORD [03068], ye righteous [06662]; and give thanks [03034] at the remembrance [02143] of his holiness [06944].';

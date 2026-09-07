@@ -1,0 +1,14 @@
+Content = new Array();
+Content[1] = '[[A Song [07892] [or] Psalm [04210] of David [01732].]] O God [0430], my heart [03820] is fixed [03559] ; I will sing [07891] and give praise [02167] , even with my glory [03519].';
+Content[2] = 'Awake [05782] , psaltery [05035] and harp [03658]: I [myself] will awake [05782] early [07837].';
+Content[3] = 'I will praise [03034] thee, O LORD [03068], among the people [05971]: and I will sing praises [02167] unto thee among the nations [03816].';
+Content[4] = 'For thy mercy [02617] [is] great [01419] above the heavens [08064]: and thy truth [0571] [reacheth] unto the clouds [07834].';
+Content[5] = 'Be thou exalted [07311] , O God [0430], above the heavens [08064]: and thy glory [03519] above all the earth [0776];';
+Content[6] = 'That thy beloved [03039] may be delivered [02502] : save [03467] [with] thy right hand [03225], and answer [06030] me.';
+Content[7] = 'God [0430] hath spoken [01696] in his holiness [06944]; I will rejoice [05937] , I will divide [02505] Shechem [07927], and mete out [04058] the valley [06010] of Succoth [05523].';
+Content[8] = 'Gilead [01568] [is] mine; Manasseh [04519] [is] mine; Ephraim [0669] also [is] the strength [04581] of mine head [07218]; Judah [03063] [is] my lawgiver [02710] ;';
+Content[9] = 'Moab [04124] [is] my washpot [07366] [05518]; over Edom [0123] will I cast out [07993] my shoe [05275]; over Philistia [06429] will I triumph [07321] .';
+Content[10] = 'Who will bring [02986] me into the strong [04013] city [05892]? who will lead [05148] me into Edom [0123]?';
+Content[11] = '[Wilt] not [thou], O God [0430], [who] hast cast us off [02186] ? and wilt not thou, O God [0430], go forth [03318] with our hosts [06635]?';
+Content[12] = 'Give [03051] us help [05833] from trouble [06862]: for vain [07723] [is] the help [08668] of man [0120].';
+Content[13] = 'Through God [0430] we shall do [06213] valiantly [02428]: for he [it is that] shall tread down [0947] our enemies [06862].';

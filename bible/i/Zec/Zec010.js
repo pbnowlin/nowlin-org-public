@@ -1,0 +1,12 @@
+var LOI = [];
+LOI[0] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Judah~~~~Zec~10~3~images/maps/Otest/otest_template.html~1b';
+LOI[1] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Judah,Joseph~~~~Zec~10~6~images/maps/Otest/otest_template.html~1b';
+LOI[2] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Ephraim~~~~Zec~10~7~images/maps/Otest/otest_template.html~1b';
+LOI[3] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Judah~~~~Zec~10~3~images/maps/Otest/otest_template.html~1c';
+LOI[4] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Judah,Joseph~~~~Zec~10~6~images/maps/Otest/otest_template.html~1c';
+LOI[5] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Ephraim~~~~Zec~10~7~images/maps/Otest/otest_template.html~1c';
+LOI[6] = 'image~Bible~Maps~Middle Palestine (map) key=Gilead~~~~Zec~10~10~images/maps/Otest/otest_template.html~3c';
+LOI[7] = 'image~Bible~Maps~Southern Palestine (map) key=Gilead~~~~Zec~10~10~images/maps/Otest/otest_template.html~4';
+LOI[8] = 'image~Bible~Maps~The Sinai Peninsula (map) key=Egypt~~~~Zec~10~10~images/maps/Otest/otest_template.html~5';
+LOI[9] = 'image~Bible~Maps~The Sinai Peninsula (map) key=Egypt~~~~Zec~10~11~images/maps/Otest/otest_template.html~5';
+LOI[10] = 'image~Bible~Images~Joseph Interprets Pharaoh\'s Dream (engraving) key=Joseph~~~~Zec~10~6~images/bible_images/Moses/moses_template.html~5';

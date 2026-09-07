@@ -1,0 +1,10 @@
+var LOI = [];
+LOI[0] = 'hymn~22~EVERY MORNING MERCIES NEW~htm_e_v_evrymorn.html';
+LOI[1] = 'hymn~22~GOD OF OUR LIFE~htm_g_o_gourlife.html';
+LOI[2] = 'hymn~22~GREAT IS THY FAITHFULNESS~htm_g_i_gisthyf.html';
+LOI[3] = 'hymn~22~NEW EVERY MORNING IS THE LOVE~htm_n_e_newevery.html';
+LOI[4] = 'hymn~22~SUN IS ON THE LAND AND SEA, THE~htm_s_u_suniolas.html';
+LOI[5] = 'hymn~24~MY HEART IS RESTING, O MY GOD~htm_m_h_mhiromyg.html';
+LOI[6] = 'hymn~41~LIFT UP YOUR HEARTS~htm_l_i_liftupyh.html';
+LOI[7] = 'hymn~41~WE LIFT OUR HEARTS TO THEE~htm_w_e_weliftoh.html';
+LOI[8] = 'hymn~55~THIS MY PLEA~htm_t_h_i_thismypl.html';

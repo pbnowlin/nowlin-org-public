@@ -1,0 +1,17 @@
+Content = new Array();
+Content[1] = 'And Miriam [04813] and Aaron [0175] spake [01696] against Moses [04872] because of [0182] the Ethiopian [03571] woman [0802] whom he had married [03947] : for he had married [03947] an Ethiopian [03571] woman [0802].';
+Content[2] = 'And they said [0559] , Hath the LORD [03068] indeed spoken [01696] only by Moses [04872]? hath he not spoken [01696] also by us? And the LORD [03068] heard [08085] [it].';
+Content[3] = '(Now the man [0376] Moses [04872] [was] very [03966] meek [06035] [06035], above all the men [0120] which [were] upon the face [06440] of the earth [0127].)';
+Content[4] = 'And the LORD [03068] spake [0559] suddenly [06597] unto Moses [04872], and unto Aaron [0175], and unto Miriam [04813], Come out [03318] ye three [07969] unto the tabernacle [0168] of the congregation [04150]. And they three [07969] came out [03318] .';
+Content[5] = 'And the LORD [03068] came down [03381] in the pillar [05982] of the cloud [06051], and stood [05975] [in] the door [06607] of the tabernacle [0168], and called [07121] Aaron [0175] and Miriam [04813]: and they both [08147] came forth [03318] .';
+Content[6] = 'And he said [0559] , Hear [08085] now my words [01697]: If there be a prophet [05030] among you, [I] the LORD [03068] will make myself known [03045] unto him in a vision [04759], [and] will speak [01696] unto him in a dream [02472].';
+Content[7] = 'My servant [05650] Moses [04872] [is] not so, who [is] faithful [0539] in all mine house [01004].';
+Content[8] = 'With him will I speak [01696] mouth [06310] to mouth [06310], even apparently [04758], and not in dark speeches [02420]; and the similitude [08544] of the LORD [03068] shall he behold [05027] : wherefore then were ye not afraid [03372] to speak [01696] against my servant [05650] Moses [04872]?';
+Content[9] = 'And the anger [0639] of the LORD [03068] was kindled [02734] against them; and he departed [03212] .';
+Content[10] = 'And the cloud [06051] departed [05493] from off the tabernacle [0168]; and, behold, Miriam [04813] [became] leprous [06879] , [white] as snow [07950]: and Aaron [0175] looked [06437] upon Miriam [04813], and, behold, [she was] leprous [06879] .';
+Content[11] = 'And Aaron [0175] said [0559] unto Moses [04872], Alas [0994], my lord [0113], I beseech thee, lay [07896] not the sin [02403] upon us, wherein we have done foolishly [02973] , and wherein we have sinned [02398] .';
+Content[12] = 'Let her not be as one dead [04994] [04191] , of whom the flesh [01320] is half [02677] consumed [0398] when he cometh out [03318] of his mother\'s [0517] womb [07358].';
+Content[13] = 'And Moses [04872] cried [06817] unto the LORD [03068], saying [0559] , Heal [07495] her now, O God [0410], I beseech thee.';
+Content[14] = 'And the LORD [03068] said [0559] unto Moses [04872], If her father [01] had but [03417] spit [03417] in her face [06440], should she not be ashamed [03637] seven [07651] days [03117]? let her be shut [05462] out [02351] from the camp [04264] seven [07651] days [03117], and after [0310] that let her be received [0622] in [again].';
+Content[15] = 'And Miriam [04813] was shut [05462] out [02351] from the camp [04264] seven [07651] days [03117]: and the people [05971] journeyed [05265] not till Miriam [04813] was brought [0622] in [again].';
+Content[16] = 'And afterward [0310] the people [05971] removed [05265] from Hazeroth [02698], and pitched [02583] in the wilderness [04057] of Paran [06290].';

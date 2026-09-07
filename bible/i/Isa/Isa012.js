@@ -1,0 +1,12 @@
+var LOI = [];
+LOI[0] = 'hymn~1~PRAISE YE JEHOVAH!~htm_p_y_pyjehova.html';
+LOI[1] = 'hymn~2~I WILL NOT BE AFRAID~htm_i_w_iwillnot.html';
+LOI[2] = 'hymn~3~ONWARD, YE PILGRIMS~htm_o_y_oypilgrm.html';
+LOI[3] = 'hymn~6~GREAT GOD! ATTEND WHILE ZION SINGS~htm_g_g_ggattend.html';
+LOI[4] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Israel~~~~Isa~12~6~images/maps/Otest/otest_template.html~1b';
+LOI[5] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Israel~~~~Isa~12~6~images/maps/Otest/otest_template.html~1c';
+LOI[6] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Zion~~~~Isa~12~6~images/maps/Otest/otest_template.html~3a';
+LOI[7] = 'image~Bible~Maps~Modern Jerusalem (map) key=Zion~~~~Isa~12~6~images/maps/Otest/otest_template.html~3b';
+LOI[8] = 'image~Bible~Maps~Middle Palestine (map) key=Israel~~~~Isa~12~6~images/maps/Otest/otest_template.html~3c';
+LOI[9] = 'image~Bible~Maps~Southern Palestine (map) key=Israel~~~~Isa~12~6~images/maps/Otest/otest_template.html~4';
+LOI[10] = 'image~Bible~Maps~Divisions of Palestine (map) key=Israel~~~~Isa~12~6~images/maps/Christ/christ_template.html~1';

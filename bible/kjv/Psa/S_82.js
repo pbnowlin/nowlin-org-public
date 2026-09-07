@@ -1,0 +1,9 @@
+Content = new Array();
+Content[1] = '[[A Psalm [04210] of Asaph [0623].]] God [0430] standeth [05324] in the congregation [05712] of the mighty [0410]; he judgeth [08199] among [07130] the gods [0430].';
+Content[2] = 'How long will ye judge [08199] unjustly [05766], and accept [05375] the persons [06440] of the wicked [07563]? Selah [05542].';
+Content[3] = 'Defend [08199] the poor [01800] and fatherless [03490]: do justice [06663] to the afflicted [06041] and needy [07326] .';
+Content[4] = 'Deliver [06403] the poor [01800] and needy [034]: rid [05337] [them] out of the hand [03027] of the wicked [07563].';
+Content[5] = 'They know [03045] not, neither will they understand [0995] ; they walk [01980] on in darkness [02825]: all the foundations [04144] of the earth [0776] are out of course [04131] .';
+Content[6] = 'I have said [0559] , Ye [are] gods [0430]; and all of you [are] children [01121] of the most High [05945].';
+Content[7] = 'But [0403] ye shall die [04191] like men [0120], and fall [05307] like one [0259] of the princes [08269].';
+Content[8] = 'Arise [06965] , O God [0430], judge [08199] the earth [0776]: for thou shalt inherit [05157] all nations [01471].';

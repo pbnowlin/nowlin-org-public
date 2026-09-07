@@ -1,0 +1,10 @@
+Content = new Array();
+Content[1] = 'Praise [01984] ye the LORD [03050]. Sing [07891] unto the LORD [03068] a new [02319] song [07892], [and] his praise [08416] in the congregation [06951] of saints [02623].';
+Content[2] = 'Let Israel [03478] rejoice [08055] in him that made [06213] him: let the children [01121] of Zion [06726] be joyful [01523] in their King [04428].';
+Content[3] = 'Let them praise [01984] his name [08034] in the dance [04234]: let them sing praises [02167] unto him with the timbrel [08596] and harp [03658].';
+Content[4] = 'For the LORD [03068] taketh pleasure [07521] in his people [05971]: he will beautify [06286] the meek [06035] with salvation [03444].';
+Content[5] = 'Let the saints [02623] be joyful [05937] in glory [03519]: let them sing aloud [07442] upon their beds [04904].';
+Content[6] = '[Let] the high [07319] [praises] of God [0410] [be] in their mouth [01627], and a twoedged [06374] sword [02719] in their hand [03027];';
+Content[7] = 'To execute [06213] vengeance [05360] upon the heathen [01471], [and] punishments [08433] upon the people [03816];';
+Content[8] = 'To bind [0631] their kings [04428] with chains [02131], and their nobles [03513] with fetters [03525] of iron [01270];';
+Content[9] = 'To execute [06213] upon them the judgment [04941] written [03789] : this honour [01926] have all his saints [02623]. Praise [01984] ye the LORD [03050].';

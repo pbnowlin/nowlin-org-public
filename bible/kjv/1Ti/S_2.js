@@ -1,0 +1,16 @@
+Content = new Array();
+Content[1] = 'I exhort [3870] therefore [3767], that, first [4412] of all [3956], supplications [1162], prayers [4335], intercessions [1783], [and] giving of thanks [2169], be made [4160] for [5228] all [3956] men [444];';
+Content[2] = 'For [5228] kings [935], and [2532] [for] all [3956] that are [5607] in [1722] authority [5247]; that [2443] we may lead [1236] a quiet [2263] and [2532] peaceable [2272] life [979] in [1722] all [3956] godliness [2150] and [2532] honesty [4587].';
+Content[3] = 'For [1063] this [5124] [is] good [2570] and [2532] acceptable [587] in the sight [1799] of God [2316] our [2257] Saviour [4990];';
+Content[4] = 'Who [3739] will have [2309] all [3956] men [444] to be saved [4982] , and [2532] to come [2064] unto [1519] the knowledge [1922] of the truth [225].';
+Content[5] = 'For [1063] [there is] one [1520] God [2316], and [2532] one [1520] mediator [3316] between God [2316] and [2532] men [444], the man [444] Christ [5547] Jesus [2424];';
+Content[6] = 'Who [3588] gave [1325] himself [1438] a ransom [487] for [5228] all [3956], to be testified [3142] in due [2398] time [2540].';
+Content[7] = 'Whereunto [1519] [3739] I [1473] am ordained [5087] a preacher [2783], and [2532] an apostle [652], (I speak [3004] the truth [225] in [1722] Christ [5547], [and] lie [5574] not [3756];) a teacher [1320] of the Gentiles [1484] in [1722] faith [4102] and [2532] verity [225].';
+Content[8] = 'I will [1014] therefore [3767] that men [435] pray [4336] every [1722] [3956] where [5117], lifting up [1869] holy [3741] hands [5495], without [5565] wrath [3709] and [2532] doubting [1261].';
+Content[9] = 'In like manner [5615] also [2532], that women [1135] adorn [2885] themselves [1438] in [1722] modest [2887] apparel [2689], with [3326] shamefacedness [127] and [2532] sobriety [4997]; not [3361] with [1722] broided hair [4117], or [2228] gold [5557], or [2228] pearls [3135], or [2228] costly [4185] array [2441];';
+Content[10] = 'But [235] (which [3739] becometh [4241] women [1135] professing [1861] godliness [2317]) with [1223] good [18] works [2041].';
+Content[11] = 'Let [3129] [0] the woman [1135] learn [3129] in [1722] silence [2271] with [1722] all [3956] subjection [5292].';
+Content[12] = 'But [1161] I suffer [2010] not [3756] a woman [1135] to teach [1321] , nor [3761] to usurp authority [831] over the man [435], but [235] to be [1511] in [1722] silence [2271].';
+Content[13] = 'For [1063] Adam [76] was [4111] [0] first [4413] formed [4111] , then [1534] Eve [2096].';
+Content[14] = 'And [2532] Adam [76] was [538] [0] not [3756] deceived [538] , but [1161] the woman [1135] being deceived [538] was [1096] in [1722] the transgression [3847].';
+Content[15] = 'Notwithstanding [1161] she shall be saved [4982] in [1223] childbearing [5042], if [1437] they continue [3306] in [1722] faith [4102] and [2532] charity [26] and [2532] holiness [38] with [3326] sobriety [4997].';

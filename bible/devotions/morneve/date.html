@@ -1,0 +1,99 @@
+<html>
+<head>
+
+<title>Blue Letter Bible: Morning and Evening Devotional -- Date Index</title>
+<script src="../../js/basepath.js"  type="text/javascript"></script>
+<script src="./js/nav.js"  type="text/javascript"></script>
+<script src="./js/MainHeader.js"  type="text/javascript"></script>
+<script>
+Dates = new Array();
+Dates[1] = 31;
+Dates[2] = 29;
+Dates[3] = 31;
+Dates[4] = 30;
+Dates[5] = 31;
+Dates[6] = 30;
+Dates[7] = 31;
+Dates[8] = 31;
+Dates[9] = 30;
+Dates[10] = 31;
+Dates[11] = 30;
+Dates[12] = 31;
+
+function pad(padWhat,howMuch) {
+  padWhat = padWhat.toString();
+  padLength = padWhat.length;
+  for(i=padLength;i<howMuch;i++) {
+    padWhat = "0"+padWhat;
+  }
+  return padWhat;
+}
+
+function goNow() {
+  var When = new String(document.Morning_Evening.date.value);
+  if (When.length < 1) {
+    alert("Please provide a specific date.");
+	return false;
+  }
+  else {
+		Month = When.split("/")[0];
+		Day = When.split("/")[1];
+		if (!Month || !Day || Month=="" || Day=="") {
+		  alert("This is not a valid date");
+		  return false;
+		}
+		else if(1 > Month || Month > 12 || 1 > Day || Day > Dates[Month]) {
+		  alert("This is not a valid date");
+		  return false;
+		}
+		else {
+		  Month=pad(Month,2);
+		  Day=pad(Day,2);
+		  sun='pm';
+		  if (document.Morning_Evening.portion[0].checked){sun='am';}
+		  document.location.href=basePath+'/devotions/morneve/'+Month+"/"+Month+Day+sun+".html";
+		  return false;
+		}
+  }
+  return false;
+}
+</script>
+  <DIV CLASS="head">
+    Morning and Evening: Daily Readings
+  </DIV>
+  <DIV CLASS="subhead">
+    Date Index
+  </DIV>
+  <DIV CLASS="main-center">
+    <DIV CLASS="pad2020">
+  	  Please enter the date and click on the "Morning" or "Evening" radio button for which you would like to read Charles Spurgeon's <i>Morning and Evening</i> devotional.  Please enter the date in the format mm/dd.
+			<form name="Morning_Evening" action="" method="get" onSubmit="return goNow();">
+    <TABLE ALIGN="center">
+    <TR>
+    <TD VALIGN="top" ALIGN="left" COLSPAN="2">
+      <B>Date (mm/dd):</B>
+    </TD>
+    </TR>
+    <TR>
+    <TD VALIGN="top" ALIGN="left">
+      <input type="text" name="date">
+    </TD>
+    <TD VALIGN="top" ALIGN="left">
+      &nbsp;<input type="image" border="0" src="./gifs/submitr.gif" onClick="return goNow();">
+    </TD>
+    </TR>
+    <TR>
+    <TD VALIGN="top" ALIGN="center">
+      Morning <input name="portion" type="radio" value="am" checked>
+      Evening <input name="portion" type="radio" value="pm">
+    </TD>
+    <TD VALIGN="top" ALIGN="left">
+      &nbsp;
+    </TD>
+    </TR>
+    </TABLE>
+	</DIV>
+</DIV>  <DIV CLASS="return">
+    <A HREF="./d.html">Return to Devotionals Index</A>
+  </DIV>
+<script src="./js/MainFooter.js"  type="text/javascript"></script>

@@ -1,0 +1,15 @@
+Content = new Array();
+Content[1] = 'O that [05414] thou [wert] as my brother [0251], that sucked [03243] the breasts [07699] of my mother [0517]! [when] I should find [04672] thee without [02351], I would kiss [05401] thee; yea, I should not be despised [0936] .';
+Content[2] = 'I would lead [05090] thee, [and] bring [0935] thee into my mother\'s [0517] house [01004], [who] would instruct [03925] me: I would cause thee to drink [08248] of spiced [07544] wine [03196] of the juice [06071] of my pomegranate [07416].';
+Content[3] = 'His left hand [08040] [should be] under my head [07218], and his right hand [03225] should embrace [02263] me.';
+Content[4] = 'I charge [07650] you, O daughters [01323] of Jerusalem [03389], that ye stir not up [05782] , nor awake [05782] [my] love [0160], until he please [02654] .';
+Content[5] = 'Who [is] this that cometh up [05927] from the wilderness [04057], leaning [07514] upon her beloved [01730]? I raised [05782] thee up under the apple tree [08598]: there thy mother [0517] brought thee forth [02254] : there she brought thee forth [02254] [that] bare [03205] thee.';
+Content[6] = 'Set [07760] me as a seal [02368] upon thine heart [03820], as a seal [02368] upon thine arm [02220]: for love [0160] [is] strong [05794] as death [04194]; jealousy [07068] [is] cruel [07186] as the grave [07585]: the coals [07565] thereof [are] coals [07565] of fire [0784], [which hath a] most vehement flame [07957].';
+Content[7] = 'Many [07227] waters [04325] cannot [03201] quench [03518] love [0160], neither can the floods [05104] drown [07857] it: if [a] man [0376] would give [05414] all the substance [01952] of his house [01004] for love [0160], it would utterly [0936] be contemned [0936] .';
+Content[8] = 'We have a little [06996] sister [0269], and she hath no breasts [07699]: what shall we do [06213] for our sister [0269] in the day [03117] when she shall be spoken for [01696] ?';
+Content[9] = 'If she [be] a wall [02346], we will build [01129] upon her a palace [02918] of silver [03701]: and if she [be] a door [01817], we will inclose [06696] her with boards [03871] of cedar [0730].';
+Content[10] = 'I [am] a wall [02346], and my breasts [07699] like towers [04026]: then was I in his eyes [05869] as one that found [04672] favour [07965].';
+Content[11] = 'Solomon [08010] had a vineyard [03754] at Baalhamon [01174]; he let out [05414] the vineyard [03754] unto keepers [05201] ; every one [0376] for the fruit [06529] thereof was to bring [0935] a thousand [0505] [pieces] of silver [03701].';
+Content[12] = 'My vineyard [03754], which [is] mine, [is] before [06440] me: thou, O Solomon [08010], [must have] a thousand [0505], and those that keep [05201] the fruit [06529] thereof two hundred [03967].';
+Content[13] = 'Thou that dwellest [03427] in the gardens [01588], the companions [02270] hearken [07181] to thy voice [06963]: cause me to hear [08085] [it].';
+Content[14] = 'Make haste [01272] , my beloved [01730], and be thou like [01819] to a roe [06643] or to a young [06082] hart [0354] upon the mountains [02022] of spices [01314].';

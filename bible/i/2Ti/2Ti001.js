@@ -1,0 +1,13 @@
+var LOI = [];
+LOI[0] = 'hymn~2~I KNOW WHOM I HAVE BELIEVED~htm_i_k_ikwihb.html';
+LOI[1] = 'hymn~6~LORD, WITH GLOWING HEART I&#8217;D PRAISE THEE~htm_l_w_lwighipt.html';
+LOI[2] = 'hymn~9~CALLING FOR YOU~htm_c_a_callingy.html';
+LOI[3] = 'hymn~12~I AM TRUSTING THEE~htm_i_a_iamtrust.html';
+LOI[4] = 'image~Bible~Maps~Paul\'s First Missionary Journey (98K map) key=Paul~~~~2Ti~1~1~images/maps/Journeys/journeys_template.html~1';
+LOI[5] = 'image~Bible~Maps~Paul\'s Second Missionary Journey (140K map) key=Paul~~~~2Ti~1~1~images/maps/Journeys/journeys_template.html~2';
+LOI[6] = 'image~Bible~Maps~Paul\'s Second Missionary Journey (140K map) key=Ephesus~~~~2Ti~1~18~images/maps/Journeys/journeys_template.html~2';
+LOI[7] = 'image~Bible~Maps~Paul\'s Third Missionary Journey (156K map) key=Paul~~~~2Ti~1~1~images/maps/Journeys/journeys_template.html~3';
+LOI[8] = 'image~Bible~Maps~Paul\'s Third Missionary Journey (156K map) key=Timothy~~~~2Ti~1~2~images/maps/Journeys/journeys_template.html~3';
+LOI[9] = 'image~Bible~Maps~Paul\'s Third Missionary Journey (156K map) key=Ephesus~~~~2Ti~1~18~images/maps/Journeys/journeys_template.html~3';
+LOI[10] = 'image~Bible~Maps~Paul\'s Third Missionary Journey (156K map) key=Asia~~~~2Ti~1~15~images/maps/Journeys/journeys_template.html~3';
+LOI[11] = 'image~Bible~Images~The Conversion of St. Paul key=Paul~~~~2Ti~1~1~images/bible_images/Acts/acts_template.html~2';

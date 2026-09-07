@@ -1,0 +1,17 @@
+Content = new Array();
+Content[1] = 'My breath [07307] is corrupt [02254] , my days [03117] are extinct [02193] , the graves [06913] [are ready] for me.';
+Content[2] = '[Are there] not mockers [02049] with me? and doth not mine eye [05869] continue [03885] in their provocation [04784] ?';
+Content[3] = 'Lay down [07760] now, put me in a surety [06148] with thee; who [is] he [that] will strike [08628] hands [03027] with me?';
+Content[4] = 'For thou hast hid [06845] their heart [03820] from understanding [07922]: therefore shalt thou not exalt [07311] [them].';
+Content[5] = 'He that speaketh [05046] flattery [02506] to [his] friends [07453], even the eyes [05869] of his children [01121] shall fail [03615] .';
+Content[6] = 'He hath made [03322] me also a byword [04914] of the people [05971]; and aforetime [06440] I was as a tabret [08611].';
+Content[7] = 'Mine eye [05869] also is dim [03543] by reason of sorrow [03708], and all my members [03338] [are] as a shadow [06738].';
+Content[8] = 'Upright [03477] [men] shall be astonied [08074] at this, and the innocent [05355] shall stir up [05782] himself against the hypocrite [02611].';
+Content[9] = 'The righteous [06662] also shall hold [0270] on his way [01870], and he that hath clean [02890] hands [03027] shall be [03254] stronger and stronger [0555].';
+Content[10] = 'But [0199] as for you all, do ye return [07725] , and come now [0935] : for I cannot find [04672] [one] wise [02450] [man] among you.';
+Content[11] = 'My days [03117] are past [05674] , my purposes [02154] are broken off [05423] , [even] the thoughts [04180] of my heart [03824].';
+Content[12] = 'They change [07760] the night [03915] into day [03117]: the light [0216] [is] short [07138] because [06440] of darkness [02822].';
+Content[13] = 'If I wait [06960] , the grave [07585] [is] mine house [01004]: I have made [07502] my bed [03326] in the darkness [02822].';
+Content[14] = 'I have said [07121] to corruption [07845], Thou [art] my father [01]: to the worm [07415], [Thou art] my mother [0517], and my sister [0269].';
+Content[15] = 'And where [is] now [0645] my hope [08615]? as for my hope [08615], who shall see [07789] it?';
+Content[16] = 'They shall go down [03381] to the bars [0905] of the pit [07585], when [our] rest [05183] together [03162] [is] in the dust [06083].';

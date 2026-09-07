@@ -1,0 +1,12 @@
+var LOI = [];
+LOI[0] = 'hymn~7~HOLINESS UNTO THE LORD~htm_h_o_holiunto.html';
+LOI[1] = 'hymn~16~CHRIST RETURNETH~htm_c_h_christre.html';
+LOI[2] = 'hymn~16~GREAT GOD, WHAT DO I SEE AND HEAR?~htm_g_r_greatgod.html';
+LOI[3] = 'hymn~16~HE&#8217;S COMING SOON~htm_h_e_hescomin.html';
+LOI[4] = 'hymn~16~JESUS, FAITHFUL TO HIS WORD~htm_j_f_jfaithth.html';
+LOI[5] = 'hymn~16~JESUS IS COMING~htm_j_i_jiscomin.html';
+LOI[6] = 'hymn~16~ON THE RESURRECTION MORNING~htm_o_n_onresmor.html';
+LOI[7] = 'hymn~16~STAR OF OUR HOPE~htm_s_t_starhope.html';
+LOI[8] = 'hymn~17~CAUGHT UP~htm_c_a_caughtup.html';
+LOI[9] = 'hymn~17~THAT GLORIOUS DAY IS COMING~htm_t_g_tglordic.html';
+LOI[10] = 'image~Bible~Maps~Paul\'s Third Missionary Journey (156K map) key=Macedonia~~~~1Th~4~10~images/maps/Journeys/journeys_template.html~3';

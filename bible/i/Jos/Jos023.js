@@ -1,0 +1,18 @@
+var LOI = [];
+LOI[0] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Israel~~~~Jos~23~1~images/maps/Otest/otest_template.html~1b';
+LOI[1] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Israel~~~~Jos~23~2~images/maps/Otest/otest_template.html~1b';
+LOI[2] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Israel~~~~Jos~23~1~images/maps/Otest/otest_template.html~1c';
+LOI[3] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Israel~~~~Jos~23~2~images/maps/Otest/otest_template.html~1c';
+LOI[4] = 'image~Bible~Maps~Middle Palestine (map) key=Israel~~~~Jos~23~1~images/maps/Otest/otest_template.html~3c';
+LOI[5] = 'image~Bible~Maps~Middle Palestine (map) key=Israel~~~~Jos~23~2~images/maps/Otest/otest_template.html~3c';
+LOI[6] = 'image~Bible~Maps~Middle Palestine (map) key=Jordan~~~~Jos~23~4~images/maps/Otest/otest_template.html~3c';
+LOI[7] = 'image~Bible~Maps~Southern Palestine (map) key=Israel~~~~Jos~23~1~images/maps/Otest/otest_template.html~4';
+LOI[8] = 'image~Bible~Maps~Southern Palestine (map) key=Israel~~~~Jos~23~2~images/maps/Otest/otest_template.html~4';
+LOI[9] = 'image~Bible~Maps~Divisions of Palestine (map) key=Israel~~~~Jos~23~1~images/maps/Christ/christ_template.html~1';
+LOI[10] = 'image~Bible~Maps~Divisions of Palestine (map) key=Israel~~~~Jos~23~2~images/maps/Christ/christ_template.html~1';
+LOI[11] = 'image~Bible~Images~Parting of Lot and Abraham (engraving) key=Lot~~~~Jos~23~4~images/bible_images/Moses/moses_template.html~3i';
+LOI[12] = 'image~Bible~Images~The Exposure of Moses (engraving) key=Moses~~~~Jos~23~6~images/bible_images/Moses/moses_template.html~6';
+LOI[13] = 'image~Bible~Images~The Finding of Moses (engraving) key=Moses~~~~Jos~23~6~images/bible_images/Moses/moses_template.html~7';
+LOI[14] = 'image~Bible~Images~Moses and the Brazen Serpent (engraving) key=Moses~~~~Jos~23~6~images/bible_images/Moses/moses_template.html~9';
+LOI[15] = 'image~Bible~Images~Moses on Mount Pisgah (engraving) key=Moses~~~~Jos~23~6~images/bible_images/Moses/moses_template.html~10';
+LOI[16] = 'image~Bible~Images~Death of Moses on Mount Nebo (engraving) key=Moses~~~~Jos~23~6~images/bible_images/Moses/moses_template.html~11';

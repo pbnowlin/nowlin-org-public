@@ -1,0 +1,12 @@
+var LOI = [];
+LOI[0] = 'hymn~1~O GOD, NO LONGER HOLD THY PEACE~htm_o_g_ognlongr.html';
+LOI[1] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Israel~~~~Psa~83~4~images/maps/Otest/otest_template.html~1b';
+LOI[2] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Israel~~~~Psa~83~4~images/maps/Otest/otest_template.html~1c';
+LOI[3] = 'image~Bible~Maps~Middle Palestine (map) key=Israel~~~~Psa~83~4~images/maps/Otest/otest_template.html~3c';
+LOI[4] = 'image~Bible~Maps~Middle Palestine (map) key=Tyre~~~~Psa~83~7~images/maps/Otest/otest_template.html~3c';
+LOI[5] = 'image~Bible~Maps~Southern Palestine (map) key=Israel~~~~Psa~83~4~images/maps/Otest/otest_template.html~4';
+LOI[6] = 'image~Bible~Maps~Southern Palestine (map) key=Moab~~~~Psa~83~6~images/maps/Otest/otest_template.html~4';
+LOI[7] = 'image~Bible~Maps~Divisions of Palestine (map) key=Israel~~~~Psa~83~4~images/maps/Christ/christ_template.html~1';
+LOI[8] = 'image~Bible~Maps~Paul\'s Third Missionary Journey (156K map) key=Tyre~~~~Psa~83~7~images/maps/Journeys/journeys_template.html~3';
+LOI[9] = 'image~Bible~Images~Parting of Lot and Abraham (engraving) key=Lot~~~~Psa~83~8~images/bible_images/Moses/moses_template.html~3i';
+LOI[10] = 'image~Bible~Images~Samson Taken by the Philstines (engraving) key=Philistines~~~~Psa~83~7~images/bible_images/Samson/samson_template.html~6';

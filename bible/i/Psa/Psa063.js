@@ -1,0 +1,13 @@
+var LOI = [];
+LOI[0] = 'hymn~1~HAND IN HAND~htm_h_a_handhand.html';
+LOI[1] = 'hymn~1~MY GOD! PERMIT MY TONGUE~htm_m_g_mgpermit.html';
+LOI[2] = 'hymn~1~O LORD, MY GOD, MOST EARNESTLY~htm_o_l_m_olmgmear.html';
+LOI[3] = 'hymn~1~WHILE THEE I SEEK~htm_w_h_whilthee.html';
+LOI[4] = 'hymn~2~O GOD, THY POWER IS WONDERFUL~htm_o_g_ogotpisw.html';
+LOI[5] = 'hymn~3~SAVIOR, MORE THAN LIFE~htm_s_a_saviormo.html';
+LOI[6] = 'hymn~6~JESUS, TENDER SHEPHERD, HEAR ME~htm_j_t_jtenders.html';
+LOI[7] = 'hymn~6~NOW, ON LAND AND SEA DESCENDING~htm_n_o_nowoland.html';
+LOI[8] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Judah~~~~Psa~63~1~images/maps/Otest/otest_template.html~1b';
+LOI[9] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Judah~~~~Psa~63~1~images/maps/Otest/otest_template.html~1c';
+LOI[10] = 'image~Bible~Images~Saul and David (engraving) key=David~~~~Psa~63~1~images/bible_images/Kings/kings_template.html~1';
+LOI[11] = 'image~Bible~Images~David Mourning for Absalom (engraving) key=David~~~~Psa~63~1~images/bible_images/Kings/kings_template.html~2';

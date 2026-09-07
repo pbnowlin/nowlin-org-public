@@ -1,0 +1,13 @@
+var LOI = [];
+LOI[0] = 'hymn~7~MY FAITH LOOKS UP TO THEE~htm_m_y_myfluptt.html';
+LOI[1] = 'hymn~7~STRONG SON OF GOD, IMMORTAL LOVE~htm_s_t_strongso.html';
+LOI[2] = 'hymn~7~WE SAW THEE NOT~htm_w_e_wesawthn.html';
+LOI[3] = 'hymn~7~WE WALK BY FAITH~htm_w_w_wwalkbyf.html';
+LOI[4] = 'hymn~20~AMBASSADORS OF GOD~htm_a_m_ambassog.html';
+LOI[5] = 'hymn~20~CHANNELS ONLY~htm_c_h_channels.html';
+LOI[6] = 'hymn~20~MAKE ME A CHANNEL OF BLESSING~htm_m_a_makemeac.html';
+LOI[7] = 'image~Bible~Images~Moses and the Brazen Serpent (engraving)~~~~2Cr~5~21~images/bible_images/Moses/moses_template.html~9';
+LOI[8] = 'image~Bible~Images~The Tabernacle (engraving) key=tabernacle~~~~2Cr~5~1~images/bible_images/Temple/temple_template.html~2';
+LOI[9] = 'image~Bible~Images~The Tabernacle (engraving) key=tabernacle~~~~2Cr~5~4~images/bible_images/Temple/temple_template.html~2';
+LOI[10] = 'image~Bible~Images~Tabernacle in the Midst of the Encampment (illustration) key=Tabernacle~~~~2Cr~5~1~images/bible_images/Temple/temple_template.html~3';
+LOI[11] = 'image~Bible~Images~Tabernacle in the Midst of the Encampment (illustration) key=Tabernacle~~~~2Cr~5~4~images/bible_images/Temple/temple_template.html~3';

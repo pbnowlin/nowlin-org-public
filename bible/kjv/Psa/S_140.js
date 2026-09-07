@@ -1,0 +1,14 @@
+Content = new Array();
+Content[1] = '[[To the chief Musician [05329] , A Psalm [04210] of David [01732].]] Deliver [02502] me, O LORD [03068], from the evil [07451] man [0120]: preserve [05341] me from the violent [02555] man [0376];';
+Content[2] = 'Which imagine [02803] mischiefs [07451] in [their] heart [03820]; continually [03117] are they gathered together [01481] [for] war [04421].';
+Content[3] = 'They have sharpened [08150] their tongues [03956] like a serpent [05175]; adders [05919]\' poison [02534] [is] under their lips [08193]. Selah [05542].';
+Content[4] = 'Keep [08104] me, O LORD [03068], from the hands [03027] of the wicked [07563]; preserve [05341] me from the violent [02555] man [0376]; who have purposed [02803] to overthrow [01760] my goings [06471].';
+Content[5] = 'The proud [01343] have hid [02934] a snare [06341] for me, and cords [02256]; they have spread [06566] a net [07568] by the wayside [03027] [04570]; they have set [07896] gins [04170] for me. Selah [05542].';
+Content[6] = 'I said [0559] unto the LORD [03068], Thou [art] my God [0410]: hear [0238] the voice [06963] of my supplications [08469], O LORD [03068].';
+Content[7] = 'O GOD [03069] the Lord [0136], the strength [05797] of my salvation [03444], thou hast covered [05526] my head [07218] in the day [03117] of battle [05402].';
+Content[8] = 'Grant [05414] not, O LORD [03068], the desires [03970] of the wicked [07563]: further [06329] not his wicked device [02162]; [lest] they exalt [07311] themselves. Selah [05542].';
+Content[9] = '[As for] the head [07218] of those that compass me about [04524], let the mischief [05999] of their own lips [08193] cover [03680] them.';
+Content[10] = 'Let burning coals [01513] fall [04131]  [04131] upon them: let them be cast [05307] into the fire [0784]; into deep pits [04113], that they rise not up again [06965] .';
+Content[11] = 'Let not an evil speaker [0376] [03956] be established [03559] in the earth [0776]: evil [07451] shall hunt [06679] the violent [02555] man [0376] to overthrow [04073] [him].';
+Content[12] = 'I know [03045] that the LORD [03068] will maintain [06213] the cause [01779] of the afflicted [06041], [and] the right [04941] of the poor [034].';
+Content[13] = 'Surely the righteous [06662] shall give thanks [03034] unto thy name [08034]: the upright [03477] shall dwell [03427] in thy presence [06440].';

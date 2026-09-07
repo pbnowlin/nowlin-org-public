@@ -1,0 +1,11 @@
+var LOI = [];
+LOI[0] = 'hymn~2~DOWN AT THE CROSS~htm_d_o_downattc.html';
+LOI[1] = 'hymn~2~WORSHIP THE LORD IN THE BEAUTY OF HOLINESS~htm_w_o_wtlinboh.html';
+LOI[2] = 'hymn~11~LORD, DISMISS US WITH THY BLESSING~htm_l_d_ldismiss.html';
+LOI[3] = 'hymn~11~WONDERFUL PEACE (1)~htm_w_o_wonpeac1.html';
+LOI[4] = 'image~Bible~Maps~Ancient Jerusalem (map) key=Temple~~~~Psa~29~9~images/maps/Otest/otest_template.html~3a';
+LOI[5] = 'image~Bible~Maps~Modern Jerusalem (map) key=Temple~~~~Psa~29~9~images/maps/Otest/otest_template.html~3b';
+LOI[6] = 'image~Bible~Images~Saul and David (engraving) key=David~~~~Psa~29~1~images/bible_images/Kings/kings_template.html~1';
+LOI[7] = 'image~Bible~Images~David Mourning for Absalom (engraving) key=David~~~~Psa~29~1~images/bible_images/Kings/kings_template.html~2';
+LOI[8] = 'image~Bible~Images~The Jews Wailing Place (engraving) key=temple~~~~Psa~29~9~images/bible_images/Temple/temple_template.html~1';
+LOI[9] = 'image~Bible~Images~The Tabernacle (engraving) key=temple~~~~Psa~29~9~images/bible_images/Temple/temple_template.html~2';

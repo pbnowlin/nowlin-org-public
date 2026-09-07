@@ -1,0 +1,15 @@
+Content = new Array();
+Content[1] = 'Ephraim [0669] feedeth [07462] on wind [07307], and followeth [07291] after the east wind [06921]: he daily [03117] increaseth [07235] lies [03577] and desolation [07701]; and they do make [03772] a covenant [01285] with the Assyrians [0804], and oil [08081] is carried [02986] into Egypt [04714].';
+Content[2] = 'The LORD [03068] hath also a controversy [07379] with Judah [03063], and will punish [06485] Jacob [03290] according to his ways [01870]; according to his doings [04611] will he recompense [07725] him.';
+Content[3] = 'He took his brother [0251] by the heel [06117] in the womb [0990], and by his strength [0202] he had power [08280] with God [0430]:';
+Content[4] = 'Yea, he had power [07786] over the angel [04397], and prevailed [03201] : he wept [01058] , and made supplication [02603] unto him: he found [04672] him [in] Bethel [01008], and there he spake [01696] with us;';
+Content[5] = 'Even the LORD [03068] God [0430] of hosts [06635]; the LORD [03068] [is] his memorial [02143].';
+Content[6] = 'Therefore turn [07725] thou to thy God [0430]: keep [08104] mercy [02617] and judgment [04941], and wait [06960] on thy God [0430] continually [08548].';
+Content[7] = '[He is] a merchant [03667], the balances [03976] of deceit [04820] [are] in his hand [03027]: he loveth [0157] to oppress [06231] .';
+Content[8] = 'And Ephraim [0669] said [0559] , Yet I am become rich [06238] , I have found me out [04672] substance [0202]: [in] all my labours [03018] they shall find [04672] none iniquity [05771] in me that [were] sin [02399].';
+Content[9] = 'And I [that am] the LORD [03068] thy God [0430] from the land [0776] of Egypt [04714] will yet make thee to dwell [03427] in tabernacles [0168], as in the days [03117] of the solemn feast [04150].';
+Content[10] = 'I have also spoken [01696] by the prophets [05030], and I have multiplied [07235] visions [02377], and used similitudes [01819] , by the ministry [03027] of the prophets [05030].';
+Content[11] = '[Is there] iniquity [0205] [in] Gilead [01568]? surely they are vanity [07723]: they sacrifice [02076] bullocks [07794] in Gilgal [01537]; yea, their altars [04196] [are] as heaps [01530] in the furrows [08525] of the fields [07704].';
+Content[12] = 'And Jacob [03290] fled [01272] into the country [07704] of Syria [0758], and Israel [03478] served [05647] for a wife [0802], and for a wife [0802] he kept [08104] [sheep].';
+Content[13] = 'And by a prophet [05030] the LORD [03068] brought [05927] Israel [03478] out of Egypt [04714], and by a prophet [05030] was he preserved [08104] .';
+Content[14] = 'Ephraim [0669] provoked [him] to anger [03707] most bitterly [08563]: therefore shall he leave [05203] his blood [01818] upon him, and his reproach [02781] shall his Lord [0113] return [07725] unto him.';

@@ -1,0 +1,11 @@
+var LOI = [];
+LOI[0] = 'hymn~11~NO KING BUT CHRIST~htm_n_o_nokingbc.html';
+LOI[1] = 'hymn~19~AT LENGTH THERE DAWNS THE GLORIOUS DAY~htm_a_t_atlength.html';
+LOI[2] = 'hymn~19~DAWN IS SPRINKLING IN THE EAST, THE~htm_d_s_dsprinke.html';
+LOI[3] = 'hymn~19~ETERNAL GLORY OF THE SKY~htm_e_g_egoftsky.html';
+LOI[4] = 'hymn~19~SOVEREIGN OF WORLDS! DISPLAY THY POWER~htm_s_o_sovworld.html';
+LOI[5] = 'hymn~19~WE HAVE A SURE PROPHETIC WORD~htm_w_e_wehavesp.html';
+LOI[6] = 'image~Bible~Images~The Tabernacle (engraving) key=tabernacle~~~~2Pe~1~13~images/bible_images/Temple/temple_template.html~2';
+LOI[7] = 'image~Bible~Images~The Tabernacle (engraving) key=tabernacle~~~~2Pe~1~14~images/bible_images/Temple/temple_template.html~2';
+LOI[8] = 'image~Bible~Images~Tabernacle in the Midst of the Encampment (illustration) key=Tabernacle~~~~2Pe~1~13~images/bible_images/Temple/temple_template.html~3';
+LOI[9] = 'image~Bible~Images~Tabernacle in the Midst of the Encampment (illustration) key=Tabernacle~~~~2Pe~1~14~images/bible_images/Temple/temple_template.html~3';

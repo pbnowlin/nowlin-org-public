@@ -1,0 +1,11 @@
+var LOI = [];
+LOI[0] = 'hymn~11~O HAPPY BAND OF PILGRIMS~htm_o_h_ohappyba.html';
+LOI[1] = 'hymn~21~CHRIST OF THE UPWARD WAY~htm_c_o_coupward.html';
+LOI[2] = 'hymn~21~DEAR JESUS, IN WHOSE LIFE I SEE~htm_d_e_dearjeiw.html';
+LOI[3] = 'hymn~21~FOOTPRINTS OF JESUS~htm_f_o_footprin.html';
+LOI[4] = 'hymn~21~JESUS, I LIVE TO THEE~htm_j_i_jilive2t.html';
+LOI[5] = 'hymn~21~MORE LIKE JESUS WOULD I BE~htm_m_o_morelikj.html';
+LOI[6] = 'hymn~21~O THOU WHOSE FEET HAVE CLIMBED LIFE&#8217;S HILL~htm_t_w_twhofeet.html';
+LOI[7] = 'hymn~21~ONE DAY~htm_o_n_oneday.html';
+LOI[8] = 'hymn~21~STEPPING IN THE LIGHT~htm_s_t_stepping.html';
+LOI[9] = 'hymn~24~I REMEMBER WHEN MY BURDENS ROLLED AWAY~htm_i_r_iremwhen.html';

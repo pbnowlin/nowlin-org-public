@@ -1,0 +1,14 @@
+Content = new Array();
+Content[1] = '[[To the chief Musician [05329] , A Psalm [04210] [and] Song [07892] of David [01732].]] Praise [08416] waiteth [01747] for thee, O God [0430], in Sion [06726]: and unto thee shall the vow [05088] be performed [07999] .';
+Content[2] = 'O thou that hearest [08085] prayer [08605], unto thee shall all flesh [01320] come [0935] .';
+Content[3] = 'Iniquities [01697] [05771] prevail [01396] against me: [as for] our transgressions [06588], thou shalt purge them away [03722] .';
+Content[4] = 'Blessed [0835] [is the man whom] thou choosest [0977] , and causest to approach [07126] [unto thee, that] he may dwell [07931] in thy courts [02691]: we shall be satisfied [07646] with the goodness [02898] of thy house [01004], [even] of thy holy [06918] temple [01964].';
+Content[5] = '[By] terrible things [03372] in righteousness [06664] wilt thou answer [06030] us, O God [0430] of our salvation [03468]; [who art] the confidence [04009] of all the ends [07099] of the earth [0776], and of them that are afar off [07350] [upon] the sea [03220]:';
+Content[6] = 'Which by his strength [03581] setteth fast [03559] the mountains [02022]; [being] girded [0247] with power [01369]:';
+Content[7] = 'Which stilleth [07623] the noise [07588] of the seas [03220], the noise [07588] of their waves [01530], and the tumult [01995] of the people [03816].';
+Content[8] = 'They also that dwell [03427] in the uttermost parts [07099] are afraid [03372] at thy tokens [0226]: thou makest the outgoings [04161] of the morning [01242] and evening [06153] to rejoice [07442] .';
+Content[9] = 'Thou visitest [06485] the earth [0776], and waterest [07783] it: thou greatly [07227] enrichest [06238] it with the river [06388] of God [0430], [which] is full [04390] of water [04325]: thou preparest [03559] them corn [01715], when thou hast so provided [03559] for it.';
+Content[10] = 'Thou waterest [07301] [00] the ridges [08525] thereof abundantly [07301] : thou settlest [05181] the furrows [01417] [01418] thereof: thou makest it soft [04127] with showers [07241]: thou blessest [01288] the springing [06780] thereof.';
+Content[11] = 'Thou crownest [05849] the year [08141] with thy goodness [02896]; and thy paths [04570] drop [07491] fatness [01880].';
+Content[12] = 'They drop [07491] [upon] the pastures [04999] of the wilderness [04057]: and the little hills [01389] rejoice [01524] on every side [02296] .';
+Content[13] = 'The pastures [03733] are clothed [03847] with flocks [06629]; the valleys [06010] also are covered over [05848] with corn [01250]; they shout for joy [07321] , they also sing [07891] .';

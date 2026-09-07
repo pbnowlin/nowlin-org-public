@@ -1,0 +1,17 @@
+var LOI = [];
+LOI[0] = 'hymn~1~JESUS, MY ONLY HOPE~htm_j_m_jmyonlyh.html';
+LOI[1] = 'hymn~1~O JESUS, MY HOPE~htm_o_j_ojesusmy.html';
+LOI[2] = 'hymn~15~O CHRIST, REDEEMER OF OUR RACE~htm_o_c_ocrofour.html';
+LOI[3] = 'hymn~17~GOD ETERNAL, MIGHTY KING~htm_g_e_geternal.html';
+LOI[4] = 'hymn~17~HARK, THE VOICE ETERNAL~htm_h_v_hvoiceet.html';
+LOI[5] = 'hymn~17~IMMORTAL, INVISIBLE, GOD ONLY WISE~htm_i_i_iigowise.html';
+LOI[6] = 'hymn~17~O CHRIST, THE HEAVENS&#8217; ETERNAL KING~htm_o_c_ochristt.html';
+LOI[7] = 'hymn~17~THOUGH TROUBLES ASSAIL US~htm_t_h_o_thotroub.html';
+LOI[8] = 'image~Bible~Maps~Paul\'s First Missionary Journey (98K map) key=Paul~~~~1Ti~1~1~images/maps/Journeys/journeys_template.html~1';
+LOI[9] = 'image~Bible~Maps~Paul\'s Second Missionary Journey (140K map) key=Paul~~~~1Ti~1~1~images/maps/Journeys/journeys_template.html~2';
+LOI[10] = 'image~Bible~Maps~Paul\'s Second Missionary Journey (140K map) key=Ephesus~~~~1Ti~1~3~images/maps/Journeys/journeys_template.html~2';
+LOI[11] = 'image~Bible~Maps~Paul\'s Third Missionary Journey (156K map) key=Paul~~~~1Ti~1~1~images/maps/Journeys/journeys_template.html~3';
+LOI[12] = 'image~Bible~Maps~Paul\'s Third Missionary Journey (156K map) key=Timothy~~~~1Ti~1~2~images/maps/Journeys/journeys_template.html~3';
+LOI[13] = 'image~Bible~Maps~Paul\'s Third Missionary Journey (156K map) key=Timothy~~~~1Ti~1~18~images/maps/Journeys/journeys_template.html~3';
+LOI[14] = 'image~Bible~Maps~Paul\'s Third Missionary Journey (156K map) key=Ephesus,Macedonia~~~~1Ti~1~3~images/maps/Journeys/journeys_template.html~3';
+LOI[15] = 'image~Bible~Images~The Conversion of St. Paul key=Paul~~~~1Ti~1~1~images/bible_images/Acts/acts_template.html~2';

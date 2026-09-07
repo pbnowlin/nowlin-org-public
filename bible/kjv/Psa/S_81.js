@@ -1,0 +1,17 @@
+Content = new Array();
+Content[1] = '[[To the chief Musician [05329] upon Gittith [01665], [A Psalm] of Asaph [0623].]] Sing aloud [07442] unto God [0430] our strength [05797]: make a joyful noise [07321] unto the God [0430] of Jacob [03290].';
+Content[2] = 'Take [05375] a psalm [02172], and bring [05414] hither the timbrel [08596], the pleasant [05273] harp [03658] with the psaltery [05035].';
+Content[3] = 'Blow up [08628] the trumpet [07782] in the new moon [02320], in the time appointed [03677], on our solemn feast [02282] day [03117].';
+Content[4] = 'For this [was] a statute [02706] for Israel [03478], [and] a law [04941] of the God [0430] of Jacob [03290].';
+Content[5] = 'This he ordained [07760] in Joseph [03084] [for] a testimony [05715], when he went out [03318] through the land [0776] of Egypt [04714]: [where] I heard [08085] a language [08193] [that] I understood [03045] not.';
+Content[6] = 'I removed [05493] his shoulder [07926] from the burden [05447]: his hands [03709] were delivered [05674] from the pots [01731].';
+Content[7] = 'Thou calledst [07121] in trouble [06869], and I delivered [02502] thee; I answered [06030] thee in the secret place [05643] of thunder [07482]: I proved [0974] thee at the waters [04325] of Meribah [04809]. Selah [05542].';
+Content[8] = 'Hear [08085] , O my people [05971], and I will testify [05749] unto thee: O Israel [03478], if thou wilt hearken [08085] unto me;';
+Content[9] = 'There shall no strange [02114] god [0410] be in thee; neither shalt thou worship [07812] any strange [05236] god [0410].';
+Content[10] = 'I [am] the LORD [03068] thy God [0430], which brought [05927] thee out of the land [0776] of Egypt [04714]: open thy mouth [06310] wide [07337] , and I will fill [04390] it.';
+Content[11] = 'But my people [05971] would not hearken [08085] to my voice [06963]; and Israel [03478] would [014] none of me.';
+Content[12] = 'So I gave them up [07971] unto their own hearts [03820]\' lust [08307]: [and] they walked [03212] in their own counsels [04156].';
+Content[13] = 'Oh [03863] that my people [05971] had hearkened [08085] unto me, [and] Israel [03478] had walked [01980] in my ways [01870]!';
+Content[14] = 'I should soon [04592] have subdued [03665] their enemies [0341] , and turned [07725] my hand [03027] against their adversaries [06862].';
+Content[15] = 'The haters [08130] of the LORD [03068] should have submitted [03584] themselves unto him: but their time [06256] should have endured for ever [05769].';
+Content[16] = 'He should have fed [0398] them also with the finest [02459] of the wheat [02406]: and with honey [01706] out of the rock [06697] should I have satisfied [07646] thee.';

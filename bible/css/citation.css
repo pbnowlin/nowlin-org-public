@@ -1,0 +1,19 @@
+
+div.citeeg-nopad {
+     font-size:85%;font-family:georgia;
+     padding:8px;
+     width:100%;
+     border:dashed 1px #000000;
+     background-color:#ffffff;
+     text-align:left;
+     }
+span.cithead {
+    color:#324395;
+    font-weight:bold;
+    font-size:16px;
+    }
+p.indent {
+    margin-left:20px;
+    text-indent:-20px;
+    }
+

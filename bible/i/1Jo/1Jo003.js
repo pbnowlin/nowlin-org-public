@@ -1,0 +1,12 @@
+var LOI = [];
+LOI[0] = 'hymn~1~BEHOLD THE AMAZING GIFT OF LOVE~htm_b_e_beholdta.html';
+LOI[1] = 'hymn~1~BEHOLD, WHAT LOVE!~htm_b_e_behwlove.html';
+LOI[2] = 'hymn~1~BLESSED ARE THE SONS OF GOD~htm_b_l_blesssog.html';
+LOI[3] = 'hymn~1~CHILDREN OF THE HEAVENLY FATHER~htm_c_o_cofthehf.html';
+LOI[4] = 'hymn~1~I BELONG TO THE KING~htm_i_b_ibelongk.html';
+LOI[5] = 'hymn~1~IT&#8217;S JUST LIKE HIS GREAT LOVE~htm_i_t_itsjustl.html';
+LOI[6] = 'hymn~1~OUR FATHER&#8217;S LOVE~htm_o_u_ourfathl.html';
+LOI[7] = 'hymn~1~WONDERFUL STORY OF LOVE~htm_w_o_wonstory.html';
+LOI[8] = 'hymn~2~AND IS IT SO~htm_a_n_andisit.html';
+LOI[9] = 'hymn~16~O PERFECT LIFE OF LOVE~htm_o_p_operfect.html';
+LOI[10] = 'hymn~24~ABIDE IN ME, O LORD~htm_a_b_abidinme.html';

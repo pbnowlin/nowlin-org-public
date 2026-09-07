@@ -1,0 +1,9 @@
+Content = new Array();
+Content[1] = '[[A Psalm [04210] of David [01732].]] I will sing [07891] of mercy [02617] and judgment [04941]: unto thee, O LORD [03068], will I sing [02167] .';
+Content[2] = 'I will behave myself wisely [07919] in a perfect [08549] way [01870]. O when wilt thou come [0935] unto me? I will walk [01980] within [07130] my house [01004] with a perfect [08537] heart [03824].';
+Content[3] = 'I will set [07896] no wicked [01100] thing [01697] before mine eyes [05869]: I hate [08130] the work [06213] of them that turn aside [07750]; [it] shall not cleave [01692] to me.';
+Content[4] = 'A froward [06141] heart [03824] shall depart [05493] from me: I will not know [03045] a wicked [07451] [person].';
+Content[5] = 'Whoso privily [05643] slandereth [03960]  [03960] his neighbour [07453], him will I cut off [06789] : him that hath an high [01362] look [05869] and a proud [07342] heart [03824] will not I suffer [03201] .';
+Content[6] = 'Mine eyes [05869] [shall be] upon the faithful [0539] of the land [0776], that they may dwell [03427] with me: he that walketh [01980] in a perfect [08549] way [01870], he shall serve [08334] me.';
+Content[7] = 'He that worketh [06213] deceit [07423] shall not dwell [03427] within [07130] my house [01004]: he that telleth [01696] lies [08267] shall not tarry [03559] in my sight [05869].';
+Content[8] = 'I will early [01242] destroy [06789] all the wicked [07563] of the land [0776]; that I may cut off [03772] all wicked [0205] doers [06466] from the city [05892] of the LORD [03068].';

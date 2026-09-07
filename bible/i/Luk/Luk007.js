@@ -1,0 +1,14 @@
+var LOI = [];
+LOI[0] = 'hymn~34~FRIEND OF SINNERS, LORD OF GLORY~htm_f_r_friendos.html';
+LOI[1] = 'hymn~34~HE WANTS A POOR SINNER LIKE ME~htm_h_w_hwantsps.html';
+LOI[2] = 'hymn~34~JESUS! WHAT A FRIEND FOR SINNERS~htm_j_e_jesuswaf.html';
+LOI[3] = 'hymn~38~DROP, DROP, SLOW TEARS~htm_d_r_dropdrop.html';
+LOI[4] = 'hymn~38~OH, TO BE NEARER~htm_o_t_o2bnearr.html';
+LOI[5] = 'image~Bible~Maps~Boundaries of the Tribes of Israel (map) key=Israel~~~~Luk~7~9~images/maps/Otest/otest_template.html~1b';
+LOI[6] = 'image~Bible~Maps~Battlefields of O.T. and Dist\'n of 12 Tribes (map) key=Israel~~~~Luk~7~9~images/maps/Otest/otest_template.html~1c';
+LOI[7] = 'image~Bible~Maps~Middle Palestine (map) key=Israel~~~~Luk~7~9~images/maps/Otest/otest_template.html~3c';
+LOI[8] = 'image~Bible~Maps~Southern Palestine (map) key=Israel~~~~Luk~7~9~images/maps/Otest/otest_template.html~4';
+LOI[9] = 'image~Bible~Maps~Divisions of Palestine (map) key=Israel~~~~Luk~7~9~images/maps/Christ/christ_template.html~1';
+LOI[10] = 'image~Bible~Images~John the Baptist Asks (engraving) key=Baptist~~~~Luk~7~20~images/bible_images/Taylor/taylor_template.html~3';
+LOI[11] = 'image~Bible~Images~John the Baptist Asks (engraving) key=Baptist~~~~Luk~7~28~images/bible_images/Taylor/taylor_template.html~3';
+LOI[12] = 'image~Bible~Images~John the Baptist Asks (engraving) key=Baptist~~~~Luk~7~33~images/bible_images/Taylor/taylor_template.html~3';

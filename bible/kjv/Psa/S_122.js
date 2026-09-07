@@ -1,0 +1,10 @@
+Content = new Array();
+Content[1] = '[[A Song [07892] of degrees [04609] of David [01732].]] I was glad [08055] when they said [0559] unto me, Let us go [03212] into the house [01004] of the LORD [03068].';
+Content[2] = 'Our feet [07272] shall stand [05975] within thy gates [08179], O Jerusalem [03389].';
+Content[3] = 'Jerusalem [03389] is builded [01129] as a city [05892] that is compact [02266] together [03162]:';
+Content[4] = 'Whither [08033] the tribes [07626] go up [05927] , the tribes [07626] of the LORD [03050], unto the testimony [05715] of Israel [03478], to give thanks [03034] unto the name [08034] of the LORD [03068].';
+Content[5] = 'For there are set [03427] thrones [03678] of judgment [04941], the thrones [03678] of the house [01004] of David [01732].';
+Content[6] = 'Pray [07592] for the peace [07965] of Jerusalem [03389]: they shall prosper [07951] that love [0157] thee.';
+Content[7] = 'Peace [07965] be within thy walls [02426], [and] prosperity [07962] within thy palaces [0759].';
+Content[8] = 'For my brethren [0251] and companions [07453]\' sakes, I will now say [01696] , Peace [07965] [be] within thee.';
+Content[9] = 'Because of the house [01004] of the LORD [03068] our God [0430] I will seek [01245] thy good [02896].';

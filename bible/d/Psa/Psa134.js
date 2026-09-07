@@ -1,0 +1,12 @@
+var LOD = [];
+LOD[0] = 'naves~CHURCH~- House Of The Lord~~~1~NT0001107~9626';
+LOD[1] = 'naves~CHURCH~- Unclassified Scriptures Relating To~~~1~NT0001107~9949';
+LOD[2] = 'naves~CHURCH~- Unclassified Scriptures Relating To~~~3~NT0001107~9949';
+LOD[3] = 'naves~INTERCESSION~- Exemplified~~~3~NT0002531~27361';
+LOD[4] = 'naves~NIGHT~- Worship in~~~1~NT0003582~39682';
+LOD[5] = 'naves~PRAISE~- Unclassified Scriptures Relating To~~~1~NT0003934~43213';
+LOD[6] = 'naves~PRAISE~- Unclassified Scriptures Relating To~~~2~NT0003934~43213';
+LOD[7] = 'torreys~Hands, The~- Were Lifted Up~~~2~TT0000254~12044';
+LOD[8] = 'subject~Praise~~~~1~SPraise~9189';
+LOD[9] = 'subject~Praise~~~~2~SPraise~9189';
+LOD[10] = 'hitchcock~Zion~~~~3~HZion~0';
