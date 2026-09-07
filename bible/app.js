@@ -32,7 +32,6 @@ async function init() {
 }
 
 function normalizeBibleData(data) {
-  // If array of book objects: [{ name: "Genesis", chapters: [...] }]
   if (Array.isArray(data)) {
     return data.map(b => ({
       name: b.name || b.title || b.book || "Unknown",
@@ -40,7 +39,6 @@ function normalizeBibleData(data) {
     }));
   }
   
-  // If key-value object: { "Genesis": { "1": [...] } }
   if (typeof data === 'object' && data !== null) {
     if (data.books && Array.isArray(data.books)) return normalizeBibleData(data.books);
     
@@ -170,9 +168,13 @@ function renderVerses(bookName, chapNum, rawVerses) {
   }
 
   let verses = [];
+
   if (Array.isArray(rawVerses)) {
     verses = rawVerses;
-  } else if (typeof rawVerses === 'object') {
+  } else if (typeof rawVerses === 'object' && rawVerses !== null) {
+    if (rawVerses.verses) {
+      return renderVerses(bookName, chapNum, rawVerses.verses);
+    }
     const keys = Object.keys(rawVerses).filter(k => !isNaN(parseInt(k, 10)));
     keys.sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
     verses = keys.map(k => rawVerses[k]);
@@ -185,12 +187,19 @@ function renderVerses(bookName, chapNum, rawVerses) {
 
   const verseHtml = verses.map((v, i) => {
     let text = "";
-    if (typeof v === 'string') text = v;
-    else if (typeof v === 'object' && v !== null) text = v.text || v.verse || v.val || "";
+    let verseNum = i + 1;
+
+    if (typeof v === 'string') {
+      text = v;
+    } else if (typeof v === 'object' && v !== null) {
+      text = v.text || v.verse || v.val || v.content || v.value || "";
+      if (v.verse && !isNaN(parseInt(v.verse, 10))) verseNum = v.verse;
+      if (v.number && !isNaN(parseInt(v.number, 10))) verseNum = v.number;
+    }
 
     return `
       <p class="verse">
-        <sup class="verse-num">${i + 1}</sup>
+        <sup class="verse-num">${verseNum}</sup>
         <span class="verse-text">${text}</span>
       </p>
     `;
