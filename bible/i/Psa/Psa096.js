@@ -1,9 +1,0 @@
-var LOI = [];
-LOI[0] = 'hymn~1~LET ALL THE EARTH THEIR VOICES RAISE~htm_l_e_letalloe.html';
-LOI[1] = 'hymn~1~O SING A NEW SONG TO THE LORD~htm_o_s_osingnew.html';
-LOI[2] = 'hymn~1~SING TO THE LORD, SING HIS PRAISE~htm_s_s_singlord.html';
-LOI[3] = 'hymn~1~SING TO THE LORD, YE DISTANT LANDS~htm_s_i_singlord.html';
-LOI[4] = 'hymn~1~SING UNTO GOD~htm_s_i_singunto.html';
-LOI[5] = 'hymn~9~O WORSHIP THE LORD IN THE BEAUTY OF HOLINESS~htm_o_w_oworship.html';
-LOI[6] = 'hymn~12~HARK, MY SOUL, HOW EVERYTHING~htm_h_m_hmshevry.html';
-LOI[7] = 'hymn~13~COME IN, THOU BLESSED, HONORED LORD~htm_c_o_comeintb.html';

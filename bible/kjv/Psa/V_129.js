@@ -1,9 +1,0 @@
-Content = new Array();
-Content[1]="[[A Song of degrees.]] Many a time have they afflicted me from my youth, may Israel now say:";
-Content[2]="Many a time have they afflicted me from my youth: yet they have not prevailed against me.";
-Content[3]="The plowers plowed upon my back: they made long their furrows.";
-Content[4]="The LORD [is] righteous: he hath cut asunder the cords of the wicked.";
-Content[5]="Let them all be confounded and turned back that hate Zion.";
-Content[6]="Let them be as the grass [upon] the housetops, which withereth afore it groweth up:";
-Content[7]="Wherewith the mower filleth not his hand; nor he that bindeth sheaves his bosom.";
-Content[8]="Neither do they which go by say, The blessing of the LORD [be] upon you: we bless you in the name of the LORD.";

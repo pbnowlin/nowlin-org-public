@@ -1,9 +1,0 @@
-Content = new Array();
-Content[1] = 'And the word [01697] of the LORD [03068] came unto me, saying [0559] ,';
-Content[2] = 'Son [01121] of man [0120], What is the vine [01612] tree [06086] more than any tree [06086], [or than] a branch [02156] which is among the trees [06086] of the forest [03293]?';
-Content[3] = 'Shall wood [06086] be taken [03947] thereof to do [06213] any work [04399]? or will [men] take [03947] a pin [03489] of it to hang [08518] any vessel [03627] thereon?';
-Content[4] = 'Behold, it is cast [05414] into the fire [0784] for fuel [0402]; the fire [0784] devoureth [0398] both [08147] the ends [07098] of it, and the midst [08432] of it is burned [02787] . Is it meet [06743] for [any] work [04399]?';
-Content[5] = 'Behold, when it was whole [08549], it was meet [06213] for no work [04399]: how much less shall it be meet [06213] yet for [any] work [04399], when the fire [0784] hath devoured [0398] it, and it is burned [02787] ?';
-Content[6] = 'Therefore thus saith [0559] the Lord [0136] GOD [03069]; As the vine [01612] tree [06086] among the trees [06086] of the forest [03293], which I have given [05414] to the fire [0784] for fuel [0402], so will I give [05414] the inhabitants [03427] of Jerusalem [03389].';
-Content[7] = 'And I will set [05414] my face [06440] against them; they shall go out [03318] from [one] fire [0784], and [another] fire [0784] shall devour [0398] them; and ye shall know [03045] that I [am] the LORD [03068], when I set [07760] my face [06440] against them.';
-Content[8] = 'And I will make [05414] the land [0776] desolate [08077], because they have committed [04603] a trespass [04604], saith [05002] the Lord [0136] GOD [03069].';

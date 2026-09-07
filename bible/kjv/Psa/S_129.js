@@ -1,9 +1,0 @@
-Content = new Array();
-Content[1] = '[[A Song [07892] of degrees [04609].]] Many a time [07227] have they afflicted [06887] me from my youth [05271], may Israel [03478] now say [0559] :';
-Content[2] = 'Many a time [07227] have they afflicted [06887] me from my youth [05271]: yet they have not prevailed [03201] against me.';
-Content[3] = 'The plowers [02790] plowed [02790] upon my back [01354]: they made long [0748] their furrows [04618] [04618].';
-Content[4] = 'The LORD [03068] [is] righteous [06662]: he hath cut asunder [07112] the cords [05688] of the wicked [07563].';
-Content[5] = 'Let them all be confounded [0954] and turned [05472] back [0268] that hate [08130] Zion [06726].';
-Content[6] = 'Let them be as the grass [02682] [upon] the housetops [01406], which withereth [03001] afore [06927] it groweth up [08025] :';
-Content[7] = 'Wherewith the mower [07114] filleth [04390] not his hand [03709]; nor he that bindeth sheaves [06014] his bosom [02683].';
-Content[8] = 'Neither do they which go by [05674] say [0559] , The blessing [01293] of the LORD [03068] [be] upon you: we bless [01288] you in the name [08034] of the LORD [03068].';

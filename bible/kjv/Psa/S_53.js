@@ -1,7 +1,0 @@
-Content = new Array();
-Content[1] = '[[To the chief Musician [05329] upon Mahalath [04257], Maschil [04905] , [A Psalm] of David [01732].]] The fool [05036] hath said [0559] in his heart [03820], [There is] no God [0430]. Corrupt [07843] are they, and have done abominable [08581] iniquity [05766]: [there is] none that doeth [06213] good [02896].';
-Content[2] = 'God [0430] looked down [08259] from heaven [08064] upon the children [01121] of men [0120], to see [07200] if there were [03426] [any] that did understand [07919] , that did seek [01875] God [0430].';
-Content[3] = 'Every one of them is gone back [05472] : they are altogether [03162] become filthy [0444] ; [there is] none that doeth [06213] good [02896], no, not one [0259].';
-Content[4] = 'Have the workers [06466] of iniquity [0205] no knowledge [03045] ? who eat up [0398] my people [05971] [as] they eat [0398] bread [03899]: they have not called [07121] upon God [0430].';
-Content[5] = 'There were they in great [06343] fear [06342] , [where] no fear [06343] was: for God [0430] hath scattered [06340] the bones [06106] of him that encampeth [02583] [against] thee: thou hast put [them] to shame [0954] , because God [0430] hath despised [03988] them.';
-Content[6] = 'Oh that [05414] the salvation [03444] of Israel [03478] [were come] out of Zion [06726]! When God [0430] bringeth back [07725] the captivity [07622] of his people [05971], Jacob [03290] shall rejoice [01523] , [and] Israel [03478] shall be glad [08055] .';

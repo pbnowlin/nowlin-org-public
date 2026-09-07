@@ -1,4 +1,0 @@
-Content = new Array();
-Content[1]="[[A Song of degrees of David.]] LORD, my heart is not haughty, nor mine eyes lofty: neither do I exercise myself in great matters, or in things too high for me.";
-Content[2]="Surely I have behaved and quieted myself, as a child that is weaned of his mother: my soul [is] even as a weaned child.";
-Content[3]="Let Israel hope in the LORD from henceforth and for ever.";

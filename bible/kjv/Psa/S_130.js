@@ -1,9 +1,0 @@
-Content = new Array();
-Content[1] = '[[A Song [07892] of degrees [04609].]] Out of the depths [04615] have I cried [07121] unto thee, O LORD [03068].';
-Content[2] = 'Lord [0136], hear [08085] my voice [06963]: let thine ears [0241] be attentive [07183] to the voice [06963] of my supplications [08469].';
-Content[3] = 'If thou, LORD [03050], shouldest mark [08104] iniquities [05771], O Lord [0136], who shall stand [05975] ?';
-Content[4] = 'But [there is] forgiveness [05547] with thee, that thou mayest be feared [03372] .';
-Content[5] = 'I wait [06960] for the LORD [03068], my soul [05315] doth wait [06960] , and in his word [01697] do I hope [03176] .';
-Content[6] = 'My soul [05315] [waiteth] for the Lord [0136] more than they that watch [08104] for the morning [01242]: [I say, more than] they that watch [08104] for the morning [01242].';
-Content[7] = 'Let Israel [03478] hope [03176] in the LORD [03068]: for with the LORD [03068] [there is] mercy [02617], and with him [is] plenteous [07235] redemption [06304].';
-Content[8] = 'And he shall redeem [06299] Israel [03478] from all his iniquities [05771].';

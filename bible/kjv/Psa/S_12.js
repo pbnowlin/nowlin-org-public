@@ -1,9 +1,0 @@
-Content = new Array();
-Content[1] = '[[To the chief Musician [05329] upon Sheminith [08067], A Psalm [04210] of David [01732].]] Help [03467] , LORD [03068]; for the godly man [02623] ceaseth [01584] ; for the faithful [0539] fail [06461] from among the children [01121] of men [0120].';
-Content[2] = 'They speak [01696] vanity [07723] every one [0376] with his neighbour [07453]: [with] flattering [02513] lips [08193] [and] with a double [03820] heart [03820] do they speak [01696] .';
-Content[3] = 'The LORD [03068] shall cut off [03772] all flattering [02513] lips [08193], [and] the tongue [03956] that speaketh [01696] proud [01419] things:';
-Content[4] = 'Who have said [0559] , With our tongue [03956] will we prevail [01396] ; our lips [08193] [are] our own: who [is] lord [0113] over us?';
-Content[5] = 'For the oppression [07701] of the poor [06041], for the sighing [0603] of the needy [034], now will I arise [06965] , saith [0559] the LORD [03068]; I will set [07896] [him] in safety [03468] [from him that] puffeth [06315] at him.';
-Content[6] = 'The words [0565] of the LORD [03068] [are] pure [02889] words [0565]: [as] silver [03701] tried [06884] in a furnace [05948] of earth [0776], purified [02212] seven times [07659].';
-Content[7] = 'Thou shalt keep [08104] them, O LORD [03068], thou shalt preserve [05341] them from this [02098] generation [01755] for ever [05769].';
-Content[8] = 'The wicked [07563] walk [01980] on every side [05439], when the vilest [02149] men [01121] [0120] are exalted [07311] .';

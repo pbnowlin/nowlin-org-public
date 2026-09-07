@@ -1,9 +1,0 @@
-Content = new Array();
-Content[1] = '[[To the chief Musician [05329] upon Neginah [05058], [A Psalm] of David [01732].]] Hear [08085] my cry [07440], O God [0430]; attend [07181] unto my prayer [08605].';
-Content[2] = 'From the end [07097] of the earth [0776] will I cry [07121] unto thee, when my heart [03820] is overwhelmed [05848] : lead [05148] me to the rock [06697] [that] is higher [07311] than I.';
-Content[3] = 'For thou hast been a shelter [04268] for me, [and] a strong [05797] tower [04026] from [06440] the enemy [0341] .';
-Content[4] = 'I will abide [01481] in thy tabernacle [0168] for ever [05769]: I will trust [02620] in the covert [05643] of thy wings [03671]. Selah [05542].';
-Content[5] = 'For thou, O God [0430], hast heard [08085] my vows [05088]: thou hast given [05414] [me] the heritage [03425] of those that fear [03373] thy name [08034].';
-Content[6] = 'Thou wilt prolong [03254] the king\'s [04428] life [03117] [03117]: [and] his years [08141] as many [01755] generations [01755].';
-Content[7] = 'He shall abide [03427] before [06440] God [0430] for ever [05769]: O prepare [04487] mercy [02617] and truth [0571], [which] may preserve [05341] him.';
-Content[8] = 'So will I sing [02167] praise unto thy name [08034] for ever [05703], that I may daily [03117] [03117] perform [07999] my vows [05088].';
