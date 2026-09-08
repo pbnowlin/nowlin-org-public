@@ -32,8 +32,10 @@
       display: flex;
       height: 100vh;
       overflow: hidden;
+      position: relative;
     }
 
+    /* Sidebar Base Styling */
     #sidebar {
       width: 280px;
       background-color: var(--bg-sidebar);
@@ -42,6 +44,8 @@
       flex-direction: column;
       flex-shrink: 0;
       box-shadow: inset -3px 0 8px rgba(0, 0, 0, 0.03);
+      z-index: 100;
+      transition: transform 0.25s ease;
     }
 
     .sidebar-header {
@@ -89,7 +93,7 @@
     }
 
     .book-item {
-      padding: 0.4rem 1rem;
+      padding: 0.5rem 1rem;
       cursor: pointer;
       font-size: 0.9rem;
       transition: background-color 0.15s ease;
@@ -112,36 +116,66 @@
       font-style: italic;
     }
 
+    /* Backdrop for Mobile Drawer */
+    #sidebar-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 90;
+    }
+
+    /* Main Content Area */
     #main-content {
       flex: 1;
       display: flex;
       flex-direction: column;
       height: 100vh;
       background-color: var(--bg-primary);
+      width: 100%;
     }
 
     header {
-      padding: 1rem 1.5rem;
+      padding: 0.75rem 1rem;
       background-color: var(--bg-sidebar);
       border-bottom: 2px solid var(--border-color);
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
+      gap: 0.5rem;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    #toggle-menu-btn {
+      display: none; /* Hidden by default on desktop */
+      background-color: var(--bg-editor);
+      border: 1px solid var(--border-color);
+      padding: 0.4rem 0.6rem;
+      font-weight: bold;
     }
 
     .header-title-group {
       display: flex;
       align-items: baseline;
-      gap: 1rem;
+      gap: 0.75rem;
     }
 
     .header-title-group h2 { 
-      font-size: 1.4rem; 
+      font-size: 1.25rem; 
       letter-spacing: -0.02em;
     }
 
     #save-status {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: bold;
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -153,18 +187,19 @@
 
     .action-buttons {
       display: flex;
-      gap: 0.5rem;
+      gap: 0.4rem;
+      flex-wrap: wrap;
     }
 
     button {
       background-color: var(--bg-editor);
       color: var(--text-main);
       border: 1px solid var(--border-color);
-      padding: 0.4rem 0.75rem;
+      padding: 0.4rem 0.6rem;
       border-radius: 2px;
       cursor: pointer;
       font-family: var(--font-typewriter);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.08);
       transition: all 0.15s ease;
     }
@@ -176,7 +211,7 @@
 
     #editor-container {
       flex: 1;
-      padding: 1.5rem;
+      padding: 1rem;
       display: flex;
       flex-direction: column;
     }
@@ -186,9 +221,9 @@
       flex: 1;
       border: 1px solid var(--border-color);
       border-radius: 2px;
-      padding: 1.25rem;
-      font-size: 1.05rem;
-      line-height: 1.7;
+      padding: 1rem;
+      font-size: 1rem;
+      line-height: 1.6;
       font-family: var(--font-typewriter);
       color: var(--text-main);
       background-color: var(--bg-editor);
@@ -202,9 +237,44 @@
     }
 
     #file-input { display: none; }
+
+    /* Mobile Responsive Overrides */
+    @media (max-width: 767px) {
+      #toggle-menu-btn {
+        display: block;
+      }
+
+      #sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        transform: translateX(-100%);
+      }
+
+      #sidebar.open {
+        transform: translateX(0);
+      }
+
+      #sidebar-overlay.open {
+        display: block;
+      }
+
+      #editor-container {
+        padding: 0.75rem;
+      }
+
+      .action-buttons button {
+        padding: 0.35rem 0.5rem;
+        font-size: 0.72rem;
+      }
+    }
   </style>
 </head>
 <body>
+
+  <!-- Overlay for closing sidebar on mobile -->
+  <div id="sidebar-overlay" onclick="closeSidebar()"></div>
 
   <aside id="sidebar">
     <div class="sidebar-header">
@@ -216,14 +286,18 @@
 
   <main id="main-content">
     <header>
-      <div class="header-title-group">
-        <h2 id="current-book-title">Genesis</h2>
-        <span id="save-status" class="status-saved">Saved</span>
+      <div class="header-left">
+        <button id="toggle-menu-btn" onclick="toggleSidebar()">☰ Books</button>
+        <div class="header-title-group">
+          <h2 id="current-book-title">Genesis</h2>
+          <span id="save-status" class="status-saved">Saved</span>
+        </div>
       </div>
+
       <div class="action-buttons">
-        <button onclick="exportSingleBook()">Export Book (.md)</button>
-        <button onclick="exportAllData()">Export All (JSON)</button>
-        <button onclick="triggerImport()">Import (JSON)</button>
+        <button onclick="exportSingleBook()">.MD</button>
+        <button onclick="exportAllData()">Export All</button>
+        <button onclick="triggerImport()">Import</button>
         <input type="file" id="file-input" accept=".json" onchange="importAllData(event)">
       </div>
     </header>
@@ -231,7 +305,7 @@
     <div id="editor-container">
       <textarea 
         id="note-editor" 
-        placeholder="Type your notes here..." 
+        placeholder="Type your study notes here..." 
         oninput="handleEditorInput()"
         onkeydown="handleKeyDown(event)"
       ></textarea>
@@ -276,6 +350,26 @@
       return [...BIBLE_BOOKS["Old Testament"], ...BIBLE_BOOKS["New Testament"]];
     }
 
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("sidebar-overlay");
+      const btn = document.getElementById("toggle-menu-btn");
+
+      const isOpen = sidebar.classList.toggle("open");
+      overlay.classList.toggle("open", isOpen);
+      btn.textContent = isOpen ? "✕ Close" : "☰ Books";
+    }
+
+    function closeSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("sidebar-overlay");
+      const btn = document.getElementById("toggle-menu-btn");
+
+      sidebar.classList.remove("open");
+      overlay.classList.remove("open");
+      btn.textContent = "☰ Books";
+    }
+
     function loadNotesFromStorage() {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
@@ -309,7 +403,10 @@
             const item = document.createElement("div");
             item.className = `book-item ${book === activeBook ? "active" : ""}`;
             item.textContent = book;
-            item.onclick = () => selectBook(book);
+            item.onclick = () => {
+              selectBook(book);
+              closeSidebar(); // Auto-close drawer on mobile when selected
+            };
             container.appendChild(item);
           });
         }
@@ -348,7 +445,7 @@
     }
 
     function handleEditorInput() {
-      updateStatus("Unsaved changes...", "status-saving");
+      updateStatus("Unsaved...", "status-saving");
       
       if (saveTimeout) clearTimeout(saveTimeout);
       saveTimeout = setTimeout(() => { saveCurrentNote(); }, 500);
@@ -381,7 +478,7 @@
         updateStatus("Saved", "status-saved");
       } catch (e) {
         console.error("Storage save failed", e);
-        updateStatus("Storage Full! Export JSON to save backup", "status-error");
+        updateStatus("Storage Full!", "status-error");
       }
     }
 
