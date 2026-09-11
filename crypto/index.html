@@ -7,27 +7,15 @@
   <meta name="googlebot" content="noindex, nofollow" />
   <meta http-equiv="X-Robots-Tag" content="noindex, nofollow" />
   <meta name="referrer" content="no-referrer" />
-  <!-- Tight CSP. The important directive for a crypto page is connect-src 'none':
-       even if something managed to inject script, it has no network path off the
-       page to exfiltrate a password or plaintext. frame-ancestors is deliberately
-       omitted - it is ignored in a <meta> CSP and GitHub Pages cannot set response
-       headers, so clickjacking is a hosting ceiling here, not a code gap.
-       There are now no external requests at all: the web font was dropped for
-       system fonts, so style-src needs no googleapis allowance and font-src is
-       gone. The page is one file and renders with no network. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' blob:; style-src 'unsafe-inline'; img-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'" />
   <title>Crypto — Nowlin</title>
   <meta name="theme-color" content="#f2e8d5" />
   <style>
-    /* Flat, high-contrast, black on parchment. Built for cheap phones on slow
-       links: no web font, no gradients, no backdrop-filter, no blur, no shadows,
-       no animation. Nothing here needs a GPU and nothing here needs the network. */
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --paper: #f2e8d5;      /* parchment */
-      --paper-input: #f9f3e6; /* one shade up, so fields read as fields */
+      --paper: #f2e8d5;
+      --paper-input: #f9f3e6;
       --ink: #000000;
       --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Roboto Mono", "DejaVu Sans Mono", monospace;
@@ -95,7 +83,6 @@
       color: var(--paper);
     }
 
-    /* help panel */
     .help-panel {
       font-size: 15px;
       line-height: 1.6;
@@ -113,20 +100,11 @@
     }
 
     .help-panel h2:first-child { margin-top: 0; }
-
     .help-panel p { margin-bottom: 10px; }
-
-    .help-panel ul {
-      list-style: disc;
-      padding-left: 20px;
-      margin-bottom: 10px;
-    }
-
+    .help-panel ul { list-style: disc; padding-left: 20px; margin-bottom: 10px; }
     .help-panel li { margin-bottom: 6px; }
-
     .help-panel strong { font-weight: 700; }
 
-    /* mode switch */
     .mode-switch {
       display: flex;
       margin-bottom: 24px;
@@ -144,7 +122,6 @@
       cursor: pointer;
     }
 
-    /* One shared edge between the two, so the pair reads as a single control. */
     .mode-switch button + button { border-left: none; }
 
     .mode-switch button[aria-pressed="true"] {
@@ -187,8 +164,6 @@
     input[type="text"],
     input[type="password"] { min-height: 48px; }
 
-    /* Focus is a doubled border rather than a glow. Inset keeps it from nudging
-       layout, and it stays visible with no color to lean on. */
     input[type="text"]:focus,
     input[type="password"]:focus,
     textarea:focus {
@@ -203,8 +178,6 @@
 
     textarea[readonly] { background: var(--paper); }
 
-    /* Browsers default placeholders to a pale grey that disappears on parchment
-       in daylight. Dark enough to read, still clearly not a typed value. */
     ::placeholder {
       color: #5c5346;
       opacity: 1;
@@ -242,10 +215,7 @@
       color: var(--paper);
     }
 
-    /* strength meter - width and the word carry the meaning, not color */
     .strength {
-      /* Clear of the field above: at full width the fill is a solid black bar,
-         and tucked closer it reads as the input's own border. */
       margin-top: 16px;
       display: none;
     }
@@ -313,7 +283,6 @@
       word-break: break-word;
     }
 
-    /* No color coding: an outcome that matters gets weight and a rule beside it. */
     .status.error,
     .status.warn {
       font-weight: 700;
@@ -332,7 +301,6 @@
       font-weight: 700;
     }
 
-    /* output card */
     .output-card { display: none; }
     .output-card.show { display: block; }
 
@@ -478,320 +446,226 @@
     </section>
   </main>
 
+  <script id="worker-code" type="text/plain">
+    self.onmessage = async function(e) {
+      const { mode, passphraseBytes, text } = e.data;
+      const pwArray = new Uint8Array(passphraseBytes);
+
+      const MAGIC = new Uint8Array([0x4E, 0x57, 0x4C, 0x4E]);
+      const FORMAT_VERSION = 1;
+      const KDF_ITERATIONS = 600000;
+      const SALT_BYTES = 16;
+      const IV_BYTES = 12;
+      const HEADER_BYTES = 39;
+      const BEGIN_LINE = '-----BEGIN NOWLIN ENCRYPTED MESSAGE-----';
+      const END_LINE = '-----END NOWLIN ENCRYPTED MESSAGE-----';
+      const MAX_PLAINTEXT_BYTES = 1024 * 1024;
+      const MAX_ARMORED_CHARS = 4 * 1024 * 1024;
+
+      function zeroize(buffer) {
+        if (buffer && buffer.fill) buffer.fill(0);
+      }
+
+      function bytesEqual(a, b) {
+        if (a.length !== b.length) return false;
+        for (let i = 0; i < a.length; i++) {
+          if (a[i] !== b[i]) return false;
+        }
+        return true;
+      }
+
+      function bytesToBase64(bytes) {
+        let bin = '';
+        const chunk = 1024;
+        for (let i = 0; i < bytes.length; i += chunk) {
+          const sub = bytes.subarray(i, i + chunk);
+          for (let j = 0; j < sub.length; j++) {
+            bin += String.fromCharCode(sub[j]);
+          }
+        }
+        return btoa(bin);
+      }
+
+      function base64ToBytes(b64) {
+        const bin = atob(b64.replace(/\s+/g, ''));
+        const out = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+        return out;
+      }
+
+      async function deriveKey(pwBytes, salt, iterations) {
+        const baseKey = await self.crypto.subtle.importKey('raw', pwBytes, 'PBKDF2', false, ['deriveKey']);
+        return self.crypto.subtle.deriveKey(
+          { name: 'PBKDF2', salt, iterations, hash: 'SHA-256' },
+          baseKey,
+          { name: 'AES-GCM', length: 256 },
+          false,
+          ['encrypt', 'decrypt']
+        );
+      }
+
+      let ptBytes = null;
+
+      try {
+        if (mode === 'encrypt') {
+          const encoder = new TextEncoder();
+          ptBytes = encoder.encode(text);
+
+          if (ptBytes.length > MAX_PLAINTEXT_BYTES) {
+            throw new Error('Message exceeds maximum supported size of 1 MiB.');
+          }
+
+          const salt = self.crypto.getRandomValues(new Uint8Array(SALT_BYTES));
+          const iv = self.crypto.getRandomValues(new Uint8Array(IV_BYTES));
+
+          const header = new Uint8Array(HEADER_BYTES);
+          header.set(MAGIC, 0);
+          header[4] = FORMAT_VERSION;
+          header[5] = 1;
+          new DataView(header.buffer).setUint32(6, KDF_ITERATIONS, false);
+          header[10] = 1;
+          header.set(salt, 11);
+          header.set(iv, 27);
+
+          const key = await deriveKey(pwArray, salt, KDF_ITERATIONS);
+          const ctBuffer = await self.crypto.subtle.encrypt(
+            { name: 'AES-GCM', iv, additionalData: header, tagLength: 128 },
+            key,
+            ptBytes
+          );
+
+          const ctBytes = new Uint8Array(ctBuffer);
+          const finalBuffer = new Uint8Array(header.length + ctBytes.length);
+          finalBuffer.set(header, 0);
+          finalBuffer.set(ctBytes, header.length);
+
+          const b64 = bytesToBase64(finalBuffer);
+          const armored = `${BEGIN_LINE}\n${b64.match(/.{1,64}/g).join('\n')}\n${END_LINE}`;
+
+          self.postMessage({
+            success: true,
+            payload: armored,
+            meta: `AES-256-GCM · PBKDF2 (${KDF_ITERATIONS.toLocaleString()} iterations)`
+          });
+        } else {
+          if (text.length > MAX_ARMORED_CHARS) {
+            throw new Error('Payload exceeds maximum supported size.');
+          }
+
+          const cleanB64 = text.replace(BEGIN_LINE, '').replace(END_LINE, '').replace(/\s+/g, '');
+          const bytes = base64ToBytes(cleanB64);
+
+          if (bytes.length < HEADER_BYTES) throw new Error('Invalid payload header.');
+
+          const header = bytes.subarray(0, HEADER_BYTES);
+
+          if (!bytesEqual(header.subarray(0, 4), MAGIC)) throw new Error('Invalid payload.');
+          if (header[4] !== FORMAT_VERSION) throw new Error('Unsupported format version.');
+          if (header[5] !== 1) throw new Error('Unsupported cipher.');
+          if (header[10] !== 1) throw new Error('Unsupported KDF.');
+
+          const claimedIterations = new DataView(header.buffer, header.byteOffset + 6, 4).getUint32(0, false);
+          if (claimedIterations !== KDF_ITERATIONS) throw new Error('Unsupported KDF parameters.');
+
+          const salt = bytes.subarray(11, 27);
+          const iv = bytes.subarray(27, 39);
+          const ciphertext = bytes.subarray(HEADER_BYTES);
+
+          const key = await deriveKey(pwArray, salt, KDF_ITERATIONS);
+          const ptBuffer = await self.crypto.subtle.decrypt(
+            { name: 'AES-GCM', iv, additionalData: header, tagLength: 128 },
+            key,
+            ciphertext
+          );
+
+          const decodedText = new TextDecoder('utf-8', { fatal: true }).decode(ptBuffer);
+
+          self.postMessage({
+            success: true,
+            payload: decodedText,
+            meta: `Decrypted & Tag Verified · ${KDF_ITERATIONS.toLocaleString()} PBKDF2 iterations`
+          });
+        }
+      } catch (err) {
+        self.postMessage({
+          success: false,
+          error: 'Could not decrypt. The password is wrong, or the message was altered or truncated in transit.'
+        });
+      } finally {
+        zeroize(pwArray);
+        zeroize(ptBytes);
+      }
+    };
+  </script>
+
   <script>
   (function () {
     'use strict';
 
-    // ---------- format constants ----------
-    // "NWLN" - magic so a truncated paste or an unrelated base64 blob is rejected
-    // up front instead of being fed to the KDF.
-    var MAGIC = [0x4E, 0x57, 0x4C, 0x4E];
-    var FORMAT_VERSION = 1;
-    var KDF_PBKDF2_SHA256 = 1;
-    var CIPHER_AES_256_GCM = 1;
+    const $ = (id) => document.getElementById(id);
 
-    var KDF_ITERATIONS = 600000;      // OWASP floor for PBKDF2-SHA256
-    var MIN_ITERATIONS = 100000;      // reject weaker-than-plausible messages
-    var MAX_ITERATIONS = 10000000;    // and refuse to be DoS'd by a hostile header
-    var SALT_BYTES = 16;
-    var IV_BYTES = 12;
-    var TAG_BYTES = 16;
-    var HEADER_BYTES = 4 + 1 + 1 + 4 + 1 + SALT_BYTES + IV_BYTES; // 39
-    var SALT_OFFSET = 11;
-    var IV_OFFSET = SALT_OFFSET + SALT_BYTES;
-    var PAD_BLOCK = 256;              // ciphertext length only reveals a 256-byte bucket
-    var LENGTH_PREFIX_BYTES = 4;
-    var MAX_PLAINTEXT_BYTES = 1048576;
-    var MIN_PASSWORD_LENGTH = 12;
-    var MAX_ARMOR_CHARS = 4000000;    // bounds work done on a pasted blob
+    const helpToggle = $('help-toggle');
+    const helpPanel = $('help-panel');
+    const unsupportedNotice = $('unsupported-notice');
+    const modeEncryptBtn = $('mode-encrypt');
+    const modeDecryptBtn = $('mode-decrypt');
+    const inputLabel = $('input-label');
+    const inputText = $('input-text');
+    const inputHint = $('input-hint');
+    const passwordEl = $('password');
+    const togglePasswordBtn = $('toggle-password');
+    const strengthWrap = $('strength');
+    const strengthFill = $('strength-fill');
+    const strengthLabel = $('strength-label');
+    const confirmField = $('confirm-field');
+    const confirmEl = $('password-confirm');
+    const runBtn = $('run-btn');
+    const clearBtn = $('clear-btn');
+    const statusEl = $('status');
+    const outputCard = $('output-card');
+    const outputTitle = $('output-title');
+    const outputEl = $('output');
+    const outputMeta = $('output-meta');
+    const copyBtn = $('copy-btn');
 
-    var BEGIN_LINE = '-----BEGIN NOWLIN ENCRYPTED MESSAGE-----';
-    var END_LINE = '-----END NOWLIN ENCRYPTED MESSAGE-----';
+    let mode = 'encrypt';
+    let busy = false;
+    const MIN_PASSWORD_LENGTH = 12;
+    const BITS_PER_WORD = 11;
+    const PHRASE_RE = /^[A-Za-z]{1,12}(?:[ \-_.][A-Za-z]{1,12}){1,15}$/;
 
-    // One message for every decryption failure. GCM cannot tell a wrong password
-    // from a mangled byte anyway, and inventing a distinction would only be a
-    // guess presented as fact.
-    var DECRYPT_FAILED =
-      'Could not decrypt. The password is wrong, or the message was altered or truncated in transit.';
+    const supported = !!(
+      window.crypto &&
+      window.crypto.subtle &&
+      typeof window.crypto.subtle.deriveKey === 'function' &&
+      typeof window.crypto.getRandomValues === 'function' &&
+      window.Worker
+    );
 
-    // ---------- element refs ----------
-    var $ = function (id) { return document.getElementById(id); };
-    var helpToggle = $('help-toggle');
-    var helpPanel = $('help-panel');
-    var unsupportedNotice = $('unsupported-notice');
-    var modeEncryptBtn = $('mode-encrypt');
-    var modeDecryptBtn = $('mode-decrypt');
-    var inputLabel = $('input-label');
-    var inputText = $('input-text');
-    var inputHint = $('input-hint');
-    var passwordEl = $('password');
-    var togglePasswordBtn = $('toggle-password');
-    var strengthWrap = $('strength');
-    var strengthFill = $('strength-fill');
-    var strengthLabel = $('strength-label');
-    var confirmField = $('confirm-field');
-    var confirmEl = $('password-confirm');
-    var runBtn = $('run-btn');
-    var clearBtn = $('clear-btn');
-    var statusEl = $('status');
-    var outputCard = $('output-card');
-    var outputTitle = $('output-title');
-    var outputEl = $('output');
-    var outputMeta = $('output-meta');
-    var copyBtn = $('copy-btn');
-
-    var mode = 'encrypt';
-    var busy = false;
-    var supported = !!(window.crypto && window.crypto.subtle &&
-                       typeof window.crypto.subtle.deriveKey === 'function' &&
-                       typeof window.crypto.getRandomValues === 'function');
-
-    // A failure the user caused and can act on, as opposed to a bug. Only these
-    // messages are ever shown; anything else surfaces as a generic line so an
-    // internal exception string can't leak into the UI.
-    function UserError(message) { this.message = message; }
-    UserError.prototype = Object.create(Error.prototype);
-    UserError.prototype.name = 'UserError';
-
-    // ---------- encoding helpers ----------
-    function bytesToBase64(bytes) {
-      var bin = '';
-      var CHUNK = 0x8000; // apply() on the whole array overflows the call stack
-      for (var i = 0; i < bytes.length; i += CHUNK) {
-        bin += String.fromCharCode.apply(null, bytes.subarray(i, i + CHUNK));
-      }
-      return btoa(bin);
-    }
-
-    function base64ToBytes(b64) {
-      // Strict: exact padding, no stray characters. atob() is lenient in places
-      // and we would rather reject a corrupted paste than silently decode it
-      // into bytes that then fail with a confusing error.
-      if (b64.length === 0 || b64.length % 4 !== 0 || !/^[A-Za-z0-9+/]+={0,2}$/.test(b64)) {
-        throw new UserError('That does not look like a Nowlin encrypted message.');
-      }
-      var bin;
-      try {
-        bin = atob(b64);
-      } catch (err) {
-        throw new UserError('That does not look like a Nowlin encrypted message.');
-      }
-      var out = new Uint8Array(bin.length);
-      for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
-      return out;
-    }
-
-    function armor(b64) {
-      var lines = [];
-      for (var i = 0; i < b64.length; i += 64) lines.push(b64.slice(i, i + 64));
-      return BEGIN_LINE + '\n' + lines.join('\n') + '\n' + END_LINE;
-    }
-
-    function stripArmor(raw) {
-      var s = String(raw);
-      if (s.length > MAX_ARMOR_CHARS) {
-        throw new UserError('That message is too large to be one of ours.');
-      }
-      var begin = s.indexOf(BEGIN_LINE);
-      if (begin !== -1) {
-        var from = begin + BEGIN_LINE.length;
-        var end = s.indexOf(END_LINE, from);
-        if (end === -1) {
-          throw new UserError('The message is missing its END line — it looks truncated.');
-        }
-        s = s.slice(from, end);
-      }
-      // Tolerate base64url, since links and some chat clients rewrite + and /.
-      return s.replace(/\s+/g, '').replace(/-/g, '+').replace(/_/g, '/');
-    }
-
-    // ---------- framing ----------
-    function buildHeader(iterations, salt, iv) {
-      var h = new Uint8Array(HEADER_BYTES);
-      h.set(MAGIC, 0);
-      h[4] = FORMAT_VERSION;
-      h[5] = KDF_PBKDF2_SHA256;
-      new DataView(h.buffer).setUint32(6, iterations, false);
-      h[10] = CIPHER_AES_256_GCM;
-      h.set(salt, SALT_OFFSET);
-      h.set(iv, IV_OFFSET);
-      return h;
-    }
-
-    // [uint32 BE length][utf-8 bytes][zero padding to a PAD_BLOCK multiple]
-    function padPlaintext(bytes) {
-      var total = LENGTH_PREFIX_BYTES + bytes.length;
-      var padded = Math.ceil(total / PAD_BLOCK) * PAD_BLOCK;
-      var buf = new Uint8Array(padded);
-      new DataView(buf.buffer).setUint32(0, bytes.length, false);
-      buf.set(bytes, LENGTH_PREFIX_BYTES);
-      return buf;
-    }
-
-    function unpadPlaintext(buf) {
-      // Reached only after the GCM tag verified, so a malformed frame here means
-      // a bug or a message from a future format - either way, don't guess.
-      if (buf.length < PAD_BLOCK || buf.length % PAD_BLOCK !== 0) {
-        throw new UserError(DECRYPT_FAILED);
-      }
-      var view = new DataView(buf.buffer, buf.byteOffset, buf.byteLength);
-      var len = view.getUint32(0, false);
-      if (len > buf.length - LENGTH_PREFIX_BYTES) throw new UserError(DECRYPT_FAILED);
-      return buf.subarray(LENGTH_PREFIX_BYTES, LENGTH_PREFIX_BYTES + len);
-    }
-
-    // ---------- core crypto ----------
-    function deriveKey(password, salt, iterations) {
-      // Unicode normalisation matters here: macOS input methods can hand back
-      // "café" as NFD (e + combining accent) while Windows gives NFC. Those are
-      // different byte strings, so without this a message encrypted on one
-      // machine simply won't open on the other. NFC is a no-op for ASCII.
-      var normalized = typeof password.normalize === 'function'
-        ? password.normalize('NFC')
-        : password;
-      var pwBytes = new TextEncoder().encode(normalized);
-      return crypto.subtle
-        .importKey('raw', pwBytes, 'PBKDF2', false, ['deriveKey'])
-        .then(function (baseKey) {
-          return crypto.subtle.deriveKey(
-            { name: 'PBKDF2', salt: salt, iterations: iterations, hash: 'SHA-256' },
-            baseKey,
-            { name: 'AES-GCM', length: 256 },
-            false, // non-extractable: the key can never be read back out
-            ['encrypt', 'decrypt']
-          );
-        });
-    }
-
-    function encryptText(password, text) {
-      // Check before encoding: UTF-8 is at least one byte per character, so this
-      // rejects an oversized paste without first allocating a copy of it.
-      if (text.length > MAX_PLAINTEXT_BYTES) {
-        throw new UserError('That message is larger than the 1 MiB limit.');
-      }
-      var ptBytes = new TextEncoder().encode(text);
-      if (ptBytes.length === 0) throw new UserError('There is no text to encrypt.');
-      if (ptBytes.length > MAX_PLAINTEXT_BYTES) {
-        throw new UserError('That message is larger than the 1 MiB limit.');
-      }
-      var salt = crypto.getRandomValues(new Uint8Array(SALT_BYTES));
-      var iv = crypto.getRandomValues(new Uint8Array(IV_BYTES));
-      var header = buildHeader(KDF_ITERATIONS, salt, iv);
-      return deriveKey(password, salt, KDF_ITERATIONS)
-        .then(function (key) {
-          return crypto.subtle.encrypt(
-            { name: 'AES-GCM', iv: iv, additionalData: header, tagLength: TAG_BYTES * 8 },
-            key,
-            padPlaintext(ptBytes)
-          );
-        })
-        .then(function (cipherBuf) {
-          var ct = new Uint8Array(cipherBuf);
-          var out = new Uint8Array(header.length + ct.length);
-          out.set(header, 0);
-          out.set(ct, header.length);
-          // Only the padded size is reported back. Surfacing the exact plaintext
-          // length in the UI would undo the padding it sits next to.
-          return { armored: armor(bytesToBase64(out)), totalBytes: out.length };
-        });
-    }
-
-    function decryptText(password, armored) {
-      var bytes = base64ToBytes(stripArmor(armored));
-      var notOurs = new UserError('That does not look like a Nowlin encrypted message.');
-
-      if (bytes.length < HEADER_BYTES + PAD_BLOCK + TAG_BYTES) throw notOurs;
-      for (var i = 0; i < MAGIC.length; i++) {
-        if (bytes[i] !== MAGIC[i]) throw notOurs;
-      }
-      if (bytes[4] !== FORMAT_VERSION) {
-        throw new UserError('This message uses format version ' + bytes[4] +
-          ', which this page does not know how to read.');
-      }
-      if (bytes[5] !== KDF_PBKDF2_SHA256 || bytes[10] !== CIPHER_AES_256_GCM) {
-        throw new UserError('This message uses an algorithm this page does not support.');
-      }
-
-      var view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
-      var iterations = view.getUint32(6, false);
-      if (iterations < MIN_ITERATIONS || iterations > MAX_ITERATIONS) {
-        throw new UserError('This message declares an out-of-range iteration count (' +
-          iterations + ') and was not processed.');
-      }
-
-      var header = bytes.subarray(0, HEADER_BYTES);
-      var salt = bytes.subarray(SALT_OFFSET, SALT_OFFSET + SALT_BYTES);
-      var iv = bytes.subarray(IV_OFFSET, IV_OFFSET + IV_BYTES);
-      var ciphertext = bytes.subarray(HEADER_BYTES);
-
-      return deriveKey(password, salt, iterations)
-        .then(function (key) {
-          return crypto.subtle.decrypt(
-            { name: 'AES-GCM', iv: iv, additionalData: header, tagLength: TAG_BYTES * 8 },
-            key,
-            ciphertext
-          );
-        })
-        .catch(function () { throw new UserError(DECRYPT_FAILED); })
-        .then(function (plainBuf) {
-          var inner = unpadPlaintext(new Uint8Array(plainBuf));
-          var text;
-          try {
-            // fatal: invalid UTF-8 should be an error, not silent U+FFFD damage
-            text = new TextDecoder('utf-8', { fatal: true }).decode(inner);
-          } catch (err) {
-            throw new UserError('The message decrypted but its contents are not valid text.');
-          }
-          return { text: text, iterations: iterations };
-        });
-    }
-
-    // ---------- password strength ----------
-    // Every number here is an upper bound, and the UI says so. Without a real
-    // corpus (zxcvbn and friends are exactly the dependency this site doesn't
-    // take) no estimator can do better than bound the answer from above.
     function charsetEntropyBits(pw) {
-      var pool = 0;
+      let pool = 0;
       if (/[a-z]/.test(pw)) pool += 26;
       if (/[A-Z]/.test(pw)) pool += 26;
       if (/[0-9]/.test(pw)) pool += 10;
       if (/[^A-Za-z0-9]/.test(pw)) pool += 33;
       if (pool === 0) return 0;
-      // "aaaaaaaaaaaa" draws from a 26-character class but carries nowhere near
-      // 12 * log2(26) bits. Cap the assumed alphabet by what was actually used.
-      var unique = 0;
-      var seen = {};
-      for (var i = 0; i < pw.length; i++) {
-        var k = '#' + pw.charCodeAt(i); // '#' prefix keeps Object.prototype keys out of reach
-        if (!seen[k]) { seen[k] = true; unique++; }
-      }
-      var effective = Math.min(pool, Math.max(unique, 2) * 2);
+
+      const seen = new Set(pw);
+      const effective = Math.min(pool, Math.max(seen.size, 2) * 2);
       return pw.length * (Math.log(effective) / Math.LN2);
     }
 
-    // Separator-delimited words, all alphabetic, 1-12 letters each. The lower
-    // bound is 1 and not 3 on purpose: human phrases are full of short function
-    // words ("a", "my", "to", "is"), and requiring 3 letters let any phrase
-    // containing one escape this model and get priced per character instead.
-    // The 12-letter ceiling keeps a long random letter-run from being mistaken
-    // for a word and under-scored.
-    var PHRASE_RE = /^[A-Za-z]{1,12}(?:[ \-_.][A-Za-z]{1,12}){1,15}$/;
-    var BITS_PER_WORD = 11; // a 2048-word list; generous for human-chosen words
-
     function phraseEntropyBits(pw) {
-      // A per-character model prices "correct horse battery staple" at ~130 bits
-      // and calls a famous example passphrase Very Strong. If the password reads
-      // as a word phrase, price it per word instead and take the lower estimate.
       if (!PHRASE_RE.test(pw)) return null;
-      var words = pw.split(/[ \-_.]+/).filter(function (w) { return w.length > 0; });
+      const words = pw.split(/[ \-_.]+/).filter((w) => w.length > 0);
       if (words.length < 2) return null;
       return words.length * BITS_PER_WORD;
     }
 
     function estimateStrength(pw) {
       if (!pw) return { bits: 0, phrase: false };
-      var charBits = charsetEntropyBits(pw);
-      var phraseBits = phraseEntropyBits(pw);
+      const charBits = charsetEntropyBits(pw);
+      const phraseBits = phraseEntropyBits(pw);
       if (phraseBits !== null && phraseBits < charBits) {
         return { bits: phraseBits, phrase: true };
       }
@@ -799,49 +673,46 @@
     }
 
     function renderStrength() {
-      var pw = passwordEl.value;
+      const pw = passwordEl.value;
       if (mode !== 'encrypt' || !pw) {
         strengthWrap.classList.remove('show');
         return;
       }
       strengthWrap.classList.add('show');
-      var est = estimateStrength(pw);
-      var bits = est.bits;
-      var pct = Math.max(4, Math.min(100, (bits / 128) * 100));
-      var word;
-      strengthFill.className = 'strength-fill';
+      const est = estimateStrength(pw);
+      const bits = est.bits;
+      const pct = Math.max(4, Math.min(100, (bits / 128) * 100));
+
+      let word = 'Weak';
       if (pw.length < MIN_PASSWORD_LENGTH) {
         word = 'Too short';
-      } else if (bits < 50) {
-        word = 'Weak';
-      } else if (bits < 80) {
-        word = 'Fair';
-        strengthFill.classList.add('fair');
-      } else if (bits < 100) {
-        word = 'Strong';
-        strengthFill.classList.add('strong');
-      } else {
+      } else if (bits >= 100) {
         word = 'Very strong';
-        strengthFill.classList.add('strong');
+      } else if (bits >= 80) {
+        word = 'Strong';
+      } else if (bits >= 50) {
+        word = 'Fair';
       }
-      strengthFill.style.width = pct + '%';
-      // textContent / text nodes only - the password must never reach an HTML parser.
+
+      strengthFill.style.width = `${pct}%`;
       strengthLabel.textContent = '';
-      var b = document.createElement('b');
+      const b = document.createElement('b');
       b.textContent = word;
       strengthLabel.appendChild(b);
-      strengthLabel.appendChild(document.createTextNode(
-        ' · at most ~' + Math.round(bits) + ' bits · ' +
-        (est.phrase
-          ? 'priced as a word phrase at ' + BITS_PER_WORD + ' bits per word'
-          : 'upper bound, assuming the characters were chosen at random')
-      ));
+      strengthLabel.appendChild(
+        document.createTextNode(
+          ` · at most ~${Math.round(bits)} bits · ${
+            est.phrase
+              ? `priced as a word phrase at ${BITS_PER_WORD} bits per word`
+              : 'upper bound, assuming random choice'
+          }`
+        )
+      );
     }
 
-    // ---------- UI ----------
     function setStatus(message, kind) {
       statusEl.textContent = message || '';
-      statusEl.className = 'status' + (kind ? ' ' + kind : '');
+      statusEl.className = 'status' + (kind ? ` ${kind}` : '');
     }
 
     function setBusy(on, label) {
@@ -869,7 +740,7 @@
     function setMode(next) {
       if (busy || next === mode) return;
       mode = next;
-      var encrypting = mode === 'encrypt';
+      const encrypting = mode === 'encrypt';
       modeEncryptBtn.setAttribute('aria-pressed', String(encrypting));
       modeDecryptBtn.setAttribute('aria-pressed', String(!encrypting));
       inputLabel.textContent = encrypting ? 'Message' : 'Encrypted message';
@@ -883,9 +754,6 @@
       confirmField.hidden = !encrypting;
       confirmEl.value = '';
       runBtn.textContent = encrypting ? 'Encrypt' : 'Decrypt';
-      // Switching modes clears both sides: leaving a decrypted plaintext sitting
-      // in the output card while the user moves on is exactly what this page
-      // should not do.
       inputText.value = '';
       hideOutput();
       setStatus('');
@@ -901,20 +769,16 @@
     }
 
     function run() {
-      if (busy) return;
-      if (!supported) return;
+      if (busy || !supported) return;
 
-      // Snapshot the mode for the whole operation. The mode buttons are disabled
-      // while busy, but reading `mode` again when the promise resolves would
-      // silently mislabel the result the day that stops being true.
-      var runMode = mode;
-      var password = passwordEl.value;
-      var text = inputText.value;
+      const runMode = mode;
+      const password = passwordEl.value;
+      const text = inputText.value;
 
       if (runMode === 'encrypt') {
         if (!text.trim()) { setStatus('There is no text to encrypt.', 'error'); return; }
         if (password.length < MIN_PASSWORD_LENGTH) {
-          setStatus('Use a password of at least ' + MIN_PASSWORD_LENGTH + ' characters.', 'error');
+          setStatus(`Use a password of at least ${MIN_PASSWORD_LENGTH} characters.`, 'error');
           return;
         }
         if (password !== confirmEl.value) {
@@ -928,94 +792,74 @@
 
       hideOutput();
       setBusy(true, 'Working…');
-      setStatus('Deriving key — 600,000 PBKDF2 iterations takes a moment.', '');
+      setStatus('Deriving key on background worker thread...', 'success');
 
-      // Yield to the event loop so the busy state paints before the KDF runs.
-      // Deliberately setTimeout and not requestAnimationFrame: rAF never fires in
-      // a backgrounded tab, which would leave the operation hung if the user
-      // switched tabs right after clicking.
-      var work = new Promise(function (resolve) {
-        setTimeout(resolve, 0);
-      }).then(function () {
-        return runMode === 'encrypt' ? encryptText(password, text) : decryptText(password, text);
-      });
+      const pwBytes = new TextEncoder().encode(password.normalize('NFC'));
 
-      work.then(function (result) {
-        if (runMode === 'encrypt') {
-          showOutput(
-            'Encrypted message',
-            result.armored,
-            'AES-256-GCM · PBKDF2-HMAC-SHA256 · ' + KDF_ITERATIONS.toLocaleString() +
-            ' iterations · ' + result.totalBytes.toLocaleString() + ' bytes on the wire ' +
-            '(padded, so this does not reveal the exact message length).'
-          );
-          setStatus('Encrypted. Send the block below; send the password some other way.', 'success');
-        } else {
-          showOutput(
-            'Decrypted message',
-            result.text,
-            'Verified with AES-256-GCM · ' + result.iterations.toLocaleString() + ' PBKDF2 iterations.'
-          );
-          if (result.iterations < KDF_ITERATIONS) {
-            setStatus('Decrypted and authentic. Note: this message used ' +
-              result.iterations.toLocaleString() + ' iterations, below the current ' +
-              KDF_ITERATIONS.toLocaleString() + ' setting — re-encrypt it to upgrade.', 'warn');
+      passwordEl.value = '';
+      confirmEl.value = '';
+
+      const blob = new Blob([$('worker-code').textContent], { type: 'text/javascript' });
+      const workerUrl = URL.createObjectURL(blob);
+      const worker = new Worker(workerUrl);
+
+      URL.revokeObjectURL(workerUrl);
+
+      worker.onmessage = function (e) {
+        worker.terminate();
+        setBusy(false);
+
+        if (e.data.success) {
+          if (runMode === 'encrypt') {
+            showOutput('Encrypted message', e.data.payload, e.data.meta);
+            setStatus('Encrypted. Send the block below; send the password some other way.', 'success');
           } else {
+            showOutput('Decrypted message', e.data.payload, e.data.meta);
             setStatus('Decrypted, and the authentication tag verified — the message was not altered.', 'success');
           }
+        } else {
+          setStatus(e.data.error, 'error');
+          hideOutput();
         }
-      }).catch(function (err) {
-        // Only UserError text is trusted for display. Anything else could carry
-        // an implementation detail, so it gets a fixed message instead.
-        if (err instanceof UserError) setStatus(err.message, 'error');
-        else setStatus('Something went wrong while running the operation.', 'error');
-        hideOutput();
-      }).then(function () {
-        setBusy(false);
-      });
-    }
-
-    function copyOutput() {
-      var text = outputEl.value;
-      if (!text) return;
-      var done = function (ok) {
-        copyBtn.textContent = ok ? 'Copied' : 'Copy failed';
-        setTimeout(function () { copyBtn.textContent = 'Copy'; }, 1600);
       };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(function () { done(true); },
-                                                 function () { done(fallbackCopy()); });
-      } else {
-        done(fallbackCopy());
-      }
+
+      worker.postMessage({
+        mode: runMode,
+        passphraseBytes: pwBytes.buffer,
+        text: text
+      }, [pwBytes.buffer]);
     }
 
-    function fallbackCopy() {
-      // Select the existing readonly field rather than injecting a temporary one,
-      // so the text never lands anywhere it isn't already.
+    async function copyOutput() {
+      const text = outputEl.value;
+      if (!text) return;
+
       try {
-        outputEl.focus();
-        outputEl.setSelectionRange(0, outputEl.value.length);
-        var ok = document.execCommand('copy');
-        outputEl.setSelectionRange(0, 0);
-        return ok;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          outputEl.select();
+          document.execCommand('copy');
+        }
+        copyBtn.textContent = 'Copied';
       } catch (err) {
-        return false;
+        copyBtn.textContent = 'Copy failed';
+      } finally {
+        setTimeout(() => { copyBtn.textContent = 'Copy'; }, 1600);
       }
     }
 
-    // ---------- wiring ----------
-    helpToggle.addEventListener('click', function () {
-      var open = helpToggle.getAttribute('aria-expanded') === 'true';
+    helpToggle.addEventListener('click', () => {
+      const open = helpToggle.getAttribute('aria-expanded') === 'true';
       helpToggle.setAttribute('aria-expanded', String(!open));
       helpPanel.hidden = open;
     });
 
-    modeEncryptBtn.addEventListener('click', function () { setMode('encrypt'); });
-    modeDecryptBtn.addEventListener('click', function () { setMode('decrypt'); });
+    modeEncryptBtn.addEventListener('click', () => setMode('encrypt'));
+    modeDecryptBtn.addEventListener('click', () => setMode('decrypt'));
 
-    togglePasswordBtn.addEventListener('click', function () {
-      var showing = passwordEl.type === 'text';
+    togglePasswordBtn.addEventListener('click', () => {
+      const showing = passwordEl.type === 'text';
       passwordEl.type = showing ? 'password' : 'text';
       confirmEl.type = showing ? 'password' : 'text';
       togglePasswordBtn.textContent = showing ? 'Show' : 'Hide';
@@ -1024,23 +868,22 @@
 
     passwordEl.addEventListener('input', renderStrength);
     runBtn.addEventListener('click', run);
-    clearBtn.addEventListener('click', function () {
+    clearBtn.addEventListener('click', () => {
       clearAll();
       setStatus('Cleared.', '');
     });
     copyBtn.addEventListener('click', copyOutput);
 
-    function enterToRun(event) {
+    const enterToRun = (event) => {
       if (event.key === 'Enter') {
         event.preventDefault();
         run();
       }
-    }
+    };
+
     passwordEl.addEventListener('keydown', enterToRun);
     confirmEl.addEventListener('keydown', enterToRun);
-
-    // Don't leave a plaintext or a password sitting in a bfcache-restored page.
-    window.addEventListener('pagehide', function () { clearAll(); });
+    window.addEventListener('pagehide', clearAll);
 
     if (!supported) {
       unsupportedNotice.hidden = false;

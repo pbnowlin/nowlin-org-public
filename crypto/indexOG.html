@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow" />
+  <meta http-equiv="X-Robots-Tag" content="noindex, nofollow" />
+  <meta name="referrer" content="no-referrer" />
+  <!-- Tight CSP. The important directive for a crypto page is connect-src 'none':
+       even if something managed to inject script, it has no network path off the
+       page to exfiltrate a password or plaintext. frame-ancestors is deliberately
+       omitted - it is ignored in a <meta> CSP and GitHub Pages cannot set response
+       headers, so clickjacking is a hosting ceiling here, not a code gap.
+       There are now no external requests at all: the web font was dropped for
+       system fonts, so style-src needs no googleapis allowance and font-src is
+       gone. The page is one file and renders with no network. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'" />
+  <title>Crypto — Nowlin</title>
+  <meta name="theme-color" content="#f2e8d5" />
+  <style>
+    /* Flat, high-contrast, black on parchment. Built for cheap phones on slow
+       links: no web font, no gradients, no backdrop-filter, no blur, no shadows,
+       no animation. Nothing here needs a GPU and nothing here needs the network. */
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --paper: #f2e8d5;      /* parchment */
+      --paper-input: #f9f3e6; /* one shade up, so fields read as fields */
+      --ink: #000000;
+      --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Roboto Mono", "DejaVu Sans Mono", monospace;
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.5;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 24px 16px 48px;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 640px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .card {
+      border: 1px solid var(--ink);
+      padding: 24px 20px;
+      background: var(--paper);
+    }
+
+    h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .title-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .help-toggle {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--ink);
+      border-radius: 50%;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .help-toggle[aria-expanded="true"] {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    /* help panel */
+    .help-panel {
+      font-size: 15px;
+      line-height: 1.6;
+      border: 1px solid var(--ink);
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+
+    .help-panel h2 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 20px 0 8px;
+    }
+
+    .help-panel h2:first-child { margin-top: 0; }
+
+    .help-panel p { margin-bottom: 10px; }
+
+    .help-panel ul {
+      list-style: disc;
+      padding-left: 20px;
+      margin-bottom: 10px;
+    }
+
+    .help-panel li { margin-bottom: 6px; }
+
+    .help-panel strong { font-weight: 700; }
+
+    /* mode switch */
+    .mode-switch {
+      display: flex;
+      margin-bottom: 24px;
+    }
+
+    .mode-switch button {
+      flex: 1;
+      min-height: 48px;
+      background: var(--paper);
+      border: 1px solid var(--ink);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 15px;
+      padding: 10px 12px;
+      cursor: pointer;
+    }
+
+    /* One shared edge between the two, so the pair reads as a single control. */
+    .mode-switch button + button { border-left: none; }
+
+    .mode-switch button[aria-pressed="true"] {
+      background: var(--ink);
+      color: var(--paper);
+      font-weight: 700;
+    }
+
+    .field { margin-bottom: 20px; }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .field-hint {
+      font-size: 14px;
+      line-height: 1.5;
+      margin-top: 6px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    textarea {
+      width: 100%;
+      background: var(--paper-input);
+      border: 1px solid var(--ink);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 15px;
+      line-height: 1.5;
+      padding: 10px;
+      outline: none;
+    }
+
+    input[type="text"],
+    input[type="password"] { min-height: 48px; }
+
+    /* Focus is a doubled border rather than a glow. Inset keeps it from nudging
+       layout, and it stays visible with no color to lean on. */
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    textarea:focus {
+      box-shadow: inset 0 0 0 2px var(--ink);
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+      word-break: break-word;
+    }
+
+    textarea[readonly] { background: var(--paper); }
+
+    /* Browsers default placeholders to a pale grey that disappears on parchment
+       in daylight. Dark enough to read, still clearly not a typed value. */
+    ::placeholder {
+      color: #5c5346;
+      opacity: 1;
+    }
+
+    input[disabled],
+    textarea[disabled],
+    button[disabled] {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .password-row {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+    }
+
+    .password-row input { flex: 1; min-width: 0; }
+
+    .icon-btn {
+      flex-shrink: 0;
+      min-height: 48px;
+      background: var(--paper);
+      border: 1px solid var(--ink);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 14px;
+      padding: 0 14px;
+      cursor: pointer;
+    }
+
+    .icon-btn[aria-pressed="true"] {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    /* strength meter - width and the word carry the meaning, not color */
+    .strength {
+      /* Clear of the field above: at full width the fill is a solid black bar,
+         and tucked closer it reads as the input's own border. */
+      margin-top: 16px;
+      display: none;
+    }
+
+    .strength.show { display: block; }
+
+    .strength-track {
+      height: 10px;
+      border: 1px solid var(--ink);
+      background: var(--paper);
+    }
+
+    .strength-fill {
+      height: 100%;
+      width: 0;
+      background: var(--ink);
+    }
+
+    .strength-label {
+      margin-top: 6px;
+      font-size: 14px;
+    }
+
+    .strength-label b { font-weight: 700; }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    button {
+      font-family: var(--sans);
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      min-height: 48px;
+      background: var(--ink);
+      color: var(--paper);
+      border: 1px solid var(--ink);
+      padding: 12px 28px;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .btn-ghost {
+      min-height: 48px;
+      background: var(--paper);
+      border: 1px solid var(--ink);
+      color: var(--ink);
+      padding: 12px 20px;
+      font-size: 15px;
+    }
+
+    .status {
+      font-size: 15px;
+      line-height: 1.5;
+      margin: 16px 0 0;
+      min-height: 14px;
+      word-break: break-word;
+    }
+
+    /* No color coding: an outcome that matters gets weight and a rule beside it. */
+    .status.error,
+    .status.warn {
+      font-weight: 700;
+      border-left: 4px solid var(--ink);
+      padding-left: 10px;
+    }
+
+    .status.success { font-weight: 700; }
+
+    .notice {
+      font-size: 15px;
+      line-height: 1.5;
+      border: 2px solid var(--ink);
+      padding: 12px;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    /* output card */
+    .output-card { display: none; }
+    .output-card.show { display: block; }
+
+    .output-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .output-head h2 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .output-head .btn-ghost {
+      min-height: 40px;
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+
+    #output {
+      min-height: 180px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .output-meta {
+      font-size: 14px;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 640px) {
+      .card { padding: 20px 16px; }
+      h1 { font-size: 1.1rem; }
+      .actions button { flex: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="page">
+    <section class="card">
+      <div class="title-row">
+        <h1>Crypto</h1>
+        <button type="button" class="help-toggle" id="help-toggle"
+                aria-expanded="false" aria-controls="help-panel" aria-label="About this tool">?</button>
+      </div>
+
+      <div class="help-panel" id="help-panel" hidden>
+        <h2>What this is</h2>
+        <p>Encrypt a block of text with a password, and decrypt it again with the same password. Everything happens inside this browser tab — nothing is sent anywhere and nothing is saved. Close the tab and nothing is left behind.</p>
+        <p>The result is plain text, so it travels through anything that carries text: email, chat, a note in a file, paper.</p>
+
+        <h2>To encrypt</h2>
+        <ul>
+          <li>Leave the switch set to <strong>Encrypt</strong>.</li>
+          <li>Type or paste your text into <strong>Message</strong>. Up to 1 MiB.</li>
+          <li>Enter a password, then type it again to confirm.</li>
+          <li>Press <strong>Encrypt</strong>, then <strong>Copy</strong> to take the result.</li>
+        </ul>
+        <p>Send the encrypted block to the other person, and give them the password separately — a different app, or in person. Sending both together defeats the point.</p>
+
+        <h2>To decrypt</h2>
+        <ul>
+          <li>Set the switch to <strong>Decrypt</strong>.</li>
+          <li>Paste the whole block into <strong>Encrypted message</strong>, including the BEGIN and END lines.</li>
+          <li>Enter the password and press <strong>Decrypt</strong>.</li>
+        </ul>
+        <p>If it will not open, the password is wrong or the block was altered or cut short on its way to you. Ask the sender to copy it again.</p>
+
+        <h2>Your password</h2>
+        <ul>
+          <li>Twelve characters minimum. Longer is better — a password manager's generator is the easiest way to get a good one.</li>
+          <li>Anyone who has the password can read the message, so pass it along carefully.</li>
+          <li><strong>Keep it somewhere safe before you close this tab.</strong> There is no recovery and no reset. If the password is lost the message cannot be opened again, by you or by anyone.</li>
+        </ul>
+
+        <h2>The other buttons</h2>
+        <p><strong>Clear</strong> empties every field on the page, and <strong>Copy</strong> puts the output on your clipboard. Switching between Encrypt and Decrypt also clears both boxes, so copy anything you want to keep before you switch.</p>
+      </div>
+
+      <p class="notice" id="unsupported-notice" hidden>
+        This browser does not expose the Web Crypto API on this page, so nothing here can run.
+        Web Crypto requires a secure context — open this page over HTTPS.
+      </p>
+
+      <div class="mode-switch" role="group" aria-label="Mode">
+        <button type="button" id="mode-encrypt" aria-pressed="true">Encrypt</button>
+        <button type="button" id="mode-decrypt" aria-pressed="false">Decrypt</button>
+      </div>
+
+      <div class="field">
+        <label for="input-text" id="input-label">Message</label>
+        <textarea id="input-text" spellcheck="false" autocomplete="off"
+                  autocapitalize="off" autocorrect="off"
+                  placeholder="Type or paste the text to encrypt."></textarea>
+        <p class="field-hint" id="input-hint">Up to 1 MiB of text.</p>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="password-row">
+          <input type="password" id="password" autocomplete="new-password"
+                 spellcheck="false" autocapitalize="off" autocorrect="off"
+                 placeholder="At least 12 characters" />
+          <button type="button" class="icon-btn" id="toggle-password" aria-pressed="false">Show</button>
+        </div>
+        <div class="strength" id="strength">
+          <div class="strength-track"><div class="strength-fill" id="strength-fill"></div></div>
+          <p class="strength-label" id="strength-label"></p>
+        </div>
+      </div>
+
+      <div class="field" id="confirm-field">
+        <label for="password-confirm">Confirm password</label>
+        <input type="password" id="password-confirm" autocomplete="new-password"
+               spellcheck="false" autocapitalize="off" autocorrect="off"
+               placeholder="Type it again" />
+        <p class="field-hint">There is no recovery. A typo here would make the message permanently unreadable.</p>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn-primary" id="run-btn">Encrypt</button>
+        <button type="button" class="btn-ghost" id="clear-btn">Clear</button>
+      </div>
+
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="card output-card" id="output-card">
+      <div class="output-head">
+        <h2 id="output-title">Encrypted message</h2>
+        <button type="button" class="btn-ghost" id="copy-btn">Copy</button>
+      </div>
+      <textarea id="output" readonly spellcheck="false" aria-labelledby="output-title"></textarea>
+      <p class="output-meta" id="output-meta"></p>
+    </section>
+  </main>
+
+  <script>
+  (function () {
+    'use strict';
+
+    // ---------- format constants ----------
+    // "NWLN" - magic so a truncated paste or an unrelated base64 blob is rejected
+    // up front instead of being fed to the KDF.
+    var MAGIC = [0x4E, 0x57, 0x4C, 0x4E];
+    var FORMAT_VERSION = 1;
+    var KDF_PBKDF2_SHA256 = 1;
+    var CIPHER_AES_256_GCM = 1;
+
+    var KDF_ITERATIONS = 600000;      // OWASP floor for PBKDF2-SHA256
+    var MIN_ITERATIONS = 100000;      // reject weaker-than-plausible messages
+    var MAX_ITERATIONS = 10000000;    // and refuse to be DoS'd by a hostile header
+    var SALT_BYTES = 16;
+    var IV_BYTES = 12;
+    var TAG_BYTES = 16;
+    var HEADER_BYTES = 4 + 1 + 1 + 4 + 1 + SALT_BYTES + IV_BYTES; // 39
+    var SALT_OFFSET = 11;
+    var IV_OFFSET = SALT_OFFSET + SALT_BYTES;
+    var PAD_BLOCK = 256;              // ciphertext length only reveals a 256-byte bucket
+    var LENGTH_PREFIX_BYTES = 4;
+    var MAX_PLAINTEXT_BYTES = 1048576;
+    var MIN_PASSWORD_LENGTH = 12;
+    var MAX_ARMOR_CHARS = 4000000;    // bounds work done on a pasted blob
+
+    var BEGIN_LINE = '-----BEGIN NOWLIN ENCRYPTED MESSAGE-----';
+    var END_LINE = '-----END NOWLIN ENCRYPTED MESSAGE-----';
+
+    // One message for every decryption failure. GCM cannot tell a wrong password
+    // from a mangled byte anyway, and inventing a distinction would only be a
+    // guess presented as fact.
+    var DECRYPT_FAILED =
+      'Could not decrypt. The password is wrong, or the message was altered or truncated in transit.';
+
+    // ---------- element refs ----------
+    var $ = function (id) { return document.getElementById(id); };
+    var helpToggle = $('help-toggle');
+    var helpPanel = $('help-panel');
+    var unsupportedNotice = $('unsupported-notice');
+    var modeEncryptBtn = $('mode-encrypt');
+    var modeDecryptBtn = $('mode-decrypt');
+    var inputLabel = $('input-label');
+    var inputText = $('input-text');
+    var inputHint = $('input-hint');
+    var passwordEl = $('password');
+    var togglePasswordBtn = $('toggle-password');
+    var strengthWrap = $('strength');
+    var strengthFill = $('strength-fill');
+    var strengthLabel = $('strength-label');
+    var confirmField = $('confirm-field');
+    var confirmEl = $('password-confirm');
+    var runBtn = $('run-btn');
+    var clearBtn = $('clear-btn');
+    var statusEl = $('status');
+    var outputCard = $('output-card');
+    var outputTitle = $('output-title');
+    var outputEl = $('output');
+    var outputMeta = $('output-meta');
+    var copyBtn = $('copy-btn');
+
+    var mode = 'encrypt';
+    var busy = false;
+    var supported = !!(window.crypto && window.crypto.subtle &&
+                       typeof window.crypto.subtle.deriveKey === 'function' &&
+                       typeof window.crypto.getRandomValues === 'function');
+
+    // A failure the user caused and can act on, as opposed to a bug. Only these
+    // messages are ever shown; anything else surfaces as a generic line so an
+    // internal exception string can't leak into the UI.
+    function UserError(message) { this.message = message; }
+    UserError.prototype = Object.create(Error.prototype);
+    UserError.prototype.name = 'UserError';
+
+    // ---------- encoding helpers ----------
+    function bytesToBase64(bytes) {
+      var bin = '';
+      var CHUNK = 0x8000; // apply() on the whole array overflows the call stack
+      for (var i = 0; i < bytes.length; i += CHUNK) {
+        bin += String.fromCharCode.apply(null, bytes.subarray(i, i + CHUNK));
+      }
+      return btoa(bin);
+    }
+
+    function base64ToBytes(b64) {
+      // Strict: exact padding, no stray characters. atob() is lenient in places
+      // and we would rather reject a corrupted paste than silently decode it
+      // into bytes that then fail with a confusing error.
+      if (b64.length === 0 || b64.length % 4 !== 0 || !/^[A-Za-z0-9+/]+={0,2}$/.test(b64)) {
+        throw new UserError('That does not look like a Nowlin encrypted message.');
+      }
+      var bin;
+      try {
+        bin = atob(b64);
+      } catch (err) {
+        throw new UserError('That does not look like a Nowlin encrypted message.');
+      }
+      var out = new Uint8Array(bin.length);
+      for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+      return out;
+    }
+
+    function armor(b64) {
+      var lines = [];
+      for (var i = 0; i < b64.length; i += 64) lines.push(b64.slice(i, i + 64));
+      return BEGIN_LINE + '\n' + lines.join('\n') + '\n' + END_LINE;
+    }
+
+    function stripArmor(raw) {
+      var s = String(raw);
+      if (s.length > MAX_ARMOR_CHARS) {
+        throw new UserError('That message is too large to be one of ours.');
+      }
+      var begin = s.indexOf(BEGIN_LINE);
+      if (begin !== -1) {
+        var from = begin + BEGIN_LINE.length;
+        var end = s.indexOf(END_LINE, from);
+        if (end === -1) {
+          throw new UserError('The message is missing its END line — it looks truncated.');
+        }
+        s = s.slice(from, end);
+      }
+      // Tolerate base64url, since links and some chat clients rewrite + and /.
+      return s.replace(/\s+/g, '').replace(/-/g, '+').replace(/_/g, '/');
+    }
+
+    // ---------- framing ----------
+    function buildHeader(iterations, salt, iv) {
+      var h = new Uint8Array(HEADER_BYTES);
+      h.set(MAGIC, 0);
+      h[4] = FORMAT_VERSION;
+      h[5] = KDF_PBKDF2_SHA256;
+      new DataView(h.buffer).setUint32(6, iterations, false);
+      h[10] = CIPHER_AES_256_GCM;
+      h.set(salt, SALT_OFFSET);
+      h.set(iv, IV_OFFSET);
+      return h;
+    }
+
+    // [uint32 BE length][utf-8 bytes][zero padding to a PAD_BLOCK multiple]
+    function padPlaintext(bytes) {
+      var total = LENGTH_PREFIX_BYTES + bytes.length;
+      var padded = Math.ceil(total / PAD_BLOCK) * PAD_BLOCK;
+      var buf = new Uint8Array(padded);
+      new DataView(buf.buffer).setUint32(0, bytes.length, false);
+      buf.set(bytes, LENGTH_PREFIX_BYTES);
+      return buf;
+    }
+
+    function unpadPlaintext(buf) {
+      // Reached only after the GCM tag verified, so a malformed frame here means
+      // a bug or a message from a future format - either way, don't guess.
+      if (buf.length < PAD_BLOCK || buf.length % PAD_BLOCK !== 0) {
+        throw new UserError(DECRYPT_FAILED);
+      }
+      var view = new DataView(buf.buffer, buf.byteOffset, buf.byteLength);
+      var len = view.getUint32(0, false);
+      if (len > buf.length - LENGTH_PREFIX_BYTES) throw new UserError(DECRYPT_FAILED);
+      return buf.subarray(LENGTH_PREFIX_BYTES, LENGTH_PREFIX_BYTES + len);
+    }
+
+    // ---------- core crypto ----------
+    function deriveKey(password, salt, iterations) {
+      // Unicode normalisation matters here: macOS input methods can hand back
+      // "café" as NFD (e + combining accent) while Windows gives NFC. Those are
+      // different byte strings, so without this a message encrypted on one
+      // machine simply won't open on the other. NFC is a no-op for ASCII.
+      var normalized = typeof password.normalize === 'function'
+        ? password.normalize('NFC')
+        : password;
+      var pwBytes = new TextEncoder().encode(normalized);
+      return crypto.subtle
+        .importKey('raw', pwBytes, 'PBKDF2', false, ['deriveKey'])
+        .then(function (baseKey) {
+          return crypto.subtle.deriveKey(
+            { name: 'PBKDF2', salt: salt, iterations: iterations, hash: 'SHA-256' },
+            baseKey,
+            { name: 'AES-GCM', length: 256 },
+            false, // non-extractable: the key can never be read back out
+            ['encrypt', 'decrypt']
+          );
+        });
+    }
+
+    function encryptText(password, text) {
+      // Check before encoding: UTF-8 is at least one byte per character, so this
+      // rejects an oversized paste without first allocating a copy of it.
+      if (text.length > MAX_PLAINTEXT_BYTES) {
+        throw new UserError('That message is larger than the 1 MiB limit.');
+      }
+      var ptBytes = new TextEncoder().encode(text);
+      if (ptBytes.length === 0) throw new UserError('There is no text to encrypt.');
+      if (ptBytes.length > MAX_PLAINTEXT_BYTES) {
+        throw new UserError('That message is larger than the 1 MiB limit.');
+      }
+      var salt = crypto.getRandomValues(new Uint8Array(SALT_BYTES));
+      var iv = crypto.getRandomValues(new Uint8Array(IV_BYTES));
+      var header = buildHeader(KDF_ITERATIONS, salt, iv);
+      return deriveKey(password, salt, KDF_ITERATIONS)
+        .then(function (key) {
+          return crypto.subtle.encrypt(
+            { name: 'AES-GCM', iv: iv, additionalData: header, tagLength: TAG_BYTES * 8 },
+            key,
+            padPlaintext(ptBytes)
+          );
+        })
+        .then(function (cipherBuf) {
+          var ct = new Uint8Array(cipherBuf);
+          var out = new Uint8Array(header.length + ct.length);
+          out.set(header, 0);
+          out.set(ct, header.length);
+          // Only the padded size is reported back. Surfacing the exact plaintext
+          // length in the UI would undo the padding it sits next to.
+          return { armored: armor(bytesToBase64(out)), totalBytes: out.length };
+        });
+    }
+
+    function decryptText(password, armored) {
+      var bytes = base64ToBytes(stripArmor(armored));
+      var notOurs = new UserError('That does not look like a Nowlin encrypted message.');
+
+      if (bytes.length < HEADER_BYTES + PAD_BLOCK + TAG_BYTES) throw notOurs;
+      for (var i = 0; i < MAGIC.length; i++) {
+        if (bytes[i] !== MAGIC[i]) throw notOurs;
+      }
+      if (bytes[4] !== FORMAT_VERSION) {
+        throw new UserError('This message uses format version ' + bytes[4] +
+          ', which this page does not know how to read.');
+      }
+      if (bytes[5] !== KDF_PBKDF2_SHA256 || bytes[10] !== CIPHER_AES_256_GCM) {
+        throw new UserError('This message uses an algorithm this page does not support.');
+      }
+
+      var view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+      var iterations = view.getUint32(6, false);
+      if (iterations < MIN_ITERATIONS || iterations > MAX_ITERATIONS) {
+        throw new UserError('This message declares an out-of-range iteration count (' +
+          iterations + ') and was not processed.');
+      }
+
+      var header = bytes.subarray(0, HEADER_BYTES);
+      var salt = bytes.subarray(SALT_OFFSET, SALT_OFFSET + SALT_BYTES);
+      var iv = bytes.subarray(IV_OFFSET, IV_OFFSET + IV_BYTES);
+      var ciphertext = bytes.subarray(HEADER_BYTES);
+
+      return deriveKey(password, salt, iterations)
+        .then(function (key) {
+          return crypto.subtle.decrypt(
+            { name: 'AES-GCM', iv: iv, additionalData: header, tagLength: TAG_BYTES * 8 },
+            key,
+            ciphertext
+          );
+        })
+        .catch(function () { throw new UserError(DECRYPT_FAILED); })
+        .then(function (plainBuf) {
+          var inner = unpadPlaintext(new Uint8Array(plainBuf));
+          var text;
+          try {
+            // fatal: invalid UTF-8 should be an error, not silent U+FFFD damage
+            text = new TextDecoder('utf-8', { fatal: true }).decode(inner);
+          } catch (err) {
+            throw new UserError('The message decrypted but its contents are not valid text.');
+          }
+          return { text: text, iterations: iterations };
+        });
+    }
+
+    // ---------- password strength ----------
+    // Every number here is an upper bound, and the UI says so. Without a real
+    // corpus (zxcvbn and friends are exactly the dependency this site doesn't
+    // take) no estimator can do better than bound the answer from above.
+    function charsetEntropyBits(pw) {
+      var pool = 0;
+      if (/[a-z]/.test(pw)) pool += 26;
+      if (/[A-Z]/.test(pw)) pool += 26;
+      if (/[0-9]/.test(pw)) pool += 10;
+      if (/[^A-Za-z0-9]/.test(pw)) pool += 33;
+      if (pool === 0) return 0;
+      // "aaaaaaaaaaaa" draws from a 26-character class but carries nowhere near
+      // 12 * log2(26) bits. Cap the assumed alphabet by what was actually used.
+      var unique = 0;
+      var seen = {};
+      for (var i = 0; i < pw.length; i++) {
+        var k = '#' + pw.charCodeAt(i); // '#' prefix keeps Object.prototype keys out of reach
+        if (!seen[k]) { seen[k] = true; unique++; }
+      }
+      var effective = Math.min(pool, Math.max(unique, 2) * 2);
+      return pw.length * (Math.log(effective) / Math.LN2);
+    }
+
+    // Separator-delimited words, all alphabetic, 1-12 letters each. The lower
+    // bound is 1 and not 3 on purpose: human phrases are full of short function
+    // words ("a", "my", "to", "is"), and requiring 3 letters let any phrase
+    // containing one escape this model and get priced per character instead.
+    // The 12-letter ceiling keeps a long random letter-run from being mistaken
+    // for a word and under-scored.
+    var PHRASE_RE = /^[A-Za-z]{1,12}(?:[ \-_.][A-Za-z]{1,12}){1,15}$/;
+    var BITS_PER_WORD = 11; // a 2048-word list; generous for human-chosen words
+
+    function phraseEntropyBits(pw) {
+      // A per-character model prices "correct horse battery staple" at ~130 bits
+      // and calls a famous example passphrase Very Strong. If the password reads
+      // as a word phrase, price it per word instead and take the lower estimate.
+      if (!PHRASE_RE.test(pw)) return null;
+      var words = pw.split(/[ \-_.]+/).filter(function (w) { return w.length > 0; });
+      if (words.length < 2) return null;
+      return words.length * BITS_PER_WORD;
+    }
+
+    function estimateStrength(pw) {
+      if (!pw) return { bits: 0, phrase: false };
+      var charBits = charsetEntropyBits(pw);
+      var phraseBits = phraseEntropyBits(pw);
+      if (phraseBits !== null && phraseBits < charBits) {
+        return { bits: phraseBits, phrase: true };
+      }
+      return { bits: charBits, phrase: false };
+    }
+
+    function renderStrength() {
+      var pw = passwordEl.value;
+      if (mode !== 'encrypt' || !pw) {
+        strengthWrap.classList.remove('show');
+        return;
+      }
+      strengthWrap.classList.add('show');
+      var est = estimateStrength(pw);
+      var bits = est.bits;
+      var pct = Math.max(4, Math.min(100, (bits / 128) * 100));
+      var word;
+      strengthFill.className = 'strength-fill';
+      if (pw.length < MIN_PASSWORD_LENGTH) {
+        word = 'Too short';
+      } else if (bits < 50) {
+        word = 'Weak';
+      } else if (bits < 80) {
+        word = 'Fair';
+        strengthFill.classList.add('fair');
+      } else if (bits < 100) {
+        word = 'Strong';
+        strengthFill.classList.add('strong');
+      } else {
+        word = 'Very strong';
+        strengthFill.classList.add('strong');
+      }
+      strengthFill.style.width = pct + '%';
+      // textContent / text nodes only - the password must never reach an HTML parser.
+      strengthLabel.textContent = '';
+      var b = document.createElement('b');
+      b.textContent = word;
+      strengthLabel.appendChild(b);
+      strengthLabel.appendChild(document.createTextNode(
+        ' · at most ~' + Math.round(bits) + ' bits · ' +
+        (est.phrase
+          ? 'priced as a word phrase at ' + BITS_PER_WORD + ' bits per word'
+          : 'upper bound, assuming the characters were chosen at random')
+      ));
+    }
+
+    // ---------- UI ----------
+    function setStatus(message, kind) {
+      statusEl.textContent = message || '';
+      statusEl.className = 'status' + (kind ? ' ' + kind : '');
+    }
+
+    function setBusy(on, label) {
+      busy = on;
+      runBtn.disabled = on || !supported;
+      clearBtn.disabled = on;
+      modeEncryptBtn.disabled = on;
+      modeDecryptBtn.disabled = on;
+      runBtn.textContent = on ? label : (mode === 'encrypt' ? 'Encrypt' : 'Decrypt');
+    }
+
+    function hideOutput() {
+      outputCard.classList.remove('show');
+      outputEl.value = '';
+      outputMeta.textContent = '';
+    }
+
+    function showOutput(title, text, meta) {
+      outputTitle.textContent = title;
+      outputEl.value = text;
+      outputMeta.textContent = meta || '';
+      outputCard.classList.add('show');
+    }
+
+    function setMode(next) {
+      if (busy || next === mode) return;
+      mode = next;
+      var encrypting = mode === 'encrypt';
+      modeEncryptBtn.setAttribute('aria-pressed', String(encrypting));
+      modeDecryptBtn.setAttribute('aria-pressed', String(!encrypting));
+      inputLabel.textContent = encrypting ? 'Message' : 'Encrypted message';
+      inputText.placeholder = encrypting
+        ? 'Type or paste the text to encrypt.'
+        : 'Paste the -----BEGIN NOWLIN ENCRYPTED MESSAGE----- block.';
+      inputHint.textContent = encrypting
+        ? 'Up to 1 MiB of text.'
+        : 'The whole block, including the BEGIN and END lines.';
+      passwordEl.placeholder = encrypting ? 'At least 12 characters' : 'The message password';
+      confirmField.hidden = !encrypting;
+      confirmEl.value = '';
+      runBtn.textContent = encrypting ? 'Encrypt' : 'Decrypt';
+      // Switching modes clears both sides: leaving a decrypted plaintext sitting
+      // in the output card while the user moves on is exactly what this page
+      // should not do.
+      inputText.value = '';
+      hideOutput();
+      setStatus('');
+      renderStrength();
+    }
+
+    function clearAll() {
+      inputText.value = '';
+      passwordEl.value = '';
+      confirmEl.value = '';
+      hideOutput();
+      renderStrength();
+    }
+
+    function run() {
+      if (busy) return;
+      if (!supported) return;
+
+      // Snapshot the mode for the whole operation. The mode buttons are disabled
+      // while busy, but reading `mode` again when the promise resolves would
+      // silently mislabel the result the day that stops being true.
+      var runMode = mode;
+      var password = passwordEl.value;
+      var text = inputText.value;
+
+      if (runMode === 'encrypt') {
+        if (!text.trim()) { setStatus('There is no text to encrypt.', 'error'); return; }
+        if (password.length < MIN_PASSWORD_LENGTH) {
+          setStatus('Use a password of at least ' + MIN_PASSWORD_LENGTH + ' characters.', 'error');
+          return;
+        }
+        if (password !== confirmEl.value) {
+          setStatus('The two passwords do not match.', 'error');
+          return;
+        }
+      } else {
+        if (!text.trim()) { setStatus('Paste an encrypted message first.', 'error'); return; }
+        if (!password) { setStatus('Enter the message password.', 'error'); return; }
+      }
+
+      hideOutput();
+      setBusy(true, 'Working…');
+      setStatus('Deriving key — 600,000 PBKDF2 iterations takes a moment.', '');
+
+      // Yield to the event loop so the busy state paints before the KDF runs.
+      // Deliberately setTimeout and not requestAnimationFrame: rAF never fires in
+      // a backgrounded tab, which would leave the operation hung if the user
+      // switched tabs right after clicking.
+      var work = new Promise(function (resolve) {
+        setTimeout(resolve, 0);
+      }).then(function () {
+        return runMode === 'encrypt' ? encryptText(password, text) : decryptText(password, text);
+      });
+
+      work.then(function (result) {
+        if (runMode === 'encrypt') {
+          showOutput(
+            'Encrypted message',
+            result.armored,
+            'AES-256-GCM · PBKDF2-HMAC-SHA256 · ' + KDF_ITERATIONS.toLocaleString() +
+            ' iterations · ' + result.totalBytes.toLocaleString() + ' bytes on the wire ' +
+            '(padded, so this does not reveal the exact message length).'
+          );
+          setStatus('Encrypted. Send the block below; send the password some other way.', 'success');
+        } else {
+          showOutput(
+            'Decrypted message',
+            result.text,
+            'Verified with AES-256-GCM · ' + result.iterations.toLocaleString() + ' PBKDF2 iterations.'
+          );
+          if (result.iterations < KDF_ITERATIONS) {
+            setStatus('Decrypted and authentic. Note: this message used ' +
+              result.iterations.toLocaleString() + ' iterations, below the current ' +
+              KDF_ITERATIONS.toLocaleString() + ' setting — re-encrypt it to upgrade.', 'warn');
+          } else {
+            setStatus('Decrypted, and the authentication tag verified — the message was not altered.', 'success');
+          }
+        }
+      }).catch(function (err) {
+        // Only UserError text is trusted for display. Anything else could carry
+        // an implementation detail, so it gets a fixed message instead.
+        if (err instanceof UserError) setStatus(err.message, 'error');
+        else setStatus('Something went wrong while running the operation.', 'error');
+        hideOutput();
+      }).then(function () {
+        setBusy(false);
+      });
+    }
+
+    function copyOutput() {
+      var text = outputEl.value;
+      if (!text) return;
+      var done = function (ok) {
+        copyBtn.textContent = ok ? 'Copied' : 'Copy failed';
+        setTimeout(function () { copyBtn.textContent = 'Copy'; }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { done(true); },
+                                                 function () { done(fallbackCopy()); });
+      } else {
+        done(fallbackCopy());
+      }
+    }
+
+    function fallbackCopy() {
+      // Select the existing readonly field rather than injecting a temporary one,
+      // so the text never lands anywhere it isn't already.
+      try {
+        outputEl.focus();
+        outputEl.setSelectionRange(0, outputEl.value.length);
+        var ok = document.execCommand('copy');
+        outputEl.setSelectionRange(0, 0);
+        return ok;
+      } catch (err) {
+        return false;
+      }
+    }
+
+    // ---------- wiring ----------
+    helpToggle.addEventListener('click', function () {
+      var open = helpToggle.getAttribute('aria-expanded') === 'true';
+      helpToggle.setAttribute('aria-expanded', String(!open));
+      helpPanel.hidden = open;
+    });
+
+    modeEncryptBtn.addEventListener('click', function () { setMode('encrypt'); });
+    modeDecryptBtn.addEventListener('click', function () { setMode('decrypt'); });
+
+    togglePasswordBtn.addEventListener('click', function () {
+      var showing = passwordEl.type === 'text';
+      passwordEl.type = showing ? 'password' : 'text';
+      confirmEl.type = showing ? 'password' : 'text';
+      togglePasswordBtn.textContent = showing ? 'Show' : 'Hide';
+      togglePasswordBtn.setAttribute('aria-pressed', String(!showing));
+    });
+
+    passwordEl.addEventListener('input', renderStrength);
+    runBtn.addEventListener('click', run);
+    clearBtn.addEventListener('click', function () {
+      clearAll();
+      setStatus('Cleared.', '');
+    });
+    copyBtn.addEventListener('click', copyOutput);
+
+    function enterToRun(event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        run();
+      }
+    }
+    passwordEl.addEventListener('keydown', enterToRun);
+    confirmEl.addEventListener('keydown', enterToRun);
+
+    // Don't leave a plaintext or a password sitting in a bfcache-restored page.
+    window.addEventListener('pagehide', function () { clearAll(); });
+
+    if (!supported) {
+      unsupportedNotice.hidden = false;
+      runBtn.disabled = true;
+      inputText.disabled = true;
+      passwordEl.disabled = true;
+      confirmEl.disabled = true;
+    }
+  })();
+  </script>
+
+</body>
+</html>
