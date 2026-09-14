@@ -11,14 +11,14 @@ const nextBtns = [document.getElementById('next-btn-top'), document.getElementBy
 
 async function init() {
   try {
-    const res = await fetch('./KJVPCE.json');
+    const res = await fetch('./bsb.json');
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const rawData = await res.json();
     
     BIBLE_DATA = normalizeBibleData(rawData);
 
     if (BIBLE_DATA.length === 0) {
-      throw new Error("Could not parse books from KJVPCE.json");
+      throw new Error("Could not parse books from bsb.json");
     }
 
     populateBookDropdown();
@@ -27,7 +27,7 @@ async function init() {
     window.addEventListener('hashchange', handleRoute);
     handleRoute();
   } catch (err) {
-    verseContainer.innerHTML = `<p class="error">Failed to load KJVPCE.json: ${err.message}</p>`;
+    verseContainer.innerHTML = `<p class="error">Failed to load bsb.json: ${err.message}</p>`;
   }
 }
 
