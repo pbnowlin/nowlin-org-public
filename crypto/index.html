@@ -8,7 +8,7 @@
   <meta http-equiv="X-Robots-Tag" content="noindex, nofollow" />
   <meta name="referrer" content="no-referrer" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' blob:; style-src 'unsafe-inline'; img-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'" />
-  <title>Crypto v1.0</title>
+  <title>Crypto v1.0.1</title>
   <meta name="theme-color" content="#f2e8d5" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -446,161 +446,162 @@
     </section>
   </main>
 
-  <script id="worker-code" type="text/plain">
-    self.onmessage = async function(e) {
-      const { mode, passphraseBytes, text } = e.data;
-      const pwArray = new Uint8Array(passphraseBytes);
-
-      const MAGIC = new Uint8Array([0x4E, 0x57, 0x4C, 0x4E]);
-      const FORMAT_VERSION = 1;
-      const KDF_ITERATIONS = 600000;
-      const SALT_BYTES = 16;
-      const IV_BYTES = 12;
-      const HEADER_BYTES = 39;
-      const BEGIN_LINE = '-----BEGIN NOWLIN ENCRYPTED MESSAGE-----';
-      const END_LINE = '-----END NOWLIN ENCRYPTED MESSAGE-----';
-      const MAX_PLAINTEXT_BYTES = 1024 * 1024;
-      const MAX_ARMORED_CHARS = 4 * 1024 * 1024;
-
-      function zeroize(buffer) {
-        if (buffer && buffer.fill) buffer.fill(0);
-      }
-
-      function bytesEqual(a, b) {
-        if (a.length !== b.length) return false;
-        for (let i = 0; i < a.length; i++) {
-          if (a[i] !== b[i]) return false;
-        }
-        return true;
-      }
-
-      function bytesToBase64(bytes) {
-        let bin = '';
-        const chunk = 1024;
-        for (let i = 0; i < bytes.length; i += chunk) {
-          const sub = bytes.subarray(i, i + chunk);
-          for (let j = 0; j < sub.length; j++) {
-            bin += String.fromCharCode(sub[j]);
-          }
-        }
-        return btoa(bin);
-      }
-
-      function base64ToBytes(b64) {
-        const bin = atob(b64.replace(/\s+/g, ''));
-        const out = new Uint8Array(bin.length);
-        for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
-        return out;
-      }
-
-      async function deriveKey(pwBytes, salt, iterations) {
-        const baseKey = await self.crypto.subtle.importKey('raw', pwBytes, 'PBKDF2', false, ['deriveKey']);
-        return self.crypto.subtle.deriveKey(
-          { name: 'PBKDF2', salt, iterations, hash: 'SHA-256' },
-          baseKey,
-          { name: 'AES-GCM', length: 256 },
-          false,
-          ['encrypt', 'decrypt']
-        );
-      }
-
-      let ptBytes = null;
-
-      try {
-        if (mode === 'encrypt') {
-          const encoder = new TextEncoder();
-          ptBytes = encoder.encode(text);
-
-          if (ptBytes.length > MAX_PLAINTEXT_BYTES) {
-            throw new Error('Message exceeds maximum supported size of 1 MiB.');
-          }
-
-          const salt = self.crypto.getRandomValues(new Uint8Array(SALT_BYTES));
-          const iv = self.crypto.getRandomValues(new Uint8Array(IV_BYTES));
-
-          const header = new Uint8Array(HEADER_BYTES);
-          header.set(MAGIC, 0);
-          header[4] = FORMAT_VERSION;
-          header[5] = 1;
-          new DataView(header.buffer).setUint32(6, KDF_ITERATIONS, false);
-          header[10] = 1;
-          header.set(salt, 11);
-          header.set(iv, 27);
-
-          const key = await deriveKey(pwArray, salt, KDF_ITERATIONS);
-          const ctBuffer = await self.crypto.subtle.encrypt(
-            { name: 'AES-GCM', iv, additionalData: header, tagLength: 128 },
-            key,
-            ptBytes
-          );
-
-          const ctBytes = new Uint8Array(ctBuffer);
-          const finalBuffer = new Uint8Array(header.length + ctBytes.length);
-          finalBuffer.set(header, 0);
-          finalBuffer.set(ctBytes, header.length);
-
-          const b64 = bytesToBase64(finalBuffer);
-          const armored = `${BEGIN_LINE}\n${b64.match(/.{1,64}/g).join('\n')}\n${END_LINE}`;
-
-          self.postMessage({
-            success: true,
-            payload: armored,
-            meta: `AES-256-GCM · PBKDF2 (${KDF_ITERATIONS.toLocaleString()} iterations)`
-          });
-        } else {
-          if (text.length > MAX_ARMORED_CHARS) {
-            throw new Error('Payload exceeds maximum supported size.');
-          }
-
-          const cleanB64 = text.replace(BEGIN_LINE, '').replace(END_LINE, '').replace(/\s+/g, '');
-          const bytes = base64ToBytes(cleanB64);
-
-          if (bytes.length < HEADER_BYTES) throw new Error('Invalid payload header.');
-
-          const header = bytes.subarray(0, HEADER_BYTES);
-
-          if (!bytesEqual(header.subarray(0, 4), MAGIC)) throw new Error('Invalid payload.');
-          if (header[4] !== FORMAT_VERSION) throw new Error('Unsupported format version.');
-          if (header[5] !== 1) throw new Error('Unsupported cipher.');
-          if (header[10] !== 1) throw new Error('Unsupported KDF.');
-
-          const claimedIterations = new DataView(header.buffer, header.byteOffset + 6, 4).getUint32(0, false);
-          if (claimedIterations !== KDF_ITERATIONS) throw new Error('Unsupported KDF parameters.');
-
-          const salt = bytes.subarray(11, 27);
-          const iv = bytes.subarray(27, 39);
-          const ciphertext = bytes.subarray(HEADER_BYTES);
-
-          const key = await deriveKey(pwArray, salt, KDF_ITERATIONS);
-          const ptBuffer = await self.crypto.subtle.decrypt(
-            { name: 'AES-GCM', iv, additionalData: header, tagLength: 128 },
-            key,
-            ciphertext
-          );
-
-          const decodedText = new TextDecoder('utf-8', { fatal: true }).decode(ptBuffer);
-
-          self.postMessage({
-            success: true,
-            payload: decodedText,
-            meta: `Decrypted & Tag Verified · ${KDF_ITERATIONS.toLocaleString()} PBKDF2 iterations`
-          });
-        }
-      } catch (err) {
-        self.postMessage({
-          success: false,
-          error: 'Could not decrypt. The password is wrong, or the message was altered or truncated in transit.'
-        });
-      } finally {
-        zeroize(pwArray);
-        zeroize(ptBytes);
-      }
-    };
-  </script>
-
   <script>
   (function () {
     'use strict';
+
+    // Inlined Web Worker script to avoid DOM textContent extraction hacks
+    const WORKER_SOURCE = `
+      self.onmessage = async function(e) {
+        const { mode, passphraseBytes, text } = e.data;
+        const pwArray = new Uint8Array(passphraseBytes);
+
+        const MAGIC = new Uint8Array([0x4E, 0x57, 0x4C, 0x4E]);
+        const FORMAT_VERSION = 1;
+        const KDF_ITERATIONS = 1000000;
+        const SALT_BYTES = 16;
+        const IV_BYTES = 12;
+        const HEADER_BYTES = 39;
+        const BEGIN_LINE = '-----BEGIN NOWLIN ENCRYPTED MESSAGE-----';
+        const END_LINE = '-----END NOWLIN ENCRYPTED MESSAGE-----';
+        const MAX_PLAINTEXT_BYTES = 1024 * 1024;
+        const MAX_ARMORED_CHARS = 4 * 1024 * 1024;
+
+        function zeroize(arr) {
+          if (arr && arr.fill) arr.fill(0);
+        }
+
+        function bytesEqual(a, b) {
+          if (a.length !== b.length) return false;
+          for (let i = 0; i < a.length; i++) {
+            if (a[i] !== b[i]) return false;
+          }
+          return true;
+        }
+
+        function bytesToBase64(bytes) {
+          let bin = '';
+          const chunk = 1024;
+          for (let i = 0; i < bytes.length; i += chunk) {
+            const sub = bytes.subarray(i, i + chunk);
+            for (let j = 0; j < sub.length; j++) {
+              bin += String.fromCharCode(sub[j]);
+            }
+          }
+          return btoa(bin);
+        }
+
+        function base64ToBytes(b64) {
+          const bin = atob(b64.replace(/\\s+/g, ''));
+          const out = new Uint8Array(bin.length);
+          for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+          return out;
+        }
+
+        async function deriveKey(pwBytes, salt, iterations) {
+          const baseKey = await self.crypto.subtle.importKey('raw', pwBytes, 'PBKDF2', false, ['deriveKey']);
+          return self.crypto.subtle.deriveKey(
+            { name: 'PBKDF2', salt, iterations, hash: 'SHA-256' },
+            baseKey,
+            { name: 'AES-GCM', length: 256 },
+            false,
+            ['encrypt', 'decrypt']
+          );
+        }
+
+        let ptBytes = null;
+
+        try {
+          if (mode === 'encrypt') {
+            const encoder = new TextEncoder();
+            ptBytes = encoder.encode(text);
+
+            if (ptBytes.length > MAX_PLAINTEXT_BYTES) {
+              throw new Error('Message exceeds maximum supported size of 1 MiB.');
+            }
+
+            const salt = self.crypto.getRandomValues(new Uint8Array(SALT_BYTES));
+            const iv = self.crypto.getRandomValues(new Uint8Array(IV_BYTES));
+
+            const header = new Uint8Array(HEADER_BYTES);
+            header.set(MAGIC, 0);
+            header[4] = FORMAT_VERSION;
+            header[5] = 1;
+            new DataView(header.buffer).setUint32(6, KDF_ITERATIONS, false);
+            header[10] = 1;
+            header.set(salt, 11);
+            header.set(iv, 27);
+
+            const key = await deriveKey(pwArray, salt, KDF_ITERATIONS);
+            const ctBuffer = await self.crypto.subtle.encrypt(
+              { name: 'AES-GCM', iv, additionalData: header, tagLength: 128 },
+              key,
+              ptBytes
+            );
+
+            const ctBytes = new Uint8Array(ctBuffer);
+            const finalBuffer = new Uint8Array(header.length + ctBytes.length);
+            finalBuffer.set(header, 0);
+            finalBuffer.set(ctBytes, header.length);
+
+            const b64 = bytesToBase64(finalBuffer);
+            const armored = \`\${BEGIN_LINE}\\n\${b64.match(/.{1,64}/g).join('\\n')}\\n\${END_LINE}\`;
+
+            self.postMessage({
+              success: true,
+              payload: armored,
+              meta: \`AES-256-GCM · PBKDF2 (\${KDF_ITERATIONS.toLocaleString()} iterations)\`
+            });
+          } else {
+            if (text.length > MAX_ARMORED_CHARS) {
+              throw new Error('Payload exceeds maximum supported size.');
+            }
+
+            const cleanB64 = text.replace(BEGIN_LINE, '').replace(END_LINE, '').replace(/\\s+/g, '');
+            const bytes = base64ToBytes(cleanB64);
+
+            if (bytes.length < HEADER_BYTES) throw new Error('Invalid payload header.');
+
+            const header = bytes.subarray(0, HEADER_BYTES);
+
+            if (!bytesEqual(header.subarray(0, 4), MAGIC)) throw new Error('Invalid payload.');
+            if (header[4] !== FORMAT_VERSION) throw new Error('Unsupported format version.');
+            if (header[5] !== 1) throw new Error('Unsupported cipher.');
+            if (header[10] !== 1) throw new Error('Unsupported KDF.');
+
+            const claimedIterations = new DataView(header.buffer, header.byteOffset + 6, 4).getUint32(0, false);
+            if (claimedIterations !== KDF_ITERATIONS) throw new Error('Unsupported KDF parameters.');
+
+            const salt = bytes.subarray(11, 27);
+            const iv = bytes.subarray(27, 39);
+            const ciphertext = bytes.subarray(HEADER_BYTES);
+
+            const key = await deriveKey(pwArray, salt, KDF_ITERATIONS);
+            const ptBuffer = await self.crypto.subtle.decrypt(
+              { name: 'AES-GCM', iv, additionalData: header, tagLength: 128 },
+              key,
+              ciphertext
+            );
+
+            const decodedText = new TextDecoder('utf-8', { fatal: true }).decode(ptBuffer);
+
+            self.postMessage({
+              success: true,
+              payload: decodedText,
+              meta: \`Decrypted & Tag Verified · \${KDF_ITERATIONS.toLocaleString()} PBKDF2 iterations\`
+            });
+          }
+        } catch (err) {
+          self.postMessage({
+            success: false,
+            error: 'Could not decrypt. The password is wrong, or the message was altered or truncated in transit.'
+          });
+        } finally {
+          zeroize(pwArray);
+          zeroize(ptBytes);
+        }
+      };
+    `;
 
     const $ = (id) => document.getElementById(id);
 
@@ -641,6 +642,10 @@
       typeof window.crypto.getRandomValues === 'function' &&
       window.Worker
     );
+
+    function zeroize(arr) {
+      if (arr && arr.fill) arr.fill(0);
+    }
 
     function charsetEntropyBits(pw) {
       let pool = 0;
@@ -796,10 +801,11 @@
 
       const pwBytes = new TextEncoder().encode(password.normalize('NFC'));
 
+      // Clear password DOM elements immediately
       passwordEl.value = '';
       confirmEl.value = '';
 
-      const blob = new Blob([$('worker-code').textContent], { type: 'text/javascript' });
+      const blob = new Blob([WORKER_SOURCE], { type: 'text/javascript' });
       const workerUrl = URL.createObjectURL(blob);
       const worker = new Worker(workerUrl);
 
@@ -823,11 +829,16 @@
         }
       };
 
+      // Transfer buffer to worker to eliminate main thread retention
+      const bufferToTransfer = pwBytes.buffer;
       worker.postMessage({
         mode: runMode,
-        passphraseBytes: pwBytes.buffer,
+        passphraseBytes: bufferToTransfer,
         text: text
-      }, [pwBytes.buffer]);
+      }, [bufferToTransfer]);
+
+      // Wipe local byte array reference on main thread
+      zeroize(pwBytes);
     }
 
     async function copyOutput() {
@@ -839,7 +850,6 @@
           await navigator.clipboard.writeText(text);
         } else {
           outputEl.select();
-          document.execCommand('copy');
         }
         copyBtn.textContent = 'Copied';
       } catch (err) {
