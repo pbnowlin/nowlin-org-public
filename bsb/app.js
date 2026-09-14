@@ -2,12 +2,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const bookSelect = document.getElementById("book-select");
     const chapterSelect = document.getElementById("chapter-select");
     const bibleTextContainer = document.getElementById("bible-text");
-    const prevBtn = document.getElementById("prev-btn");
-    const nextBtn = document.getElementById("next-btn");
+    
+    // Select all Previous and Next buttons (top and bottom)
+    const prevBtns = document.querySelectorAll(".prev-btn");
+    const nextBtns = document.querySelectorAll(".next-btn");
 
     let bibleData = [];
-    let currentBookIndex = 0;
-    let currentChapterIndex = 0;
+    let currentBookIndex = -1;
+    let currentChapterIndex = -1;
 
     // Fetch the BSB JSON data
     fetch("BSB.json")
@@ -18,9 +20,9 @@ document.addEventListener("DOMContentLoaded", () => {
             return response.json();
         })
         .then(data => {
-            // Handle array of books or object wrapper structures
             bibleData = Array.isArray(data) ? data : (data.books || data.verses || data.bible || []);
             populateBookSelect();
+            updateNavigationButtons();
         })
         .catch(error => {
             console.error("Error loading BSB.json:", error);
@@ -43,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
         chapterSelect.disabled = false;
 
         const book = bibleData[bookIndex];
-        const chapters = book.chapters || book.verses || [];
+        const chapters = book ? (book.chapters || book.verses || []) : [];
 
         chapters.forEach((_, index) => {
             const option = document.createElement("option");
@@ -57,14 +59,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const book = bibleData[bookIndex];
         if (!book) return;
 
-        // Extract chapters array
         const chapters = book.chapters || book.verses || [];
         const chapterData = chapters[chapterIndex] || [];
         const bookName = book.name || book.book || book.title || "";
 
         let html = `<h2>${bookName} ${chapterIndex + 1}</h2>`;
 
-        // Extract verse list if chapterData is wrapped in an object or key
         const verses = Array.isArray(chapterData) 
             ? chapterData 
             : (chapterData.verses || chapterData.text || chapterData.content || chapterData.v || []);
@@ -86,20 +86,65 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function updateNavigationButtons() {
+        // If no valid book or chapter is selected, keep buttons disabled
+        if (currentBookIndex < 0 || currentChapterIndex < 0 || bibleData.length === 0) {
+            prevBtns.forEach(btn => btn.disabled = true);
+            nextBtns.forEach(btn => btn.disabled = true);
+            return;
+        }
+
         const book = bibleData[currentBookIndex];
         const chapters = book ? (book.chapters || book.verses || []) : [];
 
-        prevBtn.disabled = (currentBookIndex === 0 && currentChapterIndex === 0);
-        nextBtn.disabled = (currentBookIndex === bibleData.length - 1 && currentChapterIndex === chapters.length - 1);
+        const isAtStart = (currentBookIndex === 0 && currentChapterIndex === 0);
+        const isAtEnd = (currentBookIndex === bibleData.length - 1 && currentChapterIndex === chapters.length - 1);
+
+        prevBtns.forEach(btn => btn.disabled = isAtStart);
+        nextBtns.forEach(btn => btn.disabled = isAtEnd);
+    }
+
+    function handlePrevious() {
+        if (currentBookIndex < 0 || currentChapterIndex < 0) return;
+
+        if (currentChapterIndex > 0) {
+            currentChapterIndex--;
+        } else if (currentBookIndex > 0) {
+            currentBookIndex--;
+            const prevBookChapters = bibleData[currentBookIndex].chapters || bibleData[currentBookIndex].verses || [];
+            currentChapterIndex = prevBookChapters.length - 1;
+            populateChapterSelect(currentBookIndex);
+            bookSelect.value = currentBookIndex;
+        }
+        chapterSelect.value = currentChapterIndex;
+        renderChapter(currentBookIndex, currentChapterIndex);
+    }
+
+    function handleNext() {
+        if (currentBookIndex < 0 || currentChapterIndex < 0) return;
+
+        const currentBookChapters = bibleData[currentBookIndex].chapters || bibleData[currentBookIndex].verses || [];
+        if (currentChapterIndex < currentBookChapters.length - 1) {
+            currentChapterIndex++;
+        } else if (currentBookIndex < bibleData.length - 1) {
+            currentBookIndex++;
+            currentChapterIndex = 0;
+            populateChapterSelect(currentBookIndex);
+            bookSelect.value = currentBookIndex;
+        }
+        chapterSelect.value = currentChapterIndex;
+        renderChapter(currentBookIndex, currentChapterIndex);
     }
 
     // Event Listeners
     bookSelect.addEventListener("change", (e) => {
         const val = e.target.value;
         if (val === "") {
+            currentBookIndex = -1;
+            currentChapterIndex = -1;
             chapterSelect.innerHTML = `<option value="">Select Chapter</option>`;
             chapterSelect.disabled = true;
             bibleTextContainer.innerHTML = `<p class="placeholder">Select a book and chapter to begin reading.</p>`;
+            updateNavigationButtons();
             return;
         }
 
@@ -118,31 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
         renderChapter(currentBookIndex, currentChapterIndex);
     });
 
-    prevBtn.addEventListener("click", () => {
-        if (currentChapterIndex > 0) {
-            currentChapterIndex--;
-        } else if (currentBookIndex > 0) {
-            currentBookIndex--;
-            const prevBookChapters = bibleData[currentBookIndex].chapters || bibleData[currentBookIndex].verses || [];
-            currentChapterIndex = prevBookChapters.length - 1;
-            populateChapterSelect(currentBookIndex);
-            bookSelect.value = currentBookIndex;
-        }
-        chapterSelect.value = currentChapterIndex;
-        renderChapter(currentBookIndex, currentChapterIndex);
-    });
-
-    nextBtn.addEventListener("click", () => {
-        const currentBookChapters = bibleData[currentBookIndex].chapters || bibleData[currentBookIndex].verses || [];
-        if (currentChapterIndex < currentBookChapters.length - 1) {
-            currentChapterIndex++;
-        } else if (currentBookIndex < bibleData.length - 1) {
-            currentBookIndex++;
-            currentChapterIndex = 0;
-            populateChapterSelect(currentBookIndex);
-            bookSelect.value = currentBookIndex;
-        }
-        chapterSelect.value = currentChapterIndex;
-        renderChapter(currentBookIndex, currentChapterIndex);
-    });
+    // Attach click listeners to all Previous and Next buttons
+    prevBtns.forEach(btn => btn.addEventListener("click", handlePrevious));
+    nextBtns.forEach(btn => btn.addEventListener("click", handleNext));
 });
