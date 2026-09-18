@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow" />
+  <meta http-equiv="X-Robots-Tag" content="noindex, nofollow" />
+  <meta name="referrer" content="no-referrer" />
+  <!-- This page runs no script at all, so script-src stays 'none'. See /crypto
+       for why frame-ancestors is absent. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'" />
+  <title>Good News — Nowlin</title>
+  <meta name="theme-color" content="#020617" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@1,400&family=Martian+Mono:wght@200;300;400&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-deep: #020617;
+      --bg-mid: #0a1330;
+      --accent: #15803d;
+      --accent-2: #f0b429;
+      --glass: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.22);
+      --text: #f5f7fb;
+      --dim: #9aa5c0;
+      --mono: 'Martian Mono', monospace;
+      --serif: 'EB Garamond', Georgia, serif;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 20% 20%, rgba(21, 128, 61, 0.2), transparent 42%),
+        radial-gradient(circle at 80% 78%, rgba(240, 180, 41, 0.18), transparent 42%),
+        linear-gradient(160deg, var(--bg-deep), var(--bg-mid) 60%, var(--bg-deep));
+      background-attachment: fixed;
+      color: var(--text);
+      font-family: var(--mono);
+      font-weight: 200;
+      font-size: 13px;
+      line-height: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 72px 24px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before,
+    body::after {
+      content: '';
+      position: fixed;
+      width: 55vmax;
+      height: 55vmax;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.35;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    body::before {
+      background: var(--accent);
+      top: -20vmax;
+      left: -18vmax;
+      animation: drift1 20s ease-in-out infinite alternate;
+    }
+
+    body::after {
+      background: var(--accent-2);
+      bottom: -20vmax;
+      right: -18vmax;
+      animation: drift2 24s ease-in-out infinite alternate;
+    }
+
+    @keyframes drift1 {
+      from { transform: translate(0, 0); }
+      to   { transform: translate(6vmax, 8vmax); }
+    }
+
+    @keyframes drift2 {
+      from { transform: translate(0, 0); }
+      to   { transform: translate(-6vmax, -8vmax); }
+    }
+
+    /* glass card */
+    .card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 620px;
+      padding: 64px 52px;
+      border-radius: 28px;
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.02));
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14),
+        0 0 50px rgba(21, 128, 61, 0.12),
+        0 0 70px rgba(240, 180, 41, 0.1);
+      opacity: 0;
+      animation: in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes in {
+      from { opacity: 0; transform: translateY(16px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-shadow:
+        0 0 14px rgba(21, 128, 61, 0.55),
+        0 0 22px rgba(240, 180, 41, 0.45);
+      margin-bottom: 36px;
+    }
+
+    p {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--text);
+      margin-bottom: 22px;
+    }
+
+    .lede {
+      color: var(--dim);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin: 32px 0 16px;
+    }
+
+    ul.steps {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin: 0 0 32px;
+    }
+
+    ul.steps li {
+      position: relative;
+      padding-left: 24px;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--text);
+    }
+
+    ul.steps li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 7px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px rgba(21, 128, 61, 0.8);
+    }
+
+    ul.steps strong {
+      color: var(--accent-2);
+      font-weight: 400;
+    }
+
+    blockquote {
+      border-left: 2px solid var(--accent);
+      padding: 4px 0 4px 22px;
+      margin: 40px 0 8px;
+    }
+
+    blockquote p {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 1.05rem;
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    blockquote cite {
+      display: block;
+      font-style: normal;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+
+    @media (max-width: 640px) {
+      .card {
+        padding: 48px 28px;
+      }
+      h1 {
+        font-size: 1.3rem;
+        letter-spacing: 0.14em;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="card">
+    <h1>Good News</h1>
+
+    <p>You were made for a relationship with God, but sin broke that connection. Not just the big failures, but the quiet ways we fall short of love, of truth, of who we were meant to be. Left on our own, we can't fix that gap. No amount of good behavior closes it.</p>
+
+    <p>So God closed it himself. Jesus, fully God and fully human, lived the life we couldn't live, then died the death we deserved, taking our sin upon himself. Three days later, he rose from the grave, breaking death's hold for good.</p>
+
+    <p>This is grace: not earned, not deserved, just given. Salvation isn't a reward for good people. It's a gift for anyone willing to receive it.</p>
+
+    <p class="lede">To be saved is simple</p>
+
+    <ul class="steps">
+      <li><strong>Believe:</strong> trust that Jesus is who he said he is, and that his death and resurrection are enough to save you.</li>
+      <li><strong>Turn:</strong> turn away from trying to save yourself, and turn toward him.</li>
+      <li><strong>Receive:</strong> accept the gift. Ask him to forgive you and make you new.</li>
+    </ul>
+
+    <p>That's it. Not a checklist, not years of effort. Just faith, offered freely and received freely.</p>
+
+    <blockquote>
+      <p>“For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.”</p>
+      <cite>John 3:16, KJV</cite>
+    </blockquote>
+  </main>
+
+</body>
+</html>

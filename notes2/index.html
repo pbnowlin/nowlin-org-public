@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Notes</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Marked.js for Markdown Parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- DOMPurify for XSS Sanitization -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              500: '#16a34a',
+              600: '#15803d',
+              700: '#166534',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(156, 163, 175, 0.3);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(156, 163, 175, 0.5);
+    }
+
+    /* Markdown Styling */
+    .prose h1 { font-size: 1.5rem; font-weight: 700; margin-top: 1rem; margin-bottom: 0.5rem; }
+    .prose h2 { font-size: 1.25rem; font-weight: 600; margin-top: 0.85rem; margin-bottom: 0.4rem; }
+    .prose h3 { font-size: 1.1rem; font-weight: 600; margin-top: 0.75rem; margin-bottom: 0.3rem; }
+    .prose p { margin-bottom: 0.75rem; line-height: 1.6; }
+    .prose ul { list-style-type: disc; padding-left: 1.25rem; margin-bottom: 0.75rem; }
+    .prose ol { list-style-type: decimal; padding-left: 1.25rem; margin-bottom: 0.75rem; }
+    .prose code { background-color: rgba(125, 125, 125, 0.15); padding: 0.15rem 0.35rem; border-radius: 0.25rem; font-family: monospace; font-size: 0.875em; }
+    .prose pre { background-color: #0f172a; color: #f8fafc; padding: 0.75rem; border-radius: 0.5rem; overflow-x: auto; margin-bottom: 0.75rem; }
+    .prose pre code { background-color: transparent; padding: 0; color: inherit; }
+    .prose blockquote { border-left: 3px solid #16a34a; padding-left: 0.75rem; color: #64748b; margin-bottom: 0.75rem; font-style: italic; }
+    .prose a { color: #16a34a; text-decoration: underline; }
+  </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-950 text-gray-900 dark:text-gray-100 antialiased h-full flex overflow-hidden select-none">
+
+  <!-- Mobile Navigation Overlay -->
+  <div id="mobile-overlay" class="fixed inset-0 bg-gray-900/40 z-30 hidden md:hidden transition-opacity backdrop-blur-xs"></div>
+
+  <!-- Column 1: Sidebar (Folders & Navigation) -->
+  <aside id="sidebar" class="fixed md:static inset-y-0 left-0 z-40 w-72 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out flex-shrink-0">
+    <div class="h-14 px-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between flex-shrink-0">
+      <div class="flex items-center space-x-2.5">
+        <div class="p-1.5 bg-brand-500 text-white rounded-md shadow-xs">
+          <i data-lucide="notebook-pen" class="w-4 h-4"></i>
+        </div>
+        <span class="font-bold text-base tracking-tight">Workspace</span>
+      </div>
+      <button id="close-mobile-sidebar" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 md:hidden text-gray-500">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <div class="p-3 flex-shrink-0">
+      <button id="btn-new-note" class="w-full py-2 px-3 bg-brand-500 hover:bg-brand-600 active:bg-brand-700 text-white font-medium text-sm rounded-lg shadow-xs flex items-center justify-center space-x-2 transition-colors">
+        <i data-lucide="plus" class="w-4 h-4"></i>
+        <span>New Note</span>
+      </button>
+    </div>
+
+    <div class="px-3 pb-2 flex-shrink-0">
+      <div class="relative">
+        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-gray-400"></i>
+        <input type="text" id="search-input" placeholder="Search notes..." class="w-full pl-9 pr-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-800/60 border border-transparent focus:border-brand-500 rounded-lg focus:outline-none transition-colors">
+      </div>
+    </div>
+
+    <div class="flex-1 overflow-y-auto px-3 py-2 space-y-4">
+      <div>
+        <div class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-2 mb-1.5">Views</div>
+        <nav class="space-y-0.5">
+          <button data-filter="all" class="nav-item w-full flex items-center justify-between px-2.5 py-1.5 text-sm rounded-lg font-medium text-brand-600 bg-brand-50 dark:bg-brand-500/10 dark:text-brand-500">
+            <span class="flex items-center space-x-2.5">
+              <i data-lucide="files" class="w-4 h-4"></i>
+              <span>All Notes</span>
+            </span>
+            <span id="count-all" class="text-xs px-2 py-0.5 rounded-md bg-gray-200/60 dark:bg-gray-800 text-gray-600 dark:text-gray-400">0</span>
+          </button>
+          <button data-filter="uncategorized" class="nav-item w-full flex items-center justify-between px-2.5 py-1.5 text-sm rounded-lg font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50">
+            <span class="flex items-center space-x-2.5">
+              <i data-lucide="inbox" class="w-4 h-4"></i>
+              <span>Uncategorized</span>
+            </span>
+            <span id="count-uncategorized" class="text-xs px-2 py-0.5 rounded-md bg-gray-200/60 dark:bg-gray-800 text-gray-600 dark:text-gray-400">0</span>
+          </button>
+        </nav>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between px-2 mb-1.5">
+          <span class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Folders</span>
+          <button id="btn-add-folder" title="Create Folder" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+            <i data-lucide="folder-plus" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+        <div id="folders-container" class="space-y-0.5"></div>
+      </div>
+    </div>
+
+    <div class="p-3 border-t border-gray-200 dark:border-gray-800 flex items-center space-x-2 flex-shrink-0">
+      <button id="btn-export-data" class="flex-1 flex items-center justify-center space-x-1.5 py-1.5 px-2 text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800/60 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors" title="Export Backup JSON">
+        <i data-lucide="download" class="w-3.5 h-3.5"></i>
+        <span>Export</span>
+      </button>
+      <button id="btn-import-data" class="flex-1 flex items-center justify-center space-x-1.5 py-1.5 px-2 text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800/60 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors" title="Import Backup JSON">
+        <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+        <span>Import</span>
+      </button>
+      <input type="file" id="file-import-input" accept=".json" class="hidden">
+    </div>
+  </aside>
+
+  <!-- Column 2: Notes List Panel -->
+  <section id="notes-panel" class="w-full md:w-72 lg:w-80 border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/50 flex flex-col flex-shrink-0 h-full z-10 transition-transform">
+    <div class="h-14 px-3.5 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between flex-shrink-0">
+      <div class="flex items-center space-x-2 min-w-0">
+        <button id="open-mobile-sidebar" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 md:hidden text-gray-600 dark:text-gray-300">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+        <h2 id="current-view-title" class="font-bold text-sm text-gray-800 dark:text-gray-200 truncate">All Notes</h2>
+      </div>
+      <div id="notes-count-badge" class="text-xs text-gray-400 font-medium flex-shrink-0">0 notes</div>
+    </div>
+
+    <div id="notes-list" class="flex-1 overflow-y-auto divide-y divide-gray-100 dark:divide-gray-800/40 select-text"></div>
+  </section>
+
+  <!-- Column 3: Note Editor & Reader View -->
+  <main id="editor-panel" class="fixed inset-0 md:static md:flex-1 bg-white dark:bg-gray-900 flex flex-col h-full min-w-0 z-20 md:z-auto transform translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out">
+    <div id="editor-wrapper" class="flex-1 flex flex-col h-full select-text">
+      <!-- Editor Header -->
+      <div class="h-14 px-3 md:px-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between gap-2 bg-white dark:bg-gray-900 flex-shrink-0 z-10">
+        <div class="flex items-center space-x-2 min-w-0 flex-1">
+          <button id="btn-back-to-list" class="p-1.5 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg md:hidden">
+            <i data-lucide="chevron-left" class="w-5 h-5"></i>
+          </button>
+          <div class="relative inline-block max-w-[180px] sm:max-w-xs">
+            <select id="note-folder-select" class="text-xs font-medium bg-gray-100 dark:bg-gray-800/80 border border-transparent focus:border-brand-500 rounded-lg px-2.5 py-1.5 text-gray-700 dark:text-gray-300 focus:outline-none cursor-pointer truncate">
+              <option value="">Uncategorized</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
+          <div id="save-status" class="hidden sm:flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            <span id="save-status-text">Saved</span>
+          </div>
+
+          <button id="btn-copy-note" class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" title="Copy Content">
+            <i data-lucide="copy" class="w-4 h-4"></i>
+          </button>
+
+          <button id="btn-toggle-preview" class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" title="Toggle Live Preview">
+            <i data-lucide="eye" class="w-4 h-4"></i>
+          </button>
+
+          <button id="btn-delete-note" class="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-colors" title="Delete Note">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Editor Content Input -->
+      <div class="flex-1 flex flex-col p-4 sm:p-6 overflow-hidden">
+        <input type="text" id="note-title-input" placeholder="Note title..." class="text-xl sm:text-2xl font-bold bg-transparent border-none outline-none focus:outline-none mb-3 placeholder-gray-300 dark:placeholder-gray-600 text-gray-900 dark:text-gray-100 tracking-tight">
+        <textarea id="note-body-input" placeholder="Start typing your note here... (Markdown supported)" class="flex-1 w-full bg-transparent border-none outline-none focus:outline-none resize-none font-mono text-sm leading-relaxed text-gray-800 dark:text-gray-200 placeholder-gray-300 dark:placeholder-gray-600"></textarea>
+        <div id="note-preview" class="flex-1 w-full overflow-y-auto prose dark:prose-invert max-w-none hidden"></div>
+      </div>
+    </div>
+
+    <!-- Empty State Component -->
+    <div id="empty-state" class="hidden flex-1 flex-col items-center justify-center p-6 text-center text-gray-400 select-none">
+      <div class="w-12 h-12 bg-gray-100 dark:bg-gray-800/60 rounded-full flex items-center justify-center mb-3">
+        <i data-lucide="file-text" class="w-6 h-6 text-gray-400"></i>
+      </div>
+      <h3 class="text-base font-semibold text-gray-700 dark:text-gray-300 mb-1">No Note Selected</h3>
+      <p class="text-xs text-gray-500 max-w-xs mb-4">Choose a note from the list or create a new one to begin editing.</p>
+      <button id="btn-empty-new-note" class="py-2 px-4 bg-brand-500 hover:bg-brand-600 text-white text-xs font-medium rounded-lg shadow-xs">Create New Note</button>
+    </div>
+  </main>
+
+  <!-- Modal Component -->
+  <div id="modal-backdrop" class="fixed inset-0 bg-gray-900/60 z-50 flex items-center justify-center p-4 hidden backdrop-blur-xs">
+    <div id="modal-card" class="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-md overflow-hidden transform transition-all p-5 sm:p-6">
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+  <script>
+    const STORAGE_KEY = 'notes_app_data_v2';
+    
+    let state = {
+      folders: [],
+      notes: [],
+      activeNoteId: null,
+      activeFilter: 'all',
+      searchQuery: '',
+      isPreviewMode: false
+    };
+
+    let autosaveTimer = null;
+
+    function generateId() {
+      return Date.now().toString(36) + Math.random().toString(36).substring(2, 7);
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      const bgColors = {
+        info: 'bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900',
+        success: 'bg-emerald-600 text-white',
+        error: 'bg-red-600 text-white'
+      };
+
+      toast.className = `px-3.5 py-2 rounded-lg text-xs font-medium shadow-md transition-all duration-300 transform translate-y-2 opacity-0 flex items-center space-x-2 pointer-events-auto ${bgColors[type] || bgColors.info}`;
+      toast.innerHTML = `<span>${DOMPurify.sanitize(message)}</span>`;
+
+      container.appendChild(toast);
+      
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 2500);
+    }
+
+    async function deriveKey(passphrase, salt) {
+      const enc = new TextEncoder();
+      const keyMaterial = await crypto.subtle.importKey(
+        "raw",
+        enc.encode(passphrase),
+        "PBKDF2",
+        false,
+        ["deriveKey"]
+      );
+      return crypto.subtle.deriveKey(
+        {
+          name: "PBKDF2",
+          salt: salt,
+          iterations: 100000,
+          hash: "SHA-256"
+        },
+        keyMaterial,
+        { name: "AES-GCM", length: 256 },
+        false,
+        ["encrypt", "decrypt"]
+      );
+    }
+
+    function arrayBufferToString(buffer) {
+      const bytes = new Uint8Array(buffer);
+      const chunkSize = 8192;
+      let str = '';
+      for (let i = 0; i < bytes.length; i += chunkSize) {
+        const chunk = bytes.subarray(i, i + chunkSize);
+        str += String.fromCharCode.apply(null, chunk);
+      }
+      return str;
+    }
+
+    async function encryptData(dataString, passphrase) {
+      const enc = new TextEncoder();
+      const salt = crypto.getRandomValues(new Uint8Array(16));
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      const key = await deriveKey(passphrase, salt);
+      
+      const encryptedContent = await crypto.subtle.encrypt(
+        { name: "AES-GCM", iv: iv },
+        key,
+        enc.encode(dataString)
+      );
+
+      return JSON.stringify({
+        encrypted: true,
+        version: "2.0",
+        salt: btoa(arrayBufferToString(salt)),
+        iv: btoa(arrayBufferToString(iv)),
+        ciphertext: btoa(arrayBufferToString(encryptedContent))
+      });
+    }
+
+    async function decryptData(encryptedPayload, passphrase) {
+      try {
+        const salt = Uint8Array.from(atob(encryptedPayload.salt), c => c.charCodeAt(0));
+        const iv = Uint8Array.from(atob(encryptedPayload.iv), c => c.charCodeAt(0));
+        const ciphertext = Uint8Array.from(atob(encryptedPayload.ciphertext), c => c.charCodeAt(0));
+
+        const key = await deriveKey(passphrase, salt);
+        const decryptedContent = await crypto.subtle.decrypt(
+          { name: "AES-GCM", iv: iv },
+          key,
+          ciphertext
+        );
+
+        const dec = new TextDecoder();
+        return dec.decode(decryptedContent);
+      } catch (err) {
+        throw new Error("Invalid password or corrupted encrypted file.");
+      }
+    }
+
+    function normalizeData() {
+      state.folders = state.folders.map(f => ({ ...f, id: String(f.id) }));
+      state.notes = state.notes.map(n => ({
+        ...n,
+        id: String(n.id),
+        folderId: n.folderId ? String(n.folderId) : null
+      }));
+      if (state.activeNoteId) {
+        state.activeNoteId = String(state.activeNoteId);
+      }
+    }
+
+    function loadData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          state.folders = parsed.folders || [];
+          state.notes = parsed.notes || [];
+          normalizeData();
+        } else {
+          state.folders = [{ id: 'f-welcome', name: 'Getting Started' }];
+          state.notes = [{
+            id: 'n-welcome',
+            folderId: 'f-welcome',
+            title: 'Welcome to Notes',
+            body: '# Welcome to Notes!\n\nA refined, client-side note application designed for speed and security.\n\n### Highlights\n- **Responsive Architecture**: Works seamlessly across desktop and mobile browsers.\n- **Client-Side Privacy**: Local data retention with zero server transmission.\n- **AES-GCM Encryption**: Secure portable export and import workflows.\n- **Markdown Support**: Toggle instantly between editor and live preview mode.\n\nEnjoy writing!',
+            updatedAt: Date.now()
+          }];
+          saveData();
+        }
+      } catch (err) {
+        console.error("Failed to parse local storage data:", err);
+        showToast("Error loading saved data", "error");
+      }
+    }
+
+    function saveData() {
+      try {
+        const payload = JSON.stringify({
+          folders: state.folders,
+          notes: state.notes
+        });
+        localStorage.setItem(STORAGE_KEY, payload);
+        updateSaveBadgeStatus(true);
+      } catch (err) {
+        console.error("Failed to save to local storage:", err);
+        showToast("Storage quota exceeded", "error");
+        updateSaveBadgeStatus(false);
+      }
+    }
+
+    function updateSaveBadgeStatus(isSaved) {
+      const badge = document.getElementById('save-status');
+      const text = document.getElementById('save-status-text');
+      if (!badge || !text) return;
+
+      if (isSaved) {
+        badge.className = "hidden sm:flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40";
+        badge.querySelector('span').className = "w-1.5 h-1.5 rounded-full bg-emerald-500";
+        text.innerText = "Saved";
+      } else {
+        badge.className = "hidden sm:flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-600 dark:bg-amber-950/30 dark:text-amber-400 border border-amber-200 dark:border-amber-800/40";
+        badge.querySelector('span').className = "w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse";
+        text.innerText = "Saving...";
+      }
+    }
+
+    function openModal(contentHtml) {
+      const backdrop = document.getElementById('modal-backdrop');
+      const container = document.getElementById('modal-content');
+      container.innerHTML = contentHtml;
+      backdrop.classList.remove('hidden');
+      lucide.createIcons();
+
+      const escHandler = (e) => {
+        if (e.key === 'Escape') {
+          closeModal();
+          document.removeEventListener('keydown', escHandler);
+        }
+      };
+      document.addEventListener('keydown', escHandler);
+    }
+
+    function closeModal() {
+      const backdrop = document.getElementById('modal-backdrop');
+      backdrop.classList.add('hidden');
+      document.getElementById('modal-content').innerHTML = '';
+    }
+
+    function flushActiveNoteEdits() {
+      if (!state.activeNoteId) return;
+      const note = state.notes.find(n => String(n.id) === String(state.activeNoteId));
+      if (!note) return;
+
+      const titleInput = document.getElementById('note-title-input');
+      const bodyInput = document.getElementById('note-body-input');
+      const folderSelect = document.getElementById('note-folder-select');
+
+      if (titleInput && bodyInput && folderSelect) {
+        const newTitle = titleInput.value.trim() || 'Untitled Note';
+        const newBody = bodyInput.value;
+        const newFolderId = folderSelect.value ? String(folderSelect.value) : null;
+
+        if (note.title !== newTitle || note.body !== newBody || note.folderId !== newFolderId) {
+          note.title = newTitle;
+          note.body = newBody;
+          note.folderId = newFolderId;
+          note.updatedAt = Date.now();
+          saveData();
+        }
+      }
+    }
+
+    function renderApp() {
+      renderFolderList();
+      renderNoteList();
+      renderActiveNote();
+      renderFolderSelectOptions();
+      updateCounts();
+      lucide.createIcons();
+    }
+
+    function updateCounts() {
+      document.getElementById('count-all').innerText = state.notes.length;
+      document.getElementById('count-uncategorized').innerText = state.notes.filter(n => !n.folderId).length;
+    }
+
+    function renderFolderList() {
+      const container = document.getElementById('folders-container');
+      container.innerHTML = '';
+
+      state.folders.forEach(folder => {
+        const count = state.notes.filter(n => String(n.folderId) === String(folder.id)).length;
+        const isActive = String(state.activeFilter) === String(folder.id);
+
+        const folderEl = document.createElement('div');
+        folderEl.className = `group flex items-center justify-between px-2.5 py-1.5 text-sm rounded-lg font-medium cursor-pointer transition-colors ${
+          isActive 
+            ? 'bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-500' 
+            : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50'
+        }`;
+        
+        folderEl.onclick = () => {
+          flushActiveNoteEdits();
+          state.activeFilter = String(folder.id);
+          renderApp();
+          closeMobileSidebar();
+        };
+
+        folderEl.innerHTML = `
+          <div class="flex items-center space-x-2.5 truncate mr-2">
+            <i data-lucide="folder" class="w-4 h-4 flex-shrink-0"></i>
+            <span class="truncate">${DOMPurify.sanitize(folder.name)}</span>
+          </div>
+          <div class="flex items-center space-x-1">
+            <span class="text-xs px-2 py-0.5 rounded-md bg-gray-200/60 dark:bg-gray-800 text-gray-600 dark:text-gray-400 group-hover:hidden">${count}</span>
+            <div class="hidden group-hover:flex items-center space-x-1">
+              <button onclick="event.stopPropagation(); promptRenameFolder('${folder.id}')" class="p-1 hover:text-brand-500 rounded" title="Rename Folder">
+                <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
+              </button>
+              <button onclick="event.stopPropagation(); confirmDeleteFolder('${folder.id}')" class="p-1 hover:text-red-500 rounded" title="Delete Folder">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+        `;
+        container.appendChild(folderEl);
+      });
+
+      document.querySelectorAll('.nav-item').forEach(btn => {
+        const filter = btn.getAttribute('data-filter');
+        if (filter === state.activeFilter) {
+          btn.className = "nav-item w-full flex items-center justify-between px-2.5 py-1.5 text-sm rounded-lg font-medium text-brand-600 bg-brand-50 dark:bg-brand-500/10 dark:text-brand-500";
+        } else {
+          btn.className = "nav-item w-full flex items-center justify-between px-2.5 py-1.5 text-sm rounded-lg font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50";
+        }
+      });
+    }
+
+    function getFilteredNotes() {
+      return state.notes.filter(note => {
+        let matchesFolder = true;
+        if (state.activeFilter === 'all') {
+          matchesFolder = true;
+        } else if (state.activeFilter === 'uncategorized') {
+          matchesFolder = !note.folderId;
+        } else {
+          matchesFolder = String(note.folderId) === String(state.activeFilter);
+        }
+
+        let matchesSearch = true;
+        if (state.searchQuery) {
+          const q = state.searchQuery.toLowerCase();
+          matchesSearch = (note.title && note.title.toLowerCase().includes(q)) || 
+                          (note.body && note.body.toLowerCase().includes(q));
+        }
+
+        return matchesFolder && matchesSearch;
+      }).sort((a, b) => b.updatedAt - a.updatedAt);
+    }
+
+    function renderNoteList() {
+      const container = document.getElementById('notes-list');
+      const filteredNotes = getFilteredNotes();
+      
+      const viewTitle = document.getElementById('current-view-title');
+      const countBadge = document.getElementById('notes-count-badge');
+      countBadge.innerText = `${filteredNotes.length} notes`;
+
+      if (state.activeFilter === 'all') viewTitle.innerText = "All Notes";
+      else if (state.activeFilter === 'uncategorized') viewTitle.innerText = "Uncategorized";
+      else {
+        const folder = state.folders.find(f => String(f.id) === String(state.activeFilter));
+        viewTitle.innerText = folder ? folder.name : "Folder";
+      }
+
+      container.innerHTML = '';
+
+      if (filteredNotes.length === 0) {
+        container.innerHTML = `
+          <div class="p-8 text-center text-gray-400 text-xs">
+            No notes found.
+          </div>
+        `;
+        return;
+      }
+
+      const activeExists = filteredNotes.some(n => String(n.id) === String(state.activeNoteId));
+      if (!activeExists && filteredNotes.length > 0) {
+        state.activeNoteId = String(filteredNotes[0].id);
+      }
+
+      filteredNotes.forEach(note => {
+        const isActive = String(note.id) === String(state.activeNoteId);
+        const dateStr = new Date(note.updatedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+        const snippet = note.body ? note.body.replace(/[#*`_]/g, '').slice(0, 65) : 'Empty note';
+
+        const item = document.createElement('div');
+        item.className = `p-3.5 cursor-pointer transition-colors ${
+          isActive 
+            ? 'bg-brand-50/60 dark:bg-brand-500/10 border-l-3 border-brand-500' 
+            : 'hover:bg-gray-50 dark:hover:bg-gray-800/30'
+        }`;
+        
+        item.onclick = () => {
+          flushActiveNoteEdits();
+          state.activeNoteId = String(note.id);
+          renderApp();
+          openMobileEditor();
+        };
+
+        item.innerHTML = `
+          <div class="flex items-center justify-between mb-1">
+            <h4 class="text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-100 truncate pr-2">${DOMPurify.sanitize(note.title || 'Untitled Note')}</h4>
+            <span class="text-[10px] text-gray-400 flex-shrink-0">${dateStr}</span>
+          </div>
+          <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 leading-relaxed">${DOMPurify.sanitize(snippet)}</p>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function renderFolderSelectOptions() {
+      const select = document.getElementById('note-folder-select');
+      select.innerHTML = '<option value="">Uncategorized</option>';
+      state.folders.forEach(f => {
+        const opt = document.createElement('option');
+        opt.value = String(f.id);
+        opt.innerText = f.name;
+        select.appendChild(opt);
+      });
+    }
+
+    function renderActiveNote() {
+      const editorWrapper = document.getElementById('editor-wrapper');
+      const emptyState = document.getElementById('empty-state');
+      
+      const note = state.notes.find(n => String(n.id) === String(state.activeNoteId));
+
+      if (!note) {
+        editorWrapper.classList.add('hidden');
+        emptyState.classList.remove('hidden');
+        emptyState.classList.add('flex');
+        return;
+      }
+
+      editorWrapper.classList.remove('hidden');
+      emptyState.classList.add('hidden');
+      emptyState.classList.remove('flex');
+
+      const titleInput = document.getElementById('note-title-input');
+      const bodyInput = document.getElementById('note-body-input');
+      const folderSelect = document.getElementById('note-folder-select');
+      const previewDiv = document.getElementById('note-preview');
+
+      titleInput.value = note.title || '';
+      bodyInput.value = note.body || '';
+      folderSelect.value = note.folderId ? String(note.folderId) : '';
+
+      if (state.isPreviewMode) {
+        bodyInput.classList.add('hidden');
+        previewDiv.classList.remove('hidden');
+        previewDiv.innerHTML = DOMPurify.sanitize(marked.parse(note.body || ''));
+      } else {
+        bodyInput.classList.remove('hidden');
+        previewDiv.classList.add('hidden');
+      }
+    }
+
+    function createNewNote() {
+      flushActiveNoteEdits();
+      const newNote = {
+        id: generateId(),
+        folderId: (state.activeFilter !== 'all' && state.activeFilter !== 'uncategorized') ? String(state.activeFilter) : null,
+        title: '',
+        body: '',
+        updatedAt: Date.now()
+      };
+      state.notes.unshift(newNote);
+      state.activeNoteId = newNote.id;
+      saveData();
+      renderApp();
+      openMobileEditor();
+
+      setTimeout(() => {
+        const titleInput = document.getElementById('note-title-input');
+        if (titleInput) titleInput.focus();
+      }, 100);
+    }
+
+    function createFolder(name) {
+      if (!name || !name.trim()) return;
+      const folder = {
+        id: generateId(),
+        name: name.trim()
+      };
+      state.folders.push(folder);
+      state.activeFilter = folder.id;
+      saveData();
+      renderApp();
+      showToast("Folder created", "success");
+    }
+
+    function promptRenameFolder(folderId) {
+      const folder = state.folders.find(f => String(f.id) === String(folderId));
+      if (!folder) return;
+
+      openModal(`
+        <h3 class="text-base font-bold text-gray-900 dark:text-gray-100 mb-2">Rename Folder</h3>
+        <input type="text" id="rename-folder-input" value="${DOMPurify.sanitize(folder.name)}" class="w-full px-3 py-1.5 bg-gray-100 dark:bg-gray-700 border border-transparent focus:border-brand-500 rounded-lg mb-4 text-sm focus:outline-none">
+        <div class="flex justify-end space-x-2">
+          <button onclick="closeModal()" class="px-3.5 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">Cancel</button>
+          <button id="btn-save-folder-rename" class="px-3.5 py-1.5 text-xs font-medium bg-brand-500 hover:bg-brand-600 text-white rounded-lg">Save</button>
+        </div>
+      `);
+
+      const input = document.getElementById('rename-folder-input');
+      input.focus();
+      input.select();
+
+      document.getElementById('btn-save-folder-rename').onclick = () => {
+        const val = input.value.trim();
+        if (val) {
+          folder.name = val;
+          saveData();
+          renderApp();
+          closeModal();
+          showToast("Folder renamed", "success");
+        }
+      };
+    }
+
+    function confirmDeleteFolder(folderId) {
+      const folder = state.folders.find(f => String(f.id) === String(folderId));
+      if (!folder) return;
+
+      openModal(`
+        <h3 class="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">Delete Folder</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Are you sure you want to delete "${DOMPurify.sanitize(folder.name)}"? Associated notes will become Uncategorized.</p>
+        <div class="flex justify-end space-x-2">
+          <button onclick="closeModal()" class="px-3.5 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">Cancel</button>
+          <button id="btn-confirm-delete-folder" class="px-3.5 py-1.5 text-xs font-medium bg-red-600 hover:bg-red-700 text-white rounded-lg">Delete</button>
+        </div>
+      `);
+
+      document.getElementById('btn-confirm-delete-folder').onclick = () => {
+        state.folders = state.folders.filter(f => String(f.id) !== String(folderId));
+        state.notes.forEach(n => {
+          if (String(n.folderId) === String(folderId)) n.folderId = null;
+        });
+
+        if (String(state.activeFilter) === String(folderId)) {
+          state.activeFilter = 'all';
+        }
+        saveData();
+        renderApp();
+        closeModal();
+        showToast("Folder deleted", "info");
+      };
+    }
+
+    function deleteActiveNote() {
+      if (!state.activeNoteId) return;
+      openModal(`
+        <h3 class="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">Delete Note</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Are you sure you want to permanently remove this note?</p>
+        <div class="flex justify-end space-x-2">
+          <button onclick="closeModal()" class="px-3.5 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">Cancel</button>
+          <button id="btn-confirm-delete-note" class="px-3.5 py-1.5 text-xs font-medium bg-red-600 hover:bg-red-700 text-white rounded-lg">Delete</button>
+        </div>
+      `);
+
+      document.getElementById('btn-confirm-delete-note').onclick = () => {
+        state.notes = state.notes.filter(n => String(n.id) !== String(state.activeNoteId));
+        state.activeNoteId = null;
+        saveData();
+        renderApp();
+        closeModal();
+        closeMobileEditor();
+        showToast("Note deleted", "info");
+      };
+    }
+
+    function copyNoteContent() {
+      if (!state.activeNoteId) return;
+      const note = state.notes.find(n => String(n.id) === String(state.activeNoteId));
+      if (!note) return;
+
+      let textToCopy = '';
+      if (state.isPreviewMode) {
+        const previewEl = document.getElementById('note-preview');
+        textToCopy = previewEl ? previewEl.innerText : note.body;
+      } else {
+        textToCopy = note.body || '';
+      }
+
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          showToast("Copied to clipboard", "success");
+        }).catch(err => {
+          fallbackCopyText(textToCopy);
+        });
+      } else {
+        fallbackCopyText(textToCopy);
+      }
+    }
+
+    function fallbackCopyText(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showToast("Copied to clipboard", "success");
+      } catch (err) {
+        showToast("Failed to copy", "error");
+      }
+      document.body.removeChild(textarea);
+    }
+
+    function openExportModal() {
+      openModal(`
+        <h3 class="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">Export Database</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Export all notes and folders into a portable JSON backup file.</p>
+        
+        <div class="mb-4">
+          <label class="flex items-center space-x-2 text-xs font-medium text-gray-700 dark:text-gray-300 cursor-pointer">
+            <input type="checkbox" id="chk-encrypt-export" class="rounded border-gray-300 text-brand-500 focus:ring-brand-500">
+            <span>Encrypt payload with passphrase</span>
+          </label>
+        </div>
+
+        <div id="export-password-section" class="hidden space-y-3 mb-4">
+          <div>
+            <label class="block text-[11px] font-medium text-gray-500 mb-1">Passphrase</label>
+            <div class="relative">
+              <input type="password" id="export-passphrase" placeholder="Passphrase" class="w-full px-3 py-1.5 text-xs bg-gray-100 dark:bg-gray-700 border border-transparent focus:border-brand-500 rounded-lg pr-8">
+              <button type="button" onclick="togglePassVisibility('export-passphrase', this)" class="absolute right-2.5 top-2 text-gray-400 hover:text-gray-600">
+                <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+          <div>
+            <label class="block text-[11px] font-medium text-gray-500 mb-1">Confirm Passphrase</label>
+            <input type="password" id="export-passphrase-confirm" placeholder="Confirm Passphrase" class="w-full px-3 py-1.5 text-xs bg-gray-100 dark:bg-gray-700 border border-transparent focus:border-brand-500 rounded-lg">
+          </div>
+        </div>
+
+        <div class="flex justify-end space-x-2">
+          <button onclick="closeModal()" class="px-3.5 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">Cancel</button>
+          <button id="btn-process-export" class="px-3.5 py-1.5 text-xs font-medium bg-brand-500 hover:bg-brand-600 text-white rounded-lg">Download Backup</button>
+        </div>
+      `);
+
+      const chk = document.getElementById('chk-encrypt-export');
+      const passSection = document.getElementById('export-password-section');
+      
+      chk.onchange = () => {
+        if (chk.checked) passSection.classList.remove('hidden');
+        else passSection.classList.add('hidden');
+      };
+
+      document.getElementById('btn-process-export').onclick = async () => {
+        flushActiveNoteEdits();
+        const rawJson = JSON.stringify({
+          version: "2.0",
+          exportedAt: new Date().toISOString(),
+          folders: state.folders,
+          notes: state.notes
+        }, null, 2);
+
+        let finalPayload = rawJson;
+        let filename = `notes-backup-${new Date().toISOString().slice(0,10)}.json`;
+
+        if (chk.checked) {
+          const pass = document.getElementById('export-passphrase').value;
+          const passConfirm = document.getElementById('export-passphrase-confirm').value;
+
+          if (!pass) {
+            showToast("Enter a passphrase", "error");
+            return;
+          }
+          if (pass !== passConfirm) {
+            showToast("Passphrases do not match", "error");
+            return;
+          }
+
+          try {
+            finalPayload = await encryptData(rawJson, pass);
+            filename = `notes-backup-encrypted-${new Date().toISOString().slice(0,10)}.enc.json`;
+          } catch (err) {
+            showToast("Encryption failed", "error");
+            return;
+          }
+        }
+
+        const blob = new Blob([finalPayload], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+
+        closeModal();
+        showToast("Backup exported", "success");
+      };
+    }
+
+    function handleImportFileSelect(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        try {
+          const content = event.target.result;
+          let parsed = JSON.parse(content);
+
+          if (parsed.encrypted && parsed.ciphertext) {
+            promptImportDecrypt(parsed);
+          } else {
+            promptImportMergeOptions(parsed);
+          }
+        } catch (err) {
+          showToast("Invalid JSON file", "error");
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = '';
+    }
+
+    function promptImportDecrypt(encryptedPayload) {
+      openModal(`
+        <h3 class="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">Encrypted Backup Detected</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Enter the passphrase used to lock this export.</p>
+        
+        <div class="mb-4">
+          <div class="relative">
+            <input type="password" id="import-passphrase" placeholder="Passphrase" class="w-full px-3 py-1.5 text-xs bg-gray-100 dark:bg-gray-700 border border-transparent focus:border-brand-500 rounded-lg pr-8">
+            <button type="button" onclick="togglePassVisibility('import-passphrase', this)" class="absolute right-2.5 top-2 text-gray-400 hover:text-gray-600">
+              <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex justify-end space-x-2">
+          <button onclick="closeModal()" class="px-3.5 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">Cancel</button>
+          <button id="btn-decrypt-import" class="px-3.5 py-1.5 text-xs font-medium bg-brand-500 hover:bg-brand-600 text-white rounded-lg">Decrypt & Continue</button>
+        </div>
+      `);
+
+      const passInput = document.getElementById('import-passphrase');
+      passInput.focus();
+
+      document.getElementById('btn-decrypt-import').onclick = async () => {
+        const pass = passInput.value;
+        if (!pass) {
+          showToast("Enter a passphrase", "error");
+          return;
+        }
+
+        try {
+          const decryptedJson = await decryptData(encryptedPayload, pass);
+          const parsed = JSON.parse(decryptedJson);
+          promptImportMergeOptions(parsed);
+        } catch (err) {
+          showToast("Decryption failed", "error");
+        }
+      };
+    }
+
+    function promptImportMergeOptions(data) {
+      if (!data || (!Array.isArray(data.notes) && !Array.isArray(data.folders))) {
+        showToast("Invalid backup structure", "error");
+        return;
+      }
+
+      const importedNotesCount = data.notes ? data.notes.length : 0;
+      const importedFoldersCount = data.folders ? data.folders.length : 0;
+
+      openModal(`
+        <h3 class="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">Import Data</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Payload contains <strong>${importedNotesCount} notes</strong> and <strong>${importedFoldersCount} folders</strong>.</p>
+        
+        <div class="space-y-2 mb-5">
+          <button id="btn-import-merge" class="w-full text-left p-2.5 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-brand-500 dark:hover:border-brand-500 transition-colors">
+            <div class="font-semibold text-xs text-gray-800 dark:text-gray-200">Merge with existing notes</div>
+            <div class="text-[11px] text-gray-500">Combines content and re-indexes ID collisions.</div>
+          </button>
+          <button id="btn-import-replace" class="w-full text-left p-2.5 rounded-lg border border-red-200 dark:border-red-900/50 hover:border-red-500 bg-red-50/50 dark:bg-red-950/20 transition-colors">
+            <div class="font-semibold text-xs text-red-600 dark:text-red-400">Overwrite database</div>
+            <div class="text-[11px] text-gray-500 dark:text-gray-400">Completely replaces existing local storage data.</div>
+          </button>
+        </div>
+
+        <div class="flex justify-end">
+          <button onclick="closeModal()" class="px-3.5 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">Cancel</button>
+        </div>
+      `);
+
+      document.getElementById('btn-import-merge').onclick = () => {
+        mergeImportData(data);
+        closeModal();
+      };
+
+      document.getElementById('btn-import-replace').onclick = () => {
+        replaceImportData(data);
+        closeModal();
+      };
+    }
+
+    function mergeImportData(data) {
+      const folderIdMap = {};
+
+      (data.folders || []).forEach(f => {
+        const existing = state.folders.find(ef => String(ef.id) === String(f.id));
+        if (existing) {
+          const newId = generateId();
+          folderIdMap[String(f.id)] = newId;
+          state.folders.push({ id: newId, name: f.name });
+        } else {
+          folderIdMap[String(f.id)] = String(f.id);
+          state.folders.push({ id: String(f.id), name: f.name });
+        }
+      });
+
+      (data.notes || []).forEach(n => {
+        const mappedFolderId = n.folderId ? (folderIdMap[String(n.folderId)] || String(n.folderId)) : null;
+        const existingNote = state.notes.find(en => String(en.id) === String(n.id));
+        
+        state.notes.push({
+          id: existingNote ? generateId() : String(n.id),
+          folderId: mappedFolderId,
+          title: n.title || 'Untitled Note',
+          body: n.body || '',
+          updatedAt: n.updatedAt || Date.now()
+        });
+      });
+
+      normalizeData();
+      saveData();
+      renderApp();
+      showToast("Data merged", "success");
+    }
+
+    function replaceImportData(data) {
+      state.folders = data.folders || [];
+      state.notes = data.notes || [];
+      normalizeData();
+
+      state.activeNoteId = state.notes.length > 0 ? String(state.notes[0].id) : null;
+      state.activeFilter = 'all';
+
+      saveData();
+      renderApp();
+      showToast("Database restored", "success");
+    }
+
+    function togglePassVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.innerHTML = '<i data-lucide="eye-off" class="w-3.5 h-3.5"></i>';
+      } else {
+        input.type = 'password';
+        btn.innerHTML = '<i data-lucide="eye" class="w-3.5 h-3.5"></i>';
+      }
+      lucide.createIcons();
+    }
+
+    function openMobileSidebar() {
+      document.getElementById('sidebar').classList.remove('-translate-x-full');
+      document.getElementById('mobile-overlay').classList.remove('hidden');
+    }
+
+    function closeMobileSidebar() {
+      document.getElementById('sidebar').classList.add('-translate-x-full');
+      document.getElementById('mobile-overlay').classList.add('hidden');
+    }
+
+    function openMobileEditor() {
+      if (window.innerWidth < 768) {
+        document.getElementById('editor-panel').classList.remove('translate-x-full');
+      }
+    }
+
+    function closeMobileEditor() {
+      if (window.innerWidth < 768) {
+        document.getElementById('editor-panel').classList.add('translate-x-full');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadData();
+
+      if (state.notes.length > 0 && !state.activeNoteId) {
+        state.activeNoteId = String(state.notes[0].id);
+      }
+
+      renderApp();
+
+      const titleInput = document.getElementById('note-title-input');
+      const bodyInput = document.getElementById('note-body-input');
+      const folderSelect = document.getElementById('note-folder-select');
+
+      function handleInputChange() {
+        if (!state.activeNoteId) return;
+        updateSaveBadgeStatus(false);
+        clearTimeout(autosaveTimer);
+
+        autosaveTimer = setTimeout(() => {
+          const note = state.notes.find(n => String(n.id) === String(state.activeNoteId));
+          if (note) {
+            note.title = titleInput.value.trim() || 'Untitled Note';
+            note.body = bodyInput.value;
+            note.updatedAt = Date.now();
+            saveData();
+            renderNoteList();
+          }
+        }, 400);
+      }
+
+      titleInput.addEventListener('input', handleInputChange);
+      bodyInput.addEventListener('input', handleInputChange);
+
+      folderSelect.addEventListener('change', () => {
+        if (!state.activeNoteId) return;
+        const note = state.notes.find(n => String(n.id) === String(state.activeNoteId));
+        if (note) {
+          note.folderId = folderSelect.value ? String(folderSelect.value) : null;
+          note.updatedAt = Date.now();
+          saveData();
+          renderApp();
+        }
+      });
+
+      document.getElementById('search-input').addEventListener('input', (e) => {
+        state.searchQuery = e.target.value.trim();
+        renderNoteList();
+        renderActiveNote();
+      });
+
+      document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.onclick = () => {
+          flushActiveNoteEdits();
+          state.activeFilter = btn.getAttribute('data-filter');
+          renderApp();
+          closeMobileSidebar();
+        };
+      });
+
+      document.getElementById('btn-new-note').onclick = createNewNote;
+      document.getElementById('btn-empty-new-note').onclick = createNewNote;
+      document.getElementById('btn-delete-note').onclick = deleteActiveNote;
+      document.getElementById('btn-copy-note').onclick = copyNoteContent;
+
+      document.getElementById('btn-back-to-list').onclick = () => {
+        flushActiveNoteEdits();
+        closeMobileEditor();
+      };
+
+      document.getElementById('btn-toggle-preview').onclick = () => {
+        state.isPreviewMode = !state.isPreviewMode;
+        const btn = document.getElementById('btn-toggle-preview');
+        btn.classList.toggle('text-brand-500', state.isPreviewMode);
+        renderActiveNote();
+      };
+
+      document.getElementById('btn-add-folder').onclick = () => {
+        openModal(`
+          <h3 class="text-base font-bold text-gray-900 dark:text-gray-100 mb-2">Create Folder</h3>
+          <input type="text" id="new-folder-input" placeholder="Folder name" class="w-full px-3 py-1.5 bg-gray-100 dark:bg-gray-700 border border-transparent focus:border-brand-500 rounded-lg mb-4 text-sm focus:outline-none">
+          <div class="flex justify-end space-x-2">
+            <button onclick="closeModal()" class="px-3.5 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">Cancel</button>
+            <button id="btn-save-new-folder" class="px-3.5 py-1.5 text-xs font-medium bg-brand-500 hover:bg-brand-600 text-white rounded-lg">Create</button>
+          </div>
+        `);
+
+        const input = document.getElementById('new-folder-input');
+        input.focus();
+
+        const submitFolder = () => {
+          const val = input.value.trim();
+          if (val) {
+            createFolder(val);
+            closeModal();
+          }
+        };
+
+        input.onkeydown = (e) => { if (e.key === 'Enter') submitFolder(); };
+        document.getElementById('btn-save-new-folder').onclick = submitFolder;
+      };
+
+      document.getElementById('btn-export-data').onclick = openExportModal;
+      document.getElementById('btn-import-data').onclick = () => {
+        document.getElementById('file-import-input').click();
+      };
+      document.getElementById('file-import-input').addEventListener('change', handleImportFileSelect);
+
+      document.getElementById('open-mobile-sidebar').onclick = openMobileSidebar;
+      document.getElementById('close-mobile-sidebar').onclick = closeMobileSidebar;
+      document.getElementById('mobile-overlay').onclick = closeMobileSidebar;
+
+      document.getElementById('modal-backdrop').onclick = (e) => {
+        if (e.target.id === 'modal-backdrop') closeModal();
+      };
+
+      window.addEventListener('beforeunload', () => {
+        flushActiveNoteEdits();
+      });
+    });
+  </script>
+</body>
+</html>

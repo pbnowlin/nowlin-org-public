@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow" />
+  <meta http-equiv="X-Robots-Tag" content="noindex, nofollow" />
+  <meta name="referrer" content="no-referrer" />
+  <!-- Same CSP pattern as /crypto, with one difference: this page has to reach
+       its two price APIs, so connect-src names exactly those hosts instead of
+       'none'. That pins the page to them - it cannot be made to talk to anything
+       else. See /crypto for why frame-ancestors is absent. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'none'; connect-src https://api.coingecko.com https://api.gold-api.com; object-src 'none'; base-uri 'none'; form-action 'none'" />
+  <title>Prices — Nowlin</title>
+  <meta name="theme-color" content="#020617" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@200;300;400&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-deep: #020617;
+      --bg-mid: #0a1330;
+      --accent: #15803d;
+      --accent-2: #f0b429;
+      --down: #f87171;
+      --glass: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.22);
+      --text: #f5f7fb;
+      --dim: #9aa5c0;
+      --mono: 'Martian Mono', monospace;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 20% 20%, rgba(21, 128, 61, 0.2), transparent 42%),
+        radial-gradient(circle at 80% 78%, rgba(240, 180, 41, 0.18), transparent 42%),
+        linear-gradient(160deg, var(--bg-deep), var(--bg-mid) 60%, var(--bg-deep));
+      background-attachment: fixed;
+      color: var(--text);
+      font-family: var(--mono);
+      font-weight: 200;
+      font-size: 13px;
+      line-height: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 64px 32px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before,
+    body::after {
+      content: '';
+      position: fixed;
+      width: 55vmax;
+      height: 55vmax;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.35;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    body::before {
+      background: var(--accent);
+      top: -20vmax;
+      left: -18vmax;
+      animation: drift1 20s ease-in-out infinite alternate;
+    }
+
+    body::after {
+      background: var(--accent-2);
+      bottom: -20vmax;
+      right: -18vmax;
+      animation: drift2 24s ease-in-out infinite alternate;
+    }
+
+    @keyframes drift1 {
+      from { transform: translate(0, 0); }
+      to   { transform: translate(6vmax, 8vmax); }
+    }
+
+    @keyframes drift2 {
+      from { transform: translate(0, 0); }
+      to   { transform: translate(-6vmax, -8vmax); }
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 780px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+      width: 100%;
+    }
+
+    /* glass card */
+    .price-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      padding: 36px 20px;
+      border-radius: 26px;
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.02));
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14),
+        0 0 50px rgba(21, 128, 61, 0.12),
+        0 0 70px rgba(240, 180, 41, 0.1);
+      opacity: 0;
+      animation: in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      text-align: center;
+    }
+
+    .price-card:nth-child(1) { animation-delay: 0s; }
+    .price-card:nth-child(2) { animation-delay: 0.08s; }
+    .price-card:nth-child(3) { animation-delay: 0.16s; }
+
+    @keyframes in {
+      from { opacity: 0; transform: translateY(16px) scale(0.96); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-shadow:
+        0 0 14px rgba(21, 128, 61, 0.55),
+        0 0 22px rgba(240, 180, 41, 0.45);
+    }
+
+    .ticker {
+      display: block;
+      margin-top: 4px;
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      color: var(--dim);
+      text-shadow: none;
+    }
+
+    .price {
+      font-size: 1.5rem;
+      font-weight: 300;
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .change {
+      font-size: 10px;
+      color: var(--dim);
+      min-height: 12px;
+    }
+
+    .change.up { color: var(--accent); }
+    .change.down { color: var(--down); }
+
+    .footer {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .updated {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+
+    button.refresh {
+      background: none;
+      border: none;
+      font-family: var(--mono);
+      font-weight: 300;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: var(--dim);
+      padding: 0;
+      transition: color 0.15s;
+    }
+
+    button.refresh:hover { color: var(--text); }
+
+    @media (max-width: 640px) {
+      .grid {
+        grid-template-columns: 1fr;
+        max-width: 320px;
+      }
+      .page { max-width: 320px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="page">
+    <div class="grid">
+      <section class="price-card">
+        <p class="label">Ethereum<span class="ticker">ETH / USD</span></p>
+        <p class="price" id="eth-price">—</p>
+        <p class="change" id="eth-change"></p>
+      </section>
+
+      <section class="price-card">
+        <p class="label">Gold<span class="ticker">XAU / troy oz</span></p>
+        <p class="price" id="gold-price">—</p>
+        <p class="change" id="gold-change"></p>
+      </section>
+
+      <section class="price-card">
+        <p class="label">Silver<span class="ticker">XAG / troy oz</span></p>
+        <p class="price" id="silver-price">—</p>
+        <p class="change" id="silver-change"></p>
+      </section>
+    </div>
+
+    <div class="footer">
+      <p class="updated" id="updated">Loading…</p>
+      <button class="refresh" id="refresh-btn" type="button">Refresh</button>
+    </div>
+  </main>
+
+  <script>
+    const fmtUSD = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+
+    // Number.isFinite, not Number.isNaN: these values come from third-party APIs
+    // and a string, a null or an Infinity all have to land on 'Unavailable'
+    // rather than being formatted into something that looks like a real price.
+    function setPrice(id, value) {
+      document.getElementById(id).textContent = Number.isFinite(value)
+        ? fmtUSD.format(value)
+        : 'Unavailable';
+    }
+
+    function setChange(id, pct, period = '24h') {
+      const el = document.getElementById(id);
+      if (pct == null || Number.isNaN(pct)) {
+        el.textContent = '';
+        el.classList.remove('up', 'down');
+        return;
+      }
+      const arrow = pct >= 0 ? '▲' : '▼';
+      el.textContent = `${arrow} ${Math.abs(pct).toFixed(2)}% (${period})`;
+      el.classList.toggle('up', pct >= 0);
+      el.classList.toggle('down', pct < 0);
+    }
+
+    async function fetchEth() {
+      try {
+        const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd&include_24hr_change=true');
+        if (!res.ok) throw new Error('eth request failed');
+        const data = await res.json();
+        const eth = data && data.ethereum;
+        if (!eth || !Number.isFinite(eth.usd)) throw new Error('eth returned no usable price');
+        setPrice('eth-price', eth.usd);
+        setChange('eth-change', Number.isFinite(eth.usd_24h_change) ? eth.usd_24h_change : null);
+      } catch (err) {
+        setPrice('eth-price', null);
+        setChange('eth-change', null);
+      }
+    }
+
+    // Gold-api.com's free tier has no 24h change data, so we track price
+    // history ourselves in localStorage and diff against a point from
+    // roughly 24h ago. New visitors won't see a change until the page has
+    // built up enough history in their browser.
+    const HISTORY_PREFIX = 'nowlin-price-history:';
+    const HISTORY_MAX_AGE_MS = 30 * 60 * 60 * 1000; // prune anything older than 30h
+    const HISTORY_MAX_POINTS = 200; // a hard ceiling, so a clock jump can't grow this without limit
+    const HISTORY_SAMPLE_GAP_MS = 15 * 60 * 1000; // store at most one point per 15min
+    const CHANGE_TARGET_MS = 24 * 60 * 60 * 1000; // looking for a point ~24h old
+    const CHANGE_TOLERANCE_MS = 4 * 60 * 60 * 1000; // accept 20h-28h old
+
+    function loadHistory(symbol) {
+      try {
+        const raw = localStorage.getItem(HISTORY_PREFIX + symbol);
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (err) {
+        return [];
+      }
+    }
+
+    function recordPricePoint(symbol, price) {
+      const now = Date.now();
+      let history = loadHistory(symbol)
+        .filter((pt) => pt && Number.isFinite(pt.t) && Number.isFinite(pt.p) && now - pt.t <= HISTORY_MAX_AGE_MS)
+        .slice(-HISTORY_MAX_POINTS);
+      const last = history[history.length - 1];
+      if (!last || now - last.t >= HISTORY_SAMPLE_GAP_MS) {
+        history.push({ t: now, p: price });
+      }
+      try {
+        localStorage.setItem(HISTORY_PREFIX + symbol, JSON.stringify(history));
+      } catch (err) {
+        // localStorage unavailable (private browsing, quota, etc.) - ignore
+      }
+      return history;
+    }
+
+    function changeSince24h(history, currentPrice) {
+      const target = Date.now() - CHANGE_TARGET_MS;
+      let closest = null;
+      let closestDiff = Infinity;
+      for (const pt of history) {
+        const diff = Math.abs(pt.t - target);
+        if (diff < closestDiff) {
+          closestDiff = diff;
+          closest = pt;
+        }
+      }
+      if (!closest || closestDiff > CHANGE_TOLERANCE_MS || !closest.p) return null;
+      return ((currentPrice - closest.p) / closest.p) * 100;
+    }
+
+    async function fetchMetal(symbol, priceId, noteId) {
+      const noteEl = document.getElementById(noteId);
+      try {
+        const res = await fetch(`https://api.gold-api.com/price/${symbol}`);
+        if (!res.ok) throw new Error(`${symbol} request failed`);
+        const data = await res.json();
+        setPrice(priceId, data.price);
+
+        if (!Number.isFinite(data.price)) throw new Error(`${symbol} returned no usable price`);
+
+        const history = recordPricePoint(symbol, data.price);
+        const changePct = changeSince24h(history, data.price);
+        if (changePct != null) {
+          setChange(noteId, changePct);
+        } else {
+          noteEl.textContent = typeof data.updatedAtReadable === 'string'
+            ? `as of ${data.updatedAtReadable}`
+            : '';
+          noteEl.classList.remove('up', 'down');
+        }
+      } catch (err) {
+        setPrice(priceId, null);
+        noteEl.textContent = '';
+      }
+    }
+
+    async function fetchGold() {
+      return fetchMetal('XAU', 'gold-price', 'gold-change');
+    }
+
+    async function fetchSilver() {
+      return fetchMetal('XAG', 'silver-price', 'silver-change');
+    }
+
+    async function refreshAll() {
+      const updated = document.getElementById('updated');
+      updated.textContent = 'Updating…';
+      await Promise.allSettled([fetchEth(), fetchGold(), fetchSilver()]);
+      updated.textContent = 'Updated ' + new Date().toLocaleTimeString();
+    }
+
+    document.getElementById('refresh-btn').addEventListener('click', refreshAll);
+
+    refreshAll();
+    setInterval(refreshAll, 60000);
+  </script>
+
+</body>
+</html>

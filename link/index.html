@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow" />
+  <meta http-equiv="X-Robots-Tag" content="noindex, nofollow" />
+  <!-- no-referrer also means the destination site never learns the visitor came
+       from here, so the protected link's existence isn't leaked onward. -->
+  <meta name="referrer" content="no-referrer" />
+  <!-- Same tight CSP as /crypto. connect-src 'none' is the important one: even
+       if something managed to inject script, it has no network path off the page
+       to exfiltrate a password or a destination. That matters more here than on
+       /crypto, because on this page the ciphertext is sitting in location.hash
+       where any script on the page could read it. frame-ancestors is deliberately
+       omitted - it is ignored in a <meta> CSP and GitHub Pages cannot set response
+       headers, so clickjacking is a hosting ceiling here, not a code gap. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'" />
+  <title>Link — Nowlin</title>
+  <meta name="theme-color" content="#020617" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@200;300;400&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-deep: #020617;
+      --bg-mid: #0a1330;
+      --accent: #15803d;
+      --accent-2: #f0b429;
+      --down: #f87171;
+      --glass: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.22);
+      --text: #f5f7fb;
+      --dim: #9aa5c0;
+      --mono: 'Martian Mono', monospace;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 20% 20%, rgba(21, 128, 61, 0.2), transparent 42%),
+        radial-gradient(circle at 80% 78%, rgba(240, 180, 41, 0.18), transparent 42%),
+        linear-gradient(160deg, var(--bg-deep), var(--bg-mid) 60%, var(--bg-deep));
+      background-attachment: fixed;
+      color: var(--text);
+      font-family: var(--mono);
+      font-weight: 200;
+      font-size: 13px;
+      line-height: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 72px 24px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before,
+    body::after {
+      content: '';
+      position: fixed;
+      width: 55vmax;
+      height: 55vmax;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.35;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    body::before {
+      background: var(--accent);
+      top: -20vmax;
+      left: -18vmax;
+      animation: drift1 20s ease-in-out infinite alternate;
+    }
+
+    body::after {
+      background: var(--accent-2);
+      bottom: -20vmax;
+      right: -18vmax;
+      animation: drift2 24s ease-in-out infinite alternate;
+    }
+
+    @keyframes drift1 {
+      from { transform: translate(0, 0); }
+      to   { transform: translate(6vmax, 8vmax); }
+    }
+
+    @keyframes drift2 {
+      from { transform: translate(0, 0); }
+      to   { transform: translate(-6vmax, -8vmax); }
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 560px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* glass card */
+    .card {
+      position: relative;
+      padding: 40px 38px;
+      border-radius: 26px;
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.02));
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14),
+        0 0 50px rgba(21, 128, 61, 0.12),
+        0 0 70px rgba(240, 180, 41, 0.1);
+      opacity: 0;
+      animation: in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes in {
+      from { opacity: 0; transform: translateY(16px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-shadow:
+        0 0 14px rgba(21, 128, 61, 0.55),
+        0 0 22px rgba(240, 180, 41, 0.45);
+    }
+
+    .title-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .lede {
+      font-size: 11.5px;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--dim);
+      margin-bottom: 30px;
+    }
+
+    .help-toggle {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: transparent;
+      border: 1px solid var(--glass-border);
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .help-toggle:hover,
+    .help-toggle[aria-expanded="true"] {
+      color: var(--accent-2);
+      border-color: var(--accent-2);
+    }
+
+    .help-panel {
+      font-size: 11.5px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: #c3cbdc;
+      /* Opaque enough that the drifting background glow can't wash out this much
+         prose - the near-transparent glass is fine for short labels, not here. */
+      background: rgba(6, 13, 34, 0.86);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 20px 22px;
+      margin-bottom: 26px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .help-panel h2 {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      margin: 20px 0 8px;
+    }
+
+    .help-panel h2:first-child { margin-top: 0; }
+
+    .help-panel p { margin-bottom: 10px; }
+
+    .help-panel ul {
+      list-style: none;
+      margin-bottom: 10px;
+    }
+
+    .help-panel li {
+      position: relative;
+      padding-left: 16px;
+      margin-bottom: 6px;
+    }
+
+    .help-panel li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .help-panel strong {
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    .help-panel code {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      color: var(--accent-2);
+      word-break: break-word;
+    }
+
+    .help-panel a {
+      color: var(--accent-2);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(240, 180, 41, 0.4);
+    }
+
+    .help-panel a:hover { color: var(--text); border-bottom-color: var(--text); }
+
+    /* numbered steps */
+    .step {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      margin-top: 1px;
+      border-radius: 50%;
+      border: 1px solid var(--glass-border);
+      color: var(--accent-2);
+      font-size: 10px;
+      line-height: 20px;
+      text-align: center;
+    }
+
+    .step-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 8px;
+    }
+
+    .field-hint {
+      font-size: 10.5px;
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--dim);
+      margin-top: 8px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      padding: 11px 12px;
+      color: var(--text);
+      font-family: var(--mono);
+      font-weight: 300;
+      font-size: 13px;
+      line-height: 1.5;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.16);
+    }
+
+    input[disabled],
+    button[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .password-row {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+    }
+
+    .password-row input { flex: 1; min-width: 0; }
+
+    .icon-btn {
+      flex-shrink: 0;
+      background: transparent;
+      border: 1px solid var(--glass-border);
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .icon-btn:hover {
+      color: var(--text);
+      border-color: var(--accent);
+    }
+
+    /* strength meter */
+    .strength {
+      margin-top: 10px;
+      display: none;
+    }
+
+    .strength.show { display: block; }
+
+    .strength-track {
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.09);
+      overflow: hidden;
+    }
+
+    .strength-fill {
+      height: 100%;
+      width: 0;
+      border-radius: 999px;
+      background: var(--down);
+      transition: width 0.2s, background 0.2s;
+    }
+
+    .strength-fill.fair { background: var(--accent-2); }
+    .strength-fill.strong { background: var(--accent); }
+
+    .strength-label {
+      margin-top: 7px;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      line-height: 1.5; /* body sets 1; this wraps to two lines when narrow */
+      color: var(--dim);
+    }
+
+    .strength-label b {
+      font-weight: 400;
+      color: var(--text);
+    }
+
+    button {
+      font-family: var(--mono);
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      display: block;
+      width: 100%;
+      background: var(--accent);
+      color: #06170d;
+      border: none;
+      padding: 13px 24px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: filter 0.15s, transform 0.15s;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      filter: brightness(1.12);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:disabled { transform: none; }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--glass-border);
+      color: var(--dim);
+      padding: 11px 18px;
+      border-radius: 10px;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .btn-ghost:hover:not(:disabled) {
+      color: var(--text);
+      border-color: var(--accent);
+    }
+
+    .status {
+      font-size: 11px;
+      line-height: 1.6;
+      margin-top: 16px;
+      min-height: 14px;
+      color: var(--dim);
+      word-break: break-word;
+    }
+
+    .status.error { color: var(--down); }
+    .status.success { color: var(--accent); }
+    .status.warn { color: var(--accent-2); }
+
+    .notice {
+      font-size: 11px;
+      line-height: 1.6;
+      color: var(--down);
+      background: rgba(248, 113, 113, 0.08);
+      border: 1px solid rgba(248, 113, 113, 0.35);
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 22px;
+    }
+
+    /* the small "switch to the other job" link at the card foot */
+    .foot {
+      margin-top: 26px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.09);
+      font-size: 10.5px;
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--dim);
+    }
+
+    .foot button {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--accent-2);
+      font-family: var(--mono);
+      font-size: 10.5px;
+      font-weight: 300;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(240, 180, 41, 0.4);
+      cursor: pointer;
+    }
+
+    .foot button:hover { color: var(--text); border-bottom-color: var(--text); }
+
+    /* ---- result card ---- */
+    .result { display: none; }
+    .result.show { display: block; }
+
+    .result h2 {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      margin-bottom: 14px;
+    }
+
+    /* the created share link, shown as selectable text rather than an input:
+       it is meant to be copied by the button, not edited */
+    .link-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 11px;
+      font-weight: 300;
+      line-height: 1.7;
+      color: #c3cbdc;
+      word-break: break-all;
+      max-height: 132px;
+      overflow-y: auto;
+    }
+
+    .result-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .result-actions .btn-primary { flex: 2; }
+    .result-actions .btn-ghost { flex: 1; }
+
+    .result-meta {
+      font-size: 10px;
+      letter-spacing: 0.05em;
+      line-height: 1.7;
+      color: var(--dim);
+      margin-top: 14px;
+    }
+
+    .result-warn {
+      font-size: 10.5px;
+      line-height: 1.65;
+      color: var(--accent-2);
+      margin-top: 10px;
+    }
+
+    /* ---- revealed destination ---- */
+    /* The hostname is the one thing a recipient must actually read before
+       clicking through, so it is set larger and heavier than anything else in
+       the card - the full URL below it is reference, this is the decision. */
+    .dest-host {
+      font-size: 1.35rem;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      line-height: 1.35;
+      color: var(--text);
+      word-break: break-all;
+      margin-bottom: 10px;
+    }
+
+    .dest-host-label {
+      font-size: 9.5px;
+      font-weight: 300;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 8px;
+    }
+
+    /* Whoever sent this link chose where it points, and this page cannot
+       vouch for it. Saying so plainly is the only honest control available:
+       the destination is encrypted, so nothing upstream of the recipient -
+       no mail gateway, no link scanner - ever got to inspect it. */
+    .sender-caution {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      background: rgba(240, 180, 41, 0.07);
+      border: 1px solid rgba(240, 180, 41, 0.28);
+      border-radius: 10px;
+      padding: 11px 13px;
+      margin-bottom: 18px;
+    }
+
+    .sender-caution .mark {
+      color: var(--accent-2);
+      font-size: 11px;
+      line-height: 1.6;
+      flex-shrink: 0;
+    }
+
+    .sender-caution p {
+      font-size: 10px;
+      line-height: 1.75;
+      color: var(--dim);
+      margin: 0;
+    }
+
+    .sender-caution strong {
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    .dest-url {
+      font-size: 10.5px;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--dim);
+      word-break: break-all;
+      margin-bottom: 20px;
+      max-height: 110px;
+      overflow-y: auto;
+    }
+
+    a.btn-go {
+      display: block;
+      width: 100%;
+      background: var(--accent);
+      color: #06170d;
+      border-radius: 10px;
+      padding: 14px 20px;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-align: center;
+      text-decoration: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      transition: filter 0.15s, transform 0.15s;
+    }
+
+    a.btn-go:hover {
+      filter: brightness(1.12);
+      transform: translateY(-1px);
+    }
+
+    .dest-note {
+      font-size: 10px;
+      line-height: 1.7;
+      color: var(--dim);
+      margin-top: 12px;
+    }
+
+    /* a decrypted payload that isn't a http(s) destination (a legacy text link,
+       or something hand-crafted) is shown as plain text and never as an anchor */
+    .dest-text {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 12px;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--text);
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 64px 16px; }
+      .card { padding: 32px 22px; }
+      h1 { font-size: 1.2rem; letter-spacing: 0.14em; }
+      .step { gap: 11px; }
+      .result-actions { flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="page">
+    <section class="card">
+      <div class="title-row">
+        <h1>Link</h1>
+        <button type="button" class="help-toggle" id="help-toggle"
+                aria-expanded="false" aria-controls="help-panel" aria-label="About this tool">?</button>
+      </div>
+
+      <p class="lede" id="lede">Put a password on a link. You get back a link to share — it reveals the real destination only to someone who knows the password.</p>
+
+      <div class="help-panel" id="help-panel" hidden>
+        <h2>What this does</h2>
+        <p>You give it a destination and a password. It gives you back a link. Anyone who opens that link is asked for the password, and only then sees where it goes.</p>
+        <p>Nothing is uploaded and nothing is stored. There is no account, no database, no server-side record. This page is a static file, and every byte of work happens in the tab you are looking at.</p>
+
+        <h2>Why the link can carry a secret</h2>
+        <p>The encrypted destination rides in the URL <strong>fragment</strong> — everything after the <code>#</code>. Fragments are the one part of a URL a browser never puts on the wire: they are absent from the HTTP request, from server logs, and from the <code>Referer</code> header. The web server that hands you this page receives a request for <code>/link/</code> and nothing more.</p>
+        <p>So the encrypted destination travels inside the link itself rather than sitting on somebody's server waiting to be handed over, subpoenaed, or breached.</p>
+
+        <h2>What this deliberately does not do</h2>
+        <ul>
+          <li><strong>It is not burn-after-reading.</strong> There is no server, so there is nothing to delete after a first view. Anyone holding the link can open it again and again, indefinitely, as long as they have the password.</li>
+          <li><strong>Links do not expire.</strong> There is no clock and no kill switch. A link works until the password is guessed or the link is lost.</li>
+          <li><strong>It does not protect the destination itself.</strong> This hides <em>which</em> page you are pointing at. If that page is public and guessable, or needs no login, anyone who reaches it another way still gets in. A protected link is not access control on the far end.</li>
+          <li><strong>It cannot un-send.</strong> Once the link is out, it is out.</li>
+        </ul>
+
+        <h2>Where the link ends up</h2>
+        <p>The fragment stays off the network in transit, but the link as a whole still lands in ordinary places. Assume all of these:</p>
+        <ul>
+          <li>Your browser history and the recipient's, plus the address bar of whatever tab is open.</li>
+          <li>The clipboard, and any clipboard-sync feature across your devices.</li>
+          <li>The chat, email, or ticket that carried it — including that provider's servers and backups.</li>
+          <li><strong>Corporate link rewriting</strong> is the sharp edge here. Systems like Outlook Safe Links or Proofpoint URL Defense wrap an entire URL, fragment included, into a query parameter on their own domain. That folds your ciphertext into a URL that <em>is</em> sent to their servers and logged. It stays encrypted, but it stops being unseen.</li>
+        </ul>
+        <p>Ordinary link previews are less of a problem: a preview fetcher requests the part before the <code>#</code>, so it never receives the payload — and it cannot generate a preview of the hidden destination either.</p>
+
+        <h2>Send the password separately</h2>
+        <p>This is the whole ballgame. A link and its password pasted into the same conversation are exactly as secure as sending the destination in the clear. Use a different channel and ideally a different device — the link by email, the password by phone.</p>
+
+        <h2>How it is encrypted</h2>
+        <ul>
+          <li><strong>Key derivation:</strong> PBKDF2-HMAC-SHA256, 600,000 iterations, over a fresh 16-byte random salt every time. That is the current OWASP floor for PBKDF2-SHA256. Passwords are normalised to Unicode NFC first, so a link made on a Mac still opens on Windows.</li>
+          <li><strong>Cipher:</strong> AES-256-GCM with a fresh 12-byte random IV. GCM is authenticated, so a link that was truncated or edited in transit is refused rather than decrypted into garbage.</li>
+          <li><strong>Header binding:</strong> the message header (version, KDF parameters, salt, IV) is passed as GCM additional authenticated data, so nobody can splice a ciphertext onto a different header — for example to downgrade the iteration count — without the tag failing.</li>
+          <li><strong>Length hiding:</strong> the destination is length-prefixed and padded to a 256-byte boundary before encryption, so the link's length does not reveal how long the destination URL is.</li>
+          <li><strong>Randomness</strong> comes only from <code>crypto.getRandomValues</code>. Salt and IV are regenerated every time, so neither is ever reused.</li>
+        </ul>
+        <p>One honest caveat on the key derivation: Argon2id would be the better choice, because being memory-hard it resists GPU cracking far better than PBKDF2 does. No browser implements it natively, so using it would mean shipping a WebAssembly library — and this site deliberately runs zero third-party code. PBKDF2 at the OWASP iteration floor is the strongest option available without that trade.</p>
+
+        <h2>Only http and https destinations</h2>
+        <p>Both when a link is made and again when one is opened, the destination is parsed and its scheme checked against a strict allowlist. This is a real security control, not tidiness: a hand-crafted link could otherwise carry a <code>javascript:</code> destination, and rendering that as something you can click would run its code on this page. Anything that is not <code>http</code> or <code>https</code> is shown to you as plain text and never as a clickable link.</p>
+        <p>You are always shown the full destination before you click it. This page never redirects on its own.</p>
+
+        <h2>Choosing a password</h2>
+        <p>The password is the entire security of the link. Anyone who finds the link — in a history file, a chat backup, a screenshot — has unlimited offline attempts at it. Minimum here is 12 characters, but bring more than the minimum.</p>
+        <p>This page deliberately does <strong>not</strong> generate one for you. Use a password manager's generator — 20 or more random characters — or roll physical dice against a Diceware list for something you can say out loud.</p>
+        <p>The strength meter reports an <strong>upper bound</strong>, never a guarantee. A password that reads as separated words is priced at 11 bits per word rather than per character, so a memorable phrase scores honestly low instead of scoring high for being long. Nothing here can recognise that a password is a song lyric or a reused one — only you know that.</p>
+        <p>There is <strong>no password recovery</strong>, but unlike encrypting a message, nothing is lost if you mistype: the destination is a page you already have. A link that will not open is simply a link to make again.</p>
+
+        <h2>Relationship to /crypto</h2>
+        <p>This page carries a destination URL. For arbitrary text — a note, a phrase, anything that is not a link — use <a href="/crypto/">/crypto</a>, which encrypts up to 1 MiB and hands back a text block instead of a URL.</p>
+        <p>The two share a wire format exactly, so they interoperate: a payload lifted from one of these links decrypts on /crypto, and vice versa.</p>
+
+        <h2>What this does not protect against</h2>
+        <ul>
+          <li>Anything already running on your device — malware, a hostile browser extension, or someone reading your screen.</li>
+          <li>Whoever you send the link to. Once they have the password, they have the destination, and they can forward both.</li>
+          <li>The destination site itself, which sees the visit like any other. It is not told the visit came from here.</li>
+          <li>Traffic analysis: the link reveals that a protected destination exists.</li>
+          <li>Passwords the browser or OS may have cached elsewhere. Fields here are marked no-autofill and no-spellcheck, and are wiped when you navigate away, but a JavaScript string cannot be reliably scrubbed from memory — that is a platform limit, not an oversight.</li>
+        </ul>
+      </div>
+
+      <p class="notice" id="unsupported-notice" hidden>
+        This browser does not expose the Web Crypto API on this page, so nothing here can run.
+        Web Crypto requires a secure context — open this page over HTTPS.
+      </p>
+
+      <!-- ============ CREATE ============ -->
+      <div id="create-view">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <label for="destination">Destination link</label>
+            <input type="text" id="destination" inputmode="url" autocomplete="off"
+                   spellcheck="false" autocapitalize="off" autocorrect="off"
+                   placeholder="example.com/the-page" />
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <label for="create-password">Password to protect it</label>
+            <div class="password-row">
+              <input type="password" id="create-password" autocomplete="new-password"
+                     spellcheck="false" autocapitalize="off" autocorrect="off"
+                     placeholder="At least 12 characters" />
+              <button type="button" class="icon-btn" id="toggle-create-password" aria-pressed="false">Show</button>
+            </div>
+            <div class="strength" id="strength">
+              <div class="strength-track"><div class="strength-fill" id="strength-fill"></div></div>
+              <p class="strength-label" id="strength-label"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <button type="button" class="btn-primary" id="create-btn">Create protected link</button>
+            <p class="status" id="create-status" role="status" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <p class="foot">
+          Given a protected link that will not open on its own?
+          <button type="button" id="go-unlock">Paste it here</button>
+        </p>
+      </div>
+
+      <!-- ============ UNLOCK ============ -->
+      <div id="unlock-view" hidden>
+        <div id="paste-field" hidden>
+          <label for="pasted-link">Protected link</label>
+          <input type="text" id="pasted-link" autocomplete="off" spellcheck="false"
+                 autocapitalize="off" autocorrect="off"
+                 placeholder="Paste it, including everything after the #" />
+          <p class="field-hint">The whole link. If it was cut off at the <code>#</code>, ask the sender to resend it.</p>
+          <div style="height: 22px"></div>
+        </div>
+
+        <label for="unlock-password">Password</label>
+        <div class="password-row">
+          <input type="password" id="unlock-password" autocomplete="off"
+                 spellcheck="false" autocapitalize="off" autocorrect="off"
+                 placeholder="The password you were given" />
+          <button type="button" class="icon-btn" id="toggle-unlock-password" aria-pressed="false">Show</button>
+        </div>
+
+        <div style="height: 22px"></div>
+        <button type="button" class="btn-primary" id="unlock-btn">Reveal destination</button>
+        <p class="status" id="unlock-status" role="status" aria-live="polite"></p>
+
+        <p class="foot">
+          <button type="button" id="go-create">Protect a link of your own</button>
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ RESULT: created link ============ -->
+    <section class="card result" id="created-card">
+      <h2>Your protected link</h2>
+      <div class="link-box" id="created-link"></div>
+      <div class="result-actions">
+        <button type="button" class="btn-primary" id="copy-btn">Copy link</button>
+        <button type="button" class="btn-ghost" id="test-btn">Test it</button>
+      </div>
+      <p class="result-meta" id="created-meta"></p>
+      <p class="result-warn" id="created-warn" hidden></p>
+    </section>
+
+    <!-- ============ RESULT: revealed destination ============ -->
+    <section class="card result" id="revealed-card">
+      <h2>Destination</h2>
+      <div id="revealed-link" hidden>
+        <div class="sender-caution">
+          <span class="mark" aria-hidden="true">&#9888;</span>
+          <p><strong>This destination was chosen by whoever sent you the link, not by nowlin.org.</strong>
+             It was encrypted inside the link, so no mail filter or link scanner was able to check it.
+             Read the address below and decide for yourself before you open it.</p>
+        </div>
+        <p class="dest-host-label">Takes you to</p>
+        <p class="dest-host" id="dest-host"></p>
+        <p class="dest-url" id="dest-url"></p>
+        <a class="btn-go" id="dest-go" rel="noopener noreferrer" target="_blank">Open</a>
+        <p class="dest-note">Opens in a new tab. This page does not redirect you on its own — check the address above before you go.</p>
+      </div>
+      <div id="revealed-text" hidden>
+        <p class="dest-text" id="dest-text"></p>
+        <p class="dest-note" id="dest-text-note"></p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+  (function () {
+    'use strict';
+
+    // ---------- format constants ----------
+    // Identical wire format to /crypto, deliberately: the payload after the '#'
+    // is the same bytes that page armors between BEGIN/END lines, just in the
+    // URL-safe base64 alphabet. That makes the two tools interoperate instead of
+    // being two incompatible dialects of the same idea.
+    var MAGIC = [0x4E, 0x57, 0x4C, 0x4E];
+    var FORMAT_VERSION = 1;
+    var KDF_PBKDF2_SHA256 = 1;
+    var CIPHER_AES_256_GCM = 1;
+
+    var KDF_ITERATIONS = 600000;      // OWASP floor for PBKDF2-SHA256
+    var MIN_ITERATIONS = 100000;      // reject weaker-than-plausible messages
+    var MAX_ITERATIONS = 10000000;    // and refuse to be DoS'd by a hostile header
+    var SALT_BYTES = 16;
+    var IV_BYTES = 12;
+    var TAG_BYTES = 16;
+    var HEADER_BYTES = 4 + 1 + 1 + 4 + 1 + SALT_BYTES + IV_BYTES; // 39
+    var SALT_OFFSET = 11;
+    var IV_OFFSET = SALT_OFFSET + SALT_BYTES;
+    var PAD_BLOCK = 256;              // link length reveals nothing about URL length
+    var LENGTH_PREFIX_BYTES = 4;
+    var MIN_PASSWORD_LENGTH = 12;
+
+    var MAX_DESTINATION_BYTES = 2048; // generous for a URL; keeps the output sane
+    var MAX_LINK_CHARS = 20000;       // bounds work done on a pasted blob
+    var SAFE_LINK_CHARS = 2000;       // the classic "works in anything" ceiling
+    var LONG_LINK_CHARS = 4000;
+
+    // Used only when the page is opened from a context with no shareable origin
+    // (file://, a sandboxed iframe). Building a link against "null" would hand the
+    // user something that cannot possibly work, so fall back to the real address.
+    var CANONICAL_URL = 'https://nowlin.org/link/';
+
+    // One message for every decryption failure. GCM cannot tell a wrong password
+    // from a mangled byte anyway, and inventing a distinction would only be a
+    // guess presented as fact.
+    var DECRYPT_FAILED =
+      'Wrong password, or the link was altered or truncated in transit.';
+
+    // ---------- element refs ----------
+    var $ = function (id) { return document.getElementById(id); };
+    var helpToggle = $('help-toggle');
+    var helpPanel = $('help-panel');
+    var lede = $('lede');
+    var unsupportedNotice = $('unsupported-notice');
+
+    var createView = $('create-view');
+    var destinationEl = $('destination');
+    var createPasswordEl = $('create-password');
+    var toggleCreatePwBtn = $('toggle-create-password');
+    var strengthWrap = $('strength');
+    var strengthFill = $('strength-fill');
+    var strengthLabel = $('strength-label');
+    var createBtn = $('create-btn');
+    var createStatus = $('create-status');
+    var goUnlockBtn = $('go-unlock');
+
+    var unlockView = $('unlock-view');
+    var pasteField = $('paste-field');
+    var pastedLinkEl = $('pasted-link');
+    var unlockPasswordEl = $('unlock-password');
+    var toggleUnlockPwBtn = $('toggle-unlock-password');
+    var unlockBtn = $('unlock-btn');
+    var unlockStatus = $('unlock-status');
+    var goCreateBtn = $('go-create');
+
+    var createdCard = $('created-card');
+    var createdLinkEl = $('created-link');
+    var createdMeta = $('created-meta');
+    var createdWarn = $('created-warn');
+    var copyBtn = $('copy-btn');
+    var testBtn = $('test-btn');
+
+    var revealedCard = $('revealed-card');
+    var revealedLink = $('revealed-link');
+    var destHost = $('dest-host');
+    var destUrl = $('dest-url');
+    var destGo = $('dest-go');
+    var revealedText = $('revealed-text');
+    var destText = $('dest-text');
+    var destTextNote = $('dest-text-note');
+
+    var LEDE_CREATE = 'Put a password on a link. You get back a link to share — it reveals the real destination only to someone who knows the password.';
+    var LEDE_UNLOCK = 'This link is password-protected. Enter the password you were given to see where it goes.';
+
+    // Named currentView, not view: unpadPlaintext() below wants a local `view` for
+    // its DataView, and that function has to stay character-identical to /crypto's
+    // copy so tests/shared-crypto-parity.js can enforce that they never drift.
+    var currentView = 'create';
+    var busy = false;
+    var createdLink = '';
+    var supported = !!(window.crypto && window.crypto.subtle &&
+                       typeof window.crypto.subtle.deriveKey === 'function' &&
+                       typeof window.crypto.getRandomValues === 'function');
+
+    // Bumped every time the fragment changes. An in-flight decryption snapshots
+    // it and drops its result if it no longer matches, so a slow KDF can never
+    // reveal the previous link's destination over the one now in the address bar.
+    var navToken = 0;
+
+    // A failure the user caused and can act on, as opposed to a bug. Only these
+    // messages are ever shown; anything else surfaces as a generic line so an
+    // internal exception string can't leak into the UI.
+    function UserError(message) { this.message = message; }
+    UserError.prototype = Object.create(Error.prototype);
+    UserError.prototype.name = 'UserError';
+
+    // ---------- destination handling ----------
+    // The single gate for turning a string into something clickable. Returns a
+    // parsed URL or null - never a string, so a caller cannot accidentally skip
+    // the check. Enforced on BOTH sides: when a link is created, and again when
+    // one is opened. The second check is the one that matters for safety, since
+    // anyone can hand-craft a payload; without it a `javascript:` destination
+    // rendered as an anchor would run script on this page when clicked.
+    function safeHttpUrl(raw) {
+      var s = String(raw == null ? '' : raw).trim();
+      if (!s || s.length > MAX_DESTINATION_BYTES) return null;
+      // Control characters can hide the real scheme from a human reading the URL
+      // even though the parser still honours it.
+      if (/[\u0000-\u0020\u007f]/.test(s)) return null;
+      var u;
+      try {
+        u = new URL(s);
+      } catch (err) {
+        return null;
+      }
+      if (u.protocol !== 'http:' && u.protocol !== 'https:') return null;
+      if (!u.hostname) return null;
+      return u;
+    }
+
+    // Create-side only: forgiving about a missing scheme, strict about the rest.
+    function parseDestination(raw) {
+      var s = String(raw).trim();
+      if (!s) throw new UserError('Paste the link you want to protect.');
+      if (s.length > MAX_DESTINATION_BYTES) {
+        throw new UserError('That link is longer than the ' + MAX_DESTINATION_BYTES +
+          ' characters this page carries.');
+      }
+      // "example.com/x" is what people actually paste. Assume https when no
+      // scheme is present rather than making them type it.
+      var candidate = /^[a-z][a-z0-9+.\-]*:/i.test(s) ? s : 'https://' + s;
+      var u = safeHttpUrl(candidate);
+      if (!u) {
+        if (/^[a-z][a-z0-9+.\-]*:/i.test(s) && !/^https?:/i.test(s)) {
+          throw new UserError('Only http and https links can be protected here.');
+        }
+        throw new UserError('That does not look like a link. For notes and other free text, use /crypto instead.');
+      }
+      // A bare word parses as a hostname ("hello" -> https://hello), which is
+      // almost never what someone meant. Require something host-shaped.
+      if (u.hostname.indexOf('.') === -1 && u.hostname !== 'localhost') {
+        throw new UserError('That does not look like a link. For notes and other free text, use /crypto instead.');
+      }
+      return u.href;
+    }
+
+    // ---------- encoding helpers ----------
+    function bytesToBase64(bytes) {
+      var bin = '';
+      var CHUNK = 0x8000; // apply() on the whole array overflows the call stack
+      for (var i = 0; i < bytes.length; i += CHUNK) {
+        bin += String.fromCharCode.apply(null, bytes.subarray(i, i + CHUNK));
+      }
+      return btoa(bin);
+    }
+
+    function base64ToBytes(b64) {
+      // Strict: exact padding, no stray characters. atob() is lenient in places
+      // and we would rather reject a corrupted link than silently decode it into
+      // bytes that then fail with a confusing error.
+      if (b64.length === 0 || b64.length % 4 !== 0 || !/^[A-Za-z0-9+/]+={0,2}$/.test(b64)) {
+        throw new UserError('That does not look like a protected link.');
+      }
+      var bin;
+      try {
+        bin = atob(b64);
+      } catch (err) {
+        throw new UserError('That does not look like a protected link.');
+      }
+      var out = new Uint8Array(bin.length);
+      for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+      return out;
+    }
+
+    // '+' and '/' are the two base64 characters that get mangled in URLs; '=' is
+    // a legal sub-delimiter in a fragment, so it stays. Keeping the padding is
+    // what lets /crypto's strict decoder accept a payload lifted straight out of
+    // one of these links.
+    function toBase64Url(b64) {
+      return b64.replace(/\+/g, '-').replace(/\//g, '_');
+    }
+
+    function baseUrl() {
+      if (/^https?:$/i.test(window.location.protocol)) {
+        return window.location.origin + window.location.pathname;
+      }
+      return CANONICAL_URL;
+    }
+
+    function readFragment() {
+      var hash = window.location.hash || '';
+      return hash.charAt(0) === '#' ? hash.slice(1) : hash;
+    }
+
+    // Accepts a whole link, a bare '#payload', or bare base64/base64url, and
+    // returns standard-alphabet base64 for the strict decoder.
+    function extractPayload(raw) {
+      var s = String(raw).trim();
+      if (s.length > MAX_LINK_CHARS) {
+        throw new UserError('That is too large to be one of our links.');
+      }
+      var hash = s.indexOf('#');
+      if (hash !== -1) {
+        s = s.slice(hash + 1);
+      } else if (/^[a-z][a-z0-9+.\-]*:/i.test(s)) {
+        // A URL with no '#' at all is the classic symptom of a client that
+        // truncated the link at the fragment, so name that specifically rather
+        // than letting it fall through to "does not look like a protected link."
+        throw new UserError(
+          'That link has no # in it, so it carries no protected destination. ' +
+          'Ask the sender to resend the whole link.');
+      }
+      s = s.replace(/\s+/g, '');
+      // Some clients percent-encode '=' (or the whole fragment) before forwarding.
+      // Undo that when it decodes cleanly; when it doesn't, leave the string alone
+      // and let the strict base64 check below produce the error.
+      if (s.indexOf('%') !== -1) {
+        try { s = decodeURIComponent(s); } catch (err) { /* fall through */ }
+      }
+      if (!s) {
+        throw new UserError('That link has nothing after the # — it looks truncated.');
+      }
+      return s.replace(/-/g, '+').replace(/_/g, '/');
+    }
+
+    // ---------- framing ----------
+    function buildHeader(iterations, salt, iv) {
+      var h = new Uint8Array(HEADER_BYTES);
+      h.set(MAGIC, 0);
+      h[4] = FORMAT_VERSION;
+      h[5] = KDF_PBKDF2_SHA256;
+      new DataView(h.buffer).setUint32(6, iterations, false);
+      h[10] = CIPHER_AES_256_GCM;
+      h.set(salt, SALT_OFFSET);
+      h.set(iv, IV_OFFSET);
+      return h;
+    }
+
+    // [uint32 BE length][utf-8 bytes][zero padding to a PAD_BLOCK multiple]
+    function padPlaintext(bytes) {
+      var total = LENGTH_PREFIX_BYTES + bytes.length;
+      var padded = Math.ceil(total / PAD_BLOCK) * PAD_BLOCK;
+      var buf = new Uint8Array(padded);
+      new DataView(buf.buffer).setUint32(0, bytes.length, false);
+      buf.set(bytes, LENGTH_PREFIX_BYTES);
+      return buf;
+    }
+
+    function unpadPlaintext(buf) {
+      // Reached only after the GCM tag verified, so a malformed frame here means
+      // a bug or a message from a future format - either way, don't guess.
+      if (buf.length < PAD_BLOCK || buf.length % PAD_BLOCK !== 0) {
+        throw new UserError(DECRYPT_FAILED);
+      }
+      var view = new DataView(buf.buffer, buf.byteOffset, buf.byteLength);
+      var len = view.getUint32(0, false);
+      if (len > buf.length - LENGTH_PREFIX_BYTES) throw new UserError(DECRYPT_FAILED);
+      return buf.subarray(LENGTH_PREFIX_BYTES, LENGTH_PREFIX_BYTES + len);
+    }
+
+    // ---------- core crypto ----------
+    function deriveKey(password, salt, iterations) {
+      // Unicode normalisation matters here: macOS input methods can hand back
+      // "café" as NFD (e + combining accent) while Windows gives NFC. Those are
+      // different byte strings, so without this a link created on one machine
+      // simply won't open on the other. NFC is a no-op for ASCII.
+      var normalized = typeof password.normalize === 'function'
+        ? password.normalize('NFC')
+        : password;
+      var pwBytes = new TextEncoder().encode(normalized);
+      return crypto.subtle
+        .importKey('raw', pwBytes, 'PBKDF2', false, ['deriveKey'])
+        .then(function (baseKey) {
+          return crypto.subtle.deriveKey(
+            { name: 'PBKDF2', salt: salt, iterations: iterations, hash: 'SHA-256' },
+            baseKey,
+            { name: 'AES-GCM', length: 256 },
+            false, // non-extractable: the key can never be read back out
+            ['encrypt', 'decrypt']
+          );
+        });
+    }
+
+    function encryptDestination(password, destination) {
+      var ptBytes = new TextEncoder().encode(destination);
+      if (ptBytes.length === 0) throw new UserError('Paste the link you want to protect.');
+      if (ptBytes.length > MAX_DESTINATION_BYTES) {
+        throw new UserError('That link is longer than the ' + MAX_DESTINATION_BYTES +
+          ' characters this page carries.');
+      }
+      var salt = crypto.getRandomValues(new Uint8Array(SALT_BYTES));
+      var iv = crypto.getRandomValues(new Uint8Array(IV_BYTES));
+      var header = buildHeader(KDF_ITERATIONS, salt, iv);
+      return deriveKey(password, salt, KDF_ITERATIONS)
+        .then(function (key) {
+          return crypto.subtle.encrypt(
+            { name: 'AES-GCM', iv: iv, additionalData: header, tagLength: TAG_BYTES * 8 },
+            key,
+            padPlaintext(ptBytes)
+          );
+        })
+        .then(function (cipherBuf) {
+          var ct = new Uint8Array(cipherBuf);
+          var out = new Uint8Array(header.length + ct.length);
+          out.set(header, 0);
+          out.set(ct, header.length);
+          return {
+            link: baseUrl() + '#' + toBase64Url(bytesToBase64(out)),
+            totalBytes: out.length
+          };
+        });
+    }
+
+    function decryptLink(password, raw) {
+      var bytes = base64ToBytes(extractPayload(raw));
+      var notOurs = new UserError('That does not look like a protected link.');
+
+      if (bytes.length < HEADER_BYTES + PAD_BLOCK + TAG_BYTES) throw notOurs;
+      for (var i = 0; i < MAGIC.length; i++) {
+        if (bytes[i] !== MAGIC[i]) throw notOurs;
+      }
+      if (bytes[4] !== FORMAT_VERSION) {
+        throw new UserError('This link uses format version ' + bytes[4] +
+          ', which this page does not know how to read.');
+      }
+      if (bytes[5] !== KDF_PBKDF2_SHA256 || bytes[10] !== CIPHER_AES_256_GCM) {
+        throw new UserError('This link uses an algorithm this page does not support.');
+      }
+
+      var dv = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+      var iterations = dv.getUint32(6, false);
+      if (iterations < MIN_ITERATIONS || iterations > MAX_ITERATIONS) {
+        throw new UserError('This link declares an out-of-range iteration count (' +
+          iterations + ') and was not processed.');
+      }
+
+      var header = bytes.subarray(0, HEADER_BYTES);
+      var salt = bytes.subarray(SALT_OFFSET, SALT_OFFSET + SALT_BYTES);
+      var iv = bytes.subarray(IV_OFFSET, IV_OFFSET + IV_BYTES);
+      var ciphertext = bytes.subarray(HEADER_BYTES);
+
+      return deriveKey(password, salt, iterations)
+        .then(function (key) {
+          return crypto.subtle.decrypt(
+            { name: 'AES-GCM', iv: iv, additionalData: header, tagLength: TAG_BYTES * 8 },
+            key,
+            ciphertext
+          );
+        })
+        .catch(function () { throw new UserError(DECRYPT_FAILED); })
+        .then(function (plainBuf) {
+          var inner = unpadPlaintext(new Uint8Array(plainBuf));
+          var text;
+          try {
+            // fatal: invalid UTF-8 should be an error, not silent U+FFFD damage
+            text = new TextDecoder('utf-8', { fatal: true }).decode(inner);
+          } catch (err) {
+            throw new UserError('The link opened but its contents are not readable text.');
+          }
+          return { text: text, iterations: iterations };
+        });
+    }
+
+    // ---------- password strength ----------
+    // Every number here is an upper bound, and the UI says so. Without a real
+    // corpus (zxcvbn and friends are exactly the dependency this site doesn't
+    // take) no estimator can do better than bound the answer from above.
+    function charsetEntropyBits(pw) {
+      var pool = 0;
+      if (/[a-z]/.test(pw)) pool += 26;
+      if (/[A-Z]/.test(pw)) pool += 26;
+      if (/[0-9]/.test(pw)) pool += 10;
+      if (/[^A-Za-z0-9]/.test(pw)) pool += 33;
+      if (pool === 0) return 0;
+      // "aaaaaaaaaaaa" draws from a 26-character class but carries nowhere near
+      // 12 * log2(26) bits. Cap the assumed alphabet by what was actually used.
+      var unique = 0;
+      var seen = {};
+      for (var i = 0; i < pw.length; i++) {
+        var k = '#' + pw.charCodeAt(i); // '#' prefix keeps Object.prototype keys out of reach
+        if (!seen[k]) { seen[k] = true; unique++; }
+      }
+      var effective = Math.min(pool, Math.max(unique, 2) * 2);
+      return pw.length * (Math.log(effective) / Math.LN2);
+    }
+
+    // Separator-delimited words, all alphabetic, 1-12 letters each. The lower
+    // bound is 1 and not 3 on purpose: human phrases are full of short function
+    // words ("a", "my", "to", "is"), and requiring 3 letters let any phrase
+    // containing one escape this model and get priced per character instead.
+    var PHRASE_RE = /^[A-Za-z]{1,12}(?:[ \-_.][A-Za-z]{1,12}){1,15}$/;
+    var BITS_PER_WORD = 11; // a 2048-word list; generous for human-chosen words
+
+    function phraseEntropyBits(pw) {
+      // A per-character model prices "correct horse battery staple" at ~130 bits
+      // and calls a famous example passphrase Very Strong. If the password reads
+      // as a word phrase, price it per word instead and take the lower estimate.
+      if (!PHRASE_RE.test(pw)) return null;
+      var words = pw.split(/[ \-_.]+/).filter(function (w) { return w.length > 0; });
+      if (words.length < 2) return null;
+      return words.length * BITS_PER_WORD;
+    }
+
+    function estimateStrength(pw) {
+      if (!pw) return { bits: 0, phrase: false };
+      var charBits = charsetEntropyBits(pw);
+      var phraseBits = phraseEntropyBits(pw);
+      if (phraseBits !== null && phraseBits < charBits) {
+        return { bits: phraseBits, phrase: true };
+      }
+      return { bits: charBits, phrase: false };
+    }
+
+    function renderStrength() {
+      var pw = createPasswordEl.value;
+      if (!pw) {
+        strengthWrap.classList.remove('show');
+        return;
+      }
+      strengthWrap.classList.add('show');
+      var est = estimateStrength(pw);
+      var bits = est.bits;
+      var pct = Math.max(4, Math.min(100, (bits / 128) * 100));
+      var word;
+      strengthFill.className = 'strength-fill';
+      if (pw.length < MIN_PASSWORD_LENGTH) {
+        word = 'Too short';
+      } else if (bits < 50) {
+        word = 'Weak';
+      } else if (bits < 80) {
+        word = 'Fair';
+        strengthFill.classList.add('fair');
+      } else if (bits < 100) {
+        word = 'Strong';
+        strengthFill.classList.add('strong');
+      } else {
+        word = 'Very strong';
+        strengthFill.classList.add('strong');
+      }
+      strengthFill.style.width = pct + '%';
+      // textContent / text nodes only - the password must never reach an HTML parser.
+      strengthLabel.textContent = '';
+      var b = document.createElement('b');
+      b.textContent = word;
+      strengthLabel.appendChild(b);
+      strengthLabel.appendChild(document.createTextNode(
+        ' · at most ~' + Math.round(bits) + ' bits · ' +
+        (est.phrase
+          ? 'priced as a word phrase at ' + BITS_PER_WORD + ' bits per word'
+          : 'upper bound, assuming the characters were chosen at random')
+      ));
+    }
+
+    // ---------- UI ----------
+    function setStatus(el, message, kind) {
+      el.textContent = message || '';
+      el.className = 'status' + (kind ? ' ' + kind : '');
+    }
+
+    function setBusy(on) {
+      busy = on;
+      createBtn.disabled = on || !supported;
+      unlockBtn.disabled = on || !supported;
+      destinationEl.disabled = on;
+      createPasswordEl.disabled = on;
+      unlockPasswordEl.disabled = on;
+      pastedLinkEl.disabled = on;
+      goCreateBtn.disabled = on;
+      goUnlockBtn.disabled = on;
+      createBtn.textContent = on ? 'Working…' : 'Create protected link';
+      unlockBtn.textContent = on ? 'Working…' : 'Reveal destination';
+    }
+
+    function hideResults() {
+      createdCard.classList.remove('show');
+      revealedCard.classList.remove('show');
+      revealedLink.hidden = true;
+      revealedText.hidden = true;
+      createdLinkEl.textContent = '';
+      createdMeta.textContent = '';
+      createdWarn.textContent = '';
+      createdWarn.hidden = true;
+      destHost.textContent = '';
+      destUrl.textContent = '';
+      destText.textContent = '';
+      destGo.removeAttribute('href');
+      createdLink = '';
+    }
+
+    function setView(next) {
+      if (busy) return;
+      currentView = next;
+      var creating = currentView === 'create';
+      createView.hidden = !creating;
+      unlockView.hidden = creating;
+      lede.textContent = creating ? LEDE_CREATE : LEDE_UNLOCK;
+      // The paste box is only useful when there is no fragment to read from; a
+      // recipient who arrived via a link should just see a password prompt.
+      pasteField.hidden = !!readFragment();
+      hideResults();
+      setStatus(createStatus, '');
+      setStatus(unlockStatus, '');
+    }
+
+    function linkLengthNote(len) {
+      if (len <= SAFE_LINK_CHARS) return null;
+      if (len <= LONG_LINK_CHARS) {
+        return 'This link is ' + len.toLocaleString() + ' characters. Browsers handle ' +
+          'that comfortably, but some mail gateways and ticketing systems still cut URLs ' +
+          'near 2,000 — confirm it arrived whole before relying on it.';
+      }
+      return 'This link is ' + len.toLocaleString() + ' characters, long enough that ' +
+        'some clients will wrap or truncate it. A shorter destination URL makes a ' +
+        'shorter protected link.';
+    }
+
+    // ---------- actions ----------
+    function doCreate() {
+      if (busy || !supported) return;
+
+      var password = createPasswordEl.value;
+      var destination;
+      try {
+        destination = parseDestination(destinationEl.value);
+      } catch (err) {
+        setStatus(createStatus, err.message, 'error');
+        return;
+      }
+      if (password.length < MIN_PASSWORD_LENGTH) {
+        setStatus(createStatus, 'Use a password of at least ' + MIN_PASSWORD_LENGTH + ' characters.', 'error');
+        return;
+      }
+
+      hideResults();
+      setBusy(true);
+      setStatus(createStatus, 'Encrypting — 600,000 PBKDF2 iterations takes a moment.', '');
+
+      // Yield to the event loop so the busy state paints before the KDF runs.
+      // Deliberately setTimeout and not requestAnimationFrame: rAF never fires in
+      // a backgrounded tab, which would leave the operation hung if the user
+      // switched tabs right after clicking.
+      new Promise(function (resolve) { setTimeout(resolve, 0); })
+        .then(function () { return encryptDestination(password, destination); })
+        .then(function (result) {
+          createdLink = result.link;
+          createdLinkEl.textContent = result.link;
+          createdMeta.textContent =
+            'AES-256-GCM · PBKDF2-HMAC-SHA256 · ' + KDF_ITERATIONS.toLocaleString() +
+            ' iterations · ' + result.totalBytes.toLocaleString() + ' encrypted bytes ' +
+            '(padded, so the length reveals nothing about the destination).';
+          var note = linkLengthNote(result.link.length);
+          if (note) {
+            createdWarn.textContent = note;
+            createdWarn.hidden = false;
+          }
+          createdCard.classList.add('show');
+          setStatus(createStatus, 'Done. Send the link — then send the password a different way.', 'success');
+        })
+        .catch(function (err) {
+          // Only UserError text is trusted for display. Anything else could carry
+          // an implementation detail, so it gets a fixed message instead.
+          if (err instanceof UserError) setStatus(createStatus, err.message, 'error');
+          else setStatus(createStatus, 'Something went wrong while creating the link.', 'error');
+          hideResults();
+        })
+        .then(function () { setBusy(false); });
+    }
+
+    function doUnlock() {
+      if (busy || !supported) return;
+
+      var runToken = navToken;
+      var password = unlockPasswordEl.value;
+      var frag = readFragment();
+      var source = frag ? frag : pastedLinkEl.value;
+
+      if (!String(source).trim()) {
+        setStatus(unlockStatus, 'Paste the protected link first.', 'error');
+        return;
+      }
+      if (!password) {
+        setStatus(unlockStatus, 'Enter the password you were given.', 'error');
+        return;
+      }
+
+      hideResults();
+      setBusy(true);
+      setStatus(unlockStatus, 'Checking — 600,000 PBKDF2 iterations takes a moment.', '');
+
+      new Promise(function (resolve) { setTimeout(resolve, 0); })
+        .then(function () { return decryptLink(password, source); })
+        .then(function (result) {
+          if (runToken !== navToken) return;
+          showDestination(result);
+        })
+        .catch(function (err) {
+          if (runToken !== navToken) return;
+          if (err instanceof UserError) setStatus(unlockStatus, err.message, 'error');
+          else setStatus(unlockStatus, 'Something went wrong while opening the link.', 'error');
+          hideResults();
+        })
+        .then(function () {
+          // Unconditional: a stale run still has to hand the buttons back, and
+          // the hashchange handler has already reset everything else it touches.
+          setBusy(false);
+        });
+    }
+
+    function showDestination(result) {
+      // Re-validate independently of whatever made this link. Anyone can craft a
+      // payload; this is the check that stops a `javascript:` destination from
+      // ever becoming something clickable on this page.
+      var url = safeHttpUrl(result.text);
+      if (url) {
+        destHost.textContent = url.hostname;
+        destUrl.textContent = url.href;
+        // setAttribute after the protocol check, never from raw input.
+        destGo.setAttribute('href', url.href);
+        destGo.textContent = 'Open ' + url.hostname;
+        revealedLink.hidden = false;
+        revealedText.hidden = true;
+      } else {
+        // A legacy text link, or something hand-crafted. Show it, never link it.
+        destText.textContent = result.text;
+        destTextNote.textContent =
+          'This link carries text rather than a web address, so there is nothing to open. ' +
+          'It is shown exactly as stored and is not clickable.';
+        revealedText.hidden = false;
+        revealedLink.hidden = true;
+      }
+      revealedCard.classList.add('show');
+
+      if (result.iterations < KDF_ITERATIONS) {
+        setStatus(unlockStatus, 'Opened. Note: this link used ' +
+          result.iterations.toLocaleString() + ' PBKDF2 iterations, below the current ' +
+          KDF_ITERATIONS.toLocaleString() + ' setting.', 'warn');
+      } else {
+        setStatus(unlockStatus, 'Opened, and the authentication tag verified — the link was not altered.', 'success');
+      }
+    }
+
+    function copyLink() {
+      if (!createdLink) return;
+      var done = function (ok) {
+        copyBtn.textContent = ok ? 'Copied' : 'Copy failed';
+        setTimeout(function () { copyBtn.textContent = 'Copy link'; }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(createdLink).then(function () { done(true); },
+                                                        function () { done(fallbackCopy()); });
+      } else {
+        done(fallbackCopy());
+      }
+    }
+
+    function fallbackCopy() {
+      // Select the link text already on the page rather than injecting a hidden
+      // field, so it never lands anywhere it isn't already.
+      try {
+        var range = document.createRange();
+        range.selectNodeContents(createdLinkEl);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        var ok = document.execCommand('copy');
+        sel.removeAllRanges();
+        return ok;
+      } catch (err) {
+        return false;
+      }
+    }
+
+    // Move the freshly-made link into the unlock view so the sender can confirm
+    // the password works *before* sending it. Deliberately does not navigate or
+    // touch location.hash: putting the ciphertext in this tab's address bar and
+    // history is a side effect the sender didn't ask for.
+    function testLink() {
+      if (!createdLink) return;
+      var link = createdLink;
+      setView('unlock');
+      pasteField.hidden = false;
+      pastedLinkEl.value = link;
+      unlockPasswordEl.value = '';
+      unlockPasswordEl.focus();
+      setStatus(unlockStatus, 'Type the password you just used. Nothing has been sent anywhere.', '');
+    }
+
+    function bindReveal(input, toggle, partner) {
+      toggle.addEventListener('click', function () {
+        var showing = input.type === 'text';
+        input.type = showing ? 'password' : 'text';
+        if (partner) partner.type = input.type;
+        toggle.textContent = showing ? 'Show' : 'Hide';
+        toggle.setAttribute('aria-pressed', String(!showing));
+      });
+    }
+
+    // ---------- wiring ----------
+    helpToggle.addEventListener('click', function () {
+      var open = helpToggle.getAttribute('aria-expanded') === 'true';
+      helpToggle.setAttribute('aria-expanded', String(!open));
+      helpPanel.hidden = open;
+    });
+
+    bindReveal(createPasswordEl, toggleCreatePwBtn, null);
+    bindReveal(unlockPasswordEl, toggleUnlockPwBtn, null);
+
+    createPasswordEl.addEventListener('input', renderStrength);
+    createBtn.addEventListener('click', doCreate);
+    unlockBtn.addEventListener('click', doUnlock);
+    copyBtn.addEventListener('click', copyLink);
+    testBtn.addEventListener('click', testLink);
+
+    goUnlockBtn.addEventListener('click', function () {
+      setView('unlock');
+      pasteField.hidden = false;
+      pastedLinkEl.focus();
+    });
+    goCreateBtn.addEventListener('click', function () {
+      setView('create');
+      destinationEl.focus();
+    });
+
+    function enterTo(action) {
+      return function (event) {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          action();
+        }
+      };
+    }
+    destinationEl.addEventListener('keydown', enterTo(doCreate));
+    createPasswordEl.addEventListener('keydown', enterTo(doCreate));
+    pastedLinkEl.addEventListener('keydown', enterTo(doUnlock));
+    unlockPasswordEl.addEventListener('keydown', enterTo(doUnlock));
+
+    // Don't leave a destination or a password sitting in a bfcache-restored page.
+    // The fragment itself stays in the URL - it has to, or reloading the page
+    // would destroy the link the recipient was sent.
+    window.addEventListener('pagehide', function () {
+      destinationEl.value = '';
+      createPasswordEl.value = '';
+      unlockPasswordEl.value = '';
+      pastedLinkEl.value = '';
+      hideResults();
+      renderStrength();
+    });
+
+    // Following a second protected link while this page is already open changes
+    // only the fragment, which browsers treat as a same-document navigation - no
+    // reload, no re-run of this script. Without this handler the page would keep
+    // showing the first link's destination while the address bar advertised the
+    // second. Back/forward between two links lands here too.
+    window.addEventListener('hashchange', function () {
+      navToken++;
+      if (busy) setBusy(false);
+      unlockPasswordEl.value = '';
+      pastedLinkEl.value = '';
+      if (readFragment()) {
+        setView('unlock');
+        setStatus(unlockStatus, 'A different protected link was opened. Enter its password.', '');
+        if (supported) unlockPasswordEl.focus();
+      } else {
+        setView('create');
+      }
+    });
+
+    if (!supported) {
+      unsupportedNotice.hidden = false;
+      createBtn.disabled = true;
+      unlockBtn.disabled = true;
+      destinationEl.disabled = true;
+      createPasswordEl.disabled = true;
+      unlockPasswordEl.disabled = true;
+      pastedLinkEl.disabled = true;
+    }
+
+    // Arriving with a payload means this visit is a recipient opening a link, not
+    // a sender making one. Start in the view that matches.
+    if (readFragment()) {
+      setView('unlock');
+      if (supported) unlockPasswordEl.focus();
+    } else {
+      setView('create');
+    }
+  })();
+  </script>
+
+</body>
+</html>

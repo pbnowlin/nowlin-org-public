@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Holy Bible</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Holy Bible</h1>
+    <div class="controls">
+      <select id="book-select"></select>
+      <select id="chapter-select"></select>
+    </div>
+  </header>
+
+  <main>
+    <div class="nav-bar">
+      <button id="prev-btn-top">← Back</button>
+      <button id="next-btn-top">Next →</button>
+    </div>
+
+    <div id="verse-container">Loading Bible...</div>
+
+    <div class="nav-bar">
+      <button id="prev-btn-bottom">← Back</button>
+      <button id="next-btn-bottom">Next →</button>
+    </div>
+  </main>
+
+  <footer>
+    <div style="text-align: center; margin-top: 20px;">
+      <a href="KJB-PCE-MINION.pdf" download="KJB-PCE-MINION.pdf">Download full KJV PDF</a>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

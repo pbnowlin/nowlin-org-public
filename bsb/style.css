@@ -1,0 +1,190 @@
+/* Core Layout & Theme */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Georgia, serif;
+    background-color: #fcfbf9;
+    color: #2c2c2c;
+    line-height: 1.7;
+    padding: 20px 15px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+/* Dropdown & Controls Navigation */
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.select-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.select-group label {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+/* Inputs & Buttons Mobile Optimization */
+select, button {
+    padding: 10px 16px;
+    font-size: 16px; /* Prevents automatic zoom on mobile browsers */
+    min-height: 44px; /* Optimal tap target size for touchscreens */
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+select:disabled, button:disabled {
+    background-color: #f0f0f0;
+    color: #a0a0a0;
+    cursor: not-allowed;
+    border-color: #e0e0e0;
+}
+
+select:focus, button:focus {
+    outline: 2px solid #0056b3;
+    outline-offset: 1px;
+}
+
+/* Side-by-Side Navigation Buttons */
+.navigation-buttons {
+    display: flex;
+    flex-direction: row; /* Enforces horizontal arrangement */
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.navigation-buttons button {
+    font-weight: 600;
+    background-color: #f4f4f2;
+}
+
+.navigation-buttons button:hover:not(:disabled) {
+    background-color: #e2e2df;
+}
+
+/* Bible Reader Typography */
+#bible-text {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    min-height: 300px;
+}
+
+#bible-text h2 {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #111111;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+.verse {
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+    text-align: left;
+}
+
+.verse-num {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #888888;
+    margin-right: 4px;
+    vertical-align: super;
+}
+
+.placeholder, .error {
+    text-align: center;
+    color: #666666;
+    font-style: italic;
+    margin-top: 40px;
+}
+
+.error {
+    color: #c92a2a;
+}
+
+/* Footer & Download Link */
+footer.bottom-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Inner button container to keep buttons horizontal in footer */
+footer.bottom-nav .button-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 12px;
+}
+
+footer a {
+    color: #0056b3;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Adjustments for Mobile Screens */
+@media (max-width: 600px) {
+    body {
+        padding: 12px 8px;
+    }
+
+    #bible-text {
+        padding: 18px 14px;
+    }
+
+    .controls {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .select-group {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    select {
+        flex: 1;
+    }
+}
