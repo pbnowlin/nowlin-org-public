@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Notes</title>
+
+  <!--
+    Dependencies are pinned to exact versions and served from hosts that are
+    widely allowed (jsdelivr / cdnjs). To lock them down further, add
+    integrity="sha384-..." crossorigin="anonymous" to each tag.
+    The Tailwind Play CDN is a prototyping build and cannot carry an SRI hash.
+  -->
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              500: '#16a34a',
+              600: '#15803d',
+              700: '#166534',
+            }
+          }
+        }
+      }
+    };
+
+    // darkMode is 'class', so something has to set the class. Follow the system setting.
+    (function () {
+      var mq = window.matchMedia('(prefers-color-scheme: dark)');
+      function apply() { document.documentElement.classList.toggle('dark', mq.matches); }
+      apply();
+      if (mq.addEventListener) mq.addEventListener('change', apply);
+      else if (mq.addListener) mq.addListener(apply);
+    })();
+  </script>
+
+  <style>
+    /* Custom scrollbars */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.3); border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(156, 163, 175, 0.5); }
+
+    /* Markdown preview (no typography plugin is loaded, so this is all custom) */
+    .prose h1 { font-size: 1.5rem; font-weight: 700; margin-top: 1rem; margin-bottom: 0.5rem; }
+    .prose h2 { font-size: 1.25rem; font-weight: 600; margin-top: 0.85rem; margin-bottom: 0.4rem; }
+    .prose h3 { font-size: 1.1rem; font-weight: 600; margin-top: 0.75rem; margin-bottom: 0.3rem; }
+    .prose p { margin-bottom: 0.75rem; line-height: 1.6; }
+    .prose ul { list-style-type: disc; padding-left: 1.25rem; margin-bottom: 0.75rem; }
+    .prose ol { list-style-type: decimal; padding-left: 1.25rem; margin-bottom: 0.75rem; }
+    .prose code { background-color: rgba(125, 125, 125, 0.15); padding: 0.15rem 0.35rem; border-radius: 0.25rem; font-family: monospace; font-size: 0.875em; }
+    .prose pre {
+      background-color: #0f172a;
+      color: #f8fafc;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      margin-bottom: 0.75rem;
+    }
+    .dark .prose pre {
+      background-color: #020617;
+      color: #e2e8f0;
+    }
+    .prose pre code { background-color: transparent; padding: 0; color: inherit; }
+    .prose blockquote { border-left: 3px solid #16a34a; padding-left: 0.75rem; color: #64748b; margin-bottom: 0.75rem; font-style: italic; }
+    .prose a { color: #16a34a; text-decoration: underline; }
+    .prose img { max-width: 100%; height: auto; border-radius: 0.375rem; }
+    .prose hr { border: 0; border-top: 1px solid rgba(125, 125, 125, 0.3); margin: 1rem 0; }
+    .prose table { border-collapse: collapse; margin-bottom: 0.75rem; display: block; overflow-x: auto; }
+    .prose th, .prose td { border: 1px solid rgba(125, 125, 125, 0.3); padding: 0.3rem 0.6rem; }
+
+    /* Folder row actions: hover / keyboard focus on pointer devices, always visible on touch */
+    .folder-actions { display: none; align-items: center; }
+    .folder-item:hover .folder-actions { display: flex; }
+    .folder-item:hover .folder-count { display: none; }
+    .folder-item:has(:focus-visible) .folder-actions { display: flex; }
+    .folder-item:has(:focus-visible) .folder-count { display: none; }
+    @media (hover: none) {
+      .folder-actions { display: flex !important; }
+      .folder-count { display: inline-block !important; }
+    }
+
+    /* Active state for the preview toggle (beats the dark: text utilities) */
+    .toggle-on { color: #16a34a !important; background-color: rgba(22, 163, 74, 0.1); }
+
+    /* 16px form controls stop iOS Safari from auto-zooming on focus, so zoom stays available */
+    @media (max-width: 767px) {
+      input:not(#note-title-input), textarea, select { font-size: 16px !important; }
+    }
+
+    /* Modal focus trap helper */
+    #modal-backdrop[aria-hidden="false"] ~ * { pointer-events: none; }
+  </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-950 text-gray-900 dark:text-gray-100 antialiased h-full flex overflow-hidden select-none" style="height:100vh;height:100dvh">
+
+  <!-- Mobile navigation overlay -->
+  <div id="mobile-overlay" class="fixed inset-0 bg-gray-900/40 z-30 hidden md:hidden transition-opacity backdrop-blur-sm"></div>
+
+  <!-- Column 1: Sidebar -->
+  <aside id="sidebar" class="fixed md:static inset-y-0 left-0 z-40 w-72 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out flex-shrink-0">
+    <div class="h-14 px-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between flex-shrink-0">
+      <div class="flex items-center space-x-2.5">
+        <div class="p-1.5 bg-brand-500 text-white rounded-md shadow-sm">
+          <i data-lucide="notebook-pen" class="w-4 h-4"></i>
+        </div>
+        <span class="font-bold text-base tracking-tight">Workspace</span>
+      </div>
+      <button type="button" id="close-mobile-sidebar" aria-label="Close menu" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 md:hidden text-gray-500">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <div class="p-3 flex-shrink-0">
+      <button type="button" id="btn-new-note" class="w-full py-2 px-3 bg-brand-500 hover:bg-brand-600 active:bg-brand-700 text-white font-medium text-sm rounded-lg shadow-sm flex items-center justify-center space-x-2 transition-colors">
+        <i data-lucide="plus" class="w-4 h-4"></i>
+        <span>New Note</span>
+      </button>
+    </div>
+
+    <div class="px-3 pb-2 flex-shrink-0">
+      <div class="relative">
+        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-gray-400 pointer-events-none"></i>
+        <input type="search" id="search-input" placeholder="Search notes..." aria-label="Search notes" autocomplete="off" class="w-full pl-9 pr-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-800/60 border border-transparent focus:border-brand-500 rounded-lg focus:outline-none transition-colors">
+      </div>
+    </div>
+
+    <div class="flex-1 overflow-y-auto px-3 py-2 space-y-4">
+      <div>
+        <div class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-2 mb-1.5">Views</div>
+        <nav class="space-y-0.5">
+          <button type="button" data-filter="all" class="nav-item">
+            <span class="flex items-center space-x-2.5">
+              <i data-lucide="files" class="w-4 h-4"></i>
+              <span>All Notes</span>
+            </span>
+            <span id="count-all" class="text-xs px-2 py-0.5 rounded-md bg-gray-200/60 dark:bg-gray-800 text-gray-600 dark:text-gray-400">0</span>
+          </button>
+          <button type="button" data-filter="uncategorized" class="nav-item">
+            <span class="flex items-center space-x-2.5">
+              <i data-lucide="inbox" class="w-4 h-4"></i>
+              <span>Uncategorized</span>
+            </span>
+            <span id="count-uncategorized" class="text-xs px-2 py-0.5 rounded-md bg-gray-200/60 dark:bg-gray-800 text-gray-600 dark:text-gray-400">0</span>
+          </button>
+        </nav>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between px-2 mb-1.5">
+          <span class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Folders</span>
+          <button type="button" id="btn-add-folder" title="Create folder" aria-label="Create folder" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+            <i data-lucide="folder-plus" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+        <div id="folders-container" class="space-y-0.5"></div>
+      </div>
+    </div>
+
+    <div class="p-3 border-t border-gray-200 dark:border-gray-800 flex items-center space-x-2 flex-shrink-0">
+      <button type="button" id="btn-export-data" class="flex-1 flex items-center justify-center space-x-1.5 py-1.5 px-2 text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800/60 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors" title="Export backup (JSON)">
+        <i data-lucide="download" class="w-3.5 h-3.5"></i>
+        <span>Export</span>
+      </button>
+      <button type="button" id="btn-import-data" class="flex-1 flex items-center justify-center space-x-1.5 py-1.5 px-2 text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800/60 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors" title="Import backup (JSON)">
+        <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+        <span>Import</span>
+      </button>
+      <input type="file" id="file-import-input" accept=".json,application/json" class="hidden">
+    </div>
+  </aside>
+
+  <!-- Column 2: Notes list -->
+  <section id="notes-panel" class="w-full md:w-72 lg:w-80 border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/50 flex flex-col flex-shrink-0 h-full z-10">
+    <div class="h-14 px-3.5 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between flex-shrink-0">
+      <div class="flex items-center space-x-2 min-w-0">
+        <button type="button" id="open-mobile-sidebar" aria-label="Open menu" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 md:hidden text-gray-600 dark:text-gray-300">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+        <h2 id="current-view-title" class="font-bold text-sm text-gray-800 dark:text-gray-200 truncate">All Notes</h2>
+      </div>
+      <div id="notes-count-badge" class="text-xs text-gray-400 font-medium flex-shrink-0">0 notes</div>
+    </div>
+
+    <div id="notes-list" class="flex-1 overflow-y-auto divide-y divide-gray-100 dark:divide-gray-800/40 select-text"></div>
+  </section>
+
+  <!-- Column 3: Editor -->
+  <main id="editor-panel" class="fixed inset-0 md:static md:flex-1 bg-white dark:bg-gray-900 flex flex-col h-full min-w-0 z-20 md:z-auto transform translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out">
+    <div id="editor-wrapper" class="flex-1 flex flex-col h-full min-h-0 select-text">
+      <div class="h-14 px-3 md:px-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between gap-2 bg-white dark:bg-gray-900 flex-shrink-0 z-10">
+        <div class="flex items-center space-x-2 min-w-0 flex-1">
+          <button type="button" id="btn-back-to-list" aria-label="Back to notes" class="p-1.5 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg md:hidden">
+            <i data-lucide="chevron-left" class="w-5 h-5"></i>
+          </button>
+          <div class="relative inline-block max-w-[180px] sm:max-w-xs">
+            <select id="note-folder-select" aria-label="Folder" class="max-w-full text-xs font-medium bg-gray-100 dark:bg-gray-800/80 border border-transparent focus:border-brand-500 rounded-lg px-2.5 py-1.5 text-gray-700 dark:text-gray-300 focus:outline-none cursor-pointer truncate">
+              <option value="">Uncategorized</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
+          <span id="last-saved" class="hidden sm:inline text-[10px] text-gray-400 mr-1" title="Last saved"></span>
+          <button type="button" id="btn-save-note" class="flex items-center space-x-1.5 px-3 py-1.5 bg-brand-500 hover:bg-brand-600 text-white rounded-lg text-xs font-medium transition-colors shadow-sm">
+            <i data-lucide="save" class="w-3.5 h-3.5"></i>
+            <span>Save</span>
+            <span id="dirty-dot" class="hidden w-1.5 h-1.5 rounded-full bg-amber-300" title="Unsaved changes"></span>
+          </button>
+
+          <button type="button" id="btn-copy-note" aria-label="Copy note content" class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" title="Copy content">
+            <i data-lucide="copy" class="w-4 h-4"></i>
+          </button>
+
+          <button type="button" id="btn-toggle-preview" aria-label="Toggle preview" aria-pressed="false" class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" title="Toggle preview">
+            <i data-lucide="eye" class="w-4 h-4"></i>
+          </button>
+
+          <button type="button" id="btn-delete-note" aria-label="Delete note" class="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-colors" title="Delete note">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex-1 flex flex-col min-h-0 p-4 sm:p-6 overflow-hidden">
+        <input type="text" id="note-title-input" placeholder="Note title..." aria-label="Note title" maxlength="500" autocomplete="off" class="text-xl sm:text-2xl font-bold bg-transparent border-none outline-none focus:outline-none mb-3 placeholder-gray-300 dark:placeholder-gray-600 text-gray-900 dark:text-gray-100 tracking-tight">
+        <textarea id="note-body-input" placeholder="Start typing your note here... (Markdown supported)" aria-label="Note body" class="flex-1 min-h-0 w-full bg-transparent border-none outline-none focus:outline-none resize-none font-mono text-sm leading-relaxed text-gray-800 dark:text-gray-200 placeholder-gray-300 dark:placeholder-gray-600"></textarea>
+        <div id="note-preview" class="flex-1 min-h-0 w-full overflow-y-auto prose max-w-none hidden"></div>
+      </div>
+    </div>
+
+    <!-- Empty state -->
+    <div id="empty-state" class="hidden flex-1 flex-col items-center justify-center p-6 text-center text-gray-400 select-none">
+      <div class="w-12 h-12 bg-gray-100 dark:bg-gray-800/60 rounded-full flex items-center justify-center mb-3">
+        <i data-lucide="file-text" class="w-6 h-6 text-gray-400"></i>
+      </div>
+      <h3 class="text-base font-semibold text-gray-700 dark:text-gray-300 mb-1">No note selected</h3>
+      <p class="text-xs text-gray-500 max-w-xs mb-4">Choose a note from the list or create a new one to begin editing.</p>
+      <button type="button" id="btn-empty-new-note" class="py-2 px-4 bg-brand-500 hover:bg-brand-600 text-white text-xs font-medium rounded-lg shadow-sm">Create new note</button>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal-backdrop" class="fixed inset-0 bg-gray-900/60 z-50 flex items-center justify-center p-4 hidden backdrop-blur-sm" aria-hidden="true">
+    <div id="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title" class="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-md overflow-hidden p-5 sm:p-6">
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Toasts -->
+  <div id="toast-container" role="status" aria-live="polite" class="fixed bottom-4 right-4 z-[60] flex flex-col space-y-2 pointer-events-none"></div>
+
+  <script>
+  (() => {
+    'use strict';
+
+    /* ------------------------------------------------------------------ *
+     * Constants & helpers
+     * ------------------------------------------------------------------ */
+    const STORAGE_KEY = 'notes_app_data_v2';   // unchanged — existing notes carry over
+    const KDF_ITERATIONS = 600000;             // used for new encrypted backups
+    const LEGACY_KDF_ITERATIONS = 100000;      // backups written by the old version
+    const MAX_KDF_ITERATIONS = 5000000;        // refuse absurd values from crafted files
+    const MAX_IMPORT_BYTES = 25 * 1024 * 1024;
+    const MAX_TITLE = 500;
+    const MAX_FOLDER_NAME = 100;
+    const MAX_BODY_BYTES = 2 * 1024 * 1024;    // soft limit per note (~2 MB)
+    const RESERVED_FILTERS = new Set(['all', 'uncategorized']);
+
+    const NAV_BASE = 'nav-item w-full flex items-center justify-between px-2.5 py-1.5 text-sm rounded-lg font-medium transition-colors ';
+    const ACTIVE_CLS = 'bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-500';
+    const IDLE_CLS = 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50';
+    const BADGE_CLS = 'text-xs px-2 py-0.5 rounded-md bg-gray-200/60 dark:bg-gray-800 text-gray-600 dark:text-gray-400';
+    const BTN_GHOST = 'px-3.5 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg';
+    const BTN_PRIMARY = 'px-3.5 py-1.5 text-xs font-medium bg-brand-500 hover:bg-brand-600 text-white rounded-lg disabled:opacity-60';
+    const BTN_DANGER = 'px-3.5 py-1.5 text-xs font-medium bg-red-600 hover:bg-red-700 text-white rounded-lg';
+    const INPUT_CLS = 'w-full px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 border border-transparent focus:border-brand-500 rounded-lg focus:outline-none';
+
+    const $ = (id) => document.getElementById(id);
+
+    // HTML-escape for text AND attribute contexts. DOMPurify is only used for markdown output.
+    const ESC_MAP = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+    const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ESC_MAP[c]);
+
+    const toText = (v) =>
+      typeof v === 'string' ? v : (typeof v === 'number' || typeof v === 'boolean') ? String(v) : '';
+
+    function generateId() {
+      if (window.crypto && typeof crypto.randomUUID === 'function') return crypto.randomUUID();
+      // Fallback: still collision-resistant enough for single-user local use
+      return Date.now().toString(36) + Math.random().toString(36).slice(2, 11);
+    }
+
+    /** Simple debounce */
+    function debounce(fn, ms) {
+      let t;
+      return function (...args) {
+        clearTimeout(t);
+        t = setTimeout(() => fn.apply(this, args), ms);
+      };
+    }
+
+    /** Fold diacritics for search (NFD + strip combining marks) */
+    function fold(str) {
+      return String(str || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+    }
+
+    /* ------------------------------------------------------------------ *
+     * State
+     *   editingId = the note whose content is currently loaded in the editor.
+     *   Saves always go to editingId, never to "whatever is selected now".
+     * ------------------------------------------------------------------ */
+    const state = {
+      folders: [],
+      notes: [],
+      activeNoteId: null,
+      activeFilter: 'all',
+      searchQuery: '',
+      isPreviewMode: false,
+    };
+    let editingId = null;
+    let dirty = false;
+    let lastFocused = null;
+    let lastSavedAt = null; // Date.now() of last successful save for the current note
+
+    const getNote = (id) => (id == null ? undefined : state.notes.find((n) => n.id === id));
+    const getFolder = (id) => (id ? state.folders.find((f) => f.id === id) : undefined);
+    const isValidFilter = (f) => RESERVED_FILTERS.has(f) || !!getFolder(f);
+
+    /* ------------------------------------------------------------------ *
+     * UI helpers: icons, toasts
+     * ------------------------------------------------------------------ */
+    function icons(root) {
+      if (window.lucide) {
+        // Prefer scoping to a container when possible to avoid full-document scans
+        window.lucide.createIcons({ root: root || document.body });
+      }
+    }
+
+    function showToast(message, type = 'info') {
+      const container = $('toast-container');
+      const toast = document.createElement('div');
+      const colors = {
+        info: 'bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900',
+        success: 'bg-emerald-600 text-white',
+        error: 'bg-red-600 text-white',
+      };
+      toast.className = `px-3.5 py-2 rounded-lg text-xs font-medium shadow-md transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto ${colors[type] || colors.info}`;
+      toast.textContent = message;
+      container.appendChild(toast);
+      requestAnimationFrame(() => toast.classList.remove('translate-y-2', 'opacity-0'));
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, type === 'error' ? 4000 : 2500);
+    }
+
+    /* ------------------------------------------------------------------ *
+     * Crypto (AES-256-GCM, key from PBKDF2-SHA256)
+     * ------------------------------------------------------------------ */
+    const toB64 = (buffer) => {
+      const bytes = new Uint8Array(buffer);
+      let s = '';
+      for (let i = 0; i < bytes.length; i += 8192) s += String.fromCharCode.apply(null, bytes.subarray(i, i + 8192));
+      return btoa(s);
+    };
+    const fromB64 = (str) => Uint8Array.from(atob(str), (c) => c.charCodeAt(0));
+
+    function requireCrypto() {
+      if (!(window.crypto && window.crypto.subtle)) {
+        throw new Error('Encryption needs a secure (https) page.');
+      }
+    }
+
+    async function deriveKey(passphrase, salt, iterations) {
+      const enc = new TextEncoder();
+      const material = await crypto.subtle.importKey('raw', enc.encode(passphrase), 'PBKDF2', false, ['deriveKey']);
+      return crypto.subtle.deriveKey(
+        { name: 'PBKDF2', salt, iterations, hash: 'SHA-256' },
+        material,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['encrypt', 'decrypt']
+      );
+    }
+
+    async function encryptData(text, passphrase) {
+      requireCrypto();
+      const salt = crypto.getRandomValues(new Uint8Array(16));
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      const key = await deriveKey(passphrase, salt, KDF_ITERATIONS);
+      const ciphertext = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(text));
+      return JSON.stringify({
+        encrypted: true,
+        version: '3.0',
+        kdf: 'PBKDF2-SHA256',
+        iterations: KDF_ITERATIONS,
+        salt: toB64(salt),
+        iv: toB64(iv),
+        ciphertext: toB64(ciphertext),
+      });
+    }
+
+    async function decryptData(payload, passphrase) {
+      requireCrypto();
+      // Old backups have no "iterations" field and used 100k.
+      const iterations = payload.iterations === undefined ? LEGACY_KDF_ITERATIONS : payload.iterations;
+      if (!Number.isInteger(iterations) || iterations < 1 || iterations > MAX_KDF_ITERATIONS) {
+        throw new Error('Unsupported backup format.');
+      }
+      try {
+        const salt = fromB64(payload.salt);
+        const iv = fromB64(payload.iv);
+        const ciphertext = fromB64(payload.ciphertext);
+        const key = await deriveKey(passphrase, salt, iterations);
+        const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ciphertext);
+        return new TextDecoder().decode(plain);
+      } catch (err) {
+        throw new Error('Wrong passphrase or corrupted file.');
+      }
+    }
+
+    /* ------------------------------------------------------------------ *
+     * Data: validation, load, save
+     * ------------------------------------------------------------------ */
+
+    // Turns any input (localStorage, imported file) into clean, internally consistent data:
+    // string ids, valid timestamps, no duplicate ids, no notes pointing at missing folders.
+    function sanitizeData(input) {
+      if (!input || typeof input !== 'object' || (!Array.isArray(input.notes) && !Array.isArray(input.folders))) {
+        throw new Error('Invalid backup structure.');
+      }
+
+      const folders = [];
+      const folderIds = new Set();
+      const idRemap = new Map();
+      for (const f of Array.isArray(input.folders) ? input.folders : []) {
+        if (!f || typeof f !== 'object') continue;
+        const original = f.id != null && f.id !== '' ? String(f.id) : generateId();
+        if (folderIds.has(original) && !idRemap.has(original)) continue;   // duplicate id: keep the first
+        let id = original;
+        if (RESERVED_FILTERS.has(id)) id = generateId();                   // would collide with built-in views
+        idRemap.set(original, id);
+        if (folderIds.has(id)) continue;
+        folderIds.add(id);
+        folders.push({ id, name: toText(f.name).trim().slice(0, MAX_FOLDER_NAME) || 'Untitled Folder' });
+      }
+
+      const byId = new Map();
+      for (const n of Array.isArray(input.notes) ? input.notes : []) {
+        if (!n || typeof n !== 'object') continue;
+        const id = n.id != null && n.id !== '' ? String(n.id) : generateId();
+        const updated = Number(n.updatedAt);
+        const rawFolder = n.folderId != null && n.folderId !== '' ? String(n.folderId) : null;
+        const folderId = rawFolder ? (idRemap.get(rawFolder) ?? rawFolder) : null;
+        let body = toText(n.body);
+        // Soft-truncate oversized bodies on import/load so storage stays usable
+        if (new TextEncoder().encode(body).length > MAX_BODY_BYTES) {
+          body = body.slice(0, Math.floor(MAX_BODY_BYTES * 0.9)); // approximate; UTF-16 safe enough
+        }
+        const note = {
+          id,
+          folderId: folderId && folderIds.has(folderId) ? folderId : null,
+          title: toText(n.title).slice(0, MAX_TITLE),
+          body,
+          updatedAt: Number.isFinite(updated) && updated > 0 ? updated : Date.now(),
+        };
+        const existing = byId.get(id);
+        if (!existing || note.updatedAt > existing.updatedAt) byId.set(id, note);
+      }
+
+      return { folders, notes: [...byId.values()] };
+    }
+
+    function loadData() {
+      let raw = null;
+      try {
+        raw = localStorage.getItem(STORAGE_KEY);
+      } catch (err) {
+        console.error('localStorage unavailable:', err);
+        showToast('Storage is unavailable; notes will not persist', 'error');
+      }
+
+      if (raw) {
+        try {
+          const clean = sanitizeData(JSON.parse(raw));
+          state.folders = clean.folders;
+          state.notes = clean.notes;
+          return;
+        } catch (err) {
+          // Never let a bad read lead to overwriting good data with an empty database.
+          console.error('Saved data could not be read:', err);
+          try { localStorage.setItem(`${STORAGE_KEY}_corrupt_${Date.now()}`, raw); } catch (e) { /* best effort */ }
+          showToast('Saved data was unreadable. A raw copy was kept in browser storage.', 'error');
+        }
+      }
+
+      state.folders = [{ id: 'f-welcome', name: 'Getting Started' }];
+      state.notes = [{
+        id: 'n-welcome',
+        folderId: 'f-welcome',
+        title: 'Welcome to Notes',
+        body: '# Welcome to Notes!\n\nA fast, local-first markdown note application.\n\n### Key features\n- Manual saving (Ctrl+S / Cmd+S), plus a save whenever you switch notes\n- Client-side privacy (nothing leaves your browser)\n- Encrypted backups (AES-256-GCM)\n- Markdown support with live preview',
+        updatedAt: Date.now(),
+      }];
+      saveData();
+    }
+
+    function saveData() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ folders: state.folders, notes: state.notes }));
+        return true;
+      } catch (err) {
+        console.error('Failed to save:', err);
+        showToast('Could not save: browser storage is full or unavailable', 'error');
+        return false;
+      }
+    }
+
+    /* ------------------------------------------------------------------ *
+     * Selectors (pure: they never change state)
+     * ------------------------------------------------------------------ */
+    function getFilteredNotes() {
+      const q = fold(state.searchQuery);
+      return state.notes
+        .filter((note) => {
+          let inView = true;
+          if (state.activeFilter === 'uncategorized') inView = !note.folderId;
+          else if (state.activeFilter !== 'all') inView = note.folderId === state.activeFilter;
+          if (!inView) return false;
+          if (!q) return true;
+          return fold(note.title).includes(q) || fold(note.body).includes(q);
+        })
+        .sort((a, b) => b.updatedAt - a.updatedAt);
+    }
+
+    function viewTitle() {
+      if (state.activeFilter === 'all') return 'All Notes';
+      if (state.activeFilter === 'uncategorized') return 'Uncategorized';
+      const folder = getFolder(state.activeFilter);
+      return folder ? folder.name : 'Folder';
+    }
+
+    // Called explicitly after navigation-type changes (filter, search, delete, import).
+    // It is deliberately NOT called from render functions.
+    function ensureActiveNote() {
+      const visible = getFilteredNotes();
+      if (!visible.some((n) => n.id === state.activeNoteId)) {
+        state.activeNoteId = visible.length ? visible[0].id : null;
+      }
+    }
+
+    /* ------------------------------------------------------------------ *
+     * Rendering
+     * ------------------------------------------------------------------ */
+    function renderApp(reloadEditor = false) {
+      if (reloadEditor) editingId = null;   // forces the editor to reload from state
+      renderFolderList();
+      renderFolderSelectOptions();          // options first, then the value is set
+      renderNoteList();
+      renderActiveNote();
+      updateCounts();
+      icons();
+    }
+
+    function renderLists() {
+      renderFolderList();
+      renderNoteList();
+      updateCounts();
+      icons($('sidebar'));
+      icons($('notes-panel'));
+    }
+
+    function updateCounts() {
+      $('count-all').textContent = state.notes.length;
+      $('count-uncategorized').textContent = state.notes.filter((n) => !n.folderId).length;
+    }
+
+    function renderFolderList() {
+      $('folders-container').innerHTML = state.folders.map((folder) => {
+        const count = state.notes.filter((n) => n.folderId === folder.id).length;
+        const active = state.activeFilter === folder.id;
+        const name = esc(folder.name);
+        return `
+          <div data-folder-id="${esc(folder.id)}" class="folder-item flex items-center justify-between rounded-lg text-sm font-medium transition-colors ${active ? ACTIVE_CLS : IDLE_CLS}">
+            <button type="button" data-action="select" class="flex-1 min-w-0 flex items-center space-x-2.5 px-2.5 py-1.5 text-left">
+              <i data-lucide="folder" class="w-4 h-4 flex-shrink-0"></i>
+              <span class="truncate">${name}</span>
+            </button>
+            <span class="folder-count ${BADGE_CLS} mr-1.5">${count}</span>
+            <div class="folder-actions space-x-0.5 pr-1.5">
+              <button type="button" data-action="rename" aria-label="Rename folder ${name}" title="Rename folder" class="p-1.5 hover:text-brand-500 rounded">
+                <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+              </button>
+              <button type="button" data-action="delete" aria-label="Delete folder ${name}" title="Delete folder" class="p-1.5 hover:text-red-500 rounded">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>`;
+      }).join('');
+
+      document.querySelectorAll('.nav-item').forEach((btn) => {
+        const active = btn.dataset.filter === state.activeFilter;
+        btn.className = NAV_BASE + (active ? ACTIVE_CLS : IDLE_CLS);
+      });
+    }
+
+    function renderNoteList() {
+      const container = $('notes-list');
+      const notes = getFilteredNotes();
+
+      $('current-view-title').textContent = viewTitle();
+      $('notes-count-badge').textContent = `${notes.length} ${notes.length === 1 ? 'note' : 'notes'}`;
+
+      if (!notes.length) {
+        container.innerHTML = `<div class="p-8 text-center text-gray-400 text-xs">${
+          state.searchQuery ? 'No notes match your search.' : 'No notes here yet. Tap New Note to add one.'
+        }</div>`;
+        return;
+      }
+
+      container.innerHTML = notes.map((note) => {
+        const active = note.id === state.activeNoteId;
+        const date = new Date(note.updatedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+        const snippet = note.body.replace(/[#*`_\[\]]/g, '').replace(/\s+/g, ' ').trim().slice(0, 65) || 'Empty note';
+        return `
+          <div role="button" tabindex="0" data-note-id="${esc(note.id)}" class="p-3.5 cursor-pointer transition-colors border-l-4 ${
+            active ? 'bg-brand-50/60 dark:bg-brand-500/10 border-brand-500' : 'border-transparent hover:bg-gray-50 dark:hover:bg-gray-800/30'
+          }">
+            <div class="flex items-center justify-between mb-1">
+              <h4 class="text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-100 truncate pr-2">${esc(note.title || 'Untitled Note')}</h4>
+              <span class="text-[10px] text-gray-400 flex-shrink-0">${esc(date)}</span>
+            </div>
+            <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 leading-relaxed">${esc(snippet)}</p>
+          </div>`;
+      }).join('');
+    }
+
+    function renderFolderSelectOptions() {
+      const select = $('note-folder-select');
+      const previous = select.value;
+      select.innerHTML = '';
+      const none = document.createElement('option');
+      none.value = '';
+      none.textContent = 'Uncategorized';
+      select.appendChild(none);
+      state.folders.forEach((f) => {
+        const opt = document.createElement('option');
+        opt.value = f.id;
+        opt.textContent = f.name;
+        select.appendChild(opt);
+      });
+      select.value = getFolder(previous) ? previous : '';
+    }
+
+    function renderMarkdown(text) {
+      if (window.marked && window.DOMPurify) {
+        return DOMPurify.sanitize(marked.parse(text || '', { gfm: true, breaks: true }));
+      }
+      return `<pre>${esc(text)}</pre>`;
+    }
+
+    function syncPreviewMode() {
+      const body = $('note-body-input');
+      const preview = $('note-preview');
+      body.classList.toggle('hidden', state.isPreviewMode);
+      preview.classList.toggle('hidden', !state.isPreviewMode);
+      const btn = $('btn-toggle-preview');
+      btn.classList.toggle('toggle-on', state.isPreviewMode);
+      btn.setAttribute('aria-pressed', String(state.isPreviewMode));
+      if (state.isPreviewMode) preview.innerHTML = renderMarkdown(body.value);
+    }
+
+    // Live preview while typing (debounced)
+    const updatePreviewLive = debounce(() => {
+      if (state.isPreviewMode) {
+        $('note-preview').innerHTML = renderMarkdown($('note-body-input').value);
+      }
+    }, 120);
+
+    function setDirty(value) {
+      dirty = value;
+      $('dirty-dot').classList.toggle('hidden', !dirty);
+      updateLastSavedLabel();
+    }
+
+    function updateLastSavedLabel() {
+      const el = $('last-saved');
+      if (!el) return;
+      if (!editingId || !lastSavedAt) {
+        el.textContent = '';
+        el.classList.add('hidden');
+        return;
+      }
+      const d = new Date(lastSavedAt);
+      const time = d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+      el.textContent = dirty ? 'Unsaved' : `Saved ${time}`;
+      el.classList.toggle('hidden', false);
+      el.classList.toggle('text-amber-500', dirty);
+      el.classList.toggle('text-gray-400', !dirty);
+    }
+
+    // Loads the active note into the editor only when it differs from what is already loaded,
+    // so re-rendering never clobbers text the person is typing.
+    function renderActiveNote() {
+      const note = getNote(state.activeNoteId);
+      const wrapper = $('editor-wrapper');
+      const empty = $('empty-state');
+
+      if (!note) {
+        editingId = null;
+        lastSavedAt = null;
+        setDirty(false);
+        wrapper.classList.add('hidden');
+        empty.classList.remove('hidden');
+        empty.classList.add('flex');
+        return;
+      }
+
+      wrapper.classList.remove('hidden');
+      empty.classList.add('hidden');
+      empty.classList.remove('flex');
+
+      if (editingId !== note.id) {
+        $('note-title-input').value = note.title;
+        $('note-body-input').value = note.body;
+        $('note-folder-select').value = getFolder(note.folderId) ? note.folderId : '';
+        editingId = note.id;
+        lastSavedAt = note.updatedAt;
+        setDirty(false);
+      }
+      syncPreviewMode();
+    }
+
+    /* ------------------------------------------------------------------ *
+     * Saving
+     * ------------------------------------------------------------------ */
+    // Writes the editor contents to the note that is loaded in the editor (editingId).
+    // Returns false only if persisting failed.
+    function saveActiveNote({ explicit = false } = {}) {
+      const note = getNote(editingId);
+      if (!note) return true;
+
+      let title = $('note-title-input').value.trim().slice(0, MAX_TITLE);
+      let body = $('note-body-input').value;
+
+      // Soft body size guard
+      const bodyBytes = new TextEncoder().encode(body).length;
+      if (bodyBytes > MAX_BODY_BYTES) {
+        showToast(`Note is too large (${Math.round(bodyBytes / 1024)} KB). Trim it under ~2 MB.`, 'error');
+        return false;
+      }
+
+      const selected = $('note-folder-select').value;
+      const folderId = getFolder(selected) ? selected : null;
+
+      const changed = title !== note.title || body !== note.body || folderId !== note.folderId;
+      if (changed) {
+        const before = { title: note.title, body: note.body, folderId: note.folderId, updatedAt: note.updatedAt };
+        Object.assign(note, { title, body, folderId, updatedAt: Date.now() });
+        if (!saveData()) {
+          Object.assign(note, before);   // keep memory in sync with storage; the editor still holds the text
+          return false;
+        }
+        lastSavedAt = note.updatedAt;
+        renderLists();
+      }
+      setDirty(false);
+      if (explicit) showToast('Note saved', 'success');
+      return true;
+    }
+
+    /* ------------------------------------------------------------------ *
+     * Note actions
+     * ------------------------------------------------------------------ */
+    function selectNote(id) {
+      if (id === state.activeNoteId && id === editingId) {
+        openMobileEditor();
+        return;
+      }
+      saveActiveNote();
+      state.activeNoteId = id;
+      renderNoteList();
+      renderActiveNote();
+      openMobileEditor();
+    }
+
+    function setFilter(filter) {
+      saveActiveNote();
+      state.activeFilter = filter;
+      ensureActiveNote();
+      renderApp();
+      closeMobileSidebar();
+    }
+
+    function createNewNote() {
+      saveActiveNote();
+      if (state.searchQuery) {           // a blank note would never match the search
+        state.searchQuery = '';
+        $('search-input').value = '';
+      }
+      const note = {
+        id: generateId(),
+        folderId: getFolder(state.activeFilter) ? state.activeFilter : null,
+        title: '',
+        body: '',
+        updatedAt: Date.now(),
+      };
+      state.notes.unshift(note);
+      state.activeNoteId = note.id;
+      saveData();
+      renderApp();
+      openMobileEditor();
+      setTimeout(() => $('note-title-input').focus(), 100);
+    }
+
+    // Folder dropdown: move the note. Only change the active filter when the note
+    // would otherwise disappear from the current view.
+    function moveActiveNote() {
+      if (!editingId) return;
+      if (!saveActiveNote()) return;
+      const note = getNote(editingId);
+      if (!note) return;
+
+      const wouldDisappear =
+        (state.activeFilter === 'uncategorized' && note.folderId) ||
+        (state.activeFilter !== 'all' && state.activeFilter !== 'uncategorized' && note.folderId !== state.activeFilter);
+
+      if (wouldDisappear) {
+        state.activeFilter = note.folderId || 'uncategorized';
+      }
+      renderLists();
+      const folder = getFolder(note.folderId);
+      showToast(folder ? `Moved to ${folder.name}` : 'Moved to Uncategorized', 'success');
+    }
+
+    function deleteActiveNote() {
+      const note = getNote(editingId);
+      if (!note) return;
+      const id = note.id;
+      confirmDialog({
+        title: 'Delete note',
+        message: `Delete "${note.title || 'Untitled Note'}"? This can't be undone.`,
+        onConfirm: () => {
+          state.notes = state.notes.filter((n) => n.id !== id);
+          if (state.activeNoteId === id) state.activeNoteId = null;
+          saveData();
+          ensureActiveNote();
+          renderApp(true);
+          closeMobileEditor();
+          showToast('Note deleted', 'info');
+        },
+      });
+    }
+
+    function copyNoteContent() {
+      if (!editingId) return;
+      const text = $('note-body-input').value;
+      const fallback = () => {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.cssText = 'position:fixed;opacity:0;';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        try {
+          document.execCommand('copy');
+          showToast('Copied to clipboard', 'success');
+        } catch (err) {
+          showToast('Could not copy', 'error');
+        }
+        document.body.removeChild(ta);
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard', 'success')).catch(fallback);
+      } else {
+        fallback();
+      }
+    }
+
+    /* ------------------------------------------------------------------ *
+     * Folder actions
+     * ------------------------------------------------------------------ */
+    function promptCreateFolder() {
+      promptDialog({
+        title: 'Create folder',
+        placeholder: 'Folder name',
+        confirmLabel: 'Create',
+        onSubmit: (name) => {
+          saveActiveNote();
+          const folder = { id: generateId(), name: name.slice(0, MAX_FOLDER_NAME) };
+          state.folders.push(folder);
+          state.activeFilter = folder.id;
+          saveData();
+          ensureActiveNote();
+          renderApp();
+          showToast('Folder created', 'success');
+        },
+      });
+    }
+
+    function promptRenameFolder(folderId) {
+      const folder = getFolder(folderId);
+      if (!folder) return;
+      promptDialog({
+        title: 'Rename folder',
+        value: folder.name,
+        confirmLabel: 'Save',
+        onSubmit: (name) => {
+          folder.name = name.slice(0, MAX_FOLDER_NAME);
+          saveData();
+          renderApp();
+          showToast('Folder renamed', 'success');
+        },
+      });
+    }
+
+    function confirmDeleteFolder(folderId) {
+      const folder = getFolder(folderId);
+      if (!folder) return;
+      confirmDialog({
+        title: 'Delete folder',
+        message: `Delete "${folder.name}"? Its notes will move to Uncategorized.`,
+        onConfirm: () => {
+          saveActiveNote();
+          state.folders = state.folders.filter((f) => f.id !== folderId);
+          state.notes.forEach((n) => { if (n.folderId === folderId) n.folderId = null; });
+          if (state.activeFilter === folderId) state.activeFilter = 'all';
+          saveData();
+          ensureActiveNote();
+          renderApp(true);
+          showToast('Folder deleted', 'info');
+        },
+      });
+    }
+
+    /* ------------------------------------------------------------------ *
+     * Modals (with basic focus trap)
+     * ------------------------------------------------------------------ */
+    function openModal(html) {
+      lastFocused = document.activeElement;
+      const backdrop = $('modal-backdrop');
+      $('modal-content').innerHTML = html;
+      backdrop.classList.remove('hidden');
+      backdrop.setAttribute('aria-hidden', 'false');
+      icons($('modal-card'));
+
+      // Simple focus trap: keep focus inside the dialog
+      const focusable = $('modal-card').querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length) {
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        const trap = (e) => {
+          if (e.key !== 'Tab') return;
+          if (e.shiftKey) {
+            if (document.activeElement === first) {
+              e.preventDefault();
+              last.focus();
+            }
+          } else if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        };
+        backdrop._trapHandler = trap;
+        document.addEventListener('keydown', trap);
+      }
+    }
+
+    function closeModal() {
+      const backdrop = $('modal-backdrop');
+      if (backdrop._trapHandler) {
+        document.removeEventListener('keydown', backdrop._trapHandler);
+        delete backdrop._trapHandler;
+      }
+      backdrop.classList.add('hidden');
+      backdrop.setAttribute('aria-hidden', 'true');
+      $('modal-content').innerHTML = '';
+      const el = lastFocused;
+      lastFocused = null;
+      // Don't hand focus back to a text field: on phones that pops the keyboard open.
+      if (el && document.contains(el) && !/^(INPUT|TEXTAREA)$/.test(el.tagName)) el.focus();
+    }
+
+    const isModalOpen = () => !$('modal-backdrop').classList.contains('hidden');
+
+    function confirmDialog({ title, message, confirmLabel = 'Delete', onConfirm }) {
+      openModal(`
+        <h3 id="modal-title" class="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">${esc(title)}</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">${esc(message)}</p>
+        <div class="flex justify-end space-x-2">
+          <button type="button" data-modal-close class="${BTN_GHOST}">Cancel</button>
+          <button type="button" id="modal-confirm" class="${BTN_DANGER}">${esc(confirmLabel)}</button>
+        </div>`);
+      const btn = $('modal-confirm');
+      btn.addEventListener('click', () => { closeModal(); onConfirm(); });
+      btn.focus();
+    }
+
+    function promptDialog({ title, value = '', placeholder = '', confirmLabel = 'Save', onSubmit }) {
+      openModal(`
+        <h3 id="modal-title" class="text-base font-bold text-gray-900 dark:text-gray-100 mb-2">${esc(title)}</h3>
+        <input type="text" id="modal-input" maxlength="${MAX_FOLDER_NAME}" value="${esc(value)}" placeholder="${esc(placeholder)}" autocomplete="off" class="${INPUT_CLS} mb-4">
+        <div class="flex justify-end space-x-2">
+          <button type="button" data-modal-close class="${BTN_GHOST}">Cancel</button>
+          <button type="button" id="modal-confirm" class="${BTN_PRIMARY}">${esc(confirmLabel)}</button>
+        </div>`);
+      const input = $('modal-input');
+      const submit = () => {
+        const v = input.value.trim();
+        if (!v) { input.focus(); return; }
+        closeModal();
+        onSubmit(v);
+      };
+      input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); submit(); } });
+      $('modal-confirm').addEventListener('click', submit);
+      input.focus();
+      input.select();
+    }
+
+    /* ------------------------------------------------------------------ *
+     * Export / import
+     * ------------------------------------------------------------------ */
+    function downloadFile(filename, text) {
+      const blob = new Blob([text], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);   // revoking immediately can cancel the download
+    }
+
+    function openExportModal() {
+      saveActiveNote();
+      openModal(`
+        <h3 id="modal-title" class="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">Export backup</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Download your notes and folders as a JSON file.</p>
+
+        <label class="flex items-center space-x-2 text-xs font-medium text-gray-700 dark:text-gray-300 cursor-pointer mb-4">
+          <input type="checkbox" id="chk-encrypt-export" class="rounded border-gray-300 text-brand-500 focus:ring-brand-500">
+          <span>Encrypt with a passphrase</span>
+        </label>
+
+        <div id="export-password-section" class="hidden space-y-3 mb-4">
+          <div>
+            <label for="export-passphrase" class="block text-[11px] font-medium text-gray-500 mb-1">Passphrase (8+ characters)</label>
+            <input type="password" id="export-passphrase" autocomplete="new-password" class="${INPUT_CLS}">
+          </div>
+          <div>
+            <label for="export-passphrase-confirm" class="block text-[11px] font-medium text-gray-500 mb-1">Confirm passphrase</label>
+            <input type="password" id="export-passphrase-confirm" autocomplete="new-password" class="${INPUT_CLS}">
+          </div>
+          <p class="text-[11px] text-gray-500">If you forget this passphrase, the backup can't be recovered.</p>
+        </div>
+
+        <div class="flex justify-end space-x-2">
+          <button type="button" data-modal-close class="${BTN_GHOST}">Cancel</button>
+          <button type="button" id="btn-process-export" class="${BTN_PRIMARY}">Download backup</button>
+        </div>`);
+
+      const chk = $('chk-encrypt-export');
+      chk.addEventListener('change', () => $('export-password-section').classList.toggle('hidden', !chk.checked));
+
+      const btn = $('btn-process-export');
+      btn.addEventListener('click', async () => {
+        saveActiveNote();
+        const date = new Date().toISOString().slice(0, 10); // UTC date
+        const raw = JSON.stringify({
+          version: '2.0',
+          exportedAt: new Date().toISOString(),
+          folders: state.folders,
+          notes: state.notes,
+        }, null, 2);
+
+        let payload = raw;
+        let filename = `notes-backup-${date}.json`;
+
+        if (chk.checked) {
+          const pass = $('export-passphrase').value;
+          if (pass.length < 8) return showToast('Use a passphrase of at least 8 characters', 'error');
+          if (pass !== $('export-passphrase-confirm').value) return showToast('Passphrases do not match', 'error');
+
+          btn.disabled = true;
+          btn.textContent = 'Encrypting…';
+          try {
+            payload = await encryptData(raw, pass);
+            filename = `notes-backup-encrypted-${date}.enc.json`;
+          } catch (err) {
+            btn.disabled = false;
+            btn.textContent = 'Download backup';
+            return showToast(err.message || 'Encryption failed', 'error');
+          }
+        }
+
+        downloadFile(filename, payload);
+        closeModal();
+        showToast('Backup exported', 'success');
+      });
+    }
+
+    function handleImportFileSelect(e) {
+      const file = e.target.files[0];
+      e.target.value = '';
+      if (!file) return;
+      if (file.size > MAX_IMPORT_BYTES) return showToast('That file is too large to import', 'error');
+
+      const reader = new FileReader();
+      reader.onerror = () => showToast('Could not read that file', 'error');
+      reader.onload = () => {
+        let parsed;
+        try {
+          parsed = JSON.parse(reader.result);
+        } catch (err) {
+          return showToast('That is not a valid JSON file', 'error');
+        }
+        if (parsed && parsed.encrypted === true && typeof parsed.ciphertext === 'string') {
+          return promptImportDecrypt(parsed);
+        }
+        try {
+          promptImportMergeOptions(sanitizeData(parsed));
+        } catch (err) {
+          showToast(err.message, 'error');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function promptImportDecrypt(payload) {
+      openModal(`
+        <h3 id="modal-title" class="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">Encrypted backup</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Enter the passphrase used when this backup was exported.</p>
+        <input type="password" id="import-passphrase" placeholder="Passphrase" autocomplete="current-password" class="${INPUT_CLS} mb-4">
+        <div class="flex justify-end space-x-2">
+          <button type="button" data-modal-close class="${BTN_GHOST}">Cancel</button>
+          <button type="button" id="btn-decrypt-import" class="${BTN_PRIMARY}">Decrypt and continue</button>
+        </div>`);
+
+      const input = $('import-passphrase');
+      const btn = $('btn-decrypt-import');
+      input.focus();
+
+      const run = async () => {
+        if (!input.value) return showToast('Enter the passphrase', 'error');
+        btn.disabled = true;
+        btn.textContent = 'Decrypting…';
+        let plain;
+        try {
+          plain = await decryptData(payload, input.value);
+        } catch (err) {
+          btn.disabled = false;
+          btn.textContent = 'Decrypt and continue';
+          return showToast(err.message, 'error');
+        }
+        try {
+          // Close the decrypt modal first so the merge options modal can open cleanly
+          closeModal();
+          promptImportMergeOptions(sanitizeData(JSON.parse(plain)));
+        } catch (err) {
+          // Modal already closed; just notify
+          showToast('The backup contents are invalid', 'error');
+        }
+      };
+      btn.addEventListener('click', run);
+      input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); run(); } });
+    }
+
+    function promptImportMergeOptions(data) {
+      const n = data.notes.length;
+      const f = data.folders.length;
+      openModal(`
+        <h3 id="modal-title" class="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">Import backup</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">This file has <strong>${n} ${n === 1 ? 'note' : 'notes'}</strong> in <strong>${f} ${f === 1 ? 'folder' : 'folders'}</strong>. Export a backup first if you want a safety net.</p>
+        <div class="space-y-2 mb-5">
+          <button type="button" id="btn-import-merge" class="w-full text-left p-2.5 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-brand-500 transition-colors">
+            <div class="font-semibold text-xs text-gray-800 dark:text-gray-200">Merge with existing notes</div>
+            <div class="text-[11px] text-gray-500">Adds new notes and keeps the newer copy of any note that exists in both. Safe to run twice.</div>
+          </button>
+          <button type="button" id="btn-import-replace" class="w-full text-left p-2.5 rounded-lg border border-red-200 dark:border-red-900/50 hover:border-red-500 bg-red-50/50 dark:bg-red-950/20 transition-colors">
+            <div class="font-semibold text-xs text-red-600 dark:text-red-400">Replace everything</div>
+            <div class="text-[11px] text-gray-500 dark:text-gray-400">Deletes all current notes and folders, then loads this file.</div>
+          </button>
+        </div>
+        <div class="flex justify-end">
+          <button type="button" data-modal-close class="${BTN_GHOST}">Cancel</button>
+        </div>`);
+
+      $('btn-import-merge').addEventListener('click', () => { if (applyImport('merge', data)) closeModal(); });
+      $('btn-import-replace').addEventListener('click', () => { if (applyImport('replace', data)) closeModal(); });
+    }
+
+    // Builds the new dataset without mutating current arrays, so a failed save can be rolled back.
+    function applyImport(mode, data) {
+      saveActiveNote();
+      const previous = { folders: state.folders, notes: state.notes };
+      let next;
+      let added = 0;
+      let updated = 0;
+
+      if (mode === 'replace') {
+        next = { folders: data.folders, notes: data.notes };
+      } else {
+        const folderMap = new Map(state.folders.map((f) => [f.id, f]));
+        data.folders.forEach((f) => { if (!folderMap.has(f.id)) folderMap.set(f.id, { ...f }); });
+
+        const noteMap = new Map(state.notes.map((n) => [n.id, n]));
+        data.notes.forEach((n) => {
+          const existing = noteMap.get(n.id);
+          if (!existing) { noteMap.set(n.id, { ...n }); added++; }
+          else if (n.updatedAt > existing.updatedAt) { noteMap.set(n.id, { ...n }); updated++; }
+        });
+        next = { folders: [...folderMap.values()], notes: [...noteMap.values()] };
+      }
+
+      const clean = sanitizeData(next);
+      state.folders = clean.folders;
+      state.notes = clean.notes;
+      if (!saveData()) {
+        state.folders = previous.folders;
+        state.notes = previous.notes;
+        return false;
+      }
+
+      if (mode === 'replace') {
+        state.activeFilter = 'all';
+        state.activeNoteId = null;
+      } else if (!isValidFilter(state.activeFilter)) {
+        state.activeFilter = 'all';
+      }
+      ensureActiveNote();
+      renderApp(true);
+      showToast(mode === 'replace' ? 'Backup restored' : `Merged: ${added} added, ${updated} updated`, 'success');
+      return true;
+    }
+
+    /* ------------------------------------------------------------------ *
+     * Mobile navigation
+     * ------------------------------------------------------------------ */
+    const isMobile = () => window.matchMedia('(max-width: 767px)').matches;
+
+    function openMobileSidebar() {
+      $('sidebar').classList.remove('-translate-x-full');
+      $('mobile-overlay').classList.remove('hidden');
+    }
+    function closeMobileSidebar() {
+      $('sidebar').classList.add('-translate-x-full');
+      $('mobile-overlay').classList.add('hidden');
+    }
+    function openMobileEditor() {
+      if (isMobile()) $('editor-panel').classList.remove('translate-x-full');
+    }
+    function closeMobileEditor() {
+      if (isMobile()) $('editor-panel').classList.add('translate-x-full');
+    }
+
+    /* ------------------------------------------------------------------ *
+     * Events
+     * ------------------------------------------------------------------ */
+    function bindEvents() {
+      // Notes list (delegated)
+      const list = $('notes-list');
+      list.addEventListener('click', (e) => {
+        const item = e.target.closest('[data-note-id]');
+        if (item) selectNote(item.dataset.noteId);
+      });
+      list.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        const item = e.target.closest('[data-note-id]');
+        if (item) { e.preventDefault(); selectNote(item.dataset.noteId); }
+      });
+
+      // Folders (delegated). IDs come from data attributes, never from inline JS.
+      $('folders-container').addEventListener('click', (e) => {
+        const row = e.target.closest('[data-folder-id]');
+        if (!row) return;
+        const id = row.dataset.folderId;
+        const actionEl = e.target.closest('[data-action]');
+        const action = actionEl ? actionEl.dataset.action : 'select';
+        if (action === 'rename') promptRenameFolder(id);
+        else if (action === 'delete') confirmDeleteFolder(id);
+        else setFilter(id);
+      });
+
+      document.querySelectorAll('.nav-item').forEach((btn) => {
+        btn.addEventListener('click', () => setFilter(btn.dataset.filter));
+      });
+
+      // Modal: one set of handlers for every dialog
+      $('modal-backdrop').addEventListener('click', (e) => {
+        if (e.target.id === 'modal-backdrop' || e.target.closest('[data-modal-close]')) closeModal();
+      });
+
+      // Global keys
+      document.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') {
+          e.preventDefault();
+          saveActiveNote({ explicit: true });
+        } else if (e.key === 'Escape') {
+          if (isModalOpen()) closeModal();
+          else closeMobileSidebar();
+        }
+      });
+
+      // beforeunload warning when there are unsaved changes
+      window.addEventListener('beforeunload', (e) => {
+        if (dirty) {
+          e.preventDefault();
+          e.returnValue = ''; // required for Chrome
+        }
+      });
+
+      // Editor
+      $('btn-save-note').addEventListener('click', () => saveActiveNote({ explicit: true }));
+      $('note-title-input').addEventListener('input', () => setDirty(true));
+      $('note-body-input').addEventListener('input', () => {
+        setDirty(true);
+        updatePreviewLive();
+      });
+      $('note-folder-select').addEventListener('change', moveActiveNote);
+      $('btn-copy-note').addEventListener('click', copyNoteContent);
+      $('btn-delete-note').addEventListener('click', deleteActiveNote);
+      $('btn-toggle-preview').addEventListener('click', () => {
+        state.isPreviewMode = !state.isPreviewMode;
+        syncPreviewMode();
+      });
+      $('btn-back-to-list').addEventListener('click', () => {
+        saveActiveNote();
+        closeMobileEditor();
+      });
+
+      // Sidebar actions
+      $('btn-new-note').addEventListener('click', () => { createNewNote(); closeMobileSidebar(); });
+      $('btn-empty-new-note').addEventListener('click', createNewNote);
+      $('btn-add-folder').addEventListener('click', promptCreateFolder);
+      $('btn-export-data').addEventListener('click', openExportModal);
+      $('btn-import-data').addEventListener('click', () => $('file-import-input').click());
+      $('file-import-input').addEventListener('change', handleImportFileSelect);
+
+      // Debounced search
+      const onSearch = debounce((value) => {
+        saveActiveNote();                       // save first, so switching notes can't drop edits
+        state.searchQuery = value.trim();
+        ensureActiveNote();
+        renderNoteList();
+        renderActiveNote();
+      }, 80);
+      $('search-input').addEventListener('input', (e) => onSearch(e.target.value));
+
+      $('open-mobile-sidebar').addEventListener('click', openMobileSidebar);
+      $('close-mobile-sidebar').addEventListener('click', closeMobileSidebar);
+      $('mobile-overlay').addEventListener('click', closeMobileSidebar);
+
+      // Persist pending edits when the page is hidden. On phones, pagehide and
+      // visibilitychange fire far more reliably than beforeunload.
+      window.addEventListener('pagehide', () => saveActiveNote());
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden') saveActiveNote();
+      });
+    }
+
+    /* ------------------------------------------------------------------ *
+     * Init
+     * ------------------------------------------------------------------ */
+    function init() {
+      loadData();
+
+      if (window.DOMPurify) {
+        DOMPurify.addHook('afterSanitizeAttributes', (node) => {
+          if (node.tagName === 'A' && node.hasAttribute('href')) {
+            node.setAttribute('target', '_blank');
+            node.setAttribute('rel', 'noopener noreferrer');
+          }
+        });
+      }
+
+      ensureActiveNote();
+      bindEvents();
+      renderApp();
+    }
+
+    init();
+  })();
+  </script>
+</body>
+</html>
