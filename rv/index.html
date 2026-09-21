@@ -1,1 +1,560 @@
-//
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biblia Reina-Valera 1960</title>
+<meta name="description" content="Lee la Biblia Reina-Valera 1960 en línea, libro por libro y capítulo por capítulo.">
+<meta name="color-scheme" content="light dark">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400..700;1,7..72,400..700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    color-scheme: light dark;
+
+    --paper:  #F3F5F8;
+    --surface:#FFFFFF;
+    --ink:    #1A2233;
+    --muted:  #5E6A7E;
+    --line:   #D5DBE5;
+    --accent: #23478F;
+
+    --serif: "Literata", Georgia, "Times New Roman", serif;
+    --sans:  "Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+    /* Ancho de la columna de números de versículo y su separación del texto */
+    --gutter: 1.75rem;
+    --gap: .45rem;
+    --indent: calc(var(--gutter) + var(--gap));
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper:  #11151C;
+      --surface:#1A202B;
+      --ink:    #E8EAF0;
+      --muted:  #98A2B5;
+      --line:   #2B3443;
+      --accent: #8CA8F2;
+    }
+  }
+
+  @media (min-width: 640px) {
+    :root { --gutter: 2.75rem; --gap: .6rem; }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .site-name {
+    margin: 0;
+    padding: 1.25rem 0 .9rem;
+    font: 600 .95rem/1.2 var(--sans);
+    color: var(--muted);
+  }
+
+  /* ---------- Navegación ---------- */
+
+  body:not(.ready) .pager { visibility: hidden; }
+
+  .pager { display: grid; gap: .5rem; }
+  .selects { display: grid; grid-template-columns: minmax(0, 1fr) 8.5rem; gap: .5rem; }
+  .steps   { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+  .pager--top .steps { margin-top: .5rem; }
+
+  .tile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: .1rem;
+    min-width: 0;
+    min-height: 3.5rem;
+    padding: .45rem 2.2rem .45rem .9rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: .6rem;
+    color: var(--ink);
+    text-decoration: none;
+    font-family: var(--sans);
+    -webkit-tap-highlight-color: transparent;
+    transition: border-color .15s ease;
+  }
+
+  .tile .cap { font-size: .75rem; line-height: 1.2; color: var(--muted); }
+  .tile .val { font-size: 1rem; font-weight: 600; line-height: 1.25; overflow-wrap: anywhere; }
+
+  .tile .icon {
+    position: absolute;
+    top: 50%;
+    right: .8rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+  }
+
+  /* Los <select> nativos cubren toda la ficha, invisibles: el selector del
+     sistema se abre al tocar y el texto visible lo controla la ficha. */
+  .field select {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    opacity: 0;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--ink);
+    background: var(--surface);
+  }
+
+  .step--prev { padding-left: 2.4rem; padding-right: .9rem; }
+  .step--prev .icon { left: .8rem; right: auto; }
+  .step--next { padding-left: .9rem; padding-right: 2.4rem; align-items: flex-end; text-align: right; }
+
+  a.tile[href], .field { cursor: pointer; }
+  .tile[aria-disabled="true"] { opacity: .4; cursor: not-allowed; }
+
+  @media (hover: hover) {
+    .tile:not([aria-disabled="true"]):hover { border-color: var(--accent); }
+  }
+
+  .tile:focus-within,
+  a.tile:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* ---------- Lectura ---------- */
+
+  .reader { padding-top: 1.75rem; }
+
+  .title {
+    margin: 1.25rem 0 1.5rem var(--indent);
+    font-weight: 600;
+    font-size: clamp(2rem, 1.5rem + 2.4vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -.015em;
+    text-wrap: balance;
+    outline: none;
+  }
+
+  .text {
+    font-size: clamp(1.0625rem, .98rem + .35vw, 1.2rem);
+    line-height: 1.72;
+  }
+
+  .verse {
+    display: grid;
+    grid-template-columns: var(--gutter) minmax(0, 1fr);
+    column-gap: var(--gap);
+    align-items: baseline;
+    margin: 0 0 .5em;
+    text-wrap: pretty;
+  }
+
+  .vn {
+    justify-self: end;
+    font: 600 .7em/1 var(--sans);
+    font-variant-numeric: tabular-nums;
+    color: var(--accent);
+  }
+
+  /* Poesía: cada línea aparte; las líneas a partir de la segunda van sangradas */
+  .poetry .ln { display: block; padding-left: 1.25em; text-indent: -1.25em; }
+  .poetry .ln:not(:first-child) { padding-left: 2.5em; }
+
+  .sect {
+    margin: 2.1em 0 .75em var(--indent);
+    font: 600 .95rem/1.35 var(--sans);
+    text-wrap: balance;
+  }
+  .text > .sect:first-child { margin-top: 0; }
+
+  .part {
+    margin: 2.5em 0 .5em var(--indent);
+    font: 600 .8rem/1.3 var(--sans);
+    letter-spacing: .06em;
+    color: var(--muted);
+  }
+  .text > .part:first-child { margin-top: 0; }
+
+  .label {
+    margin: 0 0 .9em var(--indent);
+    font-size: .95em;
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  .status {
+    margin: 2rem 0 0 var(--indent);
+    font: 400 1rem/1.6 var(--sans);
+    color: var(--muted);
+  }
+
+  .pager--bottom { margin: 3rem 0 0; }
+
+  .site-foot {
+    margin-top: 2.5rem;
+    padding-bottom: 3rem;
+    font: 400 .78rem/1.55 var(--sans);
+    color: var(--muted);
+  }
+  .site-foot p { margin: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tile { transition: none; }
+  }
+
+  @media print {
+    .pager, .site-name { display: none; }
+    body { background: #fff; color: #000; }
+    .vn { color: #000; }
+  }
+</style>
+</head>
+
+<body>
+<noscript>
+  <p class="wrap status">Esta página necesita JavaScript para mostrar la Biblia.</p>
+</noscript>
+
+<header class="wrap">
+  <p class="site-name">Biblia Reina-Valera 1960</p>
+</header>
+
+<!-- Navegación superior -->
+<nav class="wrap pager pager--top" aria-label="Navegación por libro y capítulo">
+  <div class="selects">
+    <div class="tile field">
+      <span class="cap" aria-hidden="true">Libro</span>
+      <span class="val" id="book-val" aria-hidden="true"></span>
+      <svg class="icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <select id="book" aria-label="Libro"></select>
+    </div>
+    <div class="tile field">
+      <span class="cap" aria-hidden="true">Capítulo</span>
+      <span class="val" id="chapter-val" aria-hidden="true"></span>
+      <svg class="icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <select id="chapter" aria-label="Capítulo"></select>
+    </div>
+  </div>
+  <div class="steps">
+    <a class="tile step step--prev" role="link" aria-disabled="true">
+      <svg class="icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M12.5 4.5L7 10l5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="cap">Anterior</span>
+      <span class="val"></span>
+    </a>
+    <a class="tile step step--next" role="link" aria-disabled="true">
+      <svg class="icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M7.5 4.5L13 10l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="cap">Siguiente</span>
+      <span class="val"></span>
+    </a>
+  </div>
+</nav>
+
+<main class="wrap reader">
+  <h1 class="title" id="title" tabindex="-1" hidden></h1>
+  <p class="status" id="status" role="status">Cargando la Biblia…</p>
+  <article class="text" id="text" lang="es"></article>
+</main>
+
+<!-- Navegación inferior -->
+<nav class="wrap pager pager--bottom" aria-label="Navegación entre capítulos, al final de la página">
+  <div class="steps">
+    <a class="tile step step--prev" role="link" aria-disabled="true">
+      <svg class="icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M12.5 4.5L7 10l5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="cap">Anterior</span>
+      <span class="val"></span>
+    </a>
+    <a class="tile step step--next" role="link" aria-disabled="true">
+      <svg class="icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M7.5 4.5L13 10l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="cap">Siguiente</span>
+      <span class="val"></span>
+    </a>
+  </div>
+</nav>
+
+<footer class="wrap site-foot">
+  <p id="copyright">Texto bíblico Reina-Valera 1960® © Sociedades Bíblicas en América Latina, 1960. Derechos renovados 1988, Sociedades Bíblicas Unidas.</p>
+</footer>
+
+<script>
+(() => {
+  'use strict';
+
+  // Ruta del archivo JSON (relativa a esta página).
+  const DATA_URL = 'RVR1960_vid_149.json';
+  const SITE_TITLE = 'Biblia Reina-Valera 1960';
+  const DEFAULT_REF = 'GEN.1';
+  const STORAGE_KEY = 'rvr1960:ultima-lectura';
+
+  const $  = (sel) => document.querySelector(sel);
+  const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+  const bookSel  = $('#book');
+  const chapSel  = $('#chapter');
+  const bookVal  = $('#book-val');
+  const chapVal  = $('#chapter-val');
+  const titleEl  = $('#title');
+  const statusEl = $('#status');
+  const textEl   = $('#text');
+
+  let books = [];      // [{ usfm, name, chapters: [{ number, items, pos }] }]
+  let flat  = [];      // todos los capítulos en orden de lectura: [{ bi, ci }]
+  let current = null;  // { bi, ci }
+  let firstRender = true;
+
+  /* ---------- Utilidades ---------- */
+
+  const el = (tag, cls, text) => {
+    const node = document.createElement(tag);
+    if (cls) node.className = cls;
+    if (text != null) node.textContent = text;
+    return node;
+  };
+
+  // "S. Juan" -> "San Juan"
+  const displayName = (name) => name.replace(/^S\. /, 'San ');
+
+  // "Salmo 23", "San Juan 3"
+  const refLabel = (book, number) =>
+    `${book.usfm === 'PSA' ? 'Salmo' : book.name} ${number}`;
+
+  const refString = (bi, ci) =>
+    `${books[bi].usfm}.${books[bi].chapters[ci].number}`;
+
+  const parseRef = (str) => {
+    const m = /^([0-9A-Z]{3})\.(\d+)$/i.exec(str || '');
+    if (!m) return null;
+    const bi = books.findIndex((b) => b.usfm === m[1].toUpperCase());
+    if (bi < 0) return null;
+    const ci = books[bi].chapters.findIndex((c) => c.number === Number(m[2]));
+    return ci < 0 ? null : { bi, ci };
+  };
+
+  const readStored = () => {
+    try { return localStorage.getItem(STORAGE_KEY); } catch { return null; }
+  };
+  const writeStored = (value) => {
+    try { localStorage.setItem(STORAGE_KEY, value); } catch { /* sin almacenamiento */ }
+  };
+
+  /* ---------- Carga de datos ---------- */
+
+  async function loadBible() {
+    const res = await fetch(DATA_URL);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+
+    books = data.books.map((b) => {
+      // Algunos libros de un solo capítulo (Abdías, Filemón, 2 Juan, 3 Juan, Judas)
+      // aparecen duplicados en el JSON: se conserva una sola copia de cada capítulo.
+      const byNumber = new Map();
+      for (const ch of b.chapters) {
+        const number = parseInt(ch.chapter_usfm.split('.')[1], 10);
+        if (!byNumber.has(number)) byNumber.set(number, ch.items);
+      }
+      const chapters = Array.from(byNumber, ([number, items]) => ({ number, items }))
+        .sort((a, z) => a.number - z.number);
+      return { usfm: b.book_usfm, name: displayName(b.name), chapters };
+    });
+
+    flat = [];
+    books.forEach((book, bi) =>
+      book.chapters.forEach((ch, ci) => {
+        ch.pos = flat.length;
+        flat.push({ bi, ci });
+      })
+    );
+
+    if (data.copyright && data.copyright.text) {
+      $('#copyright').textContent = data.copyright.text;
+    }
+  }
+
+  /* ---------- Menús ---------- */
+
+  function buildBookSelect() {
+    const ot = document.createElement('optgroup');
+    ot.label = 'Antiguo Testamento';
+    const nt = document.createElement('optgroup');
+    nt.label = 'Nuevo Testamento';
+
+    let group = ot;
+    for (const b of books) {
+      if (b.usfm === 'MAT') group = nt;
+      group.append(new Option(b.name, b.usfm));
+    }
+    bookSel.append(ot, nt);
+  }
+
+  function buildChapterSelect(book) {
+    chapSel.replaceChildren(
+      ...book.chapters.map((c) => new Option(String(c.number), String(c.number)))
+    );
+    chapSel.dataset.book = book.usfm;
+  }
+
+  /* ---------- Botones anterior / siguiente ---------- */
+
+  function updateSteps(pos) {
+    const targets = { prev: flat[pos - 1], next: flat[pos + 1] };
+    const lead    = { prev: 'Capítulo anterior', next: 'Capítulo siguiente' };
+
+    $$('.step').forEach((node) => {
+      const dir = node.classList.contains('step--prev') ? 'prev' : 'next';
+      const target = targets[dir];
+      const val = node.querySelector('.val');
+
+      if (target) {
+        const label = refLabel(books[target.bi], books[target.bi].chapters[target.ci].number);
+        node.href = '#' + refString(target.bi, target.ci);
+        node.removeAttribute('aria-disabled');
+        node.setAttribute('aria-label', `${lead[dir]}: ${label}`);
+        val.textContent = label;
+      } else {
+        node.removeAttribute('href');
+        node.setAttribute('aria-disabled', 'true');
+        node.setAttribute('aria-label', `${lead[dir]} (no disponible)`);
+        val.textContent = '—';
+      }
+    });
+  }
+
+  /* ---------- Texto ---------- */
+
+  function renderItem(item) {
+    const lines = item.lines || [];
+
+    switch (item.type) {
+      case 'verse': {
+        const p = el('p', 'verse');
+        const num = el('span', 'vn', (item.verse_numbers || []).join('–'));
+        const body = el('span', 'vt');
+        if (lines.length > 1) {
+          p.classList.add('poetry');
+          lines.forEach((line) => body.append(el('span', 'ln', line)));
+        } else {
+          body.textContent = lines[0] || '';
+        }
+        p.append(num, body);
+        return p;
+      }
+      case 'heading1': return el('h2', 'sect', lines.join(' '));
+      case 'section1': return el('h2', 'part', lines.join(' '));
+      default:         return el('p', 'label', lines.join(' ')); // "label" y cualquier otro
+    }
+  }
+
+  function show(bi, ci) {
+    const book = books[bi];
+    const chapter = book.chapters[ci];
+    current = { bi, ci };
+
+    const label = refLabel(book, chapter.number);
+    titleEl.textContent = label;
+    titleEl.hidden = false;
+    statusEl.hidden = true;
+    document.title = `${label} · ${SITE_TITLE}`;
+
+    // Menús
+    if (chapSel.dataset.book !== book.usfm) buildChapterSelect(book);
+    bookSel.value = book.usfm;
+    chapSel.value = String(chapter.number);
+    bookVal.textContent = book.name;
+    chapVal.textContent = String(chapter.number);
+
+    // Botones
+    updateSteps(chapter.pos);
+
+    // Texto del capítulo
+    const frag = document.createDocumentFragment();
+    chapter.items.forEach((item) => frag.append(renderItem(item)));
+    textEl.replaceChildren(frag);
+
+    writeStored(refString(bi, ci));
+
+    if (!firstRender) {
+      const fromBottom = document.activeElement && document.activeElement.closest('.pager--bottom');
+      window.scrollTo(0, 0);
+      if (fromBottom) titleEl.focus({ preventScroll: true });
+    }
+    firstRender = false;
+  }
+
+  /* ---------- Navegación (la URL guarda el capítulo: #JHN.3) ---------- */
+
+  function go(ref) {
+    if (location.hash.slice(1) === ref) return;
+    location.hash = ref;
+  }
+
+  function route() {
+    const hit = parseRef(location.hash.slice(1));
+    if (hit) { show(hit.bi, hit.ci); return; }
+
+    const start = parseRef(readStored()) || parseRef(DEFAULT_REF);
+    history.replaceState(null, '', '#' + refString(start.bi, start.ci));
+    show(start.bi, start.ci);
+  }
+
+  function wireEvents() {
+    bookSel.addEventListener('change', () => go(`${bookSel.value}.1`));
+    chapSel.addEventListener('change', () => go(`${chapSel.dataset.book}.${chapSel.value}`));
+    window.addEventListener('hashchange', route);
+
+    // Flechas ← → del teclado
+    document.addEventListener('keydown', (e) => {
+      if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || !current) return;
+      if (e.target.closest('select, input, textarea, [contenteditable]')) return;
+      const pos = books[current.bi].chapters[current.ci].pos;
+      const target = e.key === 'ArrowLeft' ? flat[pos - 1]
+                   : e.key === 'ArrowRight' ? flat[pos + 1]
+                   : null;
+      if (target) go(refString(target.bi, target.ci));
+    });
+  }
+
+  /* ---------- Inicio ---------- */
+
+  (async function init() {
+    try {
+      await loadBible();
+      buildBookSelect();
+      wireEvents();
+      document.body.classList.add('ready');
+      route();
+    } catch (err) {
+      console.error(err);
+      statusEl.textContent = location.protocol === 'file:'
+        ? 'No se puede cargar el texto al abrir el archivo directamente. Sirve esta carpeta con un servidor web y vuelve a intentarlo.'
+        : `No se pudo cargar ${DATA_URL}. Comprueba que el archivo esté en la misma carpeta que esta página.`;
+    }
+  })();
+})();
+</script>
+</body>
+</html>
