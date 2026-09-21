@@ -1,2830 +1,1403 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
-  <meta name="googlebot" content="noindex, nofollow" />
-  <meta http-equiv="X-Robots-Tag" content="noindex, nofollow" />
-  <meta name="referrer" content="no-referrer" />
-  <!-- Same tight CSP as /crypto and /link. connect-src 'none' is the important
-       directive: localStorage is scoped to the origin, not the path, so every page
-       on nowlin.org can read this page's vault - and this is the page holding it.
-       With no network path off the page, injected script has nowhere to send it.
-       frame-ancestors is deliberately omitted: it is ignored in a <meta> CSP and
-       GitHub Pages cannot set response headers. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'" />
-  <title>Notes — Nowlin</title>
-  <meta name="theme-color" content="#020617" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@200;300;400&display=swap" rel="stylesheet" />
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg-deep: #020617;
-      --bg-mid: #0a1330;
-      --accent: #15803d;
-      --accent-2: #f0b429;
-      --down: #f87171;
-      --glass: rgba(255, 255, 255, 0.08);
-      --glass-border: rgba(255, 255, 255, 0.22);
-      --text: #f5f7fb;
-      --dim: #9aa5c0;
-      --mono: 'Martian Mono', monospace;
-    }
-
-    html, body {
-      height: 100%;
-    }
-
-    body {
-      background:
-        radial-gradient(circle at 20% 20%, rgba(21, 128, 61, 0.2), transparent 42%),
-        radial-gradient(circle at 80% 78%, rgba(240, 180, 41, 0.18), transparent 42%),
-        linear-gradient(160deg, var(--bg-deep), var(--bg-mid) 60%, var(--bg-deep));
-      background-attachment: fixed;
-      color: var(--text);
-      font-family: var(--mono);
-      font-weight: 200;
-      font-size: 13px;
-      line-height: 1;
-      min-height: 100vh;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 72px 24px;
-      overflow-x: hidden;
-      position: relative;
-    }
-
-    body::before,
-    body::after {
-      content: '';
-      position: fixed;
-      width: 55vmax;
-      height: 55vmax;
-      border-radius: 50%;
-      filter: blur(90px);
-      opacity: 0.35;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    body::before {
-      background: var(--accent);
-      top: -20vmax;
-      left: -18vmax;
-      animation: drift1 20s ease-in-out infinite alternate;
-    }
-
-    body::after {
-      background: var(--accent-2);
-      bottom: -20vmax;
-      right: -18vmax;
-      animation: drift2 24s ease-in-out infinite alternate;
-    }
-
-    @keyframes drift1 {
-      from { transform: translate(0, 0); }
-      to   { transform: translate(6vmax, 8vmax); }
-    }
-
-    @keyframes drift2 {
-      from { transform: translate(0, 0); }
-      to   { transform: translate(-6vmax, -8vmax); }
-    }
-
-    .page {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 680px;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    /* glass card */
-    .card {
-      position: relative;
-      padding: 44px 40px;
-      border-radius: 26px;
-      background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.02));
-      border: 1px solid var(--glass-border);
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
-      box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.45),
-        inset 0 1px 0 rgba(255, 255, 255, 0.14),
-        0 0 50px rgba(21, 128, 61, 0.12),
-        0 0 70px rgba(240, 180, 41, 0.1);
-      opacity: 0;
-      animation: in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    @keyframes in {
-      from { opacity: 0; transform: translateY(16px) scale(0.97); }
-      to   { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    h1 {
-      font-size: 1.5rem;
-      font-weight: 400;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--text);
-      text-shadow:
-        0 0 14px rgba(21, 128, 61, 0.55),
-        0 0 22px rgba(240, 180, 41, 0.45);
-      margin-bottom: 10px;
-    }
-
-    .title-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 22px;
-    }
-
-    .title-row h1 {
-      margin-bottom: 0;
-    }
-
-    .help-toggle {
-      flex-shrink: 0;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: transparent;
-      border: 1px solid var(--glass-border);
-      color: var(--dim);
-      font-family: var(--mono);
-      font-size: 12px;
-      line-height: 1;
-      cursor: pointer;
-      transition: color 0.15s, border-color 0.15s;
-    }
-
-    .help-toggle:hover,
-    .help-toggle[aria-expanded="true"] {
-      color: var(--accent-2);
-      border-color: var(--accent-2);
-    }
-
-    .help-panel {
-      font-size: 11.5px;
-      font-weight: 300;
-      line-height: 1.75;
-      color: #c3cbdc;
-      /* Opaque enough that the drifting background glow can't wash out the text
-         behind this much prose - the near-transparent glass used elsewhere is
-         fine for short labels but not for a long read. */
-      background: rgba(6, 13, 34, 0.86);
-      border: 1px solid var(--glass-border);
-      border-radius: 12px;
-      padding: 20px 22px;
-      margin-bottom: 24px;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-
-    .help-panel h2 {
-      font-size: 10px;
-      font-weight: 400;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--accent-2);
-      margin: 20px 0 8px;
-    }
-
-    .help-panel h2:first-child {
-      margin-top: 0;
-    }
-
-    .help-panel p {
-      margin-bottom: 10px;
-    }
-
-    .help-panel ul {
-      list-style: none;
-      margin-bottom: 10px;
-    }
-
-    .help-panel li {
-      position: relative;
-      padding-left: 16px;
-      margin-bottom: 6px;
-    }
-
-    .help-panel li::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 8px;
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--accent);
-    }
-
-    .help-panel strong {
-      color: var(--text);
-      font-weight: 400;
-    }
-
-    .help-panel em {
-      color: var(--text);
-      font-style: normal;
-    }
-
-    /* settings toggle + panel */
-    .settings-toggle {
-      background: transparent;
-      border: 1px solid var(--glass-border);
-      color: var(--dim);
-      padding: 6px 12px;
-      border-radius: 999px;
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: color 0.15s, border-color 0.15s;
-      margin-bottom: 18px;
-    }
-
-    .settings-toggle:hover {
-      color: var(--text);
-      border-color: var(--accent);
-    }
-
-    .settings-panel {
-      padding-top: 16px;
-      margin-bottom: 8px;
-      border-top: 1px solid var(--glass-border);
-    }
-
-    .toolbar {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
-    }
-
-    .toolbar-label {
-      font-size: 10px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--dim);
-    }
-
-    .toolbar .btn-ghost {
-      padding: 6px 12px;
-      font-size: 10px;
-    }
-
-    .security-error {
-      font-size: 11px;
-      color: var(--down);
-      margin: 8px 0 0;
-      min-height: 14px;
-    }
-
-    .import-status {
-      font-size: 11px;
-      margin: 8px 0 0;
-      min-height: 14px;
-    }
-
-    .import-status.error { color: var(--down); }
-    .import-status.success { color: var(--accent); }
-
-    .vault-notice {
-      font-size: 11px;
-      line-height: 1.6;
-      color: var(--down);
-      background: rgba(248, 113, 113, 0.08);
-      border: 1px solid rgba(248, 113, 113, 0.35);
-      border-radius: 10px;
-      padding: 10px 14px;
-      margin-bottom: 22px;
-    }
-
-    #import-password-section {
-      margin-top: 16px;
-    }
-
-    .warning-text {
-      font-size: 11px;
-      line-height: 1.6;
-      color: var(--accent-2);
-      margin: 8px 0 20px;
-    }
-
-    #unlock-section,
-    #setup-section {
-      margin-bottom: 24px;
-    }
-
-    .field {
-      margin-bottom: 20px;
-    }
-
-    /* folder autocomplete */
-    .folder-field {
-      position: relative;
-    }
-
-    .folder-suggestions {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      z-index: 5;
-      margin-top: 4px;
-      max-height: 190px;
-      overflow-y: auto;
-      background: rgba(8, 16, 40, 0.97);
-      border: 1px solid var(--glass-border);
-      border-radius: 10px;
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
-      backdrop-filter: blur(20px) saturate(160%);
-      -webkit-backdrop-filter: blur(20px) saturate(160%);
-    }
-
-    .folder-suggestions button {
-      display: block;
-      width: 100%;
-      text-align: left;
-      background: transparent;
-      border: none;
-      color: var(--dim);
-      font-family: var(--mono);
-      font-weight: 300;
-      font-size: 12.5px;
-      line-height: 1.4;
-      padding: 10px 12px;
-      cursor: pointer;
-      transition: background 0.12s, color 0.12s;
-    }
-
-    .folder-suggestions button:hover,
-    .folder-suggestions button.active {
-      background: rgba(21, 128, 61, 0.24);
-      color: var(--text);
-    }
-
-    .folder-suggestions strong {
-      color: var(--accent-2);
-      font-weight: 400;
-    }
-
-    .field label {
-      display: block;
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--dim);
-      margin-bottom: 8px;
-    }
-
-    input[type="text"],
-    input[type="number"],
-    input[type="password"],
-    textarea {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--glass-border);
-      border-radius: 10px;
-      padding: 10px 12px;
-      color: var(--text);
-      font-family: var(--mono);
-      font-weight: 300;
-      font-size: 13px;
-      line-height: 1.6;
-      outline: none;
-      transition: border-color 0.15s, box-shadow 0.15s;
-    }
-
-    input[type="text"]:focus,
-    input[type="number"]:focus,
-    input[type="password"]:focus,
-    textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.16);
-    }
-
-    textarea {
-      min-height: 140px;
-      resize: vertical;
-    }
-
-    input[disabled] {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-
-    .timer-row {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-bottom: 12px;
-    }
-
-    .checkbox {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      color: var(--text);
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .checkbox input {
-      width: 15px;
-      height: 15px;
-      accent-color: var(--accent);
-      cursor: pointer;
-    }
-
-    .hours-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .hours-row input {
-      width: 84px;
-    }
-
-    .hours-row span {
-      font-size: 11px;
-      color: var(--dim);
-    }
-
-    .presets {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .presets button,
-    .folder-filters button {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--glass-border);
-      color: var(--dim);
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 6px 12px;
-      border-radius: 999px;
-      cursor: pointer;
-      transition: color 0.15s, border-color 0.15s;
-    }
-
-    .presets button:hover,
-    .presets button.active,
-    .folder-filters button:hover,
-    .folder-filters button.active {
-      color: var(--text);
-      border-color: var(--accent);
-    }
-
-    .folder-filters {
-      display: none;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .compose-actions {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-top: 28px;
-    }
-
-    button {
-      font-family: var(--mono);
-      cursor: pointer;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #06170d;
-      border: none;
-      padding: 11px 24px;
-      border-radius: 10px;
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      transition: filter 0.15s, transform 0.15s;
-    }
-
-    .btn-primary:hover {
-      filter: brightness(1.12);
-      transform: translateY(-1px);
-    }
-
-    .btn-primary:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .btn-ghost {
-      background: transparent;
-      border: 1px solid var(--glass-border);
-      color: var(--dim);
-      padding: 10px 18px;
-      border-radius: 10px;
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      transition: color 0.15s, border-color 0.15s, background 0.15s;
-    }
-
-    .btn-ghost:hover {
-      color: var(--text);
-      border-color: var(--accent);
-    }
-
-    .btn-ghost.confirming {
-      color: var(--down);
-      border-color: var(--down);
-      background: rgba(248, 113, 113, 0.12);
-    }
-
-    .editing-banner {
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(240, 180, 41, 0.1);
-      border: 1px solid rgba(240, 180, 41, 0.35);
-      color: var(--accent-2);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 10px 14px;
-      border-radius: 10px;
-      margin-bottom: 24px;
-    }
-
-    .editing-banner.show {
-      display: flex;
-    }
-
-    .editing-banner button {
-      background: none;
-      border: none;
-      color: var(--accent-2);
-      text-decoration: underline;
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .notes-list {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .note-card {
-      padding: 22px 24px;
-      border-radius: 18px;
-      background: linear-gradient(160deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.015));
-      border: 1px solid var(--glass-border);
-      backdrop-filter: blur(20px) saturate(160%);
-      -webkit-backdrop-filter: blur(20px) saturate(160%);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .note-card-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
-    }
-
-    .note-title-group {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      min-width: 0;
-    }
-
-    .note-title {
-      font-size: 14px;
-      font-weight: 400;
-      color: var(--text);
-      word-break: break-word;
-    }
-
-    .folder-tag {
-      font-size: 9px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--accent-2);
-    }
-
-    .countdown {
-      flex-shrink: 0;
-      font-size: 10px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--dim);
-      white-space: nowrap;
-    }
-
-    .countdown.soon { color: var(--accent-2); }
-    .countdown.urgent { color: var(--down); text-shadow: 0 0 8px rgba(248, 113, 113, 0.5); }
-
-    .note-content {
-      font-size: 12.5px;
-      font-weight: 300;
-      line-height: 1.7;
-      color: var(--dim);
-      white-space: pre-wrap;
-      word-break: break-word;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 10;
-      line-clamp: 10;
-      overflow: hidden;
-    }
-
-    .note-content.expanded {
-      display: block;
-      -webkit-line-clamp: unset;
-      line-clamp: unset;
-      overflow: visible;
-    }
-
-    .note-content.locked-text {
-      font-style: italic;
-    }
-
-    .expand-hint {
-      font-size: 10px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--accent-2);
-    }
-
-    .note-card.expandable {
-      cursor: pointer;
-    }
-
-    .note-card.expandable:hover {
-      border-color: var(--accent);
-    }
-
-    .note-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 6px;
-      flex-wrap: wrap;
-    }
-
-    .note-actions button {
-      background: transparent;
-      border: 1px solid var(--glass-border);
-      color: var(--dim);
-      padding: 7px 14px;
-      border-radius: 999px;
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      transition: color 0.15s, border-color 0.15s, background 0.15s;
-    }
-
-    .note-actions button:hover {
-      color: var(--text);
-      border-color: var(--accent);
-    }
-
-    .note-actions .delete-btn {
-      border-color: rgba(248, 113, 113, 0.35);
-      color: var(--down);
-    }
-
-    .note-actions .delete-btn:hover,
-    .note-actions .delete-btn.confirming {
-      background: rgba(248, 113, 113, 0.16);
-      border-color: var(--down);
-      color: #fff;
-    }
-
-    .empty-state {
-      text-align: center;
-      font-size: 12px;
-      color: var(--dim);
-      padding: 20px 0;
-    }
-
-    @media (max-width: 640px) {
-      .card { padding: 36px 24px; }
-      h1 { font-size: 1.2rem; letter-spacing: 0.14em; }
-      .note-card-head { flex-direction: column; align-items: flex-start; gap: 4px; }
-    }
-
-    /* strength meter - lifted from /crypto so both pages price a password the
-       same way and look the same doing it */
-    .strength {
-      margin-top: 10px;
-      display: none;
-    }
-
-    .strength.show { display: block; }
-
-    .strength-track {
-      height: 4px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.09);
-      overflow: hidden;
-    }
-
-    .strength-fill {
-      height: 100%;
-      width: 0;
-      border-radius: 999px;
-      background: var(--down);
-      transition: width 0.2s, background 0.2s;
-    }
-
-    .strength-fill.fair { background: var(--accent-2); }
-    .strength-fill.strong { background: var(--accent); }
-
-    .strength-label {
-      margin-top: 7px;
-      font-size: 10px;
-      letter-spacing: 0.06em;
-      color: var(--dim);
-      line-height: 1.6;
-    }
-
-    .strength-label b {
-      font-weight: 400;
-      color: var(--text);
-    }
-
-    /* Recovery state: encrypted notes are on disk but the metadata needed to
-       open them is missing or damaged. Red rather than gold - this is the one
-       state in the app where continuing to use the page normally would destroy
-       data, so it has to read as a stop, not a caution. */
-    .recovery-banner {
-      background: rgba(248, 113, 113, 0.09);
-      border: 1px solid rgba(248, 113, 113, 0.42);
-      border-radius: 14px;
-      padding: 16px 18px;
-      margin-bottom: 18px;
-    }
-
-    .recovery-banner h2 {
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--down);
-      margin-bottom: 10px;
-    }
-
-    .recovery-banner p {
-      font-size: 10.5px;
-      line-height: 1.8;
-      color: var(--dim);
-      margin-bottom: 10px;
-    }
-
-    .recovery-banner p:last-of-type { margin-bottom: 14px; }
-
-    .recovery-banner .toolbar { margin-bottom: 0; }
-
-    /* the password prompt and the status line are both usually absent; don't
-       reserve vertical space for them */
-    .recovery-banner .import-status:empty { display: none; }
-
-    #recovery-password-section { margin-top: 14px; }
-
-    .recovery-banner strong {
-      color: var(--text);
-      font-weight: 400;
-    }
-
-    .autolock-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 10px;
-    }
-
-    .autolock-row label {
-      font-size: 10px;
-      letter-spacing: 0.06em;
-      color: var(--dim);
-    }
-
-    .autolock-row select {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--glass-border);
-      border-radius: 8px;
-      color: var(--text);
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 300;
-      padding: 6px 8px;
-    }
-
-    .autolock-row select:focus {
-      outline: none;
-      border-color: var(--accent);
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation: none !important;
-        transition: none !important;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <main class="page">
-    <section class="card">
-      <div class="title-row">
-        <h1>Notes</h1>
-        <button type="button" class="help-toggle" id="help-toggle"
-                aria-expanded="false" aria-controls="help-panel" aria-label="About this app">?</button>
-      </div>
-
-      <div class="help-panel" id="help-panel" hidden>
-        <h2>Overview</h2>
-        <p>A scratchpad that keeps everything on this device. Notes live in this browser's local storage — they are never uploaded, never synced, and no account is involved. Nothing here can be read from anywhere else.</p>
-        <p>Because there is no server, the flip side matters: clearing your browser data, using private browsing, or switching to another device or browser means these notes are gone. Export a backup if a note matters.</p>
-
-        <h2>Writing notes</h2>
-        <ul>
-          <li><strong>Title and content</strong> — either one alone is enough to save.</li>
-          <li><strong>Folder</strong> — optional. Start typing and matching folders are suggested; pick one to reuse its exact spelling, or type a new name to create a folder.</li>
-          <li><strong>Self-destruct</strong> — every note is given a countdown, 30 days by default. Use a preset, type any number of hours, or tick <em>Never delete</em> to keep it indefinitely.</li>
-          <li>Notes over ten lines are shortened in the list. Tap one to expand it.</li>
-          <li><strong>Copy</strong> puts a note's full text on your clipboard, including the part hidden when it's shortened. The title is not included.</li>
-        </ul>
-
-        <h2>Password protection</h2>
-        <p>Under Settings you can encrypt every note with a password. Encryption happens in this browser using a key derived from your password, so what's stored on disk is unreadable without it.</p>
-        <p>The minimum is twelve characters, and there are no rules about symbols or digits — length is what actually makes a password hard to guess. A short phrase of ordinary words is a good choice. The meter under the field shows an upper bound on how strong it is, and prices a word phrase per word rather than per character, so it stays honest about phrases.</p>
-        <p>There is no password reset and no recovery, because there is nothing anywhere that could perform one. Forgetting the password means those notes are gone permanently. The key is held in memory only, so reloading the page locks them again.</p>
-        <p>An unlocked page locks itself again after fifteen minutes without typing or tapping — the countdown sits next to <strong>Protected</strong> under Settings, and you can change the interval or switch it off there.</p>
-
-        <h2>Backups</h2>
-        <p><strong>JSON</strong> is the backup format — it's the only one that can be imported back in, and it preserves folders and countdowns exactly. If password protection is on, the exported file stays encrypted and needs that password to import.</p>
-        <p><strong>CSV</strong> is for reading, not restoring — a plain table you can open in a spreadsheet. It cannot be imported, and it is always written in plain text, so treat that file as unprotected.</p>
-
-        <h2>Questions</h2>
-        <p><strong>A note vanished — why?</strong> Its countdown ran out. Expired notes are removed when the page is open, so one that lapsed while the page was closed disappears the next time you visit.</p>
-        <p><strong>Can I get a deleted note back?</strong> No. Deleting and expiry are immediate and permanent, which is why Delete asks for a second tap.</p>
-        <p><strong>What is a "Damaged note"?</strong> A note whose stored data was corrupted and can no longer be decrypted, even with the right password. Its contents are unrecoverable; you can delete the entry to clear it.</p>
-        <p><strong>The page says my password data is missing — are my notes gone?</strong> No. Notes and password data are kept in two separate browser storage entries, and one can be cleared without the other. Your notes are still encrypted on the device and still open with your password; what is missing is the part this page needs to turn that password into a key. Editing switches off so nothing writes over them. Save a raw copy, then import any earlier JSON backup made while protection was on — that restores the missing part.</p>
-        <p><strong>Do these sync to my phone?</strong> No. Each browser on each device keeps its own separate set. Export from one and import into the other to move notes across.</p>
-        <p><strong>Is anything sent over the network?</strong> No. The page makes no requests with your notes, and spellchecking is switched off on every field so what you type is not sent to a spellcheck service either. Once loaded it works offline.</p>
-      </div>
-
-      <!-- Shown when notes carry ciphertext but the security metadata that would
-           open it is missing or unreadable. Every write is blocked while this is
-           up, because the normal code paths would happily re-encrypt empty
-           strings over the top of recoverable data. -->
-      <div class="recovery-banner" id="recovery-banner" hidden>
-        <h2>&#9888; Encrypted notes, missing password data</h2>
-        <p id="recovery-detail"></p>
-        <p><strong>Your notes have not been lost.</strong> They are still encrypted on this device, and they are still readable
-           with the password — what is missing is the salt and verifier this page needs to derive the key from it.
-           That data lives in a separate browser storage entry, which can be cleared or damaged on its own.</p>
-        <p>Editing is switched off so nothing overwrites the encrypted data. Export a raw copy first — if you have an
-           earlier JSON backup, importing it restores the missing part and your notes open again.</p>
-        <div class="toolbar">
-          <button type="button" class="btn-primary" id="recovery-export-btn">Export raw copy</button>
-          <button type="button" class="btn-ghost" id="recovery-import-btn">Import a backup</button>
-        </div>
-        <!-- Its own field rather than the shared import prompt, which sits inside
-             the collapsed Settings panel and would never be seen from here. -->
-        <div id="recovery-password-section" hidden>
-          <div class="field">
-            <label for="recovery-password">Password for that backup</label>
-            <input type="password" id="recovery-password" autocomplete="off"
-                   spellcheck="false" autocapitalize="off" autocorrect="off" />
-          </div>
-          <div class="compose-actions">
-            <button type="button" class="btn-primary" id="recovery-password-confirm-btn">Restore</button>
-            <button type="button" class="btn-ghost" id="recovery-password-cancel-btn">Cancel</button>
-          </div>
-        </div>
-        <p class="import-status" id="recovery-status"></p>
-      </div>
-
-      <div id="unlock-section" hidden>
-        <p class="toolbar-label" id="unlock-label"></p>
-        <div class="field">
-          <label for="unlock-password">Password</label>
-          <!-- autocomplete="off", not "current-password": this key never leaves the
-               device, so inviting the browser or OS to persist it outside the
-               user's control would work against the point of the page. Matches
-               /crypto and /link. -->
-          <input type="password" id="unlock-password" autocomplete="off"
-                 spellcheck="false" autocapitalize="off" autocorrect="off" />
-        </div>
-        <p class="security-error" id="unlock-error"></p>
-        <button type="button" class="btn-primary" id="unlock-btn">Unlock</button>
-      </div>
-
-      <button type="button" class="settings-toggle" id="settings-toggle">⚙ Settings</button>
-
-      <div class="settings-panel" id="settings-panel" hidden>
-        <div class="toolbar" id="security-toolbar"></div>
-
-        <div class="autolock-row" id="autolock-row" hidden>
-          <label for="autolock-select">Lock automatically after</label>
-          <select id="autolock-select">
-            <option value="60000">1 minute</option>
-            <option value="300000">5 minutes</option>
-            <option value="900000">15 minutes</option>
-            <option value="3600000">1 hour</option>
-            <option value="0">Never</option>
-          </select>
-        </div>
-
-        <div class="toolbar">
-          <button type="button" class="btn-ghost" id="export-btn">Export JSON</button>
-          <button type="button" class="btn-ghost" id="export-csv-btn">Export CSV</button>
-          <button type="button" class="btn-ghost" id="import-btn">Import</button>
-        </div>
-        <input type="file" id="import-file" accept="application/json" hidden />
-        <input type="file" id="recovery-file" accept="application/json" hidden />
-
-        <div id="import-password-section" hidden>
-          <div class="field">
-            <label for="import-password">Password for imported file</label>
-            <input type="password" id="import-password" autocomplete="off"
-                   spellcheck="false" autocapitalize="off" autocorrect="off" />
-          </div>
-          <div class="compose-actions">
-            <button type="button" class="btn-primary" id="import-password-confirm-btn">Decrypt &amp; Import</button>
-            <button type="button" class="btn-ghost" id="import-password-cancel-btn">Cancel</button>
-          </div>
-        </div>
-        <p class="import-status" id="import-status"></p>
-
-        <div id="setup-section" hidden>
-          <div class="field">
-            <label for="setup-password">New password</label>
-            <input type="password" id="setup-password" autocomplete="new-password"
-                   spellcheck="false" autocapitalize="off" autocorrect="off" />
-          </div>
-          <div class="strength" id="strength">
-            <div class="strength-track"><div class="strength-fill" id="strength-fill"></div></div>
-            <p class="strength-label" id="strength-label"></p>
-          </div>
-          <div class="field">
-            <label for="setup-password-confirm">Confirm password</label>
-            <input type="password" id="setup-password-confirm" autocomplete="new-password"
-                   spellcheck="false" autocapitalize="off" autocorrect="off" />
-          </div>
-          <p class="warning-text">Notes are encrypted in this browser with a key derived from this password. There is no password reset and no backend — if you forget it, everything encrypted with it is permanently unrecoverable.</p>
-          <p class="security-error" id="setup-error"></p>
-          <div class="compose-actions">
-            <button type="button" class="btn-primary" id="setup-confirm-btn">Set Password &amp; Encrypt</button>
-            <button type="button" class="btn-ghost" id="setup-cancel-btn">Cancel</button>
-          </div>
-        </div>
-      </div>
-
-      <p class="vault-notice" id="vault-notice" hidden></p>
-
-      <div class="editing-banner" id="editing-banner">
-        <span>Editing note</span>
-        <button type="button" id="cancel-edit-btn">Cancel</button>
-      </div>
-
-      <form id="compose-form">
-        <div class="field">
-          <label for="note-title">Title</label>
-          <input type="text" id="note-title" placeholder="Untitled note" autocomplete="off"
-                 spellcheck="false" autocapitalize="off" autocorrect="off" />
-        </div>
-
-        <div class="field">
-          <label for="note-content">Content</label>
-          <!-- spellcheck="false" is a real control here, not cosmetic: Chrome's
-               "Enhanced spell check" and Edge's Microsoft Editor send field
-               contents to a remote service. This is the one page whose whole
-               promise is that note text never leaves the browser. -->
-          <textarea id="note-content" placeholder="Write something..."
-                    spellcheck="false" autocapitalize="off" autocorrect="off"></textarea>
-        </div>
-
-        <div class="field folder-field">
-          <label for="note-folder">Folder (optional)</label>
-          <input type="text" id="note-folder" placeholder="e.g. Ideas" autocomplete="off"
-                 spellcheck="false" autocapitalize="off" autocorrect="off"
-                 role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="folder-suggestions" />
-          <div class="folder-suggestions" id="folder-suggestions" role="listbox" hidden></div>
-        </div>
-
-        <div class="field">
-          <label>Self-destruct</label>
-          <div class="timer-row">
-            <label class="checkbox">
-              <input type="checkbox" id="note-never" />
-              <span>Never delete</span>
-            </label>
-            <div class="hours-row" id="hours-row">
-              <input type="number" id="note-hours" min="0.1" step="any" value="720" />
-              <span>hours</span>
-            </div>
-          </div>
-          <div class="presets" id="presets">
-            <button type="button" data-hours="1">1h</button>
-            <button type="button" data-hours="24">24h</button>
-            <button type="button" data-hours="72">72h</button>
-            <button type="button" data-hours="168">7d</button>
-            <button type="button" data-hours="720">30d</button>
-          </div>
-        </div>
-
-        <p class="security-error" id="save-error"></p>
-        <div class="compose-actions">
-          <button type="submit" class="btn-primary" id="save-btn">Save Note</button>
-        </div>
-      </form>
-    </section>
-
-    <div class="folder-filters" id="folder-filters"></div>
-    <div class="notes-list" id="notes-list"></div>
-    <p class="empty-state" id="empty-state">No notes yet.</p>
-  </main>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Notes</title>
+
+  <!--
+    Dependencies are pinned to exact versions and served from hosts that are
+    widely allowed (jsdelivr / cdnjs). To lock them down further, add
+    integrity="sha384-..." crossorigin="anonymous" to each tag.
+    The Tailwind Play CDN is a prototyping build and cannot carry an SRI hash.
+  -->
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
 
   <script>
-    const STORAGE_KEY = 'nowlin-notes';
-    const SECURITY_KEY = 'nowlin-notes-security';
-    // Vaults created from now on derive at 600,000 (the OWASP floor for
-    // PBKDF2-SHA256). Vaults created before this change were derived at 300,000
-    // and their stored metadata has no `iterations` field, so LEGACY_ is what
-    // that absence means - never a default for new vaults. Getting this wrong in
-    // either direction makes an existing vault permanently unopenable, since the
-    // iteration count is an input to the key, not something the ciphertext
-    // records.
-    const PBKDF2_ITERATIONS = 600000;
-    const LEGACY_PBKDF2_ITERATIONS = 300000;
-    // Bounds on a count read back from storage or an import file, so a
-    // hand-edited or hostile value can't wedge the browser in the KDF.
-    const MIN_PBKDF2_ITERATIONS = 100000;
-    const MAX_PBKDF2_ITERATIONS = 10000000;
-    const VERIFIER_PLAINTEXT = 'nowlin-notes-verifier';
-    const DEFAULT_HOURS = 720; // 30 days
-    // Matches /crypto and /link. No composition rules - NIST 800-63B favours
-    // length over character-class requirements, and a strength meter tells the
-    // user far more than a "must contain a symbol" rule ever did.
-    const MIN_PASSWORD_LENGTH = 12;
-    // Note record format. v1 (an `enc` with no `v`) was AES-GCM with no
-    // additional data and no padding. v2 binds each blob to the record it
-    // belongs to and pads the plaintext, so ciphertext cannot be moved between
-    // records and its length no longer tracks the note's length.
-    const NOTE_FORMAT_VERSION = 2;
-    const PAD_BLOCK = 256;
-    const LENGTH_PREFIX_BYTES = 4;
-    const AUTOLOCK_KEY = 'nowlin-notes-autolock';
-    const DEFAULT_AUTOLOCK_MS = 15 * 60 * 1000;
-    const AUTOLOCK_CHOICES = [60000, 300000, 900000, 3600000, 0];
-    const cryptoAvailable = !!(window.crypto && window.crypto.subtle);
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              500: '#16a34a',
+              600: '#15803d',
+              700: '#166534',
+            }
+          }
+        }
+      }
+    };
 
-    // ---------- storage ----------
-    function loadNotes() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : [];
-      } catch (err) {
-        return [];
+    // darkMode is 'class', so something has to set the class. Follow the system setting.
+    (function () {
+      var mq = window.matchMedia('(prefers-color-scheme: dark)');
+      function apply() { document.documentElement.classList.toggle('dark', mq.matches); }
+      apply();
+      if (mq.addEventListener) mq.addEventListener('change', apply);
+      else if (mq.addListener) mq.addListener(apply);
+    })();
+  </script>
+
+  <style>
+    /* Custom scrollbars */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.3); border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(156, 163, 175, 0.5); }
+
+    /* Markdown preview (no typography plugin is loaded, so this is all custom) */
+    .prose h1 { font-size: 1.5rem; font-weight: 700; margin-top: 1rem; margin-bottom: 0.5rem; }
+    .prose h2 { font-size: 1.25rem; font-weight: 600; margin-top: 0.85rem; margin-bottom: 0.4rem; }
+    .prose h3 { font-size: 1.1rem; font-weight: 600; margin-top: 0.75rem; margin-bottom: 0.3rem; }
+    .prose p { margin-bottom: 0.75rem; line-height: 1.6; }
+    .prose ul { list-style-type: disc; padding-left: 1.25rem; margin-bottom: 0.75rem; }
+    .prose ol { list-style-type: decimal; padding-left: 1.25rem; margin-bottom: 0.75rem; }
+    .prose code { background-color: rgba(125, 125, 125, 0.15); padding: 0.15rem 0.35rem; border-radius: 0.25rem; font-family: monospace; font-size: 0.875em; }
+    .prose pre {
+      background-color: #0f172a;
+      color: #f8fafc;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      margin-bottom: 0.75rem;
+    }
+    .dark .prose pre {
+      background-color: #020617;
+      color: #e2e8f0;
+    }
+    .prose pre code { background-color: transparent; padding: 0; color: inherit; }
+    .prose blockquote { border-left: 3px solid #16a34a; padding-left: 0.75rem; color: #64748b; margin-bottom: 0.75rem; font-style: italic; }
+    .prose a { color: #16a34a; text-decoration: underline; }
+    .prose img { max-width: 100%; height: auto; border-radius: 0.375rem; }
+    .prose hr { border: 0; border-top: 1px solid rgba(125, 125, 125, 0.3); margin: 1rem 0; }
+    .prose table { border-collapse: collapse; margin-bottom: 0.75rem; display: block; overflow-x: auto; }
+    .prose th, .prose td { border: 1px solid rgba(125, 125, 125, 0.3); padding: 0.3rem 0.6rem; }
+
+    /* Folder row actions: hover / keyboard focus on pointer devices, always visible on touch */
+    .folder-actions { display: none; align-items: center; }
+    .folder-item:hover .folder-actions { display: flex; }
+    .folder-item:hover .folder-count { display: none; }
+    .folder-item:has(:focus-visible) .folder-actions { display: flex; }
+    .folder-item:has(:focus-visible) .folder-count { display: none; }
+    @media (hover: none) {
+      .folder-actions { display: flex !important; }
+      .folder-count { display: inline-block !important; }
+    }
+
+    /* Active state for the preview toggle (beats the dark: text utilities) */
+    .toggle-on { color: #16a34a !important; background-color: rgba(22, 163, 74, 0.1); }
+
+    /* 16px form controls stop iOS Safari from auto-zooming on focus, so zoom stays available */
+    @media (max-width: 767px) {
+      input:not(#note-title-input), textarea, select { font-size: 16px !important; }
+    }
+
+    /* Modal focus trap helper */
+    #modal-backdrop[aria-hidden="false"] ~ * { pointer-events: none; }
+  </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-950 text-gray-900 dark:text-gray-100 antialiased h-full flex overflow-hidden select-none" style="height:100vh;height:100dvh">
+
+  <!-- Mobile navigation overlay -->
+  <div id="mobile-overlay" class="fixed inset-0 bg-gray-900/40 z-30 hidden md:hidden transition-opacity backdrop-blur-sm"></div>
+
+  <!-- Column 1: Sidebar -->
+  <aside id="sidebar" class="fixed md:static inset-y-0 left-0 z-40 w-72 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out flex-shrink-0">
+    <div class="h-14 px-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between flex-shrink-0">
+      <div class="flex items-center space-x-2.5">
+        <div class="p-1.5 bg-brand-500 text-white rounded-md shadow-sm">
+          <i data-lucide="notebook-pen" class="w-4 h-4"></i>
+        </div>
+        <span class="font-bold text-base tracking-tight">Workspace</span>
+      </div>
+      <button type="button" id="close-mobile-sidebar" aria-label="Close menu" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 md:hidden text-gray-500">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <div class="p-3 flex-shrink-0">
+      <button type="button" id="btn-new-note" class="w-full py-2 px-3 bg-brand-500 hover:bg-brand-600 active:bg-brand-700 text-white font-medium text-sm rounded-lg shadow-sm flex items-center justify-center space-x-2 transition-colors">
+        <i data-lucide="plus" class="w-4 h-4"></i>
+        <span>New Note</span>
+      </button>
+    </div>
+
+    <div class="px-3 pb-2 flex-shrink-0">
+      <div class="relative">
+        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-gray-400 pointer-events-none"></i>
+        <input type="search" id="search-input" placeholder="Search notes..." aria-label="Search notes" autocomplete="off" class="w-full pl-9 pr-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-800/60 border border-transparent focus:border-brand-500 rounded-lg focus:outline-none transition-colors">
+      </div>
+    </div>
+
+    <div class="flex-1 overflow-y-auto px-3 py-2 space-y-4">
+      <div>
+        <div class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-2 mb-1.5">Views</div>
+        <nav class="space-y-0.5">
+          <button type="button" data-filter="all" class="nav-item">
+            <span class="flex items-center space-x-2.5">
+              <i data-lucide="files" class="w-4 h-4"></i>
+              <span>All Notes</span>
+            </span>
+            <span id="count-all" class="text-xs px-2 py-0.5 rounded-md bg-gray-200/60 dark:bg-gray-800 text-gray-600 dark:text-gray-400">0</span>
+          </button>
+          <button type="button" data-filter="uncategorized" class="nav-item">
+            <span class="flex items-center space-x-2.5">
+              <i data-lucide="inbox" class="w-4 h-4"></i>
+              <span>Uncategorized</span>
+            </span>
+            <span id="count-uncategorized" class="text-xs px-2 py-0.5 rounded-md bg-gray-200/60 dark:bg-gray-800 text-gray-600 dark:text-gray-400">0</span>
+          </button>
+        </nav>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between px-2 mb-1.5">
+          <span class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Folders</span>
+          <button type="button" id="btn-add-folder" title="Create folder" aria-label="Create folder" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+            <i data-lucide="folder-plus" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+        <div id="folders-container" class="space-y-0.5"></div>
+      </div>
+    </div>
+
+    <div class="p-3 border-t border-gray-200 dark:border-gray-800 flex items-center space-x-2 flex-shrink-0">
+      <button type="button" id="btn-export-data" class="flex-1 flex items-center justify-center space-x-1.5 py-1.5 px-2 text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800/60 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors" title="Export backup (JSON)">
+        <i data-lucide="download" class="w-3.5 h-3.5"></i>
+        <span>Export</span>
+      </button>
+      <button type="button" id="btn-import-data" class="flex-1 flex items-center justify-center space-x-1.5 py-1.5 px-2 text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800/60 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors" title="Import backup (JSON)">
+        <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+        <span>Import</span>
+      </button>
+      <input type="file" id="file-import-input" accept=".json,application/json" class="hidden">
+    </div>
+  </aside>
+
+  <!-- Column 2: Notes list -->
+  <section id="notes-panel" class="w-full md:w-72 lg:w-80 border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/50 flex flex-col flex-shrink-0 h-full z-10">
+    <div class="h-14 px-3.5 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between flex-shrink-0">
+      <div class="flex items-center space-x-2 min-w-0">
+        <button type="button" id="open-mobile-sidebar" aria-label="Open menu" class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 md:hidden text-gray-600 dark:text-gray-300">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+        <h2 id="current-view-title" class="font-bold text-sm text-gray-800 dark:text-gray-200 truncate">All Notes</h2>
+      </div>
+      <div id="notes-count-badge" class="text-xs text-gray-400 font-medium flex-shrink-0">0 notes</div>
+    </div>
+
+    <div id="notes-list" class="flex-1 overflow-y-auto divide-y divide-gray-100 dark:divide-gray-800/40 select-text"></div>
+  </section>
+
+  <!-- Column 3: Editor -->
+  <main id="editor-panel" class="fixed inset-0 md:static md:flex-1 bg-white dark:bg-gray-900 flex flex-col h-full min-w-0 z-20 md:z-auto transform translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out">
+    <div id="editor-wrapper" class="flex-1 flex flex-col h-full min-h-0 select-text">
+      <div class="h-14 px-3 md:px-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between gap-2 bg-white dark:bg-gray-900 flex-shrink-0 z-10">
+        <div class="flex items-center space-x-2 min-w-0 flex-1">
+          <button type="button" id="btn-back-to-list" aria-label="Back to notes" class="p-1.5 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg md:hidden">
+            <i data-lucide="chevron-left" class="w-5 h-5"></i>
+          </button>
+          <div class="relative inline-block max-w-[180px] sm:max-w-xs">
+            <select id="note-folder-select" aria-label="Folder" class="max-w-full text-xs font-medium bg-gray-100 dark:bg-gray-800/80 border border-transparent focus:border-brand-500 rounded-lg px-2.5 py-1.5 text-gray-700 dark:text-gray-300 focus:outline-none cursor-pointer truncate">
+              <option value="">Uncategorized</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
+          <span id="last-saved" class="hidden sm:inline text-[10px] text-gray-400 mr-1" title="Last saved"></span>
+          <button type="button" id="btn-save-note" class="flex items-center space-x-1.5 px-3 py-1.5 bg-brand-500 hover:bg-brand-600 text-white rounded-lg text-xs font-medium transition-colors shadow-sm">
+            <i data-lucide="save" class="w-3.5 h-3.5"></i>
+            <span>Save</span>
+            <span id="dirty-dot" class="hidden w-1.5 h-1.5 rounded-full bg-amber-300" title="Unsaved changes"></span>
+          </button>
+
+          <button type="button" id="btn-copy-note" aria-label="Copy note content" class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" title="Copy content">
+            <i data-lucide="copy" class="w-4 h-4"></i>
+          </button>
+
+          <button type="button" id="btn-toggle-preview" aria-label="Toggle preview" aria-pressed="false" class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" title="Toggle preview">
+            <i data-lucide="eye" class="w-4 h-4"></i>
+          </button>
+
+          <button type="button" id="btn-delete-note" aria-label="Delete note" class="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-colors" title="Delete note">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex-1 flex flex-col min-h-0 p-4 sm:p-6 overflow-hidden">
+        <input type="text" id="note-title-input" placeholder="Note title..." aria-label="Note title" maxlength="500" autocomplete="off" class="text-xl sm:text-2xl font-bold bg-transparent border-none outline-none focus:outline-none mb-3 placeholder-gray-300 dark:placeholder-gray-600 text-gray-900 dark:text-gray-100 tracking-tight">
+        <textarea id="note-body-input" placeholder="Start typing your note here... (Markdown supported)" aria-label="Note body" class="flex-1 min-h-0 w-full bg-transparent border-none outline-none focus:outline-none resize-none font-mono text-sm leading-relaxed text-gray-800 dark:text-gray-200 placeholder-gray-300 dark:placeholder-gray-600"></textarea>
+        <div id="note-preview" class="flex-1 min-h-0 w-full overflow-y-auto prose max-w-none hidden"></div>
+      </div>
+    </div>
+
+    <!-- Empty state -->
+    <div id="empty-state" class="hidden flex-1 flex-col items-center justify-center p-6 text-center text-gray-400 select-none">
+      <div class="w-12 h-12 bg-gray-100 dark:bg-gray-800/60 rounded-full flex items-center justify-center mb-3">
+        <i data-lucide="file-text" class="w-6 h-6 text-gray-400"></i>
+      </div>
+      <h3 class="text-base font-semibold text-gray-700 dark:text-gray-300 mb-1">No note selected</h3>
+      <p class="text-xs text-gray-500 max-w-xs mb-4">Choose a note from the list or create a new one to begin editing.</p>
+      <button type="button" id="btn-empty-new-note" class="py-2 px-4 bg-brand-500 hover:bg-brand-600 text-white text-xs font-medium rounded-lg shadow-sm">Create new note</button>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal-backdrop" class="fixed inset-0 bg-gray-900/60 z-50 flex items-center justify-center p-4 hidden backdrop-blur-sm" aria-hidden="true">
+    <div id="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title" class="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-md overflow-hidden p-5 sm:p-6">
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Toasts -->
+  <div id="toast-container" role="status" aria-live="polite" class="fixed bottom-4 right-4 z-[60] flex flex-col space-y-2 pointer-events-none"></div>
+
+  <script>
+  (() => {
+    'use strict';
+
+    /* ------------------------------------------------------------------ *
+     * Constants & helpers
+     * ------------------------------------------------------------------ */
+    const STORAGE_KEY = 'notes_app_data_v2';   // unchanged — existing notes carry over
+    const KDF_ITERATIONS = 600000;             // used for new encrypted backups
+    const LEGACY_KDF_ITERATIONS = 100000;      // backups written by the old version
+    const MAX_KDF_ITERATIONS = 5000000;        // refuse absurd values from crafted files
+    const MAX_IMPORT_BYTES = 25 * 1024 * 1024;
+    const MAX_TITLE = 500;
+    const MAX_FOLDER_NAME = 100;
+    const MAX_BODY_BYTES = 2 * 1024 * 1024;    // soft limit per note (~2 MB)
+    const RESERVED_FILTERS = new Set(['all', 'uncategorized']);
+
+    const NAV_BASE = 'nav-item w-full flex items-center justify-between px-2.5 py-1.5 text-sm rounded-lg font-medium transition-colors ';
+    const ACTIVE_CLS = 'bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-500';
+    const IDLE_CLS = 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50';
+    const BADGE_CLS = 'text-xs px-2 py-0.5 rounded-md bg-gray-200/60 dark:bg-gray-800 text-gray-600 dark:text-gray-400';
+    const BTN_GHOST = 'px-3.5 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg';
+    const BTN_PRIMARY = 'px-3.5 py-1.5 text-xs font-medium bg-brand-500 hover:bg-brand-600 text-white rounded-lg disabled:opacity-60';
+    const BTN_DANGER = 'px-3.5 py-1.5 text-xs font-medium bg-red-600 hover:bg-red-700 text-white rounded-lg';
+    const INPUT_CLS = 'w-full px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 border border-transparent focus:border-brand-500 rounded-lg focus:outline-none';
+
+    const $ = (id) => document.getElementById(id);
+
+    // HTML-escape for text AND attribute contexts. DOMPurify is only used for markdown output.
+    const ESC_MAP = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+    const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ESC_MAP[c]);
+
+    const toText = (v) =>
+      typeof v === 'string' ? v : (typeof v === 'number' || typeof v === 'boolean') ? String(v) : '';
+
+    function generateId() {
+      if (window.crypto && typeof crypto.randomUUID === 'function') return crypto.randomUUID();
+      // Fallback: still collision-resistant enough for single-user local use
+      return Date.now().toString(36) + Math.random().toString(36).slice(2, 11);
+    }
+
+    /** Simple debounce */
+    function debounce(fn, ms) {
+      let t;
+      return function (...args) {
+        clearTimeout(t);
+        t = setTimeout(() => fn.apply(this, args), ms);
+      };
+    }
+
+    /** Fold diacritics for search (NFD + strip combining marks) */
+    function fold(str) {
+      return String(str || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+    }
+
+    /* ------------------------------------------------------------------ *
+     * State
+     *   editingId = the note whose content is currently loaded in the editor.
+     *   Saves always go to editingId, never to "whatever is selected now".
+     * ------------------------------------------------------------------ */
+    const state = {
+      folders: [],
+      notes: [],
+      activeNoteId: null,
+      activeFilter: 'all',
+      searchQuery: '',
+      isPreviewMode: false,
+    };
+    let editingId = null;
+    let dirty = false;
+    let lastFocused = null;
+    let lastSavedAt = null; // Date.now() of last successful save for the current note
+
+    const getNote = (id) => (id == null ? undefined : state.notes.find((n) => n.id === id));
+    const getFolder = (id) => (id ? state.folders.find((f) => f.id === id) : undefined);
+    const isValidFilter = (f) => RESERVED_FILTERS.has(f) || !!getFolder(f);
+
+    /* ------------------------------------------------------------------ *
+     * UI helpers: icons, toasts
+     * ------------------------------------------------------------------ */
+    function icons(root) {
+      if (window.lucide) {
+        // Prefer scoping to a container when possible to avoid full-document scans
+        window.lucide.createIcons({ root: root || document.body });
       }
     }
 
-    function saveNotes(notesArr) {
-      // Defence in depth for the recovery state. The UI already hides every
-      // control that could get here, but the cost of being wrong is that
-      // recoverable ciphertext gets overwritten with encrypted empty strings,
-      // so the storage layer refuses too.
-      if (recoveryState()) return false;
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(notesArr));
-        return true;
-      } catch (err) {
-        return false;
+    function showToast(message, type = 'info') {
+      const container = $('toast-container');
+      const toast = document.createElement('div');
+      const colors = {
+        info: 'bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900',
+        success: 'bg-emerald-600 text-white',
+        error: 'bg-red-600 text-white',
+      };
+      toast.className = `px-3.5 py-2 rounded-lg text-xs font-medium shadow-md transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto ${colors[type] || colors.info}`;
+      toast.textContent = message;
+      container.appendChild(toast);
+      requestAnimationFrame(() => toast.classList.remove('translate-y-2', 'opacity-0'));
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, type === 'error' ? 4000 : 2500);
+    }
+
+    /* ------------------------------------------------------------------ *
+     * Crypto (AES-256-GCM, key from PBKDF2-SHA256)
+     * ------------------------------------------------------------------ */
+    const toB64 = (buffer) => {
+      const bytes = new Uint8Array(buffer);
+      let s = '';
+      for (let i = 0; i < bytes.length; i += 8192) s += String.fromCharCode.apply(null, bytes.subarray(i, i + 8192));
+      return btoa(s);
+    };
+    const fromB64 = (str) => Uint8Array.from(atob(str), (c) => c.charCodeAt(0));
+
+    function requireCrypto() {
+      if (!(window.crypto && window.crypto.subtle)) {
+        throw new Error('Encryption needs a secure (https) page.');
       }
     }
 
-    function loadSecurityMeta() {
-      try {
-        const raw = localStorage.getItem(SECURITY_KEY);
-        return raw ? JSON.parse(raw) : null;
-      } catch (err) {
-        return null;
-      }
-    }
-
-    function saveSecurityMeta(meta) {
-      try {
-        if (meta) localStorage.setItem(SECURITY_KEY, JSON.stringify(meta));
-        else localStorage.removeItem(SECURITY_KEY);
-        return true;
-      } catch (err) {
-        return false;
-      }
-    }
-
-    // ---------- idle auto-lock ----------
-    function loadAutolockSetting() {
-      try {
-        const raw = localStorage.getItem(AUTOLOCK_KEY);
-        // Check for absence before coercing: Number(null) is 0, and 0 is a real
-        // choice here ("Never"). Coercing first would silently turn auto-lock off
-        // for everyone who had never touched the setting.
-        if (raw === null) return DEFAULT_AUTOLOCK_MS;
-        const n = Number(raw);
-        return AUTOLOCK_CHOICES.includes(n) ? n : DEFAULT_AUTOLOCK_MS;
-      } catch (err) {
-        return DEFAULT_AUTOLOCK_MS;
-      }
-    }
-
-    function clearAutolock() {
-      if (autolockTimer) clearTimeout(autolockTimer);
-      autolockTimer = null;
-      autolockDeadline = 0;
-    }
-
-    // Called on every deliberate interaction. An open vault holds every note in
-    // the clear in memory, so the question is not whether the tab is trusted but
-    // how long it has been unattended.
-    function armAutolock() {
-      clearAutolock();
-      if (!cryptoKey || !autolockMs) return;
-      autolockDeadline = Date.now() + autolockMs;
-      autolockTimer = setTimeout(() => {
-        clearAutolock();
-        lockNow();
-        showVaultNotice('Locked automatically after a period without activity. Enter your password to carry on.');
-      }, autolockMs);
-    }
-
-    function makeId() {
-      if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
-      return 'n' + Date.now() + Math.random().toString(16).slice(2);
-    }
-
-    // ---------- crypto ----------
-    function bufToBase64(buf) {
-      const bytes = new Uint8Array(buf);
-      let bin = '';
-      for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
-      return btoa(bin);
-    }
-
-    function base64ToBuf(b64) {
-      const bin = atob(b64);
-      const bytes = new Uint8Array(bin.length);
-      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-      return bytes.buffer;
-    }
-
-    // How many iterations a given security block was derived with. Metadata
-    // written before the 600,000 bump has no `iterations` field at all, and that
-    // absence is meaningful: those vaults used 300,000. Applies equally to an
-    // export file's `security` block, which may be older than the vault
-    // importing it.
-    function metaIterations(meta) {
-      const n = meta && meta.iterations;
-      if (Number.isFinite(n) && n >= MIN_PBKDF2_ITERATIONS && n <= MAX_PBKDF2_ITERATIONS) return n;
-      return LEGACY_PBKDF2_ITERATIONS;
-    }
-
-    // `iterations` is required rather than defaulted - a caller that forgets it
-    // should fail loudly here, not silently derive the wrong key and report
-    // "Incorrect password" for a correct one.
-    async function deriveKey(password, saltB64, iterations) {
-      if (!Number.isFinite(iterations)) throw new Error('deriveKey: iterations is required');
+    async function deriveKey(passphrase, salt, iterations) {
       const enc = new TextEncoder();
-      const baseKey = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']);
+      const material = await crypto.subtle.importKey('raw', enc.encode(passphrase), 'PBKDF2', false, ['deriveKey']);
       return crypto.subtle.deriveKey(
-        { name: 'PBKDF2', salt: base64ToBuf(saltB64), iterations, hash: 'SHA-256' },
-        baseKey,
+        { name: 'PBKDF2', salt, iterations, hash: 'SHA-256' },
+        material,
         { name: 'AES-GCM', length: 256 },
         false,
         ['encrypt', 'decrypt']
       );
     }
 
-    async function encryptString(key, plaintext) {
+    async function encryptData(text, passphrase) {
+      requireCrypto();
+      const salt = crypto.getRandomValues(new Uint8Array(16));
       const iv = crypto.getRandomValues(new Uint8Array(12));
-      const enc = new TextEncoder();
-      const cipherBuf = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, enc.encode(plaintext));
-      return { iv: bufToBase64(iv.buffer), data: bufToBase64(cipherBuf) };
+      const key = await deriveKey(passphrase, salt, KDF_ITERATIONS);
+      const ciphertext = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(text));
+      return JSON.stringify({
+        encrypted: true,
+        version: '3.0',
+        kdf: 'PBKDF2-SHA256',
+        iterations: KDF_ITERATIONS,
+        salt: toB64(salt),
+        iv: toB64(iv),
+        ciphertext: toB64(ciphertext),
+      });
     }
 
-    async function decryptString(key, box) {
-      const dec = new TextDecoder();
-      const plainBuf = await crypto.subtle.decrypt(
-        { name: 'AES-GCM', iv: base64ToBuf(box.iv) },
-        key,
-        base64ToBuf(box.data)
-      );
-      return dec.decode(plainBuf);
-    }
-
-    // [uint32 BE length][utf-8 bytes][zero padding to a PAD_BLOCK multiple].
-    // Same framing as /crypto, for the same reason: without it the stored
-    // ciphertext length tracks the note length byte for byte, so anyone who can
-    // read storage learns how long every note is without opening any of them.
-    function padBytes(bytes) {
-      const padded = new Uint8Array(Math.ceil((LENGTH_PREFIX_BYTES + bytes.length) / PAD_BLOCK) * PAD_BLOCK);
-      new DataView(padded.buffer).setUint32(0, bytes.length, false);
-      padded.set(bytes, LENGTH_PREFIX_BYTES);
-      return padded;
-    }
-
-    function unpadBytes(buf) {
-      // Only reached once the GCM tag has verified, so a bad frame here means a
-      // bug or a future format - either way, don't guess at it.
-      if (buf.length < PAD_BLOCK || buf.length % PAD_BLOCK !== 0) throw new Error('bad frame');
-      const len = new DataView(buf.buffer, buf.byteOffset, buf.byteLength).getUint32(0, false);
-      if (len > buf.length - LENGTH_PREFIX_BYTES) throw new Error('bad frame');
-      return buf.subarray(LENGTH_PREFIX_BYTES, LENGTH_PREFIX_BYTES + len);
-    }
-
-    // Binds a blob to the record that owns it. `id` and `createdAt` are fixed for
-    // the life of a note, so authenticating them costs nothing and means a
-    // ciphertext lifted into a different record simply fails to decrypt instead
-    // of silently decrypting under someone else's timestamps.
-    //
-    // `expiresAt` is deliberately NOT bound: it has to stay editable while the
-    // vault is locked, and binding it would buy little anyway - anyone who can
-    // rewrite that field can also just delete the storage key outright.
-    function noteAad(note) {
-      return new TextEncoder().encode(
-        'nowlin-notes:v' + NOTE_FORMAT_VERSION + ':' + String(note.id) + ':' + String(note.createdAt)
-      );
-    }
-
-    async function encryptNoteFields(key, fields, note) {
-      const iv = crypto.getRandomValues(new Uint8Array(12));
-      const plain = padBytes(new TextEncoder().encode(JSON.stringify(fields)));
-      const cipherBuf = await crypto.subtle.encrypt(
-        { name: 'AES-GCM', iv, additionalData: noteAad(note) }, key, plain
-      );
-      return { v: NOTE_FORMAT_VERSION, iv: bufToBase64(iv.buffer), data: bufToBase64(cipherBuf) };
-    }
-
-    async function decryptNoteFields(key, box, note) {
-      // A v1 blob carries no `v`, no AAD and no padding. Read it as it was
-      // written; upgradeKdf() rewrites it as v2 the first time the vault opens.
-      if (!box || box.v !== NOTE_FORMAT_VERSION) {
-        return JSON.parse(await decryptString(key, box));
+    async function decryptData(payload, passphrase) {
+      requireCrypto();
+      // Old backups have no "iterations" field and used 100k.
+      const iterations = payload.iterations === undefined ? LEGACY_KDF_ITERATIONS : payload.iterations;
+      if (!Number.isInteger(iterations) || iterations < 1 || iterations > MAX_KDF_ITERATIONS) {
+        throw new Error('Unsupported backup format.');
       }
-      const plainBuf = await crypto.subtle.decrypt(
-        { name: 'AES-GCM', iv: base64ToBuf(box.iv), additionalData: noteAad(note) },
-        key,
-        base64ToBuf(box.data)
-      );
-      return JSON.parse(new TextDecoder().decode(unpadBytes(new Uint8Array(plainBuf))));
-    }
-
-    // Whether every encrypted record is already on the current format. Drives the
-    // same migration path as the iteration-count bump.
-    function notesNeedFormatUpgrade(list) {
-      return list.some((n) => n && n.enc && n.enc.v !== NOTE_FORMAT_VERSION);
-    }
-
-    // Does this security block have everything deriveKey and the verifier check
-    // need? A malformed salt used to throw inside deriveKey and surface as
-    // "Incorrect password", telling the user their correct password was wrong.
-    function securityMetaUsable(meta) {
-      if (!meta || !meta.enabled) return false;
-      if (typeof meta.salt !== 'string' || !meta.salt) return false;
-      if (!meta.verifier || typeof meta.verifier.iv !== 'string' || typeof meta.verifier.data !== 'string') return false;
       try {
-        if (base64ToBuf(meta.salt).byteLength !== 16) return false;
-        base64ToBuf(meta.verifier.iv);
-        base64ToBuf(meta.verifier.data);
+        const salt = fromB64(payload.salt);
+        const iv = fromB64(payload.iv);
+        const ciphertext = fromB64(payload.ciphertext);
+        const key = await deriveKey(passphrase, salt, iterations);
+        const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ciphertext);
+        return new TextDecoder().decode(plain);
       } catch (err) {
+        throw new Error('Wrong passphrase or corrupted file.');
+      }
+    }
+
+    /* ------------------------------------------------------------------ *
+     * Data: validation, load, save
+     * ------------------------------------------------------------------ */
+
+    // Turns any input (localStorage, imported file) into clean, internally consistent data:
+    // string ids, valid timestamps, no duplicate ids, no notes pointing at missing folders.
+    function sanitizeData(input) {
+      if (!input || typeof input !== 'object' || (!Array.isArray(input.notes) && !Array.isArray(input.folders))) {
+        throw new Error('Invalid backup structure.');
+      }
+
+      const folders = [];
+      const folderIds = new Set();
+      const idRemap = new Map();
+      for (const f of Array.isArray(input.folders) ? input.folders : []) {
+        if (!f || typeof f !== 'object') continue;
+        const original = f.id != null && f.id !== '' ? String(f.id) : generateId();
+        if (folderIds.has(original) && !idRemap.has(original)) continue;   // duplicate id: keep the first
+        let id = original;
+        if (RESERVED_FILTERS.has(id)) id = generateId();                   // would collide with built-in views
+        idRemap.set(original, id);
+        if (folderIds.has(id)) continue;
+        folderIds.add(id);
+        folders.push({ id, name: toText(f.name).trim().slice(0, MAX_FOLDER_NAME) || 'Untitled Folder' });
+      }
+
+      const byId = new Map();
+      for (const n of Array.isArray(input.notes) ? input.notes : []) {
+        if (!n || typeof n !== 'object') continue;
+        const id = n.id != null && n.id !== '' ? String(n.id) : generateId();
+        const updated = Number(n.updatedAt);
+        const rawFolder = n.folderId != null && n.folderId !== '' ? String(n.folderId) : null;
+        const folderId = rawFolder ? (idRemap.get(rawFolder) ?? rawFolder) : null;
+        let body = toText(n.body);
+        // Soft-truncate oversized bodies on import/load so storage stays usable
+        if (new TextEncoder().encode(body).length > MAX_BODY_BYTES) {
+          body = body.slice(0, Math.floor(MAX_BODY_BYTES * 0.9)); // approximate; UTF-16 safe enough
+        }
+        const note = {
+          id,
+          folderId: folderId && folderIds.has(folderId) ? folderId : null,
+          title: toText(n.title).slice(0, MAX_TITLE),
+          body,
+          updatedAt: Number.isFinite(updated) && updated > 0 ? updated : Date.now(),
+        };
+        const existing = byId.get(id);
+        if (!existing || note.updatedAt > existing.updatedAt) byId.set(id, note);
+      }
+
+      return { folders, notes: [...byId.values()] };
+    }
+
+    function loadData() {
+      let raw = null;
+      try {
+        raw = localStorage.getItem(STORAGE_KEY);
+      } catch (err) {
+        console.error('localStorage unavailable:', err);
+        showToast('Storage is unavailable; notes will not persist', 'error');
+      }
+
+      if (raw) {
+        try {
+          const clean = sanitizeData(JSON.parse(raw));
+          state.folders = clean.folders;
+          state.notes = clean.notes;
+          return;
+        } catch (err) {
+          // Never let a bad read lead to overwriting good data with an empty database.
+          console.error('Saved data could not be read:', err);
+          try { localStorage.setItem(`${STORAGE_KEY}_corrupt_${Date.now()}`, raw); } catch (e) { /* best effort */ }
+          showToast('Saved data was unreadable. A raw copy was kept in browser storage.', 'error');
+        }
+      }
+
+      state.folders = [{ id: 'f-welcome', name: 'Getting Started' }];
+      state.notes = [{
+        id: 'n-welcome',
+        folderId: 'f-welcome',
+        title: 'Welcome to Notes',
+        body: '# Welcome to Notes!\n\nA fast, local-first markdown note application.\n\n### Key features\n- Manual saving (Ctrl+S / Cmd+S), plus a save whenever you switch notes\n- Client-side privacy (nothing leaves your browser)\n- Encrypted backups (AES-256-GCM)\n- Markdown support with live preview',
+        updatedAt: Date.now(),
+      }];
+      saveData();
+    }
+
+    function saveData() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ folders: state.folders, notes: state.notes }));
+        return true;
+      } catch (err) {
+        console.error('Failed to save:', err);
+        showToast('Could not save: browser storage is full or unavailable', 'error');
         return false;
       }
+    }
+
+    /* ------------------------------------------------------------------ *
+     * Selectors (pure: they never change state)
+     * ------------------------------------------------------------------ */
+    function getFilteredNotes() {
+      const q = fold(state.searchQuery);
+      return state.notes
+        .filter((note) => {
+          let inView = true;
+          if (state.activeFilter === 'uncategorized') inView = !note.folderId;
+          else if (state.activeFilter !== 'all') inView = note.folderId === state.activeFilter;
+          if (!inView) return false;
+          if (!q) return true;
+          return fold(note.title).includes(q) || fold(note.body).includes(q);
+        })
+        .sort((a, b) => b.updatedAt - a.updatedAt);
+    }
+
+    function viewTitle() {
+      if (state.activeFilter === 'all') return 'All Notes';
+      if (state.activeFilter === 'uncategorized') return 'Uncategorized';
+      const folder = getFolder(state.activeFilter);
+      return folder ? folder.name : 'Folder';
+    }
+
+    // Called explicitly after navigation-type changes (filter, search, delete, import).
+    // It is deliberately NOT called from render functions.
+    function ensureActiveNote() {
+      const visible = getFilteredNotes();
+      if (!visible.some((n) => n.id === state.activeNoteId)) {
+        state.activeNoteId = visible.length ? visible[0].id : null;
+      }
+    }
+
+    /* ------------------------------------------------------------------ *
+     * Rendering
+     * ------------------------------------------------------------------ */
+    function renderApp(reloadEditor = false) {
+      if (reloadEditor) editingId = null;   // forces the editor to reload from state
+      renderFolderList();
+      renderFolderSelectOptions();          // options first, then the value is set
+      renderNoteList();
+      renderActiveNote();
+      updateCounts();
+      icons();
+    }
+
+    function renderLists() {
+      renderFolderList();
+      renderNoteList();
+      updateCounts();
+      icons($('sidebar'));
+      icons($('notes-panel'));
+    }
+
+    function updateCounts() {
+      $('count-all').textContent = state.notes.length;
+      $('count-uncategorized').textContent = state.notes.filter((n) => !n.folderId).length;
+    }
+
+    function renderFolderList() {
+      $('folders-container').innerHTML = state.folders.map((folder) => {
+        const count = state.notes.filter((n) => n.folderId === folder.id).length;
+        const active = state.activeFilter === folder.id;
+        const name = esc(folder.name);
+        return `
+          <div data-folder-id="${esc(folder.id)}" class="folder-item flex items-center justify-between rounded-lg text-sm font-medium transition-colors ${active ? ACTIVE_CLS : IDLE_CLS}">
+            <button type="button" data-action="select" class="flex-1 min-w-0 flex items-center space-x-2.5 px-2.5 py-1.5 text-left">
+              <i data-lucide="folder" class="w-4 h-4 flex-shrink-0"></i>
+              <span class="truncate">${name}</span>
+            </button>
+            <span class="folder-count ${BADGE_CLS} mr-1.5">${count}</span>
+            <div class="folder-actions space-x-0.5 pr-1.5">
+              <button type="button" data-action="rename" aria-label="Rename folder ${name}" title="Rename folder" class="p-1.5 hover:text-brand-500 rounded">
+                <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+              </button>
+              <button type="button" data-action="delete" aria-label="Delete folder ${name}" title="Delete folder" class="p-1.5 hover:text-red-500 rounded">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>`;
+      }).join('');
+
+      document.querySelectorAll('.nav-item').forEach((btn) => {
+        const active = btn.dataset.filter === state.activeFilter;
+        btn.className = NAV_BASE + (active ? ACTIVE_CLS : IDLE_CLS);
+      });
+    }
+
+    function renderNoteList() {
+      const container = $('notes-list');
+      const notes = getFilteredNotes();
+
+      $('current-view-title').textContent = viewTitle();
+      $('notes-count-badge').textContent = `${notes.length} ${notes.length === 1 ? 'note' : 'notes'}`;
+
+      if (!notes.length) {
+        container.innerHTML = `<div class="p-8 text-center text-gray-400 text-xs">${
+          state.searchQuery ? 'No notes match your search.' : 'No notes here yet. Tap New Note to add one.'
+        }</div>`;
+        return;
+      }
+
+      container.innerHTML = notes.map((note) => {
+        const active = note.id === state.activeNoteId;
+        const date = new Date(note.updatedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+        const snippet = note.body.replace(/[#*`_\[\]]/g, '').replace(/\s+/g, ' ').trim().slice(0, 65) || 'Empty note';
+        return `
+          <div role="button" tabindex="0" data-note-id="${esc(note.id)}" class="p-3.5 cursor-pointer transition-colors border-l-4 ${
+            active ? 'bg-brand-50/60 dark:bg-brand-500/10 border-brand-500' : 'border-transparent hover:bg-gray-50 dark:hover:bg-gray-800/30'
+          }">
+            <div class="flex items-center justify-between mb-1">
+              <h4 class="text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-100 truncate pr-2">${esc(note.title || 'Untitled Note')}</h4>
+              <span class="text-[10px] text-gray-400 flex-shrink-0">${esc(date)}</span>
+            </div>
+            <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 leading-relaxed">${esc(snippet)}</p>
+          </div>`;
+      }).join('');
+    }
+
+    function renderFolderSelectOptions() {
+      const select = $('note-folder-select');
+      const previous = select.value;
+      select.innerHTML = '';
+      const none = document.createElement('option');
+      none.value = '';
+      none.textContent = 'Uncategorized';
+      select.appendChild(none);
+      state.folders.forEach((f) => {
+        const opt = document.createElement('option');
+        opt.value = f.id;
+        opt.textContent = f.name;
+        select.appendChild(opt);
+      });
+      select.value = getFolder(previous) ? previous : '';
+    }
+
+    function renderMarkdown(text) {
+      if (window.marked && window.DOMPurify) {
+        return DOMPurify.sanitize(marked.parse(text || '', { gfm: true, breaks: true }));
+      }
+      return `<pre>${esc(text)}</pre>`;
+    }
+
+    function syncPreviewMode() {
+      const body = $('note-body-input');
+      const preview = $('note-preview');
+      body.classList.toggle('hidden', state.isPreviewMode);
+      preview.classList.toggle('hidden', !state.isPreviewMode);
+      const btn = $('btn-toggle-preview');
+      btn.classList.toggle('toggle-on', state.isPreviewMode);
+      btn.setAttribute('aria-pressed', String(state.isPreviewMode));
+      if (state.isPreviewMode) preview.innerHTML = renderMarkdown(body.value);
+    }
+
+    // Live preview while typing (debounced)
+    const updatePreviewLive = debounce(() => {
+      if (state.isPreviewMode) {
+        $('note-preview').innerHTML = renderMarkdown($('note-body-input').value);
+      }
+    }, 120);
+
+    function setDirty(value) {
+      dirty = value;
+      $('dirty-dot').classList.toggle('hidden', !dirty);
+      updateLastSavedLabel();
+    }
+
+    function updateLastSavedLabel() {
+      const el = $('last-saved');
+      if (!el) return;
+      if (!editingId || !lastSavedAt) {
+        el.textContent = '';
+        el.classList.add('hidden');
+        return;
+      }
+      const d = new Date(lastSavedAt);
+      const time = d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+      el.textContent = dirty ? 'Unsaved' : `Saved ${time}`;
+      el.classList.toggle('hidden', false);
+      el.classList.toggle('text-amber-500', dirty);
+      el.classList.toggle('text-gray-400', !dirty);
+    }
+
+    // Loads the active note into the editor only when it differs from what is already loaded,
+    // so re-rendering never clobbers text the person is typing.
+    function renderActiveNote() {
+      const note = getNote(state.activeNoteId);
+      const wrapper = $('editor-wrapper');
+      const empty = $('empty-state');
+
+      if (!note) {
+        editingId = null;
+        lastSavedAt = null;
+        setDirty(false);
+        wrapper.classList.add('hidden');
+        empty.classList.remove('hidden');
+        empty.classList.add('flex');
+        return;
+      }
+
+      wrapper.classList.remove('hidden');
+      empty.classList.add('hidden');
+      empty.classList.remove('flex');
+
+      if (editingId !== note.id) {
+        $('note-title-input').value = note.title;
+        $('note-body-input').value = note.body;
+        $('note-folder-select').value = getFolder(note.folderId) ? note.folderId : '';
+        editingId = note.id;
+        lastSavedAt = note.updatedAt;
+        setDirty(false);
+      }
+      syncPreviewMode();
+    }
+
+    /* ------------------------------------------------------------------ *
+     * Saving
+     * ------------------------------------------------------------------ */
+    // Writes the editor contents to the note that is loaded in the editor (editingId).
+    // Returns false only if persisting failed.
+    function saveActiveNote({ explicit = false } = {}) {
+      const note = getNote(editingId);
+      if (!note) return true;
+
+      let title = $('note-title-input').value.trim().slice(0, MAX_TITLE);
+      let body = $('note-body-input').value;
+
+      // Soft body size guard
+      const bodyBytes = new TextEncoder().encode(body).length;
+      if (bodyBytes > MAX_BODY_BYTES) {
+        showToast(`Note is too large (${Math.round(bodyBytes / 1024)} KB). Trim it under ~2 MB.`, 'error');
+        return false;
+      }
+
+      const selected = $('note-folder-select').value;
+      const folderId = getFolder(selected) ? selected : null;
+
+      const changed = title !== note.title || body !== note.body || folderId !== note.folderId;
+      if (changed) {
+        const before = { title: note.title, body: note.body, folderId: note.folderId, updatedAt: note.updatedAt };
+        Object.assign(note, { title, body, folderId, updatedAt: Date.now() });
+        if (!saveData()) {
+          Object.assign(note, before);   // keep memory in sync with storage; the editor still holds the text
+          return false;
+        }
+        lastSavedAt = note.updatedAt;
+        renderLists();
+      }
+      setDirty(false);
+      if (explicit) showToast('Note saved', 'success');
       return true;
     }
 
-    function anyCiphertext(list) {
-      return list.some((n) => n && n.enc);
+    /* ------------------------------------------------------------------ *
+     * Note actions
+     * ------------------------------------------------------------------ */
+    function selectNote(id) {
+      if (id === state.activeNoteId && id === editingId) {
+        openMobileEditor();
+        return;
+      }
+      saveActiveNote();
+      state.activeNoteId = id;
+      renderNoteList();
+      renderActiveNote();
+      openMobileEditor();
     }
 
-    // ---------- state ----------
-    let notes = loadNotes();
-    let securityMeta = loadSecurityMeta();
-    let cryptoKey = null; // in-memory only, never persisted
-    let plaintextCache = new Map(); // note id -> { title, content, folder }
-    let editingId = null;
-    let activeFolder = null;
-    let knownFolders = [];
-    let activeSuggestion = -1;
-    let autolockMs = loadAutolockSetting();
-    let autolockTimer = null;
-    let autolockDeadline = 0;
-
-    // Encryption status is a property of the RECORD, not of the metadata. Reading
-    // it the other way round is what let a missing security key make the app
-    // treat ciphertext-bearing notes as empty plaintext ones - and the next write
-    // then encrypted those empty strings over the top of recoverable data.
-    //
-    // Derived on demand rather than cached in a variable. It was cached at first,
-    // refreshed inside renderSecurityUI(), and read by render(), buildNoteCard()
-    // and saveNotes() - so every caller that ran render() without the security UI
-    // (deleteNote, toggleExpiry, the folder filters, form submit) was relying on
-    // someone else having refreshed it first. That held, but it is an ordering
-    // dependency in the one code path whose whole job is preventing data loss.
-    // Computing it from `notes` and `securityMeta` at the moment of use removes
-    // the dependency instead of documenting it.
-    //
-    // Returns null when healthy, 'missing' when notes carry ciphertext but there
-    // is no security metadata at all, 'damaged' when it is present but unusable.
-    function recoveryState() {
-      if (!anyCiphertext(notes)) return null;
-      if (!securityMeta || !securityMeta.enabled) return 'missing';
-      if (!securityMetaUsable(securityMeta)) return 'damaged';
-      return null;
+    function setFilter(filter) {
+      saveActiveNote();
+      state.activeFilter = filter;
+      ensureActiveNote();
+      renderApp();
+      closeMobileSidebar();
     }
 
-    // ---------- element refs ----------
-    const form = document.getElementById('compose-form');
-    const titleInput = document.getElementById('note-title');
-    const contentInput = document.getElementById('note-content');
-    const folderInput = document.getElementById('note-folder');
-    const folderSuggestions = document.getElementById('folder-suggestions');
-    const neverCheckbox = document.getElementById('note-never');
-    const hoursInput = document.getElementById('note-hours');
-    const hoursRow = document.getElementById('hours-row');
-    const presetsEl = document.getElementById('presets');
-    const saveBtn = document.getElementById('save-btn');
-    const saveError = document.getElementById('save-error');
-    const editingBanner = document.getElementById('editing-banner');
-    const cancelEditBtn = document.getElementById('cancel-edit-btn');
-    const listEl = document.getElementById('notes-list');
-    const emptyState = document.getElementById('empty-state');
-    const folderFiltersEl = document.getElementById('folder-filters');
-    const securityToolbar = document.getElementById('security-toolbar');
-    const unlockSection = document.getElementById('unlock-section');
-    const unlockLabel = document.getElementById('unlock-label');
-    const setupSection = document.getElementById('setup-section');
-    const unlockPasswordInput = document.getElementById('unlock-password');
-    const unlockError = document.getElementById('unlock-error');
-    const unlockBtn = document.getElementById('unlock-btn');
-    const settingsToggle = document.getElementById('settings-toggle');
-    const settingsPanel = document.getElementById('settings-panel');
-
-    const helpToggle = document.getElementById('help-toggle');
-    const helpPanel = document.getElementById('help-panel');
-    const recoveryBanner = document.getElementById('recovery-banner');
-    const recoveryDetail = document.getElementById('recovery-detail');
-    const recoveryStatus = document.getElementById('recovery-status');
-    const recoveryPasswordSection = document.getElementById('recovery-password-section');
-    const recoveryPasswordInput = document.getElementById('recovery-password');
-    const recoveryFileInput = document.getElementById('recovery-file');
-    const autolockRow = document.getElementById('autolock-row');
-    const autolockSelect = document.getElementById('autolock-select');
-    const strengthWrap = document.getElementById('strength');
-    const strengthFill = document.getElementById('strength-fill');
-    const strengthLabel = document.getElementById('strength-label');
-
-    helpToggle.addEventListener('click', () => {
-      helpPanel.hidden = !helpPanel.hidden;
-      helpToggle.setAttribute('aria-expanded', String(!helpPanel.hidden));
-    });
-
-    settingsToggle.addEventListener('click', () => {
-      settingsPanel.hidden = !settingsPanel.hidden;
-      settingsToggle.textContent = settingsPanel.hidden ? '⚙ Settings' : '⚙ Settings ▴';
-    });
-    const setupPasswordInput = document.getElementById('setup-password');
-    const setupConfirmInput = document.getElementById('setup-password-confirm');
-    const setupError = document.getElementById('setup-error');
-    const vaultNotice = document.getElementById('vault-notice');
-
-    function showVaultNotice(text) {
-      vaultNotice.textContent = text;
-      vaultNotice.hidden = false;
+    function createNewNote() {
+      saveActiveNote();
+      if (state.searchQuery) {           // a blank note would never match the search
+        state.searchQuery = '';
+        $('search-input').value = '';
+      }
+      const note = {
+        id: generateId(),
+        folderId: getFolder(state.activeFilter) ? state.activeFilter : null,
+        title: '',
+        body: '',
+        updatedAt: Date.now(),
+      };
+      state.notes.unshift(note);
+      state.activeNoteId = note.id;
+      saveData();
+      renderApp();
+      openMobileEditor();
+      setTimeout(() => $('note-title-input').focus(), 100);
     }
 
-    function hideVaultNotice() {
-      vaultNotice.textContent = '';
-      vaultNotice.hidden = true;
+    // Folder dropdown: move the note. Only change the active filter when the note
+    // would otherwise disappear from the current view.
+    function moveActiveNote() {
+      if (!editingId) return;
+      if (!saveActiveNote()) return;
+      const note = getNote(editingId);
+      if (!note) return;
+
+      const wouldDisappear =
+        (state.activeFilter === 'uncategorized' && note.folderId) ||
+        (state.activeFilter !== 'all' && state.activeFilter !== 'uncategorized' && note.folderId !== state.activeFilter);
+
+      if (wouldDisappear) {
+        state.activeFilter = note.folderId || 'uncategorized';
+      }
+      renderLists();
+      const folder = getFolder(note.folderId);
+      showToast(folder ? `Moved to ${folder.name}` : 'Moved to Uncategorized', 'success');
     }
 
-    // ---------- helpers ----------
-    function updateHoursDisabled() {
-      const disabled = neverCheckbox.checked;
-      hoursInput.disabled = disabled;
-      presetsEl.querySelectorAll('button').forEach((btn) => { btn.disabled = disabled; });
-      hoursRow.style.opacity = disabled ? '0.4' : '1';
-    }
-
-    function parseHours(value) {
-      const n = parseFloat(value);
-      return Number.isFinite(n) && n > 0 ? n : DEFAULT_HOURS;
-    }
-
-    function formatRemaining(ms) {
-      if (ms <= 0) return 'Expired';
-      const totalSeconds = Math.floor(ms / 1000);
-      const days = Math.floor(totalSeconds / 86400);
-      const hours = Math.floor((totalSeconds % 86400) / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
-      if (days > 0) return `${days}d ${hours}h ${minutes}m`;
-      if (hours > 0) return `${hours}h ${minutes}m`;
-      if (minutes > 0) return `${minutes}m ${seconds}s`;
-      return `${seconds}s`;
-    }
-
-    function urgencyClass(ms) {
-      if (ms <= 5 * 60 * 1000) return 'urgent';
-      if (ms <= 60 * 60 * 1000) return 'soon';
-      return '';
-    }
-
-    function attachConfirmClick(button, idleLabel, confirmLabel, onConfirm) {
-      let timeout = null;
-      button.textContent = idleLabel;
-      button.addEventListener('click', () => {
-        if (button.classList.contains('confirming')) {
-          clearTimeout(timeout);
-          button.classList.remove('confirming');
-          button.textContent = idleLabel;
-          onConfirm();
-          return;
-        }
-        button.classList.add('confirming');
-        button.textContent = confirmLabel;
-        timeout = setTimeout(() => {
-          button.classList.remove('confirming');
-          button.textContent = idleLabel;
-        }, 3000);
+    function deleteActiveNote() {
+      const note = getNote(editingId);
+      if (!note) return;
+      const id = note.id;
+      confirmDialog({
+        title: 'Delete note',
+        message: `Delete "${note.title || 'Untitled Note'}"? This can't be undone.`,
+        onConfirm: () => {
+          state.notes = state.notes.filter((n) => n.id !== id);
+          if (state.activeNoteId === id) state.activeNoteId = null;
+          saveData();
+          ensureActiveNote();
+          renderApp(true);
+          closeMobileEditor();
+          showToast('Note deleted', 'info');
+        },
       });
     }
 
-    async function copyText(text) {
-      try {
-        if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(text);
-          return true;
-        }
-      } catch (err) {
-        // fall through to the legacy path below
-      }
-      // Fallback for browsers or contexts where the async clipboard API is unavailable.
-      try {
+    function copyNoteContent() {
+      if (!editingId) return;
+      const text = $('note-body-input').value;
+      const fallback = () => {
         const ta = document.createElement('textarea');
         ta.value = text;
-        ta.setAttribute('readonly', '');
-        ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;';
+        ta.style.cssText = 'position:fixed;opacity:0;';
         document.body.appendChild(ta);
+        ta.focus();
         ta.select();
-        const ok = document.execCommand('copy');
+        try {
+          document.execCommand('copy');
+          showToast('Copied to clipboard', 'success');
+        } catch (err) {
+          showToast('Could not copy', 'error');
+        }
         document.body.removeChild(ta);
-        return ok;
-      } catch (err) {
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard', 'success')).catch(fallback);
+      } else {
+        fallback();
+      }
+    }
+
+    /* ------------------------------------------------------------------ *
+     * Folder actions
+     * ------------------------------------------------------------------ */
+    function promptCreateFolder() {
+      promptDialog({
+        title: 'Create folder',
+        placeholder: 'Folder name',
+        confirmLabel: 'Create',
+        onSubmit: (name) => {
+          saveActiveNote();
+          const folder = { id: generateId(), name: name.slice(0, MAX_FOLDER_NAME) };
+          state.folders.push(folder);
+          state.activeFilter = folder.id;
+          saveData();
+          ensureActiveNote();
+          renderApp();
+          showToast('Folder created', 'success');
+        },
+      });
+    }
+
+    function promptRenameFolder(folderId) {
+      const folder = getFolder(folderId);
+      if (!folder) return;
+      promptDialog({
+        title: 'Rename folder',
+        value: folder.name,
+        confirmLabel: 'Save',
+        onSubmit: (name) => {
+          folder.name = name.slice(0, MAX_FOLDER_NAME);
+          saveData();
+          renderApp();
+          showToast('Folder renamed', 'success');
+        },
+      });
+    }
+
+    function confirmDeleteFolder(folderId) {
+      const folder = getFolder(folderId);
+      if (!folder) return;
+      confirmDialog({
+        title: 'Delete folder',
+        message: `Delete "${folder.name}"? Its notes will move to Uncategorized.`,
+        onConfirm: () => {
+          saveActiveNote();
+          state.folders = state.folders.filter((f) => f.id !== folderId);
+          state.notes.forEach((n) => { if (n.folderId === folderId) n.folderId = null; });
+          if (state.activeFilter === folderId) state.activeFilter = 'all';
+          saveData();
+          ensureActiveNote();
+          renderApp(true);
+          showToast('Folder deleted', 'info');
+        },
+      });
+    }
+
+    /* ------------------------------------------------------------------ *
+     * Modals (with basic focus trap)
+     * ------------------------------------------------------------------ */
+    function openModal(html) {
+      lastFocused = document.activeElement;
+      const backdrop = $('modal-backdrop');
+      $('modal-content').innerHTML = html;
+      backdrop.classList.remove('hidden');
+      backdrop.setAttribute('aria-hidden', 'false');
+      icons($('modal-card'));
+
+      // Simple focus trap: keep focus inside the dialog
+      const focusable = $('modal-card').querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length) {
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        const trap = (e) => {
+          if (e.key !== 'Tab') return;
+          if (e.shiftKey) {
+            if (document.activeElement === first) {
+              e.preventDefault();
+              last.focus();
+            }
+          } else if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        };
+        backdrop._trapHandler = trap;
+        document.addEventListener('keydown', trap);
+      }
+    }
+
+    function closeModal() {
+      const backdrop = $('modal-backdrop');
+      if (backdrop._trapHandler) {
+        document.removeEventListener('keydown', backdrop._trapHandler);
+        delete backdrop._trapHandler;
+      }
+      backdrop.classList.add('hidden');
+      backdrop.setAttribute('aria-hidden', 'true');
+      $('modal-content').innerHTML = '';
+      const el = lastFocused;
+      lastFocused = null;
+      // Don't hand focus back to a text field: on phones that pops the keyboard open.
+      if (el && document.contains(el) && !/^(INPUT|TEXTAREA)$/.test(el.tagName)) el.focus();
+    }
+
+    const isModalOpen = () => !$('modal-backdrop').classList.contains('hidden');
+
+    function confirmDialog({ title, message, confirmLabel = 'Delete', onConfirm }) {
+      openModal(`
+        <h3 id="modal-title" class="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">${esc(title)}</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">${esc(message)}</p>
+        <div class="flex justify-end space-x-2">
+          <button type="button" data-modal-close class="${BTN_GHOST}">Cancel</button>
+          <button type="button" id="modal-confirm" class="${BTN_DANGER}">${esc(confirmLabel)}</button>
+        </div>`);
+      const btn = $('modal-confirm');
+      btn.addEventListener('click', () => { closeModal(); onConfirm(); });
+      btn.focus();
+    }
+
+    function promptDialog({ title, value = '', placeholder = '', confirmLabel = 'Save', onSubmit }) {
+      openModal(`
+        <h3 id="modal-title" class="text-base font-bold text-gray-900 dark:text-gray-100 mb-2">${esc(title)}</h3>
+        <input type="text" id="modal-input" maxlength="${MAX_FOLDER_NAME}" value="${esc(value)}" placeholder="${esc(placeholder)}" autocomplete="off" class="${INPUT_CLS} mb-4">
+        <div class="flex justify-end space-x-2">
+          <button type="button" data-modal-close class="${BTN_GHOST}">Cancel</button>
+          <button type="button" id="modal-confirm" class="${BTN_PRIMARY}">${esc(confirmLabel)}</button>
+        </div>`);
+      const input = $('modal-input');
+      const submit = () => {
+        const v = input.value.trim();
+        if (!v) { input.focus(); return; }
+        closeModal();
+        onSubmit(v);
+      };
+      input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); submit(); } });
+      $('modal-confirm').addEventListener('click', submit);
+      input.focus();
+      input.select();
+    }
+
+    /* ------------------------------------------------------------------ *
+     * Export / import
+     * ------------------------------------------------------------------ */
+    function downloadFile(filename, text) {
+      const blob = new Blob([text], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);   // revoking immediately can cancel the download
+    }
+
+    function openExportModal() {
+      saveActiveNote();
+      openModal(`
+        <h3 id="modal-title" class="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">Export backup</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Download your notes and folders as a JSON file.</p>
+
+        <label class="flex items-center space-x-2 text-xs font-medium text-gray-700 dark:text-gray-300 cursor-pointer mb-4">
+          <input type="checkbox" id="chk-encrypt-export" class="rounded border-gray-300 text-brand-500 focus:ring-brand-500">
+          <span>Encrypt with a passphrase</span>
+        </label>
+
+        <div id="export-password-section" class="hidden space-y-3 mb-4">
+          <div>
+            <label for="export-passphrase" class="block text-[11px] font-medium text-gray-500 mb-1">Passphrase (8+ characters)</label>
+            <input type="password" id="export-passphrase" autocomplete="new-password" class="${INPUT_CLS}">
+          </div>
+          <div>
+            <label for="export-passphrase-confirm" class="block text-[11px] font-medium text-gray-500 mb-1">Confirm passphrase</label>
+            <input type="password" id="export-passphrase-confirm" autocomplete="new-password" class="${INPUT_CLS}">
+          </div>
+          <p class="text-[11px] text-gray-500">If you forget this passphrase, the backup can't be recovered.</p>
+        </div>
+
+        <div class="flex justify-end space-x-2">
+          <button type="button" data-modal-close class="${BTN_GHOST}">Cancel</button>
+          <button type="button" id="btn-process-export" class="${BTN_PRIMARY}">Download backup</button>
+        </div>`);
+
+      const chk = $('chk-encrypt-export');
+      chk.addEventListener('change', () => $('export-password-section').classList.toggle('hidden', !chk.checked));
+
+      const btn = $('btn-process-export');
+      btn.addEventListener('click', async () => {
+        saveActiveNote();
+        const date = new Date().toISOString().slice(0, 10); // UTC date
+        const raw = JSON.stringify({
+          version: '2.0',
+          exportedAt: new Date().toISOString(),
+          folders: state.folders,
+          notes: state.notes,
+        }, null, 2);
+
+        let payload = raw;
+        let filename = `notes-backup-${date}.json`;
+
+        if (chk.checked) {
+          const pass = $('export-passphrase').value;
+          if (pass.length < 8) return showToast('Use a passphrase of at least 8 characters', 'error');
+          if (pass !== $('export-passphrase-confirm').value) return showToast('Passphrases do not match', 'error');
+
+          btn.disabled = true;
+          btn.textContent = 'Encrypting…';
+          try {
+            payload = await encryptData(raw, pass);
+            filename = `notes-backup-encrypted-${date}.enc.json`;
+          } catch (err) {
+            btn.disabled = false;
+            btn.textContent = 'Download backup';
+            return showToast(err.message || 'Encryption failed', 'error');
+          }
+        }
+
+        downloadFile(filename, payload);
+        closeModal();
+        showToast('Backup exported', 'success');
+      });
+    }
+
+    function handleImportFileSelect(e) {
+      const file = e.target.files[0];
+      e.target.value = '';
+      if (!file) return;
+      if (file.size > MAX_IMPORT_BYTES) return showToast('That file is too large to import', 'error');
+
+      const reader = new FileReader();
+      reader.onerror = () => showToast('Could not read that file', 'error');
+      reader.onload = () => {
+        let parsed;
+        try {
+          parsed = JSON.parse(reader.result);
+        } catch (err) {
+          return showToast('That is not a valid JSON file', 'error');
+        }
+        if (parsed && parsed.encrypted === true && typeof parsed.ciphertext === 'string') {
+          return promptImportDecrypt(parsed);
+        }
+        try {
+          promptImportMergeOptions(sanitizeData(parsed));
+        } catch (err) {
+          showToast(err.message, 'error');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function promptImportDecrypt(payload) {
+      openModal(`
+        <h3 id="modal-title" class="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">Encrypted backup</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Enter the passphrase used when this backup was exported.</p>
+        <input type="password" id="import-passphrase" placeholder="Passphrase" autocomplete="current-password" class="${INPUT_CLS} mb-4">
+        <div class="flex justify-end space-x-2">
+          <button type="button" data-modal-close class="${BTN_GHOST}">Cancel</button>
+          <button type="button" id="btn-decrypt-import" class="${BTN_PRIMARY}">Decrypt and continue</button>
+        </div>`);
+
+      const input = $('import-passphrase');
+      const btn = $('btn-decrypt-import');
+      input.focus();
+
+      const run = async () => {
+        if (!input.value) return showToast('Enter the passphrase', 'error');
+        btn.disabled = true;
+        btn.textContent = 'Decrypting…';
+        let plain;
+        try {
+          plain = await decryptData(payload, input.value);
+        } catch (err) {
+          btn.disabled = false;
+          btn.textContent = 'Decrypt and continue';
+          return showToast(err.message, 'error');
+        }
+        try {
+          // Close the decrypt modal first so the merge options modal can open cleanly
+          closeModal();
+          promptImportMergeOptions(sanitizeData(JSON.parse(plain)));
+        } catch (err) {
+          // Modal already closed; just notify
+          showToast('The backup contents are invalid', 'error');
+        }
+      };
+      btn.addEventListener('click', run);
+      input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); run(); } });
+    }
+
+    function promptImportMergeOptions(data) {
+      const n = data.notes.length;
+      const f = data.folders.length;
+      openModal(`
+        <h3 id="modal-title" class="text-base font-bold text-gray-900 dark:text-gray-100 mb-1">Import backup</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">This file has <strong>${n} ${n === 1 ? 'note' : 'notes'}</strong> in <strong>${f} ${f === 1 ? 'folder' : 'folders'}</strong>. Export a backup first if you want a safety net.</p>
+        <div class="space-y-2 mb-5">
+          <button type="button" id="btn-import-merge" class="w-full text-left p-2.5 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-brand-500 transition-colors">
+            <div class="font-semibold text-xs text-gray-800 dark:text-gray-200">Merge with existing notes</div>
+            <div class="text-[11px] text-gray-500">Adds new notes and keeps the newer copy of any note that exists in both. Safe to run twice.</div>
+          </button>
+          <button type="button" id="btn-import-replace" class="w-full text-left p-2.5 rounded-lg border border-red-200 dark:border-red-900/50 hover:border-red-500 bg-red-50/50 dark:bg-red-950/20 transition-colors">
+            <div class="font-semibold text-xs text-red-600 dark:text-red-400">Replace everything</div>
+            <div class="text-[11px] text-gray-500 dark:text-gray-400">Deletes all current notes and folders, then loads this file.</div>
+          </button>
+        </div>
+        <div class="flex justify-end">
+          <button type="button" data-modal-close class="${BTN_GHOST}">Cancel</button>
+        </div>`);
+
+      $('btn-import-merge').addEventListener('click', () => { if (applyImport('merge', data)) closeModal(); });
+      $('btn-import-replace').addEventListener('click', () => { if (applyImport('replace', data)) closeModal(); });
+    }
+
+    // Builds the new dataset without mutating current arrays, so a failed save can be rolled back.
+    function applyImport(mode, data) {
+      saveActiveNote();
+      const previous = { folders: state.folders, notes: state.notes };
+      let next;
+      let added = 0;
+      let updated = 0;
+
+      if (mode === 'replace') {
+        next = { folders: data.folders, notes: data.notes };
+      } else {
+        const folderMap = new Map(state.folders.map((f) => [f.id, f]));
+        data.folders.forEach((f) => { if (!folderMap.has(f.id)) folderMap.set(f.id, { ...f }); });
+
+        const noteMap = new Map(state.notes.map((n) => [n.id, n]));
+        data.notes.forEach((n) => {
+          const existing = noteMap.get(n.id);
+          if (!existing) { noteMap.set(n.id, { ...n }); added++; }
+          else if (n.updatedAt > existing.updatedAt) { noteMap.set(n.id, { ...n }); updated++; }
+        });
+        next = { folders: [...folderMap.values()], notes: [...noteMap.values()] };
+      }
+
+      const clean = sanitizeData(next);
+      state.folders = clean.folders;
+      state.notes = clean.notes;
+      if (!saveData()) {
+        state.folders = previous.folders;
+        state.notes = previous.notes;
         return false;
       }
-    }
 
-    function flashButton(button, tempLabel, restoreLabel) {
-      button.textContent = tempLabel;
-      button.disabled = true;
-      setTimeout(() => {
-        button.textContent = restoreLabel;
-        button.disabled = false;
-      }, 1400);
-    }
-
-    function getDisplayFields(note) {
-      // The presence of `enc` decides this, never securityMeta. A note holding
-      // ciphertext is encrypted whatever the metadata claims, so the worst case
-      // is showing a locked card for a note we cannot currently open - never
-      // showing it as blank plaintext that a later write would overwrite.
-      if (!note.enc) {
-        return { title: note.title || '', content: note.content || '', folder: note.folder || '', locked: false };
+      if (mode === 'replace') {
+        state.activeFilter = 'all';
+        state.activeNoteId = null;
+      } else if (!isValidFilter(state.activeFilter)) {
+        state.activeFilter = 'all';
       }
-      if (!cryptoKey) return { locked: true };
-      const cached = plaintextCache.get(note.id);
-      // Unlocked, but this record still would not decrypt - the ciphertext is damaged,
-      // which is a different problem from being locked and must not be shown as one.
-      if (!cached) return { locked: true, damaged: true };
-      return { title: cached.title || '', content: cached.content || '', folder: cached.folder || '', locked: false };
+      ensureActiveNote();
+      renderApp(true);
+      showToast(mode === 'replace' ? 'Backup restored' : `Merged: ${added} added, ${updated} updated`, 'success');
+      return true;
     }
 
-    function resetForm() {
-      editingId = null;
-      form.reset();
-      closeSuggestions();
-      hoursInput.value = DEFAULT_HOURS;
-      updateHoursDisabled();
-      saveBtn.textContent = 'Save Note';
-      saveError.textContent = '';
-      editingBanner.classList.remove('show');
+    /* ------------------------------------------------------------------ *
+     * Mobile navigation
+     * ------------------------------------------------------------------ */
+    const isMobile = () => window.matchMedia('(max-width: 767px)').matches;
+
+    function openMobileSidebar() {
+      $('sidebar').classList.remove('-translate-x-full');
+      $('mobile-overlay').classList.remove('hidden');
+    }
+    function closeMobileSidebar() {
+      $('sidebar').classList.add('-translate-x-full');
+      $('mobile-overlay').classList.add('hidden');
+    }
+    function openMobileEditor() {
+      if (isMobile()) $('editor-panel').classList.remove('translate-x-full');
+    }
+    function closeMobileEditor() {
+      if (isMobile()) $('editor-panel').classList.add('translate-x-full');
     }
 
-    // ---------- folder autocomplete ----------
-    // Replaces a native <datalist>, which renders inconsistently (and often not at
-    // all on mobile Safari) and gives no feedback while typing.
-    function matchingFolders() {
-      const q = folderInput.value.trim().toLowerCase();
-      // Nothing to offer once the field already holds a folder name exactly.
-      const pool = knownFolders.filter((f) => f.toLowerCase() !== q);
-      if (!q) return pool;
-      return pool
-        .filter((f) => f.toLowerCase().includes(q))
-        .sort((a, b) => {
-          const aStarts = a.toLowerCase().startsWith(q) ? 0 : 1;
-          const bStarts = b.toLowerCase().startsWith(q) ? 0 : 1;
-          return aStarts - bStarts || a.localeCompare(b);
-        });
-    }
+    /* ------------------------------------------------------------------ *
+     * Events
+     * ------------------------------------------------------------------ */
+    function bindEvents() {
+      // Notes list (delegated)
+      const list = $('notes-list');
+      list.addEventListener('click', (e) => {
+        const item = e.target.closest('[data-note-id]');
+        if (item) selectNote(item.dataset.noteId);
+      });
+      list.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        const item = e.target.closest('[data-note-id]');
+        if (item) { e.preventDefault(); selectNote(item.dataset.noteId); }
+      });
 
-    function closeSuggestions() {
-      folderSuggestions.hidden = true;
-      folderSuggestions.innerHTML = '';
-      folderInput.setAttribute('aria-expanded', 'false');
-      activeSuggestion = -1;
-    }
+      // Folders (delegated). IDs come from data attributes, never from inline JS.
+      $('folders-container').addEventListener('click', (e) => {
+        const row = e.target.closest('[data-folder-id]');
+        if (!row) return;
+        const id = row.dataset.folderId;
+        const actionEl = e.target.closest('[data-action]');
+        const action = actionEl ? actionEl.dataset.action : 'select';
+        if (action === 'rename') promptRenameFolder(id);
+        else if (action === 'delete') confirmDeleteFolder(id);
+        else setFilter(id);
+      });
 
-    function chooseFolder(folder) {
-      folderInput.value = folder;
-      closeSuggestions();
-    }
+      document.querySelectorAll('.nav-item').forEach((btn) => {
+        btn.addEventListener('click', () => setFilter(btn.dataset.filter));
+      });
 
-    function renderSuggestions() {
-      const items = matchingFolders();
-      folderSuggestions.innerHTML = '';
+      // Modal: one set of handlers for every dialog
+      $('modal-backdrop').addEventListener('click', (e) => {
+        if (e.target.id === 'modal-backdrop' || e.target.closest('[data-modal-close]')) closeModal();
+      });
 
-      if (!items.length) {
-        closeSuggestions();
-        return;
-      }
-      if (activeSuggestion >= items.length) activeSuggestion = items.length - 1;
-
-      const q = folderInput.value.trim().toLowerCase();
-      items.forEach((folder, i) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.setAttribute('role', 'option');
-        btn.dataset.folder = folder;
-        if (i === activeSuggestion) {
-          btn.classList.add('active');
-          btn.setAttribute('aria-selected', 'true');
-        }
-
-        // Built from text nodes so folder names are never parsed as markup.
-        const at = q ? folder.toLowerCase().indexOf(q) : -1;
-        if (at >= 0) {
-          btn.appendChild(document.createTextNode(folder.slice(0, at)));
-          const hit = document.createElement('strong');
-          hit.textContent = folder.slice(at, at + q.length);
-          btn.appendChild(hit);
-          btn.appendChild(document.createTextNode(folder.slice(at + q.length)));
-        } else {
-          btn.textContent = folder;
-        }
-
-        // mousedown (not click) so the choice lands before the input's blur closes the list.
-        btn.addEventListener('mousedown', (e) => {
+      // Global keys
+      document.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') {
           e.preventDefault();
-          chooseFolder(folder);
-        });
-        folderSuggestions.appendChild(btn);
-      });
-
-      folderSuggestions.hidden = false;
-      folderInput.setAttribute('aria-expanded', 'true');
-      if (activeSuggestion >= 0) {
-        folderSuggestions.children[activeSuggestion].scrollIntoView({ block: 'nearest' });
-      }
-    }
-
-    folderInput.addEventListener('input', () => { activeSuggestion = -1; renderSuggestions(); });
-    folderInput.addEventListener('focus', renderSuggestions);
-    folderInput.addEventListener('blur', () => setTimeout(closeSuggestions, 120));
-
-    folderInput.addEventListener('keydown', (e) => {
-      if (folderSuggestions.hidden) {
-        if (e.key === 'ArrowDown') { e.preventDefault(); renderSuggestions(); }
-        return;
-      }
-      const items = folderSuggestions.querySelectorAll('button');
-      if (!items.length) return;
-
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        activeSuggestion = (activeSuggestion + 1) % items.length;
-        renderSuggestions();
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        activeSuggestion = (activeSuggestion - 1 + items.length) % items.length;
-        renderSuggestions();
-      } else if (e.key === 'Enter' && activeSuggestion >= 0) {
-        e.preventDefault(); // take the suggestion instead of submitting the note
-        chooseFolder(items[activeSuggestion].dataset.folder);
-      } else if (e.key === 'Escape') {
-        e.preventDefault();
-        closeSuggestions();
-      }
-    });
-
-    neverCheckbox.addEventListener('change', updateHoursDisabled);
-
-    presetsEl.addEventListener('click', (e) => {
-      const btn = e.target.closest('button[data-hours]');
-      if (!btn) return;
-      hoursInput.value = btn.dataset.hours;
-    });
-
-    cancelEditBtn.addEventListener('click', resetForm);
-
-    // ---------- rendering ----------
-    function buildNoteCard(note) {
-      const fields = getDisplayFields(note);
-
-      const card = document.createElement('div');
-      card.className = 'note-card';
-      card.dataset.id = note.id;
-
-      const head = document.createElement('div');
-      head.className = 'note-card-head';
-
-      const titleGroup = document.createElement('div');
-      titleGroup.className = 'note-title-group';
-
-      const titleEl = document.createElement('p');
-      titleEl.className = 'note-title';
-      titleEl.textContent = fields.damaged
-        ? '⚠ Damaged note'
-        : fields.locked ? '🔒 Locked note' : (fields.title || 'Untitled note');
-      titleGroup.appendChild(titleEl);
-
-      if (!fields.locked && fields.folder) {
-        const tag = document.createElement('span');
-        tag.className = 'folder-tag';
-        tag.textContent = fields.folder;
-        titleGroup.appendChild(tag);
-      }
-
-      const countdownEl = document.createElement('span');
-      countdownEl.className = 'countdown';
-      countdownEl.dataset.expires = note.expiresAt == null ? '' : String(note.expiresAt);
-      if (note.expiresAt == null) {
-        countdownEl.textContent = 'Never expires';
-      } else {
-        const remaining = note.expiresAt - Date.now();
-        countdownEl.textContent = formatRemaining(remaining);
-        const cls = urgencyClass(remaining);
-        if (cls) countdownEl.classList.add(cls);
-      }
-
-      head.appendChild(titleGroup);
-      head.appendChild(countdownEl);
-
-      const contentEl = document.createElement('p');
-      if (fields.damaged) {
-        contentEl.className = 'note-content locked-text';
-        contentEl.textContent = 'This note could not be decrypted, so its contents are unrecoverable. Your password was correct — the stored data itself is damaged. You can delete it below.';
-      } else if (fields.locked) {
-        contentEl.className = 'note-content locked-text';
-        contentEl.textContent = 'Enter your password above to view this note.';
-      } else {
-        contentEl.className = 'note-content';
-        contentEl.textContent = fields.content || '';
-      }
-
-      const expandHint = document.createElement('span');
-      expandHint.className = 'expand-hint';
-      expandHint.textContent = 'Show more ▾';
-      expandHint.hidden = true;
-
-      card.addEventListener('click', (e) => {
-        if (e.target.closest('.note-actions')) return;
-        if (!card.classList.contains('expandable')) return;
-        const nowExpanded = contentEl.classList.toggle('expanded');
-        expandHint.textContent = nowExpanded ? 'Show less ▴' : 'Show more ▾';
-      });
-
-      const actions = document.createElement('div');
-      actions.className = 'note-actions';
-
-      // In recovery every one of these is a write against data we cannot read.
-      // saveNotes() would refuse, but the in-memory array is still mutated first,
-      // so the note would vanish from the list while sitting safely on disk -
-      // which looks exactly like the data loss this state exists to prevent.
-      if (recoveryState()) {
-        card.appendChild(head);
-        card.appendChild(contentEl);
-        card.appendChild(expandHint);
-        return card;
-      }
-
-      if (!fields.locked) {
-        const editBtn = document.createElement('button');
-        editBtn.type = 'button';
-        editBtn.textContent = 'Edit';
-        editBtn.addEventListener('click', () => startEdit(note.id));
-        actions.appendChild(editBtn);
-
-        const copyBtn = document.createElement('button');
-        copyBtn.type = 'button';
-        copyBtn.textContent = 'Copy';
-        copyBtn.addEventListener('click', async () => {
-          // Copies from the stored value, not the DOM, so a note shortened in the
-          // list still yields its full text. Title is deliberately excluded.
-          const ok = await copyText(fields.content || '');
-          flashButton(copyBtn, ok ? 'Copied' : 'Copy failed', 'Copy');
-        });
-        actions.appendChild(copyBtn);
-      }
-
-      const toggleBtn = document.createElement('button');
-      toggleBtn.type = 'button';
-      toggleBtn.textContent = note.expiresAt == null ? 'Enable self-destruct' : 'Disable self-destruct';
-      toggleBtn.addEventListener('click', () => toggleExpiry(note.id));
-      actions.appendChild(toggleBtn);
-
-      const deleteBtn = document.createElement('button');
-      deleteBtn.type = 'button';
-      deleteBtn.className = 'delete-btn';
-      attachConfirmClick(deleteBtn, 'Delete Now', 'Confirm?', () => deleteNote(note.id));
-      actions.appendChild(deleteBtn);
-
-      card.appendChild(head);
-      card.appendChild(contentEl);
-      card.appendChild(expandHint);
-      card.appendChild(actions);
-      return card;
-    }
-
-    function renderFolders() {
-      // Folder names are encrypted content, so while locked there is nothing to
-      // suggest from and the list must stay empty rather than leak names.
-      if (securityMeta && securityMeta.enabled && !cryptoKey) {
-        knownFolders = [];
-        closeSuggestions();
-        folderFiltersEl.style.display = 'none';
-        folderFiltersEl.innerHTML = '';
-        return;
-      }
-
-      const folderSet = new Set();
-      notes.forEach((note) => {
-        const fields = getDisplayFields(note);
-        if (!fields.locked && fields.folder) folderSet.add(fields.folder);
-      });
-
-      knownFolders = [...folderSet].sort((a, b) => a.localeCompare(b));
-
-      if (folderSet.size === 0) {
-        folderFiltersEl.style.display = 'none';
-        folderFiltersEl.innerHTML = '';
-        if (activeFolder) activeFolder = null;
-        return;
-      }
-
-      folderFiltersEl.style.display = 'flex';
-      folderFiltersEl.innerHTML = '';
-
-      const allBtn = document.createElement('button');
-      allBtn.type = 'button';
-      allBtn.textContent = 'All';
-      allBtn.className = activeFolder === null ? 'active' : '';
-      allBtn.addEventListener('click', () => { activeFolder = null; render(); });
-      folderFiltersEl.appendChild(allBtn);
-
-      [...folderSet].sort().forEach((folder) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.textContent = folder;
-        btn.className = activeFolder === folder ? 'active' : '';
-        btn.addEventListener('click', () => { activeFolder = folder; render(); });
-        folderFiltersEl.appendChild(btn);
-      });
-    }
-
-    function render() {
-      const now = Date.now();
-      // Pruning is a delete, and deleting notes we cannot currently read is
-      // exactly what the recovery state exists to prevent.
-      if (!recoveryState()) {
-        const before = notes.length;
-        notes = notes.filter((n) => n.expiresAt == null || n.expiresAt > now);
-        if (notes.length !== before) saveNotes(notes);
-      }
-
-      renderFolders();
-
-      const sorted = [...notes].sort((a, b) => b.createdAt - a.createdAt);
-      const visible = sorted.filter((note) => {
-        if (!activeFolder) return true;
-        const fields = getDisplayFields(note);
-        return !fields.locked && fields.folder === activeFolder;
-      });
-
-      listEl.innerHTML = '';
-      visible.forEach((note) => listEl.appendChild(buildNoteCard(note)));
-
-      listEl.querySelectorAll('.note-card').forEach((card) => {
-        const contentEl = card.querySelector('.note-content');
-        const hint = card.querySelector('.expand-hint');
-        if (!contentEl || !hint) return;
-        if (contentEl.scrollHeight > contentEl.clientHeight + 1) {
-          hint.hidden = false;
-          card.classList.add('expandable');
+          saveActiveNote({ explicit: true });
+        } else if (e.key === 'Escape') {
+          if (isModalOpen()) closeModal();
+          else closeMobileSidebar();
         }
       });
 
-      if (notes.length === 0) {
-        emptyState.textContent = 'No notes yet.';
-        emptyState.style.display = 'block';
-      } else if (visible.length === 0) {
-        emptyState.textContent = 'No notes in this folder.';
-        emptyState.style.display = 'block';
-      } else {
-        emptyState.style.display = 'none';
-      }
-    }
-
-    function renderSecurityUI() {
-      securityToolbar.innerHTML = '';
-      unlockSection.hidden = true;
-      setupSection.hidden = true;
-      recoveryBanner.hidden = true;
-      autolockRow.hidden = true;
-      form.hidden = false;
-
-      // Recovery outranks everything else: there is encrypted data on disk that
-      // this page currently has no way to open, and every normal control would
-      // write over it.
-      const recovery = recoveryState();
-      if (recovery) {
-        form.hidden = true;
-        recoveryBanner.hidden = false;
-        settingsPanel.hidden = true;
-        const count = notes.filter((n) => n && n.enc).length;
-        recoveryDetail.textContent = recovery === 'missing'
-          ? `${count} encrypted note${count === 1 ? '' : 's'} ${count === 1 ? 'is' : 'are'} stored here, but the password data needed to open ${count === 1 ? 'it' : 'them'} is gone from this browser.`
-          : `${count} encrypted note${count === 1 ? '' : 's'} ${count === 1 ? 'is' : 'are'} stored here, but the password data needed to open ${count === 1 ? 'it' : 'them'} is damaged and cannot be read.`;
-        const label = document.createElement('span');
-        label.className = 'toolbar-label';
-        label.textContent = '\u26a0 Editing disabled to protect your data';
-        securityToolbar.appendChild(label);
-        return;
-      }
-
-      if (!cryptoAvailable) {
-        const label = document.createElement('span');
-        label.className = 'toolbar-label';
-        label.textContent = 'Password protection needs HTTPS - unavailable here.';
-        securityToolbar.appendChild(label);
-        return;
-      }
-
-      if (!securityMeta || !securityMeta.enabled) {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'btn-ghost';
-        btn.textContent = '🔒 Enable Password Protection';
-        btn.addEventListener('click', () => {
-          form.hidden = true;
-          setupSection.hidden = false;
-          setupPasswordInput.value = '';
-          setupConfirmInput.value = '';
-          setupError.textContent = '';
-          setupPasswordInput.focus();
-        });
-        securityToolbar.appendChild(btn);
-        return;
-      }
-
-      if (!cryptoKey) {
-        form.hidden = true;
-        unlockSection.hidden = false;
-        const count = notes.length;
-        unlockLabel.textContent = `🔒 Locked — ${count} encrypted note${count === 1 ? '' : 's'}`;
-        unlockPasswordInput.value = '';
-        unlockError.textContent = '';
-        return;
-      }
-
-      autolockRow.hidden = false;
-      autolockSelect.value = String(autolockMs);
-      const label = document.createElement('span');
-      label.className = 'toolbar-label';
-      label.id = 'protected-label';
-      label.textContent = '🔓 Protected';
-      const lockBtn = document.createElement('button');
-      lockBtn.type = 'button';
-      lockBtn.className = 'btn-ghost';
-      lockBtn.textContent = 'Lock';
-      lockBtn.addEventListener('click', lockNow);
-
-      const disableBtn = document.createElement('button');
-      disableBtn.type = 'button';
-      disableBtn.className = 'btn-ghost';
-      attachConfirmClick(disableBtn, 'Disable Protection', 'Confirm?', disableEncryption);
-
-      securityToolbar.appendChild(label);
-      securityToolbar.appendChild(lockBtn);
-      securityToolbar.appendChild(disableBtn);
-    }
-
-    // ---------- note actions ----------
-    function startEdit(id) {
-      const note = notes.find((n) => n.id === id);
-      if (!note) return;
-      const fields = getDisplayFields(note);
-      if (fields.locked) return;
-
-      editingId = id;
-      titleInput.value = fields.title || '';
-      contentInput.value = fields.content || '';
-      folderInput.value = fields.folder || '';
-
-      if (note.expiresAt == null) {
-        neverCheckbox.checked = true;
-        hoursInput.value = DEFAULT_HOURS;
-      } else {
-        neverCheckbox.checked = false;
-        const remainingHours = (note.expiresAt - Date.now()) / 3600000;
-        hoursInput.value = Math.max(0.1, Math.round(remainingHours * 10) / 10);
-      }
-      updateHoursDisabled();
-      saveBtn.textContent = 'Update Note';
-      saveError.textContent = '';
-      editingBanner.classList.add('show');
-      document.querySelector('.card').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    function toggleExpiry(id) {
-      const note = notes.find((n) => n.id === id);
-      if (!note) return;
-      note.expiresAt = note.expiresAt == null ? Date.now() + DEFAULT_HOURS * 3600000 : null;
-      saveNotes(notes);
-      render();
-    }
-
-    function deleteNote(id) {
-      notes = notes.filter((n) => n.id !== id);
-      plaintextCache.delete(id);
-      saveNotes(notes);
-      if (editingId === id) resetForm();
-      render();
-    }
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      saveError.textContent = '';
-
-      const title = titleInput.value.trim();
-      const content = contentInput.value.trim();
-      const folder = folderInput.value.trim();
-      if (!title && !content) return;
-
-      const expiresAt = neverCheckbox.checked ? null : Date.now() + parseHours(hoursInput.value) * 3600000;
-      const fields = { title, content, folder };
-
-      // The record's identity is the AAD, so it has to be settled before the
-      // ciphertext is built rather than after.
-      const existing = editingId ? notes.find((n) => n.id === editingId) : null;
-      const identity = existing
-        ? { id: existing.id, createdAt: existing.createdAt }
-        : { id: makeId(), createdAt: Date.now() };
-
-      let record;
-      if (securityMeta && securityMeta.enabled) {
-        if (!cryptoKey) return;
-        record = { enc: await encryptNoteFields(cryptoKey, fields, identity) };
-      } else {
-        record = { title, content, folder };
-      }
-
-      const targetId = identity.id;
-      if (existing) {
-        delete existing.title; delete existing.content; delete existing.folder; delete existing.enc;
-        Object.assign(existing, record);
-        existing.expiresAt = expiresAt;
-      } else {
-        notes.push({ id: identity.id, createdAt: identity.createdAt, expiresAt, ...record });
-      }
-
-      if (securityMeta && securityMeta.enabled) {
-        plaintextCache.set(targetId, fields);
-      }
-
-      const ok = saveNotes(notes);
-      if (!ok) {
-        saveError.textContent = 'Failed to save — your browser storage may be full or unavailable. This note was not persisted.';
-        return;
-      }
-
-      resetForm();
-      render();
-    });
-
-    // ---------- password strength ----------
-    // Lifted verbatim from /crypto so the two pages price a password identically.
-    // Every number is an upper bound and the UI says so: without a real corpus
-    // (zxcvbn and friends are exactly the dependency this site doesn't take) no
-    // estimator can do better than bound the answer from above.
-    function charsetEntropyBits(pw) {
-      let pool = 0;
-      if (/[a-z]/.test(pw)) pool += 26;
-      if (/[A-Z]/.test(pw)) pool += 26;
-      if (/[0-9]/.test(pw)) pool += 10;
-      if (/[^A-Za-z0-9]/.test(pw)) pool += 33;
-      if (pool === 0) return 0;
-      // "aaaaaaaaaaaa" draws from a 26-character class but carries nowhere near
-      // 12 * log2(26) bits. Cap the assumed alphabet by what was actually used.
-      const seen = new Set();
-      for (let i = 0; i < pw.length; i++) seen.add(pw.charCodeAt(i));
-      const effective = Math.min(pool, Math.max(seen.size, 2) * 2);
-      return pw.length * (Math.log(effective) / Math.LN2);
-    }
-
-    // Separator-delimited words, all alphabetic, 1-12 letters each. The lower
-    // bound is 1 and not 3 on purpose: human phrases are full of short function
-    // words ("a", "my", "to", "is"), and requiring 3 letters let any phrase
-    // containing one escape this model and get priced per character instead.
-    const PHRASE_RE = /^[A-Za-z]{1,12}(?:[ \-_.][A-Za-z]{1,12}){1,15}$/;
-    const BITS_PER_WORD = 11; // a 2048-word list; generous for human-chosen words
-
-    function phraseEntropyBits(pw) {
-      // A per-character model prices "correct horse battery staple" at ~130 bits
-      // and calls a famous example passphrase Very Strong. If the password reads
-      // as a word phrase, price it per word instead and take the lower estimate.
-      if (!PHRASE_RE.test(pw)) return null;
-      const words = pw.split(/[ \-_.]+/).filter((w) => w.length > 0);
-      return words.length < 2 ? null : words.length * BITS_PER_WORD;
-    }
-
-    function estimateStrength(pw) {
-      if (!pw) return { bits: 0, phrase: false };
-      const charBits = charsetEntropyBits(pw);
-      const phraseBits = phraseEntropyBits(pw);
-      if (phraseBits !== null && phraseBits < charBits) return { bits: phraseBits, phrase: true };
-      return { bits: charBits, phrase: false };
-    }
-
-    function renderStrength() {
-      const pw = setupPasswordInput.value;
-      if (!pw) { strengthWrap.classList.remove('show'); return; }
-      strengthWrap.classList.add('show');
-      const { bits, phrase } = estimateStrength(pw);
-      strengthFill.className = 'strength-fill';
-      let word;
-      if (pw.length < MIN_PASSWORD_LENGTH) {
-        word = 'Too short';
-      } else if (bits < 50) {
-        word = 'Weak';
-      } else if (bits < 80) {
-        word = 'Fair';
-        strengthFill.classList.add('fair');
-      } else if (bits < 100) {
-        word = 'Strong';
-        strengthFill.classList.add('strong');
-      } else {
-        word = 'Very strong';
-        strengthFill.classList.add('strong');
-      }
-      strengthFill.style.width = Math.max(4, Math.min(100, (bits / 128) * 100)) + '%';
-      // textContent / text nodes only - the password must never reach an HTML parser.
-      strengthLabel.textContent = '';
-      const b = document.createElement('b');
-      b.textContent = word;
-      strengthLabel.appendChild(b);
-      strengthLabel.appendChild(document.createTextNode(
-        ' · at most ~' + Math.round(bits) + ' bits · ' +
-        (phrase
-          ? 'priced as a word phrase at ' + BITS_PER_WORD + ' bits per word'
-          : 'upper bound, assuming the characters were chosen at random')
-      ));
-    }
-
-    setupPasswordInput.addEventListener('input', renderStrength);
-
-    // ---------- security actions ----------
-    document.getElementById('setup-confirm-btn').addEventListener('click', async () => {
-      const pw = setupPasswordInput.value;
-      const confirmPw = setupConfirmInput.value;
-      if (pw.length < MIN_PASSWORD_LENGTH) {
-        setupError.textContent = `Password must be at least ${MIN_PASSWORD_LENGTH} characters. Length beats complexity — a short phrase of ordinary words is easier to remember and harder to guess than a mangled single word.`;
-        return;
-      }
-      if (pw !== confirmPw) { setupError.textContent = 'Passwords do not match.'; return; }
-      setupError.textContent = '';
-
-      const saltBytes = crypto.getRandomValues(new Uint8Array(16));
-      const saltB64 = bufToBase64(saltBytes.buffer);
-      const key = await deriveKey(pw, saltB64, PBKDF2_ITERATIONS);
-      const verifier = await encryptString(key, VERIFIER_PLAINTEXT);
-
-      // Build the encrypted records as a new array rather than mutating the originals in
-      // place, so nothing is lost if a write fails partway and we have to back out.
-      const plaintextSnapshot = notes;
-      const encryptedNotes = [];
-      const cache = new Map();
-      for (const note of notes) {
-        const fields = { title: note.title || '', content: note.content || '', folder: note.folder || '' };
-        encryptedNotes.push({
-          id: note.id,
-          createdAt: note.createdAt,
-          expiresAt: note.expiresAt,
-          enc: await encryptNoteFields(key, fields, note),
-        });
-        cache.set(note.id, fields);
-      }
-
-      // Commit the ciphertext first. If this fails, the plaintext store is still intact and
-      // no security metadata has been written, so nothing claims to be encrypted when it isn't.
-      if (!saveNotes(encryptedNotes)) {
-        setupError.textContent = 'Could not save the encrypted notes — your browser storage may be full. Nothing was changed and your notes are still unencrypted.';
-        return;
-      }
-
-      // Only once the ciphertext is safely stored do we enable protection. If this fails,
-      // roll the store back to plaintext rather than leaving unreadable notes behind.
-      if (!saveSecurityMeta({ enabled: true, salt: saltB64, verifier, iterations: PBKDF2_ITERATIONS })) {
-        if (saveNotes(plaintextSnapshot)) {
-          setupError.textContent = 'Could not enable password protection — your browser storage may be full. Your notes were restored and are still unencrypted.';
-        } else {
-          setupError.textContent = 'Could not enable password protection, and restoring the previous copy also failed. Export your notes now to avoid losing them.';
+      // beforeunload warning when there are unsaved changes
+      window.addEventListener('beforeunload', (e) => {
+        if (dirty) {
+          e.preventDefault();
+          e.returnValue = ''; // required for Chrome
         }
-        return;
-      }
+      });
 
-      notes = encryptedNotes;
-      securityMeta = { enabled: true, salt: saltB64, verifier, iterations: PBKDF2_ITERATIONS };
-      cryptoKey = key;
-      plaintextCache = cache;
-      setupError.textContent = '';
-      // Nothing needs these again, and a value left in an input survives for the
-      // life of the page - readable by any same-origin script or extension, and
-      // restored intact by a bfcache navigation.
-      setupPasswordInput.value = '';
-      setupConfirmInput.value = '';
-      renderStrength();
+      // Editor
+      $('btn-save-note').addEventListener('click', () => saveActiveNote({ explicit: true }));
+      $('note-title-input').addEventListener('input', () => setDirty(true));
+      $('note-body-input').addEventListener('input', () => {
+        setDirty(true);
+        updatePreviewLive();
+      });
+      $('note-folder-select').addEventListener('change', moveActiveNote);
+      $('btn-copy-note').addEventListener('click', copyNoteContent);
+      $('btn-delete-note').addEventListener('click', deleteActiveNote);
+      $('btn-toggle-preview').addEventListener('click', () => {
+        state.isPreviewMode = !state.isPreviewMode;
+        syncPreviewMode();
+      });
+      $('btn-back-to-list').addEventListener('click', () => {
+        saveActiveNote();
+        closeMobileEditor();
+      });
 
-      armAutolock();
-      renderSecurityUI();
-      render();
-    });
+      // Sidebar actions
+      $('btn-new-note').addEventListener('click', () => { createNewNote(); closeMobileSidebar(); });
+      $('btn-empty-new-note').addEventListener('click', createNewNote);
+      $('btn-add-folder').addEventListener('click', promptCreateFolder);
+      $('btn-export-data').addEventListener('click', openExportModal);
+      $('btn-import-data').addEventListener('click', () => $('file-import-input').click());
+      $('file-import-input').addEventListener('change', handleImportFileSelect);
 
-    document.getElementById('setup-cancel-btn').addEventListener('click', () => {
-      setupSection.hidden = true;
-      form.hidden = false;
-    });
+      // Debounced search
+      const onSearch = debounce((value) => {
+        saveActiveNote();                       // save first, so switching notes can't drop edits
+        state.searchQuery = value.trim();
+        ensureActiveNote();
+        renderNoteList();
+        renderActiveNote();
+      }, 80);
+      $('search-input').addEventListener('input', (e) => onSearch(e.target.value));
 
-    unlockBtn.addEventListener('click', async () => {
-      const pw = unlockPasswordInput.value;
-      if (!pw) return;
+      $('open-mobile-sidebar').addEventListener('click', openMobileSidebar);
+      $('close-mobile-sidebar').addEventListener('click', closeMobileSidebar);
+      $('mobile-overlay').addEventListener('click', closeMobileSidebar);
 
-      // The verifier is the authoritative password check. Only a failure here means
-      // "wrong password" - note-level failures below are damaged data, not a bad password.
-      let key;
-      const unlockedWith = metaIterations(securityMeta);
-      try {
-        key = await deriveKey(pw, securityMeta.salt, unlockedWith);
-        const check = await decryptString(key, securityMeta.verifier);
-        if (check !== VERIFIER_PLAINTEXT) throw new Error('bad password');
-      } catch (err) {
-        unlockError.textContent = 'Incorrect password.';
-        return;
-      }
+      // Persist pending edits when the page is hidden. On phones, pagehide and
+      // visibilitychange fire far more reliably than beforeunload.
+      window.addEventListener('pagehide', () => saveActiveNote());
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden') saveActiveNote();
+      });
+    }
 
-      // Decrypt each note independently so one damaged record cannot block the rest.
-      const cache = new Map();
-      let damaged = 0;
-      for (const note of notes) {
-        if (!note.enc) continue;
-        try {
-          cache.set(note.id, await decryptNoteFields(key, note.enc, note));
-        } catch (err) {
-          damaged++;
-        }
-      }
+    /* ------------------------------------------------------------------ *
+     * Init
+     * ------------------------------------------------------------------ */
+    function init() {
+      loadData();
 
-      cryptoKey = key;
-      plaintextCache = cache;
-      unlockPasswordInput.value = '';
-      armAutolock();
-
-      // The vault is open and usable at this point. Everything below is a bonus
-      // that must never cost the user their notes, so a failure leaves the
-      // just-unlocked 300,000-iteration vault exactly as it was.
-      const upgrade = await upgradeKdf(pw, cache, unlockedWith, damaged);
-
-      renderSecurityUI();
-      render();
-
-      if (damaged) {
-        showVaultNotice(`${damaged} note${damaged === 1 ? '' : 's'} could not be decrypted and ${damaged === 1 ? 'is' : 'are'} shown as damaged below. Your password was correct; that stored data is corrupt and its contents are unrecoverable. Every other note opened normally.${upgrade && upgrade.message ? ' ' + upgrade.message : ''}`);
-      } else if (upgrade && upgrade.message) {
-        showVaultNotice(upgrade.message);
-      } else {
-        hideVaultNotice();
-      }
-    });
-
-    // Re-derives an older vault's key at the current iteration count and
-    // re-encrypts everything under it. Raising PBKDF2_ITERATIONS alone would not
-    // do this - the count is an input to the key, so an old vault would simply
-    // stop opening. Runs only after the password has already been verified.
-    async function upgradeKdf(pw, cache, unlockedWith, damaged) {
-      const kdfStale = unlockedWith < PBKDF2_ITERATIONS;
-      const formatStale = notesNeedFormatUpgrade(notes);
-      if (!kdfStale && !formatStale) return null;
-
-      let newSalt, newKey, newVerifier, newNotes;
-      try {
-        // A fresh salt costs nothing here, since every record is being rewritten
-        // anyway, and it retires the salt that ever saw the weaker count.
-        newSalt = bufToBase64(crypto.getRandomValues(new Uint8Array(16)).buffer);
-        newKey = await deriveKey(pw, newSalt, PBKDF2_ITERATIONS);
-        newVerifier = await encryptString(newKey, VERIFIER_PLAINTEXT);
-
-        newNotes = [];
-        for (const note of notes) {
-          const fields = cache.get(note.id);
-          if (!note.enc || !fields) {
-            // Damaged: its ciphertext is under the old key and already
-            // unreadable. Copy it through untouched rather than dropping it.
-            newNotes.push(note);
-            continue;
+      if (window.DOMPurify) {
+        DOMPurify.addHook('afterSanitizeAttributes', (node) => {
+          if (node.tagName === 'A' && node.hasAttribute('href')) {
+            node.setAttribute('target', '_blank');
+            node.setAttribute('rel', 'noopener noreferrer');
           }
-          newNotes.push({
-            id: note.id,
-            createdAt: note.createdAt,
-            expiresAt: note.expiresAt,
-            enc: await encryptNoteFields(newKey, fields, note),
-          });
-        }
-      } catch (err) {
-        return { ok: false, message: 'Your notes opened normally. A background upgrade of the password protection could not be prepared, so it was skipped — nothing was changed.' };
-      }
-
-      const notesSnapshot = notes;
-      const metaSnapshot = securityMeta;
-
-      // Ciphertext first, then metadata - same ordering as initial setup. If the
-      // metadata write fails after the notes write lands, the store holds records
-      // encrypted under the new key while the metadata still points at the old
-      // salt, so that case must roll the notes back.
-      if (!saveNotes(newNotes)) {
-        return { ok: false, message: 'Your notes opened normally. An upgrade to the stored format could not be saved (browser storage may be full), so it was skipped — nothing was changed.' };
-      }
-
-      const newMeta = { enabled: true, salt: newSalt, verifier: newVerifier, iterations: PBKDF2_ITERATIONS };
-      if (!saveSecurityMeta(newMeta)) {
-        if (saveNotes(notesSnapshot)) {
-          securityMeta = metaSnapshot;
-          return { ok: false, message: 'Your notes opened normally. An upgrade to the stored format could not be completed, so it was rolled back — nothing was changed and your password still works.' };
-        }
-        return { ok: false, message: 'Your notes opened normally, but an upgrade to the stored format failed partway and could not be rolled back. Export a backup now, then reload this page.' };
-      }
-
-      notes = newNotes;
-      securityMeta = newMeta;
-      cryptoKey = newKey;
-
-      const skipped = damaged
-        ? ` The ${damaged} damaged note${damaged === 1 ? '' : 's'} could not be re-encrypted and ${damaged === 1 ? 'was' : 'were'} left as ${damaged === 1 ? 'it is' : 'they are'}.`
-        : '';
-      const parts = [];
-      if (kdfStale) {
-        parts.push(`the key derivation moved from ${unlockedWith.toLocaleString()} to ${PBKDF2_ITERATIONS.toLocaleString()} PBKDF2 iterations, with a new salt`);
-      }
-      if (formatStale) {
-        parts.push('each note is now tied to its own record and padded, so its stored size no longer hints at how long it is');
-      }
-      return {
-        ok: true,
-        message: `Password protection upgraded: ${parts.join(', and ')}. Your password is unchanged.${kdfStale ? ' Unlocking will take slightly longer from now on — that is the point.' : ''}${skipped}`,
-      };
-    }
-
-    unlockPasswordInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') { e.preventDefault(); unlockBtn.click(); }
-    });
-
-    function lockNow() {
-      clearAutolock();
-      cryptoKey = null;
-      plaintextCache = new Map();
-      unlockPasswordInput.value = '';
-      activeFolder = null;
-      hideVaultNotice();
-      resetForm();
-      renderSecurityUI();
-      render();
-    }
-
-    async function disableEncryption() {
-      if (!cryptoKey) return;
-      let blanked = 0;
-      for (const note of notes) {
-        let fields = plaintextCache.get(note.id);
-        if (!fields && note.enc) {
-          try {
-            fields = await decryptNoteFields(cryptoKey, note.enc, note);
-          } catch (err) {
-            fields = { title: '', content: '', folder: '' };
-            blanked++;
-          }
-        }
-        fields = fields || { title: '', content: '', folder: '' };
-        note.title = fields.title;
-        note.content = fields.content;
-        note.folder = fields.folder;
-        delete note.enc;
-      }
-      saveNotes(notes);
-      saveSecurityMeta(null);
-      securityMeta = null;
-      cryptoKey = null;
-      plaintextCache = new Map();
-      clearAutolock();
-      renderSecurityUI();
-      render();
-      // That ciphertext was already unreadable, so nothing recoverable was lost -
-      // but silently turning a "⚠ Damaged note" into an empty one told the user
-      // nothing had happened.
-      if (blanked) {
-        showVaultNotice(`Password protection is off. ${blanked} note${blanked === 1 ? '' : 's'} could not be decrypted and ${blanked === 1 ? 'was' : 'were'} left empty.`);
-      } else {
-        hideVaultNotice();
-      }
-    }
-
-    // ---------- export / import ----------
-    const exportBtn = document.getElementById('export-btn');
-    const importBtn = document.getElementById('import-btn');
-    const importFileInput = document.getElementById('import-file');
-    const importStatusEl = document.getElementById('import-status');
-    const importPasswordSection = document.getElementById('import-password-section');
-    const importPasswordInput = document.getElementById('import-password');
-
-    let pendingImportPayload = null;
-    let recoveringWith = null;
-
-    function setImportStatus(text, type) {
-      importStatusEl.textContent = text;
-      importStatusEl.className = 'import-status' + (type ? ' ' + type : '');
-    }
-
-    exportBtn.addEventListener('click', () => {
-      const encrypted = !!(securityMeta && securityMeta.enabled);
-      const payload = {
-        app: 'nowlin-notes',
-        version: 1,
-        exportedAt: new Date().toISOString(),
-        encrypted,
-        notes: encrypted
-          ? notes.map((n) => ({ id: n.id, createdAt: n.createdAt, expiresAt: n.expiresAt, enc: n.enc }))
-          : notes.map((n) => ({ id: n.id, createdAt: n.createdAt, expiresAt: n.expiresAt, title: n.title || '', content: n.content || '', folder: n.folder || '' })),
-      };
-      // The iteration count travels with the file. Without it, a file exported
-      // today could not be re-imported after a future bump - the importer would
-      // have no way to know which count its ciphertext was built with.
-      if (encrypted) payload.security = { salt: securityMeta.salt, verifier: securityMeta.verifier, iterations: metaIterations(securityMeta) };
-
-      downloadFile(JSON.stringify(payload, null, 2), 'application/json', 'json');
-      setImportStatus(`Exported ${notes.length} note${notes.length === 1 ? '' : 's'}${encrypted ? ' (still encrypted in the file)' : ''}.`, 'success');
-    });
-
-    function downloadFile(text, mime, extension) {
-      const blob = new Blob([text], { type: mime });
-      const a = Object.assign(document.createElement('a'), {
-        href: URL.createObjectURL(blob),
-        download: `nowlin-notes-export-${new Date().toISOString().slice(0, 10)}.${extension}`,
-      });
-      a.click();
-      URL.revokeObjectURL(a.href);
-    }
-
-    function csvCell(value) {
-      let s = value == null ? '' : String(value);
-      // A leading =, +, - or @ makes spreadsheet apps treat the cell as a formula.
-      // Prefix those so note text is always read as text.
-      if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
-      if (/["|,\n\r]/.test(s)) s = '"' + s.replace(/"/g, '""') + '"';
-      return s;
-    }
-
-    document.getElementById('export-csv-btn').addEventListener('click', () => {
-      setImportStatus('', '');
-      // CSV is a plaintext table, so it can only be produced from decrypted notes.
-      if (securityMeta && securityMeta.enabled && !cryptoKey) {
-        setImportStatus('Unlock your notes before exporting to CSV.', 'error');
-        return;
-      }
-
-      const rows = [['Title', 'Content', 'Folder', 'Created', 'Expires']];
-      [...notes]
-        .sort((a, b) => b.createdAt - a.createdAt)
-        .forEach((note) => {
-          const fields = getDisplayFields(note);
-          if (fields.locked) return; // damaged records have no readable content
-          rows.push([
-            fields.title || '',
-            fields.content || '',
-            fields.folder || '',
-            note.createdAt ? new Date(note.createdAt).toLocaleString() : '',
-            note.expiresAt == null ? 'Never' : new Date(note.expiresAt).toLocaleString(),
-          ]);
         });
-
-      const csv = rows.map((r) => r.map(csvCell).join(',')).join('\r\n');
-      // BOM so spreadsheet apps read it as UTF-8 rather than mangling accents/emoji.
-      downloadFile('﻿' + csv, 'text/csv;charset=utf-8', 'csv');
-
-      const count = rows.length - 1;
-      const skipped = notes.length - count;
-      setImportStatus(
-        `Exported ${count} note${count === 1 ? '' : 's'} to CSV in plain text` +
-        `${skipped ? `, skipped ${skipped} unreadable` : ''}. CSV is for reading — use JSON to restore.`,
-        'success'
-      );
-    });
-
-    importBtn.addEventListener('click', () => {
-      setImportStatus('', '');
-      if (securityMeta && securityMeta.enabled && !cryptoKey) {
-        setImportStatus('Unlock your notes before importing.', 'error');
-        return;
-      }
-      importFileInput.click();
-    });
-
-    importFileInput.addEventListener('change', async () => {
-      const file = importFileInput.files[0];
-      importFileInput.value = '';
-      if (!file) return;
-      setImportStatus('', '');
-
-      let parsed;
-      try {
-        parsed = JSON.parse(await file.text());
-      } catch (err) {
-        setImportStatus('That file is not valid JSON.', 'error');
-        return;
-      }
-      if (!Array.isArray(parsed.notes)) {
-        setImportStatus("This doesn't look like a Notes export file.", 'error');
-        return;
       }
 
-      if (parsed.encrypted) {
-        if (!parsed.security || !parsed.security.salt || !parsed.security.verifier) {
-          setImportStatus('This file is marked encrypted but is missing its security data.', 'error');
-          return;
-        }
-        pendingImportPayload = parsed;
-        importPasswordSection.hidden = false;
-        importPasswordInput.value = '';
-        importPasswordInput.focus();
-        return;
-      }
-
-      await finishImport(parsed.notes.map((n) => ({
-        id: n.id,
-        createdAt: n.createdAt,
-        expiresAt: n.expiresAt,
-        fields: { title: n.title || '', content: n.content || '', folder: n.folder || '' },
-      })));
-    });
-
-    document.getElementById('import-password-confirm-btn').addEventListener('click', async () => {
-      const pw = importPasswordInput.value;
-      if (!pw || !pendingImportPayload) return;
-
-      try {
-        // The file's own count, not this vault's - an older export decrypts at
-        // 300,000 even while the vault importing it is on 600,000.
-        const key = await deriveKey(pw, pendingImportPayload.security.salt, metaIterations(pendingImportPayload.security));
-        const check = await decryptString(key, pendingImportPayload.security.verifier);
-        if (check !== VERIFIER_PLAINTEXT) throw new Error('bad password');
-
-        const decoded = [];
-        for (const n of pendingImportPayload.notes) {
-          const fields = await decryptNoteFields(key, n.enc, n);
-          decoded.push({ id: n.id, createdAt: n.createdAt, expiresAt: n.expiresAt, fields });
-        }
-        importPasswordSection.hidden = true;
-        pendingImportPayload = null;
-        importPasswordInput.value = '';
-        await finishImport(decoded);
-      } catch (err) {
-        setImportStatus('Incorrect password for this file.', 'error');
-      }
-    });
-
-    document.getElementById('import-password-cancel-btn').addEventListener('click', () => {
-      pendingImportPayload = null;
-      importPasswordSection.hidden = true;
-      importPasswordInput.value = '';
-      setImportStatus('', '');
-    });
-
-    importPasswordInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') { e.preventDefault(); document.getElementById('import-password-confirm-btn').click(); }
-    });
-
-    async function finishImport(items) {
-      const existingIds = new Set(notes.map((n) => n.id));
-      let added = 0;
-      let skipped = 0;
-
-      for (const item of items) {
-        if (!item.id || existingIds.has(item.id)) { skipped++; continue; }
-        existingIds.add(item.id);
-
-        const createdAt = typeof item.createdAt === 'number' ? item.createdAt : Date.now();
-        const expiresAt = (item.expiresAt === null || typeof item.expiresAt === 'number') ? item.expiresAt : null;
-
-        if (securityMeta && securityMeta.enabled) {
-          const enc = await encryptNoteFields(cryptoKey, item.fields, { id: item.id, createdAt });
-          notes.push({ id: item.id, createdAt, expiresAt, enc });
-          plaintextCache.set(item.id, item.fields);
-        } else {
-          notes.push({ id: item.id, createdAt, expiresAt, ...item.fields });
-        }
-        added++;
-      }
-
-      const ok = saveNotes(notes);
-      if (!ok) {
-        setImportStatus('Import failed to save — your browser storage may be full.', 'error');
-        return;
-      }
-
-      setImportStatus(`Imported ${added} note${added === 1 ? '' : 's'}${skipped ? `, skipped ${skipped} duplicate${skipped === 1 ? '' : 's'}` : ''}.`, 'success');
-      render();
+      ensureActiveNote();
+      bindEvents();
+      renderApp();
     }
 
-    // ---------- recovery ----------
-    // A raw dump of exactly what is on disk, taken before anything else is tried.
-    // Notes stay as ciphertext because that is all there is - the point is to get
-    // an off-device copy of the encrypted data before any further action.
-    document.getElementById('recovery-export-btn').addEventListener('click', () => {
-      const payload = {
-        app: 'nowlin-notes',
-        version: 1,
-        exportedAt: new Date().toISOString(),
-        recovery: true,
-        encrypted: true,
-        notes,
-        security: securityMeta || null,
-      };
-      downloadFile(JSON.stringify(payload, null, 2), 'application/json', 'json');
-      recoveryStatus.textContent = 'Raw copy saved. Keep it somewhere safe before doing anything else — it still needs your password to read.';
-      recoveryStatus.className = 'import-status success';
-    });
-
-    function setRecoveryStatus(text, type) {
-      recoveryStatus.textContent = text || '';
-      recoveryStatus.className = 'import-status' + (type ? ' ' + type : '');
-    }
-
-    document.getElementById('recovery-import-btn').addEventListener('click', () => {
-      setRecoveryStatus('', '');
-      recoveryFileInput.click();
-    });
-
-    recoveryFileInput.addEventListener('change', async () => {
-      const file = recoveryFileInput.files[0];
-      recoveryFileInput.value = '';
-      if (!file) return;
-      setRecoveryStatus('', '');
-
-      let parsed;
-      try {
-        parsed = JSON.parse(await file.text());
-      } catch (err) {
-        setRecoveryStatus('That file is not valid JSON.', 'error');
-        return;
-      }
-      if (!parsed.security || !parsed.security.salt || !parsed.security.verifier) {
-        setRecoveryStatus('That file carries no password data. Pick a JSON export made while password protection was on.', 'error');
-        return;
-      }
-      recoveringWith = parsed;
-      recoveryPasswordSection.hidden = false;
-      recoveryPasswordInput.value = '';
-      recoveryPasswordInput.focus();
-    });
-
-    document.getElementById('recovery-password-confirm-btn').addEventListener('click', async () => {
-      const pw = recoveryPasswordInput.value;
-      if (!pw || !recoveringWith) return;
-      setRecoveryStatus('Checking — deriving the key takes a moment.', '');
-      let result;
-      try {
-        result = await attemptRecovery(recoveringWith, pw);
-      } catch (err) {
-        result = { ok: false, message: 'Something went wrong while reading that backup.' };
-      }
-      setRecoveryStatus(result.message, result.ok ? 'success' : 'error');
-      if (result.ok) {
-        recoveringWith = null;
-        recoveryPasswordSection.hidden = true;
-        recoveryPasswordInput.value = '';
-        renderSecurityUI();
-        render();
-      }
-    });
-
-    document.getElementById('recovery-password-cancel-btn').addEventListener('click', () => {
-      recoveringWith = null;
-      recoveryPasswordSection.hidden = true;
-      recoveryPasswordInput.value = '';
-      setRecoveryStatus('', '');
-    });
-
-    recoveryPasswordInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') { e.preventDefault(); document.getElementById('recovery-password-confirm-btn').click(); }
-    });
-
-    // Restores the missing half. The file's security block is only accepted if a
-    // key derived from it actually opens ciphertext already sitting on this
-    // device - which proves it is the matching salt and verifier, not just a
-    // plausible-looking one from some other vault.
-    async function attemptRecovery(parsed, password) {
-      const sec = parsed && parsed.security;
-      if (!securityMetaUsable(sec && Object.assign({ enabled: true }, sec))) {
-        return { ok: false, message: 'That file has no usable password data in it. Pick a JSON export that was made while password protection was on.' };
-      }
-      const key = await deriveKey(password, sec.salt, metaIterations(sec));
-      try {
-        const check = await decryptString(key, sec.verifier);
-        if (check !== VERIFIER_PLAINTEXT) throw new Error('bad password');
-      } catch (err) {
-        return { ok: false, message: 'That password does not match this backup file.' };
-      }
-
-      let opened = 0;
-      for (const note of notes) {
-        if (!note.enc) continue;
-        try { await decryptNoteFields(key, note.enc, note); opened++; } catch (err) { /* damaged or different vault */ }
-      }
-      if (!opened) {
-        return { ok: false, message: 'That backup is valid, but its password data does not open any of the encrypted notes stored here — it looks like it came from a different vault.' };
-      }
-
-      const restored = { enabled: true, salt: sec.salt, verifier: sec.verifier, iterations: metaIterations(sec) };
-      if (!saveSecurityMeta(restored)) {
-        return { ok: false, message: 'Could not write the restored password data — browser storage may be full. Nothing was changed.' };
-      }
-      securityMeta = restored;
-      return { ok: true, message: `Password data restored. ${opened} encrypted note${opened === 1 ? '' : 's'} can be opened again — enter your password to unlock.` };
-    }
-
-    // ---------- countdown ticking ----------
-    function tickCountdowns() {
-      const now = Date.now();
-      let anyExpired = false;
-      document.querySelectorAll('.countdown').forEach((el) => {
-        const expires = el.dataset.expires;
-        if (!expires) return;
-        const remaining = Number(expires) - now;
-        if (remaining <= 0) {
-          anyExpired = true;
-          return;
-        }
-        el.textContent = formatRemaining(remaining);
-        el.classList.remove('soon', 'urgent');
-        const cls = urgencyClass(remaining);
-        if (cls) el.classList.add(cls);
-      });
-      if (anyExpired) render();
-
-      // Locking should never be a surprise mid-sentence, so the countdown is
-      // shown rather than left to fire silently.
-      const protectedLabel = document.getElementById('protected-label');
-      if (protectedLabel) {
-        if (autolockDeadline) {
-          const left = Math.max(0, autolockDeadline - now);
-          protectedLabel.textContent = `🔓 Protected · locks in ${formatRemaining(left)}`;
-        } else {
-          protectedLabel.textContent = '🔓 Protected';
-        }
-      }
-    }
-
-    // ---------- cross-tab sync ----------
-    window.addEventListener('storage', async (e) => {
-      if (e.key !== STORAGE_KEY && e.key !== SECURITY_KEY) return;
-
-      const previousSalt = securityMeta && securityMeta.salt;
-      const previousIterations = securityMeta && metaIterations(securityMeta);
-
-      notes = loadNotes();
-      securityMeta = loadSecurityMeta();
-
-      // If another tab upgraded the KDF, the salt and iteration count both
-      // changed and this tab's in-memory key is stale - it would fail against
-      // every record and render the whole vault as locked notes with no
-      // explanation. Drop it and ask for the password again instead.
-      const rekeyed = securityMeta && securityMeta.enabled && cryptoKey &&
-        (securityMeta.salt !== previousSalt || metaIterations(securityMeta) !== previousIterations);
-
-      if (!securityMeta || !securityMeta.enabled) {
-        clearAutolock();
-        cryptoKey = null;
-        plaintextCache = new Map();
-      } else if (rekeyed) {
-        clearAutolock();
-        cryptoKey = null;
-        plaintextCache = new Map();
-        showVaultNotice('Password protection was upgraded in another tab, so this tab locked itself. Unlock again to keep working here.');
-      } else if (cryptoKey) {
-        for (const note of notes) {
-          if (note.enc && !plaintextCache.has(note.id)) {
-            try {
-              const fields = await decryptNoteFields(cryptoKey, note.enc, note);
-              plaintextCache.set(note.id, fields);
-            } catch (err) {
-              // leave uncached - will render as locked
-            }
-          }
-        }
-      }
-
-      renderSecurityUI();
-      render();
-    });
-
-    autolockSelect.addEventListener('change', () => {
-      const n = Number(autolockSelect.value);
-      autolockMs = AUTOLOCK_CHOICES.includes(n) ? n : DEFAULT_AUTOLOCK_MS;
-      try { localStorage.setItem(AUTOLOCK_KEY, String(autolockMs)); } catch (err) { /* private mode */ }
-      armAutolock();
-    });
-
-    // Deliberate interaction only - a passive mousemove over the window is not
-    // evidence anyone is still there.
-    ['keydown', 'pointerdown'].forEach((evt) => {
-      document.addEventListener(evt, () => { if (cryptoKey) armAutolock(); }, true);
-    });
-
-    // Coming back to a tab restarts the clock; leaving it does not stop it, so a
-    // vault left open in a background tab still locks on schedule.
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible' && cryptoKey) armAutolock();
-    });
-
-    // Don't leave passwords or decrypted note text in a bfcache-restored page.
-    // Dropping the key as well means a back-navigation cannot hand someone an
-    // already-open vault.
-    window.addEventListener('pagehide', () => {
-      unlockPasswordInput.value = '';
-      setupPasswordInput.value = '';
-      setupConfirmInput.value = '';
-      importPasswordInput.value = '';
-      recoveryPasswordInput.value = '';
-      titleInput.value = '';
-      contentInput.value = '';
-      folderInput.value = '';
-      clearAutolock();
-      cryptoKey = null;
-      plaintextCache = new Map();
-    });
-
-    // ---------- init ----------
-    updateHoursDisabled();
-    autolockSelect.value = String(autolockMs);
-    renderSecurityUI();
-    render();
-    setInterval(tickCountdowns, 1000);
+    init();
+  })();
   </script>
-
 </body>
 </html>
