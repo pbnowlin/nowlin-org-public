@@ -96,13 +96,17 @@ function handleRoute() {
   }
 
   const lastDash = hash.lastIndexOf('-');
-  if (lastDash === -1) {
-    renderView(0, 0);
-    return;
-  }
+  let rawBookStr;
+  let chapNum;
 
-  const rawBookStr = hash.substring(0, lastDash).toLowerCase();
-  const chapNum = parseInt(hash.substring(lastDash + 1), 10) || 1;
+  if (lastDash === -1) {
+    // No chapter number given (e.g. "#Exodus") -- default to chapter 1 of that book
+    rawBookStr = hash.toLowerCase();
+    chapNum = 1;
+  } else {
+    rawBookStr = hash.substring(0, lastDash).toLowerCase();
+    chapNum = parseInt(hash.substring(lastDash + 1), 10) || 1;
+  }
 
   const bookIdx = BIBLE_DATA.findIndex(b =>
     b.name.toLowerCase().replace(/\s+/g, '') === rawBookStr
