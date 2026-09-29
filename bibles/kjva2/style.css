@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------
    Holy Bible — glassmorphic theme
-   Dusk-to-dawn gradient behind frosted glass panels,
+   Slate-to-charcoal gradient behind frosted glass panels,
    gold accents evoking illuminated manuscript gilding.
 --------------------------------------------------------- */
 
@@ -39,13 +39,13 @@ body {
   min-height: 100vh;
   font-family: var(--sans);
   color: var(--ink);
-  background: linear-gradient(160deg, #2b1b4e 0%, #6c3f91 48%, #e8a54c 100%);
+  background: linear-gradient(160deg, #4a5568 0%, #333a45 50%, #1b1e23 100%);
   background-attachment: fixed;
   position: relative;
   overflow-x: hidden;
 }
 
-/* Soft blurred color orbs behind the glass, fixed to viewport */
+/* Soft blurred tonal orbs behind the glass, fixed to viewport */
 body::before,
 body::after {
   content: "";
@@ -61,7 +61,7 @@ body::before {
   height: 480px;
   top: -140px;
   right: -120px;
-  background: radial-gradient(circle, rgba(232, 165, 76, 0.55), transparent 70%);
+  background: radial-gradient(circle, rgba(148, 163, 184, 0.35), transparent 70%);
 }
 
 body::after {
@@ -69,7 +69,7 @@ body::after {
   height: 520px;
   bottom: -180px;
   left: -160px;
-  background: radial-gradient(circle, rgba(108, 63, 145, 0.6), transparent 70%);
+  background: radial-gradient(circle, rgba(15, 17, 21, 0.6), transparent 70%);
 }
 
 header,
