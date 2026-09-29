@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Holy Bible (KJVA)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Holy Bible</h1>
+      <span class="edition">King James Version &middot; with Apocrypha</span>
+    </div>
+    <div class="controls">
+      <select id="book-select"></select>
+      <select id="chapter-select"></select>
+    </div>
+  </header>
+
+  <main>
+    <div class="nav-bar">
+      <button id="prev-btn-top">← Back</button>
+      <button id="next-btn-top">Next →</button>
+    </div>
+
+    <div id="verse-container">Loading Bible...</div>
+
+    <div class="nav-bar">
+      <button id="prev-btn-bottom">← Back</button>
+      <button id="next-btn-bottom">Next →</button>
+    </div>
+  </main>
+
+  <footer>
+    <!-- Add a download link here if you have a PDF for this translation, e.g.:
+    <a href="KJVA.pdf" download="KJVA.pdf">Download the full Bible</a> -->
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
