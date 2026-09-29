@@ -255,7 +255,7 @@ main {
   font-family: var(--sans);
   font-weight: 600;
   font-size: 0.68rem;
-  color: var(--gold);
+  color: #22c55e;
   margin-right: 0.4em;
   vertical-align: super;
 }
