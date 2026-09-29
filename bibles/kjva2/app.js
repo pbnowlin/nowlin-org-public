@@ -23,6 +23,7 @@ async function init() {
 
     populateBookDropdown();
     setupEventListeners();
+    setupHeaderCollapse();
 
     window.addEventListener('hashchange', handleRoute);
     handleRoute();
@@ -65,6 +66,39 @@ function populateBookDropdown() {
   bookSelect.innerHTML = BIBLE_DATA.map((b, i) =>
     `<option value="${i}">${b.name}</option>`
   ).join('');
+}
+
+function setupHeaderCollapse() {
+  const header = document.querySelector('header');
+  if (!header) return;
+
+  const TOP_THRESHOLD = 10; // px from top that always counts as "at the top"
+  let lastScrollY = window.scrollY;
+  let ticking = false;
+
+  function onScroll() {
+    const currentY = window.scrollY;
+
+    if (currentY <= TOP_THRESHOLD) {
+      header.classList.remove('minimized');
+    } else if (currentY > lastScrollY) {
+      // scrolling down
+      header.classList.add('minimized');
+    } else if (currentY < lastScrollY) {
+      // scrolling up
+      header.classList.remove('minimized');
+    }
+
+    lastScrollY = currentY;
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(onScroll);
+      ticking = true;
+    }
+  }, { passive: true });
 }
 
 function setupEventListeners() {
