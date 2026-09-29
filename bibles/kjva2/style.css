@@ -253,9 +253,9 @@ main {
 
 .verse-num {
   font-family: var(--sans);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.68rem;
-  color: #22c55e;
+  color: #000000;
   margin-right: 0.4em;
   vertical-align: super;
 }
