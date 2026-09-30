@@ -1,0 +1,321 @@
+/* ---------------------------------------------------------
+   Holy Bible — glassmorphic theme
+   Slate-to-charcoal gradient behind frosted glass panels,
+   gold accents evoking illuminated manuscript gilding.
+--------------------------------------------------------- */
+
+@import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --ink: #22252b;
+  --ink-soft: #5a5f68;
+  --gold: #c98a2c;
+  --gold-soft: #e0ab55;
+
+  --glass: rgba(255, 255, 255, 0.6);
+  --glass-strong: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-shadow: rgba(20, 20, 20, 0.1);
+
+  --serif: 'Spectral', Georgia, 'Times New Roman', serif;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --max-width: 680px;
+  --radius-lg: 28px;
+  --radius-md: 18px;
+  --radius-pill: 999px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--sans);
+  color: var(--ink);
+  background: #ffffff;
+  position: relative;
+  overflow-x: hidden;
+}
+
+header,
+main,
+footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- Header ---------- */
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  margin: 18px auto 0;
+  max-width: var(--max-width);
+  padding: 18px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+
+  background: var(--glass-strong);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  box-shadow: 0 8px 32px var(--glass-shadow);
+
+  transition: transform 0.3s ease, opacity 0.25s ease;
+}
+
+header h1 {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.5rem;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+}
+
+/* Fully hidden state, toggled by app.js while scrolling down */
+header.minimized {
+  transform: translateY(-130%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+}
+
+/* ---------- Custom select styling ---------- */
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--ink);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill);
+  padding: 8px 34px 8px 16px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2322252b' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  max-width: 46vw;
+}
+
+select:hover {
+  background-color: var(--glass-strong);
+}
+
+select:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* ---------- Nav bar (prev / next) ---------- */
+
+.nav-bar {
+  max-width: var(--max-width);
+  margin: 18px auto;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.nav-bar button {
+  flex: 0 0 auto;
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill);
+  padding: 11px 22px;
+  cursor: pointer;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 4px 18px var(--glass-shadow);
+  transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.nav-bar button:hover:not(:disabled) {
+  background: var(--glass-strong);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px var(--glass-shadow);
+}
+
+.nav-bar button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.nav-bar button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.nav-bar button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ---------- Verse container ---------- */
+
+main {
+  padding-bottom: 40px;
+}
+
+#verse-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 40px clamp(24px, 6vw, 56px);
+
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  box-shadow: 0 12px 40px var(--glass-shadow);
+
+  font-family: var(--sans);
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+#verse-container h2 {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.8rem;
+  color: var(--ink);
+  margin: 0 0 28px;
+  text-align: center;
+}
+
+.verses {
+  text-align: left;
+}
+
+.verse {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  line-height: 1.75;
+  color: var(--ink);
+  margin: 0 0 1.1em;
+}
+
+.verse-num {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 0.68rem;
+  color: #000000;
+  margin-right: 0.4em;
+  vertical-align: super;
+}
+
+/* Illuminated drop cap on the chapter's opening verse */
+.verses .verse:first-child .verse-text::first-letter {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 3.2em;
+  line-height: 0.78;
+  float: left;
+  padding: 0.04em 0.08em 0 0;
+  color: var(--gold);
+}
+
+.error {
+  font-family: var(--sans);
+  color: #7a2f2f;
+  text-align: center;
+}
+
+/* ---------- Footer ---------- */
+
+footer {
+  text-align: center;
+  padding: 20px 24px 40px;
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+footer a {
+  color: var(--ink);
+}
+
+/* ---------- Motion & fallbacks ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    transition: none !important;
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  header,
+  select,
+  .nav-bar button,
+  #verse-container {
+    background: rgba(255, 255, 255, 0.92);
+  }
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 560px) {
+  header {
+    margin: 12px 14px 0;
+    padding: 16px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .controls {
+    justify-content: stretch;
+  }
+
+  select {
+    flex: 1;
+    max-width: none;
+  }
+
+  .nav-bar {
+    padding: 0 14px;
+  }
+
+  #verse-container {
+    margin: 0 14px;
+    padding: 30px 22px;
+    border-radius: var(--radius-md);
+  }
+
+  #verse-container h2 {
+    font-size: 1.5rem;
+  }
+
+  .verse {
+    font-size: 1.05rem;
+  }
+}
