@@ -85,16 +85,6 @@ header h1 {
   color: var(--ink);
 }
 
-header .edition {
-  display: block;
-  margin-top: 2px;
-  font-family: var(--sans);
-  font-size: 0.72rem;
-  font-weight: 500;
-  color: var(--ink-soft);
-  letter-spacing: 0.03em;
-}
-
 /* Fully hidden state, toggled by app.js while scrolling down */
 header.minimized {
   transform: translateY(-130%);
