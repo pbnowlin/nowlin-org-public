@@ -322,8 +322,7 @@
 
   <main class="app-container">
     <header class="brand-header">
-      <h1 class="brand-title">🇺🇸🤖</h1>
-      <span class="chip-offline">Encrypted Journal</span>
+      <h1 class="brand-title">Journal</h1>
     </header>
 
     <section class="m3-card" id="auth-panel">
@@ -499,11 +498,16 @@
           const derivedKey = await deriveKeyFromPassphrase(pwArray, salt, iterations);
           zeroize(pwArray);
 
-          const ptBuffer = await self.crypto.subtle.decrypt(
-            { name: 'AES-GCM', iv, additionalData: header, tagLength: 128 },
-            derivedKey,
-            ciphertext
-          );
+          let ptBuffer;
+          try {
+            ptBuffer = await self.crypto.subtle.decrypt(
+              { name: 'AES-GCM', iv, additionalData: header, tagLength: 128 },
+              derivedKey,
+              ciphertext
+            );
+          } catch {
+            throw new Error('Decryption failed: incorrect passphrase or corrupted file.');
+          }
           const decodedText = new TextDecoder('utf-8', { fatal: true }).decode(ptBuffer);
 
           self.postMessage(
