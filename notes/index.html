@@ -4,35 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-qhok9ByYUQZRoRuAIwKBoAsLmvCuBVc0Ku4qHpxIvRo=' 'sha256-RH03FfJ4+29A7WUCcmu32ubLjDzkCLXECF4SjTHL3yk=' 'sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM'; style-src 'self' 'sha256-Jj+f63dIBbwAfSH8DL2/zIA2WBNvn78KAaOMtY8yb+Y='; style-src-attr 'none'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
   <title>Notes</title>
 
-  <!--
-    Dependencies are pinned to exact versions and served from hosts that are
-    widely allowed (jsdelivr / cdnjs). To lock them down further, add
-    integrity="sha384-..." crossorigin="anonymous" to each tag.
-    The Tailwind Play CDN is a prototyping build and cannot carry an SRI hash.
-  -->
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="notes.css">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
 
   <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              50: '#f0fdf4',
-              100: '#dcfce7',
-              500: '#16a34a',
-              600: '#15803d',
-              700: '#166534',
-            }
-          }
-        }
-      }
-    };
-
     // darkMode is 'class', so something has to set the class. Follow the system setting.
     (function () {
       var mq = window.matchMedia('(prefers-color-scheme: dark)');
@@ -45,6 +23,8 @@
 
   <style>
     /* Custom scrollbars */
+    .app-body { height: 100vh; height: 100dvh; }
+    .copy-fallback { position: fixed; opacity: 0; }
     ::-webkit-scrollbar { width: 5px; height: 5px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.3); border-radius: 9999px; }
@@ -56,6 +36,16 @@
     .folder-item:hover .folder-count { display: none; }
     .folder-item:has(:focus-visible) .folder-actions { display: flex; }
     .folder-item:has(:focus-visible) .folder-count { display: none; }
+    .note-folder-select-wrap { width: 160px; min-width: 0; flex: 0 0 160px; }
+    #note-folder-select { display: block; width: 100%; min-width: 0; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #last-saved { display: none !important; }
+    @media (min-width: 640px) and (max-width: 1023px) {
+      .note-folder-select-wrap { width: 64px; flex-basis: 64px; }
+    }
+    @media (min-width: 1024px) {
+      .note-folder-select-wrap { width: 160px; flex-basis: 160px; }
+      #last-saved { display: inline !important; }
+    }
     @media (hover: none) {
       .folder-actions { display: flex !important; }
       .folder-count { display: inline-block !important; }
@@ -70,7 +60,7 @@
     #modal-backdrop[aria-hidden="false"] ~ * { pointer-events: none; }
   </style>
 </head>
-<body class="bg-gray-100 dark:bg-gray-950 text-gray-900 dark:text-gray-100 antialiased h-full flex overflow-hidden select-none" style="height:100vh;height:100dvh">
+<body class="app-body bg-gray-100 dark:bg-gray-950 text-gray-900 dark:text-gray-100 antialiased h-full flex overflow-hidden select-none">
 
   <!-- Mobile navigation overlay -->
   <div id="mobile-overlay" class="fixed inset-0 bg-gray-900/40 z-30 hidden md:hidden transition-opacity backdrop-blur-sm"></div>
@@ -171,15 +161,15 @@
           <button type="button" id="btn-back-to-list" aria-label="Back to notes" class="p-1.5 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg md:hidden">
             <i data-lucide="chevron-left" class="w-5 h-5"></i>
           </button>
-          <div class="relative inline-block max-w-[180px] sm:max-w-xs">
-            <select id="note-folder-select" aria-label="Folder" class="max-w-full text-xs font-medium bg-gray-100 dark:bg-gray-800/80 border border-transparent focus:border-brand-500 rounded-lg px-2.5 py-1.5 text-gray-700 dark:text-gray-300 focus:outline-none cursor-pointer truncate">
+          <div class="note-folder-select-wrap relative">
+            <select id="note-folder-select" aria-label="Folder" class="w-full min-w-0 max-w-full truncate text-xs font-medium bg-gray-100 dark:bg-gray-800/80 border border-transparent focus:border-brand-500 rounded-lg px-2.5 py-1.5 text-gray-700 dark:text-gray-300 focus:outline-none cursor-pointer">
               <option value="">Uncategorized</option>
             </select>
           </div>
         </div>
 
         <div class="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
-          <span id="last-saved" class="hidden sm:inline text-[10px] text-gray-400 mr-1" title="Last saved"></span>
+          <span id="last-saved" class="hidden lg:inline text-[10px] text-gray-400 mr-1" title="Last saved"></span>
           <button type="button" id="btn-save-note" class="flex items-center space-x-1.5 px-3 py-1.5 bg-brand-500 hover:bg-brand-600 text-white rounded-lg text-xs font-medium transition-colors shadow-sm">
             <i data-lucide="save" class="w-3.5 h-3.5"></i>
             <span>Save</span>
@@ -233,10 +223,12 @@
     const STORAGE_KEY = 'notes_app_data_v2';   // unchanged — existing notes carry over
     const KDF_ITERATIONS = 600000;             // used for new encrypted backups
     const LEGACY_KDF_ITERATIONS = 100000;      // backups written by the old version
-    const MAX_KDF_ITERATIONS = 5000000;        // refuse absurd values from crafted files
+    const MAX_KDF_ITERATIONS = 1000000;        // refuse excessive work from crafted files
     const MAX_IMPORT_BYTES = 25 * 1024 * 1024;
     const MAX_TITLE = 500;
     const MAX_FOLDER_NAME = 100;
+    const MAX_FOLDERS = 5000;
+    const MAX_FOLDER_DEPTH = 32;
     const MAX_BODY_BYTES = 2 * 1024 * 1024;    // soft limit per note (~2 MB)
     const RESERVED_FILTERS = new Set(['all', 'uncategorized']);
 
@@ -301,6 +293,100 @@
     const getNote = (id) => (id == null ? undefined : state.notes.find((n) => n.id === id));
     const getFolder = (id) => (id ? state.folders.find((f) => f.id === id) : undefined);
     const isValidFilter = (f) => RESERVED_FILTERS.has(f) || !!getFolder(f);
+
+    function getFolderChildrenMap() {
+      const children = new Map();
+      state.folders.forEach((folder) => {
+        const parentId = getFolder(folder.parentId) ? folder.parentId : null;
+        if (!children.has(parentId)) children.set(parentId, []);
+        children.get(parentId).push(folder);
+      });
+      return children;
+    }
+
+    function getFolderTreeRows() {
+      const children = getFolderChildrenMap();
+      const rows = [];
+      const visited = new Set();
+      const visit = (parentId, depth) => {
+        (children.get(parentId) || []).forEach((folder) => {
+          if (visited.has(folder.id)) return;
+          visited.add(folder.id);
+          rows.push({ folder, depth });
+          visit(folder.id, depth + 1);
+        });
+      };
+      visit(null, 0);
+      state.folders.forEach((folder) => {
+        if (!visited.has(folder.id)) rows.push({ folder, depth: 0 });
+      });
+      return rows;
+    }
+
+    function getFolderPath(folderId) {
+      const names = [];
+      const seen = new Set();
+      let folder = getFolder(folderId);
+      while (folder && !seen.has(folder.id)) {
+        seen.add(folder.id);
+        names.unshift(folder.name);
+        folder = getFolder(folder.parentId);
+      }
+      return names.join(' / ');
+    }
+
+    function isFolderInSubtree(folderId, rootId) {
+      const seen = new Set();
+      let folder = getFolder(folderId);
+      while (folder && !seen.has(folder.id)) {
+        if (folder.id === rootId) return true;
+        seen.add(folder.id);
+        folder = getFolder(folder.parentId);
+      }
+      return false;
+    }
+
+    function getFolderDescendantIds(folderId) {
+      const children = getFolderChildrenMap();
+      const ids = new Set([folderId]);
+      const pending = [folderId];
+      while (pending.length) {
+        (children.get(pending.pop()) || []).forEach((folder) => {
+          if (ids.has(folder.id)) return;
+          ids.add(folder.id);
+          pending.push(folder.id);
+        });
+      }
+      return ids;
+    }
+
+    function getFolderDepth(folderId) {
+      let depth = 0;
+      let folder = getFolder(folderId);
+      const seen = new Set();
+      while (folder && !seen.has(folder.id)) {
+        seen.add(folder.id);
+        depth++;
+        folder = getFolder(folder.parentId);
+      }
+      return depth;
+    }
+
+    function canMoveFolder(folderId, parentId) {
+      if (parentId && (!getFolder(parentId) || isFolderInSubtree(parentId, folderId))) return false;
+      const children = getFolderChildrenMap();
+      let subtreeHeight = 0;
+      const pending = [[folderId, 1]];
+      const visited = new Set();
+      while (pending.length) {
+        const [currentId, depth] = pending.pop();
+        if (visited.has(currentId)) continue;
+        visited.add(currentId);
+        subtreeHeight = Math.max(subtreeHeight, depth);
+        (children.get(currentId) || []).forEach((child) => pending.push([child.id, depth + 1]));
+      }
+      return (parentId ? getFolderDepth(parentId) : 0) + subtreeHeight <= MAX_FOLDER_DEPTH;
+    }
 
     /* ------------------------------------------------------------------ *
      * UI helpers: icons, toasts
@@ -417,26 +503,57 @@
         throw new Error('Invalid backup structure.');
       }
 
+      const inputFolders = Array.isArray(input.folders) ? input.folders : [];
+      if (inputFolders.length > MAX_FOLDERS) throw new Error('Too many folders in backup.');
+
       const folders = [];
       const folderIds = new Set();
       const idRemap = new Map();
-      for (const f of Array.isArray(input.folders) ? input.folders : []) {
+      const rawParents = new Map();
+      for (const f of inputFolders) {
         if (!f || typeof f !== 'object') continue;
         const original = f.id != null && f.id !== '' ? String(f.id) : generateId();
-        if (folderIds.has(original) && !idRemap.has(original)) continue;   // duplicate id: keep the first
+        if (folderIds.has(original)) continue;                              // duplicate id: keep the first
         let id = original;
         if (RESERVED_FILTERS.has(id)) id = generateId();                   // would collide with built-in views
         idRemap.set(original, id);
         if (folderIds.has(id)) continue;
         folderIds.add(id);
-        folders.push({ id, name: toText(f.name).trim().slice(0, MAX_FOLDER_NAME) || 'Untitled Folder' });
+        folders.push({ id, name: toText(f.name).trim().slice(0, MAX_FOLDER_NAME) || 'Untitled Folder', parentId: null });
+        rawParents.set(id, f.parentId != null && f.parentId !== '' ? String(f.parentId) : null);
       }
+
+      const foldersById = new Map(folders.map((folder) => [folder.id, folder]));
+      folders.forEach((folder) => {
+        const rawParentId = rawParents.get(folder.id);
+        const parentId = rawParentId ? (idRemap.get(rawParentId) ?? rawParentId) : null;
+        if (parentId && parentId !== folder.id && foldersById.has(parentId)) folder.parentId = parentId;
+      });
+      folders.forEach((folder) => {
+        let cursor = folder;
+        const seen = new Set([folder.id]);
+        let depth = 1;
+        while (cursor.parentId) {
+          if (seen.has(cursor.parentId) || depth >= MAX_FOLDER_DEPTH) {
+            folder.parentId = null;
+            break;
+          }
+          seen.add(cursor.parentId);
+          cursor = foldersById.get(cursor.parentId);
+          if (!cursor) {
+            folder.parentId = null;
+            break;
+          }
+          depth++;
+        }
+      });
 
       const byId = new Map();
       for (const n of Array.isArray(input.notes) ? input.notes : []) {
         if (!n || typeof n !== 'object') continue;
         const id = n.id != null && n.id !== '' ? String(n.id) : generateId();
         const updated = Number(n.updatedAt);
+        const updatedAt = Number.isFinite(updated) && updated > 0 && Number.isFinite(new Date(updated).getTime()) ? updated : Date.now();
         const rawFolder = n.folderId != null && n.folderId !== '' ? String(n.folderId) : null;
         const folderId = rawFolder ? (idRemap.get(rawFolder) ?? rawFolder) : null;
         let body = toText(n.body);
@@ -449,7 +566,7 @@
           folderId: folderId && folderIds.has(folderId) ? folderId : null,
           title: toText(n.title).slice(0, MAX_TITLE),
           body,
-          updatedAt: Number.isFinite(updated) && updated > 0 ? updated : Date.now(),
+          updatedAt,
         };
         const existing = byId.get(id);
         if (!existing || note.updatedAt > existing.updatedAt) byId.set(id, note);
@@ -512,7 +629,7 @@
         .filter((note) => {
           let inView = true;
           if (state.activeFilter === 'uncategorized') inView = !note.folderId;
-          else if (state.activeFilter !== 'all') inView = note.folderId === state.activeFilter;
+          else if (state.activeFilter !== 'all') inView = isFolderInSubtree(note.folderId, state.activeFilter);
           if (!inView) return false;
           if (!q) return true;
           return fold(note.title).includes(q) || fold(note.body).includes(q);
@@ -524,7 +641,7 @@
       if (state.activeFilter === 'all') return 'All Notes';
       if (state.activeFilter === 'uncategorized') return 'Uncategorized';
       const folder = getFolder(state.activeFilter);
-      return folder ? folder.name : 'Folder';
+      return folder ? getFolderPath(folder.id) : 'Folder';
     }
 
     // Called explicitly after navigation-type changes (filter, search, delete, import).
@@ -566,22 +683,35 @@
     function renderFolderList() {
       const folderCounts = new Map();
       state.notes.forEach((note) => {
-        if (!note.folderId) return;
-        folderCounts.set(note.folderId, (folderCounts.get(note.folderId) || 0) + 1);
+        let folder = getFolder(note.folderId);
+        const seen = new Set();
+        while (folder && !seen.has(folder.id)) {
+          seen.add(folder.id);
+          folderCounts.set(folder.id, (folderCounts.get(folder.id) || 0) + 1);
+          folder = getFolder(folder.parentId);
+        }
       });
 
-      $('folders-container').innerHTML = state.folders.map((folder) => {
+      $('folders-container').innerHTML = getFolderTreeRows().map(({ folder, depth }) => {
         const count = folderCounts.get(folder.id) || 0;
         const active = state.activeFilter === folder.id;
         const name = esc(folder.name);
+        const indent = '<span aria-hidden="true" class="w-3 flex-shrink-0"></span>'.repeat(depth);
         return `
           <div data-folder-id="${esc(folder.id)}" class="folder-item flex items-center justify-between rounded-lg text-sm font-medium transition-colors ${active ? ACTIVE_CLS : IDLE_CLS}">
-            <button type="button" data-action="select" class="flex-1 min-w-0 flex items-center space-x-2.5 px-2.5 py-1.5 text-left">
+            <button type="button" data-action="select" aria-label="Open folder ${esc(getFolderPath(folder.id))}" class="flex-1 min-w-0 flex items-center space-x-2.5 px-2.5 py-1.5 text-left">
+              ${indent}
               <i data-lucide="folder" class="w-4 h-4 flex-shrink-0"></i>
               <span class="truncate">${name}</span>
             </button>
             <span class="folder-count ${BADGE_CLS} mr-1.5">${count}</span>
             <div class="folder-actions space-x-0.5 pr-1.5">
+              <button type="button" data-action="create-child" aria-label="Create subfolder in ${name}" title="Create subfolder" class="p-1.5 hover:text-brand-500 rounded">
+                <i data-lucide="folder-plus" class="w-3.5 h-3.5"></i>
+              </button>
+              <button type="button" data-action="move" aria-label="Move folder ${name}" title="Move folder" class="p-1.5 hover:text-brand-500 rounded">
+                <i data-lucide="folder-input" class="w-3.5 h-3.5"></i>
+              </button>
               <button type="button" data-action="rename" aria-label="Rename folder ${name}" title="Rename folder" class="p-1.5 hover:text-brand-500 rounded">
                 <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
               </button>
@@ -637,10 +767,10 @@
       none.value = '';
       none.textContent = 'Uncategorized';
       select.appendChild(none);
-      state.folders.forEach((f) => {
+      getFolderTreeRows().forEach(({ folder }) => {
         const opt = document.createElement('option');
-        opt.value = f.id;
-        opt.textContent = f.name;
+        opt.value = folder.id;
+        opt.textContent = getFolderPath(folder.id);
         select.appendChild(opt);
       });
       select.value = getFolder(previous) ? previous : '';
@@ -761,7 +891,7 @@
     }
 
     function createNewNote() {
-      saveActiveNote();
+      if (!saveActiveNote()) return;
       if (state.searchQuery) {           // a blank note would never match the search
         state.searchQuery = '';
         $('search-input').value = '';
@@ -774,8 +904,11 @@
         updatedAt: Date.now(),
       };
       state.notes.unshift(note);
+      if (!saveData()) {
+        state.notes = state.notes.filter((existing) => existing.id !== note.id);
+        return;
+      }
       state.activeNoteId = note.id;
-      saveData();
       renderApp();
       openMobileEditor();
       setTimeout(() => $('note-title-input').focus(), 100);
@@ -791,7 +924,7 @@
 
       const wouldDisappear =
         (state.activeFilter === 'uncategorized' && note.folderId) ||
-        (state.activeFilter !== 'all' && state.activeFilter !== 'uncategorized' && note.folderId !== state.activeFilter);
+        (state.activeFilter !== 'all' && state.activeFilter !== 'uncategorized' && !isFolderInSubtree(note.folderId, state.activeFilter));
 
       if (wouldDisappear) {
         state.activeFilter = note.folderId || 'uncategorized';
@@ -809,9 +942,16 @@
         title: 'Delete note',
         message: `Delete "${note.title || 'Untitled Note'}"? This can't be undone.`,
         onConfirm: () => {
+          const previousNotes = state.notes;
+          const previousActiveNoteId = state.activeNoteId;
           state.notes = state.notes.filter((n) => n.id !== id);
           if (state.activeNoteId === id) state.activeNoteId = null;
-          saveData();
+          if (!saveData()) {
+            state.notes = previousNotes;
+            state.activeNoteId = previousActiveNoteId;
+            renderApp();
+            return;
+          }
           ensureActiveNote();
           renderApp(true);
           closeMobileEditor();
@@ -826,7 +966,7 @@
       const fallback = () => {
         const ta = document.createElement('textarea');
         ta.value = text;
-        ta.style.cssText = 'position:fixed;opacity:0;';
+        ta.className = 'copy-fallback';
         document.body.appendChild(ta);
         ta.focus();
         ta.select();
@@ -848,17 +988,32 @@
     /* ------------------------------------------------------------------ *
      * Folder actions
      * ------------------------------------------------------------------ */
-    function promptCreateFolder() {
+    function promptCreateFolder(parentId = null) {
+      if (parentId && !getFolder(parentId)) return;
+      if (parentId && getFolderDepth(parentId) >= MAX_FOLDER_DEPTH) {
+        showToast(`Folders can be nested up to ${MAX_FOLDER_DEPTH} levels.`, 'error');
+        return;
+      }
+      if (state.folders.length >= MAX_FOLDERS) {
+        showToast(`You can create up to ${MAX_FOLDERS} folders.`, 'error');
+        return;
+      }
       promptDialog({
-        title: 'Create folder',
+        title: parentId ? 'Create subfolder' : 'Create folder',
         placeholder: 'Folder name',
         confirmLabel: 'Create',
         onSubmit: (name) => {
-          saveActiveNote();
-          const folder = { id: generateId(), name: name.slice(0, MAX_FOLDER_NAME) };
+          if (!saveActiveNote()) return;
+          const folder = { id: generateId(), name: name.slice(0, MAX_FOLDER_NAME), parentId };
+          const previousFilter = state.activeFilter;
           state.folders.push(folder);
           state.activeFilter = folder.id;
-          saveData();
+          if (!saveData()) {
+            state.folders = state.folders.filter((existing) => existing.id !== folder.id);
+            state.activeFilter = previousFilter;
+            renderApp();
+            return;
+          }
           ensureActiveNote();
           renderApp();
           showToast('Folder created', 'success');
@@ -874,11 +1029,57 @@
         value: folder.name,
         confirmLabel: 'Save',
         onSubmit: (name) => {
+          const previousName = folder.name;
           folder.name = name.slice(0, MAX_FOLDER_NAME);
-          saveData();
+          if (!saveData()) {
+            folder.name = previousName;
+            renderApp();
+            return;
+          }
           renderApp();
           showToast('Folder renamed', 'success');
         },
+      });
+    }
+
+    function promptMoveFolder(folderId) {
+      const folder = getFolder(folderId);
+      if (!folder) return;
+      const descendants = getFolderDescendantIds(folderId);
+      const options = getFolderTreeRows()
+        .filter(({ folder: candidate }) => !descendants.has(candidate.id))
+        .map(({ folder: candidate }) => `<option value="${esc(candidate.id)}"${candidate.id === folder.parentId ? ' selected' : ''}>${esc(getFolderPath(candidate.id))}</option>`)
+        .join('');
+
+      openModal(`
+        <h3 id="modal-title" class="text-base font-bold text-gray-900 dark:text-gray-100 mb-2">Move folder</h3>
+        <label for="move-folder-parent" class="block text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">New parent</label>
+        <select id="move-folder-parent" class="${INPUT_CLS} mb-4">
+          <option value=""${folder.parentId ? '' : ' selected'}>Top level</option>
+          ${options}
+        </select>
+        <div class="flex justify-end space-x-2">
+          <button type="button" data-modal-close class="${BTN_GHOST}">Cancel</button>
+          <button type="button" id="btn-confirm-move-folder" class="${BTN_PRIMARY}">Move</button>
+        </div>`);
+
+      $('btn-confirm-move-folder').addEventListener('click', () => {
+        const parentId = $('move-folder-parent').value || null;
+        if (!saveActiveNote()) return;
+        if (!canMoveFolder(folderId, parentId)) {
+          return showToast(`Folders can be nested up to ${MAX_FOLDER_DEPTH} levels.`, 'error');
+        }
+        if (parentId === folder.parentId) return closeModal();
+        const previousParentId = folder.parentId;
+        folder.parentId = parentId;
+        if (!saveData()) {
+          folder.parentId = previousParentId;
+          renderApp();
+          return;
+        }
+        closeModal();
+        renderApp();
+        showToast('Folder moved', 'success');
       });
     }
 
@@ -887,13 +1088,24 @@
       if (!folder) return;
       confirmDialog({
         title: 'Delete folder',
-        message: `Delete "${folder.name}"? Its notes will move to Uncategorized.`,
+        message: `Delete "${folder.name}"? Its notes will move to Uncategorized, and its subfolders will move up one level.`,
         onConfirm: () => {
-          saveActiveNote();
-          state.folders = state.folders.filter((f) => f.id !== folderId);
-          state.notes.forEach((n) => { if (n.folderId === folderId) n.folderId = null; });
-          if (state.activeFilter === folderId) state.activeFilter = 'all';
-          saveData();
+          if (!saveActiveNote()) return;
+          const previousFolders = state.folders;
+          const previousNotes = state.notes;
+          const previousFilter = state.activeFilter;
+          state.folders = state.folders
+            .filter((f) => f.id !== folderId)
+            .map((f) => f.parentId === folderId ? { ...f, parentId: folder.parentId } : f);
+          state.notes = state.notes.map((n) => n.folderId === folderId ? { ...n, folderId: null } : n);
+          if (state.activeFilter === folderId) state.activeFilter = folder.parentId || 'all';
+          if (!saveData()) {
+            state.folders = previousFolders;
+            state.notes = previousNotes;
+            state.activeFilter = previousFilter;
+            renderApp();
+            return;
+          }
           ensureActiveNote();
           renderApp(true);
           showToast('Folder deleted', 'info');
@@ -1038,7 +1250,7 @@
         saveActiveNote();
         const date = new Date().toISOString().slice(0, 10); // UTC date
         const raw = JSON.stringify({
-          version: '2.0',
+          version: '3.0',
           exportedAt: new Date().toISOString(),
           folders: state.folders,
           notes: state.notes,
@@ -1162,7 +1374,7 @@
 
     // Builds the new dataset without mutating current arrays, so a failed save can be rolled back.
     function applyImport(mode, data) {
-      saveActiveNote();
+      if (!saveActiveNote()) return false;
       const previous = { folders: state.folders, notes: state.notes };
       let next;
       let added = 0;
@@ -1247,7 +1459,9 @@
         const id = row.dataset.folderId;
         const actionEl = e.target.closest('[data-action]');
         const action = actionEl ? actionEl.dataset.action : 'select';
-        if (action === 'rename') promptRenameFolder(id);
+        if (action === 'create-child') promptCreateFolder(id);
+        else if (action === 'move') promptMoveFolder(id);
+        else if (action === 'rename') promptRenameFolder(id);
         else if (action === 'delete') confirmDeleteFolder(id);
         else setFilter(id);
       });
@@ -1295,7 +1509,7 @@
       // Sidebar actions
       $('btn-new-note').addEventListener('click', () => { createNewNote(); closeMobileSidebar(); });
       $('btn-empty-new-note').addEventListener('click', createNewNote);
-      $('btn-add-folder').addEventListener('click', promptCreateFolder);
+      $('btn-add-folder').addEventListener('click', () => promptCreateFolder());
       $('btn-export-data').addEventListener('click', openExportModal);
       $('btn-import-data').addEventListener('click', () => $('file-import-input').click());
       $('file-import-input').addEventListener('change', handleImportFileSelect);
