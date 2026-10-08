@@ -11,9 +11,30 @@
     <div class="container">
         <header>
             <h1>Holy Bible</h1>
-            <!-- Dark Mode Toggle Button -->
-            <button id="dark-mode-toggle" aria-label="Toggle dark mode">🌙</button>
+            <div class="header-actions">
+                <!-- Search Icon Button -->
+                <button id="search-toggle-btn" aria-label="Open Search" title="Search Bible">🔍</button>
+                <!-- Dark Mode Toggle Button -->
+                <button id="dark-mode-toggle" aria-label="Toggle dark mode" title="Toggle Theme">🌙</button>
+            </div>
         </header>
+
+        <!-- Search Modal / Overlay -->
+        <div id="search-modal" class="search-modal hidden" aria-hidden="true">
+            <div class="search-modal-content">
+                <div class="search-header">
+                    <h2>Search Bible</h2>
+                    <button id="search-close-btn" aria-label="Close Search">&times;</button>
+                </div>
+                <div class="search-input-group">
+                    <input type="text" id="search-input" placeholder="Type keyword or phrase (e.g., love, peace)..." autocomplete="off">
+                    <button id="search-submit-btn">Search</button>
+                </div>
+                <div id="search-results-container">
+                    <p class="search-placeholder">Type a word or phrase to search across all books and chapters.</p>
+                </div>
+            </div>
+        </div>
 
         <nav class="controls">
             <div class="control-group">
@@ -37,7 +58,7 @@
             <button class="next-btn" disabled>Next &raquo;</button>
         </div>
 
-        <main id="bible-text">
+        <main id="bible-text" tabindex="-1">
             <p class="placeholder">Select a book and chapter to begin reading.</p>
         </main>
 
