@@ -266,6 +266,12 @@ document.addEventListener("DOMContentLoaded", () => {
         bibleTextContainer.innerHTML = html;
         bibleTextContainer.focus(); // Focus for accessibility
         updateNavigationButtons();
+
+        // Scroll to the top of the page when a new chapter renders
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
     }
 
     function updateNavigationButtons() {
