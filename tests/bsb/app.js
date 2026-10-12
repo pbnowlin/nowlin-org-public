@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
         searchResultsContainer.innerHTML = `<p class="search-placeholder">Searching entire Bible...</p>`;
 
         let results = [];
-        const maxResults = 250; // Safety cap to ensure smooth rendering
+        // Removed maxResults cap to search all verses and enable virtualized/windowed rendering
 
         // Traverse books, chapters, verses
         const books = getBooks(bibleData);
@@ -144,14 +144,10 @@ document.addEventListener("DOMContentLoaded", () => {
                                 verseNum,
                                 verseText
                             });
-
-                            if (results.length >= maxResults) break;
                         }
                     }
                 }
-                if (results.length >= maxResults) break;
             }
-            if (results.length >= maxResults) break;
         }
 
         renderSearchResults(results, query);
@@ -163,40 +159,97 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        let html = `<p class="search-placeholder" style="margin-bottom: 10px;">Found ${results.length} result(s):</p>`;
+        const pageSize = 50;
+        let currentPage = 0;
+        const totalPages = Math.ceil(results.length / pageSize);
 
-        results.forEach(res => {
-            // Highlight query term in verse text
-            const regex = new RegExp(`(${escapeRegExp(query)})`, 'gi');
-            const highlightedText = res.verseText.replace(regex, `<span class="highlight">$1</span>`);
+        searchResultsContainer.innerHTML = `
+            <div id="search-results-summary" class="search-placeholder" style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+                <span>Found ${results.length} result(s)</span>
+                <span id="search-pagination-info" style="font-size: 0.85rem;">Page 1 of ${totalPages}</span>
+            </div>
+            <div id="search-results-list"></div>
+            <div id="search-load-more-container" style="text-align: center; margin: 15px 0;">
+                ${totalPages > 1 ? '<button id="search-load-more-btn" style="padding: 8px 16px; background: var(--primary-accent); color: white; border: none; border-radius: 4px; cursor: pointer;">Load More</button>' : ''}
+            </div>
+        `;
 
-            html += `
-                <div class="search-result-item" data-book="${res.bookIndex}" data-chapter="${res.chapterIndex}">
-                    <div class="search-result-ref">${res.bookName} ${res.chapterNum}:${res.verseNum}</div>
-                    <div class="search-result-text"><sup class="verse-num">${res.verseNum}</sup> ${highlightedText}</div>
-                </div>
-            `;
-        });
+        const listContainer = searchResultsContainer.querySelector("#search-results-list");
+        const loadMoreBtn = searchResultsContainer.querySelector("#search-load-more-btn");
+        const paginationInfo = searchResultsContainer.querySelector("#search-pagination-info");
 
-        searchResultsContainer.innerHTML = html;
+        function renderChunk() {
+            const start = currentPage * pageSize;
+            const end = Math.min(start + pageSize, results.length);
+            const chunk = results.slice(start, end);
 
-        // Attach click listeners to result items to jump directly to that chapter
-        const resultItems = searchResultsContainer.querySelectorAll(".search-result-item");
-        resultItems.forEach(item => {
-            item.addEventListener("click", () => {
-                const bIdx = parseInt(item.getAttribute("data-book"), 10);
-                const cIdx = parseInt(item.getAttribute("data-chapter"), 10);
+            let chunkHtml = "";
+            chunk.forEach(res => {
+                const regex = new RegExp(`(${escapeRegExp(query)})`, 'gi');
+                const highlightedText = res.verseText.replace(regex, `<span class="highlight">$1</span>`);
 
-                currentBookIndex = bIdx;
-                currentChapterIndex = cIdx;
-
-                bookSelect.value = bIdx;
-                populateChapterSelect(bIdx);
-                chapterSelect.value = cIdx;
-
-                renderChapter(bIdx, cIdx);
-                closeSearchModal();
+                chunkHtml += `
+                    <div class="search-result-item" data-book="${res.bookIndex}" data-chapter="${res.chapterIndex}">
+                        <div class="search-result-ref">${res.bookName} ${res.chapterNum}:${res.verseNum}</div>
+                        <div class="search-result-text"><sup class="verse-num">${res.verseNum}</sup> ${highlightedText}</div>
+                    </div>
+                `;
             });
+
+            listContainer.insertAdjacentHTML('beforeend', chunkHtml);
+
+            // Attach click listeners to newly added items
+            const newItems = listContainer.querySelectorAll(".search-result-item:not(.bound)");
+            newItems.forEach(item => {
+                item.classList.add("bound");
+                item.addEventListener("click", () => {
+                    const bIdx = parseInt(item.getAttribute("data-book"), 10);
+                    const cIdx = parseInt(item.getAttribute("data-chapter"), 10);
+
+                    currentBookIndex = bIdx;
+                    currentChapterIndex = cIdx;
+
+                    bookSelect.value = bIdx;
+                    populateChapterSelect(bIdx);
+                    chapterSelect.value = cIdx;
+
+                    renderChapter(bIdx, cIdx);
+                    closeSearchModal();
+                });
+            });
+
+            if (paginationInfo) {
+                paginationInfo.textContent = `Showing 1-${end} of ${results.length} (Page ${currentPage + 1} of ${totalPages})`;
+            }
+
+            if (loadMoreBtn) {
+                if (end >= results.length) {
+                    loadMoreBtn.style.display = "none";
+                } else {
+                    loadMoreBtn.style.display = "inline-block";
+                }
+            }
+        }
+
+        renderChunk();
+
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener("click", () => {
+                currentPage++;
+                renderChunk();
+            });
+        }
+
+        // Add infinite scroll trigger on container scroll as part of virtual/windowed rendering
+        searchResultsContainer.addEventListener("scroll", () => {
+            if (!loadMoreBtn || loadMoreBtn.style.display === "none") return;
+            const threshold = 100;
+            if (searchResultsContainer.scrollTop + searchResultsContainer.clientHeight >= searchResultsContainer.scrollHeight - threshold) {
+                if ((currentPage + 1) * pageSize < results.length) {
+                    currentPage++;
+                    renderChunk();
+                }
+            }
         });
     }
 
