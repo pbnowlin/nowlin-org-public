@@ -240,8 +240,12 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        // Add infinite scroll trigger on container scroll as part of virtual/windowed rendering
-        searchResultsContainer.addEventListener("scroll", () => {
+        // Store reference to scroll handler so we can remove it on re-search
+        if (searchResultsContainer._scrollHandler) {
+            searchResultsContainer.removeEventListener("scroll", searchResultsContainer._scrollHandler);
+        }
+
+        searchResultsContainer._scrollHandler = () => {
             if (!loadMoreBtn || loadMoreBtn.style.display === "none") return;
             const threshold = 100;
             if (searchResultsContainer.scrollTop + searchResultsContainer.clientHeight >= searchResultsContainer.scrollHeight - threshold) {
@@ -250,7 +254,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     renderChunk();
                 }
             }
-        });
+        };
+
+        searchResultsContainer.addEventListener("scroll", searchResultsContainer._scrollHandler);
     }
 
     function escapeRegExp(string) {
