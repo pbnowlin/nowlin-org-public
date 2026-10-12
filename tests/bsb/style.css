@@ -118,7 +118,7 @@ body.dark-mode header h1 {
     background-color: #ffffff;
     width: 90%;
     max-width: 650px;
-    height: 80vh;
+    max-height: 85vh;
     border-radius: 12px;
     display: flex;
     flex-direction: column;
@@ -474,7 +474,11 @@ footer a:hover {
 /* Responsive Adjustments for Mobile Screens */
 @media (max-width: 600px) {
     body {
-        padding: 12px 8px;
+        padding: 10px 8px;
+    }
+
+    .container {
+        gap: 16px;
     }
 
     #bible-text {
@@ -482,33 +486,58 @@ footer a:hover {
     }
 
     .controls {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: nowrap;
         width: 100%;
-        align-items: stretch; /* Make controls take full width */
+        align-items: stretch;
+        gap: 8px;
+        padding: 8px;
     }
 
     .control-group {
-        width: 100%;
+        flex: 1;
         justify-content: space-between;
         flex-direction: column;
-        gap: 5px;
+        gap: 4px;
     }
 
-    select {
-        width: 100%; /* Ensure select fills its parent */
+    .control-group label {
+        font-size: 0.85rem;
+    }
+
+    select, button {
+        padding: 8px 10px;
+        font-size: 14px;
+        min-height: 40px;
+        width: 100%;
     }
     
     header {
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: space-between;
         gap: 10px;
+        padding: 0 4px;
     }
     
     header h1 {
-        font-size: 2rem;
+        font-size: 1.75rem;
+        text-align: left;
     }
 
     .header-actions {
-        width: 100%;
-        justify-content: center;
+        width: auto;
+        justify-content: flex-end;
+    }
+
+    #dark-mode-toggle, #search-toggle-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.15rem;
+    }
+
+    .search-modal-content {
+        width: 95%;
+        max-height: 90vh;
+        padding: 16px;
     }
 }

@@ -21,6 +21,25 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentBookIndex = -1;
     let currentChapterIndex = -1;
 
+    // --- Data Extraction Helpers ---
+    function getBooks(data) {
+        if (Array.isArray(data)) return data;
+        if (data && Array.isArray(data.books)) return data.books;
+        return [];
+    }
+
+    function getChapters(book) {
+        if (!book) return [];
+        return Array.isArray(book.chapters) ? book.chapters : [];
+    }
+
+    function getVerses(chapterObj) {
+        if (!chapterObj) return [];
+        if (Array.isArray(chapterObj)) return chapterObj;
+        if (Array.isArray(chapterObj.verses)) return chapterObj.verses;
+        return [];
+    }
+
     // --- Dark Mode Setup ---
     function applyTheme(isDark) {
         if (isDark) {
@@ -92,16 +111,16 @@ document.addEventListener("DOMContentLoaded", () => {
         const maxResults = 250; // Safety cap to ensure smooth rendering
 
         // Traverse books, chapters, verses
-        for (let bIdx = 0; bIdx < bibleData.length; bIdx++) {
-            const book = bibleData[bIdx];
+        const books = getBooks(bibleData);
+        for (let bIdx = 0; bIdx < books.length; bIdx++) {
+            const book = books[bIdx];
             const bookName = book.name || book.book || book.title || `Book ${bIdx + 1}`;
-            const chapters = book.chapters || book.verses || [];
+            const chapters = getChapters(book);
 
             for (let cIdx = 0; cIdx < chapters.length; cIdx++) {
-                const chapterData = chapters[cIdx] || [];
-                const verses = Array.isArray(chapterData) 
-                    ? chapterData 
-                    : (chapterData.verses || chapterData.text || chapterData.content || chapterData.v || []);
+                const chapterData = chapters[cIdx];
+                const chapterNum = (typeof chapterData === "object" && chapterData !== null && chapterData.chapter) ? chapterData.chapter : (cIdx + 1);
+                const verses = getVerses(chapterData);
 
                 if (Array.isArray(verses)) {
                     for (let vIdx = 0; vIdx < verses.length; vIdx++) {
@@ -121,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 bookIndex: bIdx,
                                 chapterIndex: cIdx,
                                 bookName,
-                                chapterNum: cIdx + 1,
+                                chapterNum,
                                 verseNum,
                                 verseText
                             });
@@ -202,7 +221,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return response.json();
         })
         .then(data => {
-            bibleData = Array.isArray(data) ? data : (data.books || data.verses || data.bible || []);
+            bibleData = getBooks(data);
             populateBookSelect();
             updateNavigationButtons();
         })
@@ -214,7 +233,8 @@ document.addEventListener("DOMContentLoaded", () => {
     function populateBookSelect() {
         bookSelect.innerHTML = `<option value="">Select Book</option>`;
         
-        bibleData.forEach((bookObj, index) => {
+        const books = getBooks(bibleData);
+        books.forEach((bookObj, index) => {
             const option = document.createElement("option");
             option.value = index;
             option.textContent = bookObj.name || bookObj.book || bookObj.title || `Book ${index + 1}`;
@@ -226,30 +246,32 @@ document.addEventListener("DOMContentLoaded", () => {
         chapterSelect.innerHTML = `<option value="">Select Chapter</option>`;
         chapterSelect.disabled = false;
 
-        const book = bibleData[bookIndex];
-        const chapters = book ? (book.chapters || book.verses || []) : [];
+        const books = getBooks(bibleData);
+        const book = books[bookIndex];
+        const chapters = getChapters(book);
 
-        chapters.forEach((_, index) => {
+        chapters.forEach((chapterObj, index) => {
             const option = document.createElement("option");
             option.value = index;
-            option.textContent = `Chapter ${index + 1}`;
+            const chapterNum = (typeof chapterObj === "object" && chapterObj !== null && chapterObj.chapter) ? chapterObj.chapter : (index + 1);
+            option.textContent = `Chapter ${chapterNum}`;
             chapterSelect.appendChild(option);
         });
     }
 
     function renderChapter(bookIndex, chapterIndex) {
-        const book = bibleData[bookIndex];
+        const books = getBooks(bibleData);
+        const book = books[bookIndex];
         if (!book) return;
 
-        const chapters = book.chapters || book.verses || [];
-        const chapterData = chapters[chapterIndex] || [];
+        const chapters = getChapters(book);
+        const chapterData = chapters[chapterIndex];
         const bookName = book.name || book.book || book.title || "";
+        const chapterNum = (typeof chapterData === "object" && chapterData !== null && chapterData.chapter) ? chapterData.chapter : (chapterIndex + 1);
 
-        let html = `<h2>${bookName} ${chapterIndex + 1}</h2>`;
+        let html = `<h2>${bookName} ${chapterNum}</h2>`;
 
-        const verses = Array.isArray(chapterData) 
-            ? chapterData 
-            : (chapterData.verses || chapterData.text || chapterData.content || chapterData.v || []);
+        const verses = getVerses(chapterData);
 
         if (Array.isArray(verses)) {
             verses.forEach((verse, vIdx) => {
@@ -269,17 +291,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function updateNavigationButtons() {
-        if (currentBookIndex < 0 || currentChapterIndex < 0 || bibleData.length === 0) {
+        const books = getBooks(bibleData);
+        if (currentBookIndex < 0 || currentChapterIndex < 0 || books.length === 0) {
             prevBtns.forEach(btn => btn.disabled = true);
             nextBtns.forEach(btn => btn.disabled = true);
             return;
         }
 
-        const book = bibleData[currentBookIndex];
-        const chapters = book ? (book.chapters || book.verses || []) : [];
+        const book = books[currentBookIndex];
+        const chapters = getChapters(book);
 
         const isAtStart = (currentBookIndex === 0 && currentChapterIndex === 0);
-        const isAtEnd = (currentBookIndex === bibleData.length - 1 && currentChapterIndex === chapters.length - 1);
+        const isAtEnd = (currentBookIndex === books.length - 1 && currentChapterIndex === chapters.length - 1);
 
         prevBtns.forEach(btn => btn.disabled = isAtStart);
         nextBtns.forEach(btn => btn.disabled = isAtEnd);
@@ -288,11 +311,12 @@ document.addEventListener("DOMContentLoaded", () => {
     function handlePrevious() {
         if (currentBookIndex < 0 || currentChapterIndex < 0) return;
 
+        const books = getBooks(bibleData);
         if (currentChapterIndex > 0) {
             currentChapterIndex--;
         } else if (currentBookIndex > 0) {
             currentBookIndex--;
-            const prevBookChapters = bibleData[currentBookIndex].chapters || bibleData[currentBookIndex].verses || [];
+            const prevBookChapters = getChapters(books[currentBookIndex]);
             currentChapterIndex = prevBookChapters.length - 1;
             populateChapterSelect(currentBookIndex);
             bookSelect.value = currentBookIndex;
@@ -304,10 +328,11 @@ document.addEventListener("DOMContentLoaded", () => {
     function handleNext() {
         if (currentBookIndex < 0 || currentChapterIndex < 0) return;
 
-        const currentBookChapters = bibleData[currentBookIndex].chapters || bibleData[currentBookIndex].verses || [];
+        const books = getBooks(bibleData);
+        const currentBookChapters = getChapters(books[currentBookIndex]);
         if (currentChapterIndex < currentBookChapters.length - 1) {
             currentChapterIndex++;
-        } else if (currentBookIndex < bibleData.length - 1) {
+        } else if (currentBookIndex < books.length - 1) {
             currentBookIndex++;
             currentChapterIndex = 0;
             populateChapterSelect(currentBookIndex);
