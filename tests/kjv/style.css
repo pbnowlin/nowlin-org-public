@@ -154,6 +154,10 @@ body {
   transition: transform var(--transition-normal);
 }
 
+.site-header.is-hidden {
+  transform: translateY(-100%);
+}
+
 .header-content {
   margin-bottom: var(--space-md);
 }
@@ -247,6 +251,47 @@ body {
 .theme-toggle:focus-visible {
   outline: 2px solid var(--color-border-focus);
   outline-offset: 2px;
+}
+
+.reading-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  flex-shrink: 0;
+}
+
+.text-size-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.text-size-control:hover:not(:disabled) {
+  border-color: var(--color-accent);
+  background-color: var(--color-accent-light);
+  color: var(--color-accent);
+}
+
+.text-size-control:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+.text-size-control:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .theme-toggle .icon-sun {
@@ -368,7 +413,7 @@ body {
 
 .verse-text {
   font-family: var(--font-serif);
-  font-size: 1.0625rem;
+  font-size: var(--verse-font-size, 1.0625rem);
   line-height: 1.75;
   color: var(--color-text);
 }
@@ -437,10 +482,6 @@ body {
     width: min(100% - 1.25rem, var(--max-width));
   }
 
-  .site-header.is-hidden {
-    transform: translateY(-100%);
-  }
-  
   .header-controls {
     flex-direction: column;
     align-items: stretch;
@@ -458,11 +499,10 @@ body {
     min-width: 0;
   }
   
-  .theme-toggle {
+  .reading-controls {
     position: absolute;
     top: calc(var(--space-lg) + 1.75rem + var(--space-xs));
     right: 0;
-    margin: 0;
   }
   
   .chapter-nav {
@@ -481,8 +521,8 @@ body {
     padding: var(--space-md) 0;
   }
 
-  .theme-toggle {
-    top: calc(var(--space-md) + 1.5rem + var(--space-xs));
+  .reading-controls {
+    top: calc(var(--space-md) + 1rem + var(--space-xs));
   }
   
   .site-title {

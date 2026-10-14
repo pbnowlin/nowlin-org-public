@@ -10,11 +10,17 @@ let currentSearchResults = [];
 let currentSearchQuery = '';
 let displayedSearchResultCount = 0;
 const SEARCH_RESULTS_PAGE_SIZE = 100;
+const DEFAULT_SCRIPTURE_TEXT_SIZE = 1.0625;
+const MIN_SCRIPTURE_TEXT_SIZE = 0.875;
+const MAX_SCRIPTURE_TEXT_SIZE = 1.75;
+const SCRIPTURE_TEXT_SIZE_STEP = 0.125;
 
 const bookSelect = document.getElementById('book-select');
 const chapterSelect = document.getElementById('chapter-select');
 const verseContainer = document.getElementById('verse-container');
 const themeToggle = document.getElementById('theme-toggle');
+const scriptureSizeDecrease = document.getElementById('scripture-size-decrease');
+const scriptureSizeIncrease = document.getElementById('scripture-size-increase');
 const siteHeader = document.querySelector('.site-header');
 const searchInput = document.getElementById('search-input');
 const searchClear = document.getElementById('search-clear');
@@ -42,7 +48,8 @@ async function init() {
   }
 
   setupThemeToggle();
-  setupMobileHeader();
+  setupScriptureTextSize();
+  setupHeaderScroll();
   setupSearch();
 
   setLoading(true);
@@ -81,10 +88,9 @@ function setLoading(isLoading) {
   verseContainer.setAttribute('aria-busy', String(isLoading));
 }
 
-function setupMobileHeader() {
+function setupHeaderScroll() {
   if (!siteHeader) return;
 
-  const mobileBreakpoint = window.matchMedia('(max-width: 640px)');
   let previousScrollY = window.scrollY;
   let scrollFrame = 0;
 
@@ -92,7 +98,7 @@ function setupMobileHeader() {
     scrollFrame = 0;
     const currentScrollY = window.scrollY;
 
-    if (!mobileBreakpoint.matches || currentScrollY <= 24) {
+    if (currentScrollY <= 24) {
       siteHeader.classList.remove('is-hidden');
       previousScrollY = currentScrollY;
       return;
@@ -113,10 +119,6 @@ function setupMobileHeader() {
     }
   }, { passive: true });
 
-  mobileBreakpoint.addEventListener('change', () => {
-    siteHeader.classList.remove('is-hidden');
-    previousScrollY = window.scrollY;
-  });
 }
 
 function setupThemeToggle() {
@@ -142,6 +144,41 @@ function setupThemeToggle() {
       applyTheme(e.matches ? 'dark' : 'light');
     }
   });
+}
+
+function setupScriptureTextSize() {
+  const savedSize = Number(localStorage.getItem('scriptureTextSize'));
+  const initialSize = savedSize > 0 ? savedSize : DEFAULT_SCRIPTURE_TEXT_SIZE;
+  applyScriptureTextSize(initialSize);
+
+  scriptureSizeDecrease?.addEventListener('click', () => {
+    applyScriptureTextSize(currentScriptureTextSize - SCRIPTURE_TEXT_SIZE_STEP);
+  });
+
+  scriptureSizeIncrease?.addEventListener('click', () => {
+    applyScriptureTextSize(currentScriptureTextSize + SCRIPTURE_TEXT_SIZE_STEP);
+  });
+}
+
+let currentScriptureTextSize = DEFAULT_SCRIPTURE_TEXT_SIZE;
+
+function applyScriptureTextSize(size) {
+  currentScriptureTextSize = Math.min(
+    MAX_SCRIPTURE_TEXT_SIZE,
+    Math.max(MIN_SCRIPTURE_TEXT_SIZE, size)
+  );
+  document.documentElement.style.setProperty(
+    '--verse-font-size',
+    `${currentScriptureTextSize}rem`
+  );
+  localStorage.setItem('scriptureTextSize', String(currentScriptureTextSize));
+
+  if (scriptureSizeDecrease) {
+    scriptureSizeDecrease.disabled = currentScriptureTextSize <= MIN_SCRIPTURE_TEXT_SIZE;
+  }
+  if (scriptureSizeIncrease) {
+    scriptureSizeIncrease.disabled = currentScriptureTextSize >= MAX_SCRIPTURE_TEXT_SIZE;
+  }
 }
 
 function applyTheme(theme) {
