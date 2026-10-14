@@ -151,6 +151,7 @@ body {
   z-index: 100;
   backdrop-filter: blur(8px);
   background-color: color-mix(in srgb, var(--color-bg) 90%, transparent);
+  transition: transform var(--transition-normal);
 }
 
 .header-content {
@@ -435,6 +436,10 @@ body {
   .site-footer {
     width: min(100% - 1.25rem, var(--max-width));
   }
+
+  .site-header.is-hidden {
+    transform: translateY(-100%);
+  }
   
   .header-controls {
     flex-direction: column;
@@ -454,7 +459,10 @@ body {
   }
   
   .theme-toggle {
-    margin-inline: auto;
+    position: absolute;
+    top: calc(var(--space-lg) + 1.75rem + var(--space-xs));
+    right: 0;
+    margin: 0;
   }
   
   .chapter-nav {
@@ -471,6 +479,10 @@ body {
 @media (max-width: 480px) {
   .site-header {
     padding: var(--space-md) 0;
+  }
+
+  .theme-toggle {
+    top: calc(var(--space-md) + 1.5rem + var(--space-xs));
   }
   
   .site-title {

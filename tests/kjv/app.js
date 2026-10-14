@@ -15,6 +15,7 @@ const bookSelect = document.getElementById('book-select');
 const chapterSelect = document.getElementById('chapter-select');
 const verseContainer = document.getElementById('verse-container');
 const themeToggle = document.getElementById('theme-toggle');
+const siteHeader = document.querySelector('.site-header');
 const searchInput = document.getElementById('search-input');
 const searchClear = document.getElementById('search-clear');
 const searchSuggestions = document.getElementById('search-suggestions');
@@ -41,6 +42,7 @@ async function init() {
   }
 
   setupThemeToggle();
+  setupMobileHeader();
   setupSearch();
 
   setLoading(true);
@@ -77,6 +79,44 @@ async function init() {
 
 function setLoading(isLoading) {
   verseContainer.setAttribute('aria-busy', String(isLoading));
+}
+
+function setupMobileHeader() {
+  if (!siteHeader) return;
+
+  const mobileBreakpoint = window.matchMedia('(max-width: 640px)');
+  let previousScrollY = window.scrollY;
+  let scrollFrame = 0;
+
+  const updateHeaderVisibility = () => {
+    scrollFrame = 0;
+    const currentScrollY = window.scrollY;
+
+    if (!mobileBreakpoint.matches || currentScrollY <= 24) {
+      siteHeader.classList.remove('is-hidden');
+      previousScrollY = currentScrollY;
+      return;
+    }
+
+    const scrollDelta = currentScrollY - previousScrollY;
+    if (Math.abs(scrollDelta) >= 8) {
+      if (!siteHeader.contains(document.activeElement)) {
+        siteHeader.classList.toggle('is-hidden', scrollDelta > 0);
+      }
+      previousScrollY = currentScrollY;
+    }
+  };
+
+  window.addEventListener('scroll', () => {
+    if (!scrollFrame) {
+      scrollFrame = window.requestAnimationFrame(updateHeaderVisibility);
+    }
+  }, { passive: true });
+
+  mobileBreakpoint.addEventListener('change', () => {
+    siteHeader.classList.remove('is-hidden');
+    previousScrollY = window.scrollY;
+  });
 }
 
 function setupThemeToggle() {
