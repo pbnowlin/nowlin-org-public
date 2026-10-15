@@ -289,11 +289,7 @@
 
         <div class="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
           <span id="last-saved" class="hidden sm:inline save-indicator mr-1" title="Save status" data-state="saved"></span>
-          <button type="button" id="btn-save-note" class="flex items-center space-x-1.5 px-3 py-1.5 bg-brand-500 hover:bg-brand-600 text-white rounded-lg text-xs font-medium transition-colors shadow-sm shadow-emerald-500/20">
-            <i data-lucide="save" class="w-3.5 h-3.5"></i>
-            <span>Save</span>
-            <span id="dirty-dot" class="hidden w-1.5 h-1.5 rounded-full bg-amber-300" title="Unsaved changes"></span>
-          </button>
+          <span id="dirty-dot" class="hidden w-2 h-2 rounded-full bg-amber-300 shadow-[0_0_0_4px_rgba(245,158,11,0.15)]" title="Unsaved changes"></span>
 
           <button type="button" id="btn-copy-note" aria-label="Copy note content" class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" title="Copy content">
             <i data-lucide="copy" class="w-4 h-4"></i>
@@ -426,8 +422,11 @@
       searchQuery: '',
     };
     let editingId = null;
-    let dirty = false;
-    let isSaving = false;
+    const editorState = {
+      dirty: false,
+      isSaving: false,
+      lastSavedAt: null,
+    };
     let lastFocused = null;
     let lastSavedAt = null; // Date.now() of last successful save for the current note
 
@@ -839,9 +838,14 @@
     }
 
     function setDirty(value) {
-      dirty = value;
-      $('dirty-dot').classList.toggle('hidden', !dirty);
+      editorState.dirty = value;
+      $('dirty-dot').classList.toggle('hidden', !editorState.dirty);
       updateLastSavedLabel();
+    }
+
+    function getLastSavedTimestamp() {
+      const stamp = editorState.lastSavedAt ?? lastSavedAt;
+      return typeof stamp === 'number' ? stamp : null;
     }
 
     function updateLastSavedLabel() {
@@ -853,27 +857,46 @@
         el.classList.add('hidden');
         return;
       }
-      if (isSaving) {
+      if (editorState.isSaving) {
         el.textContent = 'Saving…';
         el.dataset.state = 'saving';
         el.classList.toggle('hidden', false);
         return;
       }
-      if (!lastSavedAt) {
+      const savedAt = getLastSavedTimestamp();
+      if (!savedAt) {
         el.textContent = 'Not saved yet';
         el.dataset.state = 'unsaved';
         el.classList.toggle('hidden', false);
         return;
       }
-      const d = new Date(lastSavedAt);
+      const d = new Date(savedAt);
       const time = d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
-      el.textContent = dirty ? 'Unsaved' : `Saved ${time}`;
-      el.dataset.state = dirty ? 'unsaved' : 'saved';
+      el.textContent = editorState.dirty ? 'Unsaved' : `Saved ${time}`;
+      el.dataset.state = editorState.dirty ? 'unsaved' : 'saved';
       el.classList.toggle('hidden', false);
     }
 
+    function getEditorDraft() {
+      const selected = $('note-folder-select').value;
+      return {
+        title: $('note-title-input').value.trim().slice(0, MAX_TITLE),
+        body: $('note-body-input').value,
+        folderId: getFolder(selected) ? selected : null,
+      };
+    }
+
+    function snapshotNote(note) {
+      return {
+        title: note.title,
+        body: note.body,
+        folderId: note.folderId,
+        updatedAt: note.updatedAt,
+      };
+    }
+
     const autosaveNote = debounce(() => {
-      if (!dirty || !editingId || isSaving) return;
+      if (!editorState.dirty || !editingId || editorState.isSaving) return;
       saveActiveNote();
     }, AUTOSAVE_DELAY_MS);
 
@@ -886,6 +909,7 @@
 
       if (!note) {
         editingId = null;
+        editorState.lastSavedAt = null;
         lastSavedAt = null;
         setDirty(false);
         wrapper.classList.add('hidden');
@@ -903,6 +927,7 @@
         $('note-body-input').value = note.body;
         $('note-folder-select').value = getFolder(note.folderId) ? note.folderId : '';
         editingId = note.id;
+        editorState.lastSavedAt = note.updatedAt;
         lastSavedAt = note.updatedAt;
         setDirty(false);
       }
@@ -917,38 +942,34 @@
       const note = getNote(editingId);
       if (!note) return true;
 
-      isSaving = true;
+      const draft = getEditorDraft();
+      editorState.isSaving = true;
       updateLastSavedLabel();
 
-      let title = $('note-title-input').value.trim().slice(0, MAX_TITLE);
-      let body = $('note-body-input').value;
-
       // Soft body size guard
-      const bodyBytes = new TextEncoder().encode(body).length;
+      const bodyBytes = new TextEncoder().encode(draft.body).length;
       if (bodyBytes > MAX_BODY_BYTES) {
-        isSaving = false;
+        editorState.isSaving = false;
         updateLastSavedLabel();
         showToast(`Note is too large (${Math.round(bodyBytes / 1024)} KB). Trim it under ~2 MB.`, 'error');
         return false;
       }
 
-      const selected = $('note-folder-select').value;
-      const folderId = getFolder(selected) ? selected : null;
-
-      const changed = title !== note.title || body !== note.body || folderId !== note.folderId;
+      const changed = draft.title !== note.title || draft.body !== note.body || draft.folderId !== note.folderId;
       if (changed) {
-        const before = { title: note.title, body: note.body, folderId: note.folderId, updatedAt: note.updatedAt };
-        Object.assign(note, { title, body, folderId, updatedAt: Date.now() });
+        const before = snapshotNote(note);
+        Object.assign(note, { ...draft, updatedAt: Date.now() });
         if (!saveData()) {
           Object.assign(note, before);   // keep memory in sync with storage; the editor still holds the text
-          isSaving = false;
+          editorState.isSaving = false;
           updateLastSavedLabel();
           return false;
         }
+        editorState.lastSavedAt = note.updatedAt;
         lastSavedAt = note.updatedAt;
         renderLists();
       }
-      isSaving = false;
+      editorState.isSaving = false;
       setDirty(false);
       if (explicit) showToast('Note saved', 'success');
       return true;
@@ -1510,14 +1531,13 @@
 
       // beforeunload warning when there are unsaved changes
       window.addEventListener('beforeunload', (e) => {
-        if (dirty) {
+        if (editorState.dirty) {
           e.preventDefault();
           e.returnValue = ''; // required for Chrome
         }
       });
 
       // Editor
-      $('btn-save-note').addEventListener('click', () => saveActiveNote({ explicit: true }));
       $('note-title-input').addEventListener('input', () => {
         setDirty(true);
         autosaveNote();
