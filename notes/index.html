@@ -51,6 +51,13 @@
     .folder-item:hover .folder-count { display: none; }
     .folder-item:has(:focus-visible) .folder-actions { display: flex; }
     .folder-item:has(:focus-visible) .folder-count { display: none; }
+    .folder-item[draggable="true"] { cursor: grab; }
+    .folder-item.is-dragging { opacity: 0.45; cursor: grabbing; }
+    .folder-item.is-drop-target { background: rgba(22, 163, 74, 0.12); box-shadow: inset 0 0 0 1px rgba(22, 163, 74, 0.45); }
+    .folder-branch { margin-left: 0.85rem; padding-left: 0.35rem; border-left: 1px solid rgba(148, 163, 184, 0.28); }
+    #folders-root-drop.is-drop-target { background: rgba(22, 163, 74, 0.1); border-radius: 0.5rem; }
+    .folder-root-hint { display: none; }
+    #folders-root-drop.is-drop-target .folder-root-hint { display: inline; }
     @media (hover: none) {
       .folder-actions { display: flex !important; }
       .folder-count { display: inline-block !important; }
@@ -230,15 +237,25 @@
             </span>
             <span id="count-uncategorized" class="text-xs px-2 py-0.5 rounded-md bg-gray-200/60 dark:bg-gray-800 text-gray-600 dark:text-gray-400">0</span>
           </button>
+          <button type="button" data-filter="trash" class="nav-item">
+            <span class="flex items-center space-x-2.5">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+              <span>Trash</span>
+            </span>
+            <span id="count-trash" class="text-xs px-2 py-0.5 rounded-md bg-gray-200/60 dark:bg-gray-800 text-gray-600 dark:text-gray-400">0</span>
+          </button>
         </nav>
       </div>
 
       <div>
-        <div class="flex items-center justify-between px-2 mb-1.5">
+        <div id="folders-root-drop" class="flex items-center justify-between px-2 mb-1.5 py-1 -my-1 transition-colors" data-drop-root="true">
           <span class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Folders</span>
-          <button type="button" id="btn-add-folder" title="Create folder" aria-label="Create folder" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
-            <i data-lucide="folder-plus" class="w-3.5 h-3.5"></i>
-          </button>
+          <span class="flex items-center gap-1">
+            <span class="folder-root-hint text-[10px] text-brand-600 dark:text-brand-400">Move to top level</span>
+            <button type="button" id="btn-add-folder" title="Create folder" aria-label="Create folder" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+              <i data-lucide="folder-plus" class="w-3.5 h-3.5"></i>
+            </button>
+          </span>
         </div>
         <div id="folders-container" class="space-y-0.5"></div>
       </div>
@@ -290,6 +307,10 @@
         <div class="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
           <span id="last-saved" class="hidden sm:inline save-indicator mr-1" title="Save status" data-state="saved"></span>
           <span id="dirty-dot" class="hidden w-2 h-2 rounded-full bg-amber-300 shadow-[0_0_0_4px_rgba(245,158,11,0.15)]" title="Unsaved changes"></span>
+
+          <button type="button" id="btn-restore-note" class="hidden p-2 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 dark:text-emerald-400 dark:hover:text-emerald-300 dark:hover:bg-emerald-950/20 rounded-lg transition-colors" title="Restore note" aria-label="Restore note">
+            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+          </button>
 
           <button type="button" id="btn-copy-note" aria-label="Copy note content" class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" title="Copy content">
             <i data-lucide="copy" class="w-4 h-4"></i>
@@ -345,10 +366,14 @@
     const MAX_TITLE = 500;
     const MAX_FOLDER_NAME = 100;
     const MAX_BODY_BYTES = 2 * 1024 * 1024;    // soft limit per note (~2 MB)
+    const TRASH_FOLDER_ID = 'trash';
+    const TRASH_RETENTION_MS = 30 * 24 * 60 * 60 * 1000;
+    const OLD_WELCOME_NOTE_BODY = 'Welcome to Notes!\n\nA fast, local-first note-taking app.\n\nKey features:\n- Manual saving (Ctrl+S / Cmd+S)\n- Client-side privacy (nothing leaves your browser)\n- Encrypted backups (AES-256-GCM)\n- Plain text editing with no markdown preview needed';
+    const WELCOME_NOTE_BODY = 'Welcome to Notes\n\nPRIVACY AND SECURITY\nYour notes are stored locally in this browser and are not uploaded to an account or server. Browser storage is not encrypted at rest, so protect access to your device and browser profile.\n\nYou can export a backup at any time. Choose an encrypted backup to protect its contents with a passphrase (AES-256-GCM). Keep the passphrase safe; it cannot be recovered.\n\nUSING THE APP\n- Select New Note to write. Changes save automatically.\n- Create folders with the folder-plus button. Use the folder actions to add subfolders, rename, move, or send a folder to Trash.\n- Drag a folder onto another folder to nest it, or onto the Folders heading to move it to the top level. On touch devices, use the Move folder action.\n- Delete a note to move it to Trash. Restore it there, or leave it to be permanently removed after 30 days.\n- Use Export and Import to make or restore backups.';
     const PASS_MIN_LENGTH = 12;
     const PASS_CLASSES_REQUIRED = 3;
     const AUTOSAVE_DELAY_MS = 600;
-    const RESERVED_FILTERS = new Set(['all', 'uncategorized']);
+    const RESERVED_FILTERS = new Set(['all', 'uncategorized', 'trash']);
     const cryptoRateLimiter = { limit: 5, windowMs: 5 * 60 * 1000, attempts: [] };
 
     const NAV_BASE = 'nav-item w-full flex items-center justify-between px-2.5 py-1.5 text-sm rounded-lg font-medium transition-colors ';
@@ -422,6 +447,7 @@
       searchQuery: '',
     };
     let editingId = null;
+    let draggedFolderId = null;
     const editorState = {
       dirty: false,
       isSaving: false,
@@ -433,6 +459,29 @@
     const getNote = (id) => (id == null ? undefined : state.notes.find((n) => n.id === id));
     const getFolder = (id) => (id ? state.folders.find((f) => f.id === id) : undefined);
     const isValidFilter = (f) => RESERVED_FILTERS.has(f) || !!getFolder(f);
+
+    function collectDescendantFolderIds(rootFolderId) {
+      const ids = new Set();
+      const queue = [rootFolderId];
+      while (queue.length) {
+        const current = queue.shift();
+        if (!current || ids.has(current)) continue;
+        ids.add(current);
+        state.folders.filter((folder) => folder.parentId === current).forEach((folder) => queue.push(folder.id));
+      }
+      ids.delete(rootFolderId);
+      return ids;
+    }
+
+    function cleanupExpiredTrash() {
+      const now = Date.now();
+      const expiredNoteIds = new Set(
+        state.notes
+          .filter((note) => note.folderId === TRASH_FOLDER_ID && Number.isFinite(note.deletedAt) && now - note.deletedAt > TRASH_RETENTION_MS)
+          .map((note) => note.id)
+      );
+      if (expiredNoteIds.size) state.notes = state.notes.filter((note) => !expiredNoteIds.has(note.id));
+    }
 
     /* ------------------------------------------------------------------ *
      * UI helpers: icons, toasts
@@ -583,6 +632,7 @@
       const folders = [];
       const folderIds = new Set();
       const idRemap = new Map();
+      const rawParentMap = new Map();
       for (const f of Array.isArray(input.folders) ? input.folders : []) {
         if (!f || typeof f !== 'object' || !Object.prototype.hasOwnProperty.call(f, 'id')) continue;
         const original = f.id != null && f.id !== '' ? String(f.id) : generateId();
@@ -592,7 +642,37 @@
         idRemap.set(original, id);
         if (folderIds.has(id)) continue;
         folderIds.add(id);
-        folders.push({ id, name: toText(f.name).trim().slice(0, MAX_FOLDER_NAME) || 'Untitled Folder' });
+        const rawParent = f.parentId != null && f.parentId !== '' ? String(f.parentId) : null;
+        rawParentMap.set(id, rawParent && rawParent !== id ? rawParent : null);
+        folders.push({
+          id,
+          name: toText(f.name).trim().slice(0, MAX_FOLDER_NAME) || 'Untitled Folder',
+          parentId: null,
+        });
+      }
+
+      const folderMap = new Map(folders.map((folder) => [folder.id, folder]));
+      for (const folder of folders) {
+        const parentId = rawParentMap.get(folder.id);
+        const resolvedParent = parentId ? (idRemap.get(parentId) ?? parentId) : null;
+        if (!resolvedParent || resolvedParent === folder.id || !folderMap.has(resolvedParent)) {
+          folder.parentId = null;
+          continue;
+        }
+
+        let cursor = resolvedParent;
+        let loopDetected = false;
+        while (cursor && cursor !== folder.id) {
+          const nextParent = rawParentMap.get(cursor);
+          if (!nextParent) break;
+          const mappedParent = idRemap.get(nextParent) ?? nextParent;
+          if (mappedParent === folder.id) {
+            loopDetected = true;
+            break;
+          }
+          cursor = mappedParent;
+        }
+        folder.parentId = loopDetected ? null : resolvedParent;
       }
 
       const byId = new Map();
@@ -601,7 +681,7 @@
         const id = n.id != null && n.id !== '' ? String(n.id) : generateId();
         const updated = Number(n.updatedAt);
         const rawFolder = n.folderId != null && n.folderId !== '' ? String(n.folderId) : null;
-        const folderId = rawFolder ? (idRemap.get(rawFolder) ?? rawFolder) : null;
+        const folderId = rawFolder ? (rawFolder === TRASH_FOLDER_ID ? TRASH_FOLDER_ID : (idRemap.get(rawFolder) ?? rawFolder)) : null;
         let body = toText(n.body);
         // Soft-truncate oversized bodies on import/load so storage stays usable
         if (new TextEncoder().encode(body).length > MAX_BODY_BYTES) {
@@ -609,10 +689,11 @@
         }
         const note = {
           id,
-          folderId: folderId && folderIds.has(folderId) ? folderId : null,
+          folderId: folderId && (folderIds.has(folderId) || folderId === TRASH_FOLDER_ID) ? folderId : null,
           title: toText(n.title).slice(0, MAX_TITLE),
           body,
           updatedAt: Number.isFinite(updated) && updated > 0 ? updated : Date.now(),
+          deletedAt: Number.isFinite(Number(n.deletedAt)) && Number(n.deletedAt) > 0 ? Number(n.deletedAt) : undefined,
         };
         const existing = byId.get(id);
         if (!existing || note.updatedAt > existing.updatedAt) byId.set(id, note);
@@ -656,6 +737,12 @@
           const clean = sanitizeData(JSON.parse(raw));
           state.folders = clean.folders;
           state.notes = clean.notes;
+          cleanupExpiredTrash();
+          const welcomeNote = getNote('n-welcome');
+          if (welcomeNote && welcomeNote.title === 'Welcome to Notes' && welcomeNote.body === OLD_WELCOME_NOTE_BODY) {
+            welcomeNote.body = WELCOME_NOTE_BODY;
+            saveData();
+          }
           return;
         } catch (err) {
           // Never let a bad read lead to overwriting good data with an empty database.
@@ -665,19 +752,28 @@
         }
       }
 
+      cleanupExpiredTrash();
       state.folders = [{ id: 'f-welcome', name: 'Getting Started' }];
       state.notes = [{
         id: 'n-welcome',
         folderId: 'f-welcome',
         title: 'Welcome to Notes',
-        body: 'Welcome to Notes!\n\nA fast, local-first note-taking app.\n\nKey features:\n- Manual saving (Ctrl+S / Cmd+S)\n- Client-side privacy (nothing leaves your browser)\n- Encrypted backups (AES-256-GCM)\n- Plain text editing with no markdown preview needed',
+        body: WELCOME_NOTE_BODY,
         updatedAt: Date.now(),
       }];
+      cleanupExpiredTrash();
       saveData();
+    }
+
+    function ensureTrashFolder() {
+      if (!state.folders.some((folder) => folder.id === TRASH_FOLDER_ID)) {
+        state.folders.push({ id: TRASH_FOLDER_ID, name: 'Trash' });
+      }
     }
 
     function saveData() {
       try {
+        cleanupExpiredTrash();
         const payload = JSON.stringify({ folders: state.folders, notes: state.notes });
         localStorage.setItem(STORAGE_KEY, payload);
         localStorage.setItem(`${STORAGE_KEY}_backup`, payload);
@@ -701,7 +797,9 @@
       const q = fold(state.searchQuery);
       return state.notes
         .filter((note) => {
+          if (note.folderId === TRASH_FOLDER_ID) return state.activeFilter === 'trash';
           let inView = true;
+          if (state.activeFilter === 'trash') inView = false;
           if (state.activeFilter === 'uncategorized') inView = !note.folderId;
           else if (state.activeFilter !== 'all') inView = note.folderId === state.activeFilter;
           if (!inView) return false;
@@ -714,6 +812,7 @@
     function viewTitle() {
       if (state.activeFilter === 'all') return 'All Notes';
       if (state.activeFilter === 'uncategorized') return 'Uncategorized';
+      if (state.activeFilter === 'trash') return 'Trash';
       const folder = getFolder(state.activeFilter);
       return folder ? folder.name : 'Folder';
     }
@@ -750,38 +849,62 @@
 
     function updateCounts() {
       const uncategorized = state.notes.reduce((count, note) => count + (note.folderId ? 0 : 1), 0);
-      $('count-all').textContent = state.notes.length;
+      const trashed = state.notes.reduce((count, note) => count + (note.folderId === TRASH_FOLDER_ID ? 1 : 0), 0);
+      const activeCount = state.notes.reduce((count, note) => count + (note.folderId === TRASH_FOLDER_ID ? 0 : 1), 0);
+      $('count-all').textContent = activeCount;
       $('count-uncategorized').textContent = uncategorized;
+      $('count-trash').textContent = trashed;
     }
 
     function renderFolderList() {
       const folderCounts = new Map();
       state.notes.forEach((note) => {
-        if (!note.folderId) return;
+        if (!note.folderId || note.folderId === TRASH_FOLDER_ID) return;
         folderCounts.set(note.folderId, (folderCounts.get(note.folderId) || 0) + 1);
       });
 
-      $('folders-container').innerHTML = state.folders.map((folder) => {
-        const count = folderCounts.get(folder.id) || 0;
-        const active = state.activeFilter === folder.id;
-        const name = esc(folder.name);
-        return `
-          <div data-folder-id="${esc(folder.id)}" class="folder-item flex items-center justify-between rounded-lg text-sm font-medium transition-colors ${active ? ACTIVE_CLS : IDLE_CLS}">
-            <button type="button" data-action="select" class="flex-1 min-w-0 flex items-center space-x-2.5 px-2.5 py-1.5 text-left">
-              <i data-lucide="folder" class="w-4 h-4 flex-shrink-0"></i>
-              <span class="truncate">${name}</span>
-            </button>
-            <span class="folder-count ${BADGE_CLS} mr-1.5">${count}</span>
-            <div class="folder-actions space-x-0.5 pr-1.5">
-              <button type="button" data-action="rename" aria-label="Rename folder ${name}" title="Rename folder" class="p-1.5 hover:text-brand-500 rounded">
-                <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
-              </button>
-              <button type="button" data-action="delete" aria-label="Delete folder ${name}" title="Delete folder" class="p-1.5 hover:text-red-500 rounded">
-                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-              </button>
-            </div>
-          </div>`;
-      }).join('');
+      const renderBranch = (parentId = null, depth = 0) => {
+        const children = state.folders
+          .filter((folder) => folder.parentId === parentId)
+          .sort((a, b) => a.name.localeCompare(b.name));
+
+        if (!children.length) return '';
+
+        return children.map((folder) => {
+          const count = folderCounts.get(folder.id) || 0;
+          const active = state.activeFilter === folder.id;
+          const name = esc(folder.name);
+          const nested = renderBranch(folder.id, depth + 1);
+          return `
+            <div class="space-y-0.5">
+              <div data-folder-id="${esc(folder.id)}" draggable="true" class="folder-item flex items-center justify-between rounded-lg text-sm font-medium transition-colors ${active ? ACTIVE_CLS : IDLE_CLS}">
+                <button type="button" data-action="select" class="flex-1 min-w-0 flex items-center space-x-2.5 px-2.5 py-1.5 text-left">
+                  <i data-lucide="folder" class="w-4 h-4 flex-shrink-0"></i>
+                  <span class="truncate">${name}</span>
+                </button>
+                <span class="folder-count ${BADGE_CLS} mr-1.5">${count}</span>
+                <div class="folder-actions space-x-0.5 pr-1.5">
+                  <button type="button" data-action="add-subfolder" aria-label="Create subfolder in ${name}" title="Create subfolder" class="p-1.5 hover:text-brand-500 rounded">
+                    <i data-lucide="folder-plus" class="w-3.5 h-3.5"></i>
+                  </button>
+                  <button type="button" data-action="move" aria-label="Move folder ${name}" title="Move folder" class="p-1.5 hover:text-brand-500 rounded">
+                    <i data-lucide="arrow-right-left" class="w-3.5 h-3.5"></i>
+                  </button>
+                  <button type="button" data-action="rename" aria-label="Rename folder ${name}" title="Rename folder" class="p-1.5 hover:text-brand-500 rounded">
+                    <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+                  </button>
+                  <button type="button" data-action="delete" aria-label="Delete folder ${name}" title="Delete folder" class="p-1.5 hover:text-red-500 rounded">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                  </button>
+                </div>
+              </div>
+              ${nested ? `<div class="folder-branch space-y-0.5">${nested}</div>` : ''}
+            </div>`;
+        }).join('');
+      };
+
+      const rootFolders = renderBranch();
+      $('folders-container').innerHTML = rootFolders || '<div class="px-2 py-2 text-[11px] text-gray-400">No folders yet</div>';
 
       document.querySelectorAll('.nav-item').forEach((btn) => {
         const active = btn.dataset.filter === state.activeFilter;
@@ -828,7 +951,7 @@
       none.value = '';
       none.textContent = 'Uncategorized';
       select.appendChild(none);
-      state.folders.forEach((f) => {
+      state.folders.filter((f) => f.id !== TRASH_FOLDER_ID).forEach((f) => {
         const opt = document.createElement('option');
         opt.value = f.id;
         opt.textContent = f.name;
@@ -878,11 +1001,13 @@
     }
 
     function getEditorDraft() {
+      const note = getNote(editingId);
       const selected = $('note-folder-select').value;
+      const folderId = note && note.folderId === TRASH_FOLDER_ID ? TRASH_FOLDER_ID : (getFolder(selected) ? selected : null);
       return {
         title: $('note-title-input').value.trim().slice(0, MAX_TITLE),
         body: $('note-body-input').value,
-        folderId: getFolder(selected) ? selected : null,
+        folderId,
       };
     }
 
@@ -906,17 +1031,22 @@
       const note = getNote(state.activeNoteId);
       const wrapper = $('editor-wrapper');
       const empty = $('empty-state');
+      const restoreButton = $('btn-restore-note');
 
       if (!note) {
         editingId = null;
         editorState.lastSavedAt = null;
         lastSavedAt = null;
         setDirty(false);
+        if (restoreButton) restoreButton.classList.add('hidden');
         wrapper.classList.add('hidden');
         empty.classList.remove('hidden');
         empty.classList.add('flex');
         return;
       }
+
+      const isInTrash = note.folderId === TRASH_FOLDER_ID;
+      if (restoreButton) restoreButton.classList.toggle('hidden', !isInTrash);
 
       wrapper.classList.remove('hidden');
       empty.classList.add('hidden');
@@ -930,6 +1060,10 @@
         editorState.lastSavedAt = note.updatedAt;
         lastSavedAt = note.updatedAt;
         setDirty(false);
+      }
+
+      if (isInTrash) {
+        $('note-folder-select').value = '';
       }
     }
 
@@ -999,6 +1133,7 @@
     }
 
     function createNewNote() {
+      if (state.activeFilter === 'trash') state.activeFilter = 'all';
       saveActiveNote();
       if (state.searchQuery) {           // a blank note would never match the search
         state.searchQuery = '';
@@ -1027,6 +1162,17 @@
       const note = getNote(editingId);
       if (!note) return;
 
+      if (note.folderId === TRASH_FOLDER_ID) {
+        note.folderId = null;
+        delete note.deletedAt;
+        note.updatedAt = Date.now();
+        saveData();
+        state.activeFilter = 'all';
+        renderApp(true);
+        showToast('Note restored to Uncategorized', 'success');
+        return;
+      }
+
       const wouldDisappear =
         (state.activeFilter === 'uncategorized' && note.folderId) ||
         (state.activeFilter !== 'all' && state.activeFilter !== 'uncategorized' && note.folderId !== state.activeFilter);
@@ -1043,19 +1189,40 @@
       const note = getNote(editingId);
       if (!note) return;
       const id = note.id;
+      const isTrashed = note.folderId === TRASH_FOLDER_ID;
       confirmDialog({
-        title: 'Delete note',
-        message: `Delete "${note.title || 'Untitled Note'}"? This can't be undone.`,
+        title: isTrashed ? 'Delete note permanently' : 'Move note to Trash',
+        message: isTrashed
+          ? `Permanently delete "${note.title || 'Untitled Note'}"? This can't be undone.`
+          : `Move "${note.title || 'Untitled Note'}" to Trash? It will be deleted automatically after 30 days.`,
         onConfirm: () => {
-          state.notes = state.notes.filter((n) => n.id !== id);
+          if (isTrashed) {
+            state.notes = state.notes.filter((n) => n.id !== id);
+          } else {
+            note.folderId = TRASH_FOLDER_ID;
+            note.deletedAt = Date.now();
+            note.updatedAt = Date.now();
+          }
           if (state.activeNoteId === id) state.activeNoteId = null;
           saveData();
           ensureActiveNote();
           renderApp(true);
           closeMobileEditor();
-          showToast('Note deleted', 'info');
+          showToast(isTrashed ? 'Note permanently deleted' : 'Note moved to Trash', 'info');
         },
       });
+    }
+
+    function restoreActiveNote() {
+      const note = getNote(editingId);
+      if (!note || note.folderId !== TRASH_FOLDER_ID) return;
+      note.folderId = null;
+      delete note.deletedAt;
+      note.updatedAt = Date.now();
+      state.activeFilter = 'all';
+      saveData();
+      renderApp(true);
+      showToast('Note restored to Uncategorized', 'success');
     }
 
     function copyNoteContent() {
@@ -1080,7 +1247,7 @@
         confirmLabel: 'Create',
         onSubmit: (name) => {
           saveActiveNote();
-          const folder = { id: generateId(), name: name.slice(0, MAX_FOLDER_NAME) };
+          const folder = { id: generateId(), name: name.slice(0, MAX_FOLDER_NAME), parentId: null };
           state.folders.push(folder);
           state.activeFilter = folder.id;
           saveData();
@@ -1089,6 +1256,84 @@
           showToast('Folder created', 'success');
         },
       });
+    }
+
+    function promptCreateSubFolder(parentFolderId) {
+      const parentFolder = getFolder(parentFolderId);
+      if (!parentFolder) return;
+      promptDialog({
+        title: `Create subfolder in ${parentFolder.name}`,
+        placeholder: 'Subfolder name',
+        confirmLabel: 'Create',
+        onSubmit: (name) => {
+          saveActiveNote();
+          const folder = { id: generateId(), name: name.slice(0, MAX_FOLDER_NAME), parentId: parentFolderId };
+          state.folders.push(folder);
+          state.activeFilter = folder.id;
+          saveData();
+          ensureActiveNote();
+          renderApp();
+          showToast('Subfolder created', 'success');
+        },
+      });
+    }
+
+    function promptMoveFolder(folderId) {
+      const folder = getFolder(folderId);
+      if (!folder) return;
+      const forbiddenIds = new Set(collectDescendantFolderIds(folderId));
+      forbiddenIds.add(folderId);
+      openModal(`
+        <h3 id="modal-title" class="text-base font-bold text-gray-900 dark:text-gray-100 mb-2">Move folder</h3>
+        <label for="move-folder-target" class="block text-[11px] font-medium text-gray-500 dark:text-gray-400 mb-1">Parent folder</label>
+        <select id="move-folder-target" class="${INPUT_CLS} mb-4">
+          <option value="">Top level</option>
+          ${state.folders
+            .filter((candidate) => candidate.id !== folderId && !forbiddenIds.has(candidate.id) && candidate.id !== TRASH_FOLDER_ID)
+            .map((candidate) => `<option value="${esc(candidate.id)}" ${candidate.id === folder.parentId ? 'selected' : ''}>${esc(candidate.name)}</option>`)
+            .join('')}
+        </select>
+        <div class="flex justify-end space-x-2">
+          <button type="button" data-modal-close class="${BTN_GHOST}">Cancel</button>
+          <button type="button" id="modal-confirm" class="${BTN_PRIMARY}">Move folder</button>
+        </div>`);
+
+      const select = $('move-folder-target');
+      const submit = () => {
+        const nextParentId = select.value || null;
+        if (nextParentId === folderId) {
+          closeModal();
+          return showToast('A folder cannot be moved into itself.', 'error');
+        }
+        if (nextParentId && collectDescendantFolderIds(folderId).has(nextParentId)) {
+          closeModal();
+          return showToast('A folder cannot be moved into one of its own children.', 'error');
+        }
+        folder.parentId = nextParentId;
+        saveData();
+        renderApp();
+        closeModal();
+        showToast('Folder moved', 'success');
+      };
+
+      $('modal-confirm').addEventListener('click', submit);
+      select.focus();
+    }
+
+    function moveFolderToParent(folderId, parentId) {
+      const folder = getFolder(folderId);
+      if (!folder) return false;
+      if (parentId === folderId || (parentId && collectDescendantFolderIds(folderId).has(parentId))) {
+        showToast('A folder cannot be moved into itself or one of its children.', 'error');
+        return false;
+      }
+      if (parentId && !getFolder(parentId)) return false;
+      if (folder.parentId === parentId) return false;
+      folder.parentId = parentId || null;
+      saveData();
+      renderApp();
+      showToast(parentId ? `Moved into ${getFolder(parentId).name}` : 'Moved to top level', 'success');
+      return true;
     }
 
     function promptRenameFolder(folderId) {
@@ -1110,18 +1355,26 @@
     function confirmDeleteFolder(folderId) {
       const folder = getFolder(folderId);
       if (!folder) return;
+      const descendants = collectDescendantFolderIds(folderId);
       confirmDialog({
         title: 'Delete folder',
-        message: `Delete "${folder.name}"? Its notes will move to Uncategorized.`,
+        message: `Move "${folder.name}" and its subfolders to Trash? Notes will remain for 30 days before being permanently deleted.`,
         onConfirm: () => {
           saveActiveNote();
-          state.folders = state.folders.filter((f) => f.id !== folderId);
-          state.notes.forEach((n) => { if (n.folderId === folderId) n.folderId = null; });
+          const foldersToRemove = new Set([folderId, ...descendants]);
+          state.folders = state.folders.filter((f) => !foldersToRemove.has(f.id));
+          state.notes.forEach((n) => {
+            if (foldersToRemove.has(n.folderId)) {
+              n.folderId = TRASH_FOLDER_ID;
+              n.deletedAt = Date.now();
+              n.updatedAt = Date.now();
+            }
+          });
           if (state.activeFilter === folderId) state.activeFilter = 'all';
           saveData();
           ensureActiveNote();
           renderApp(true);
-          showToast('Folder deleted', 'info');
+          showToast('Folder moved to Trash', 'info');
         },
       });
     }
@@ -1504,9 +1757,62 @@
         const id = row.dataset.folderId;
         const actionEl = e.target.closest('[data-action]');
         const action = actionEl ? actionEl.dataset.action : 'select';
-        if (action === 'rename') promptRenameFolder(id);
+        if (action === 'add-subfolder') promptCreateSubFolder(id);
+        else if (action === 'move') promptMoveFolder(id);
+        else if (action === 'rename') promptRenameFolder(id);
         else if (action === 'delete') confirmDeleteFolder(id);
         else setFilter(id);
+      });
+
+      const foldersContainer = $('folders-container');
+      const rootDrop = $('folders-root-drop');
+      foldersContainer.addEventListener('dragstart', (e) => {
+        const row = e.target.closest('[data-folder-id]');
+        if (!row) return;
+        draggedFolderId = row.dataset.folderId;
+        row.classList.add('is-dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', draggedFolderId);
+      });
+      foldersContainer.addEventListener('dragend', (e) => {
+        const row = e.target.closest('[data-folder-id]');
+        if (row) row.classList.remove('is-dragging');
+        foldersContainer.querySelectorAll('.is-drop-target').forEach((el) => el.classList.remove('is-drop-target'));
+        rootDrop.classList.remove('is-drop-target');
+        draggedFolderId = null;
+      });
+      foldersContainer.addEventListener('dragover', (e) => {
+        const target = e.target.closest('[data-folder-id]');
+        if (!draggedFolderId || !target || target.dataset.folderId === draggedFolderId) return;
+        if (collectDescendantFolderIds(draggedFolderId).has(target.dataset.folderId)) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        target.classList.add('is-drop-target');
+      });
+      foldersContainer.addEventListener('dragleave', (e) => {
+        const target = e.target.closest('[data-folder-id]');
+        if (target && !target.contains(e.relatedTarget)) target.classList.remove('is-drop-target');
+      });
+      foldersContainer.addEventListener('drop', (e) => {
+        const target = e.target.closest('[data-folder-id]');
+        if (!draggedFolderId || !target) return;
+        e.preventDefault();
+        moveFolderToParent(draggedFolderId, target.dataset.folderId);
+      });
+      rootDrop.addEventListener('dragover', (e) => {
+        if (!draggedFolderId || getFolder(draggedFolderId)?.parentId == null) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        rootDrop.classList.add('is-drop-target');
+      });
+      rootDrop.addEventListener('dragleave', (e) => {
+        if (!rootDrop.contains(e.relatedTarget)) rootDrop.classList.remove('is-drop-target');
+      });
+      rootDrop.addEventListener('drop', (e) => {
+        if (!draggedFolderId) return;
+        e.preventDefault();
+        rootDrop.classList.remove('is-drop-target');
+        moveFolderToParent(draggedFolderId, null);
       });
 
       document.querySelectorAll('.nav-item').forEach((btn) => {
@@ -1547,6 +1853,7 @@
         autosaveNote();
       });
       $('note-folder-select').addEventListener('change', moveActiveNote);
+      $('btn-restore-note').addEventListener('click', restoreActiveNote);
       $('btn-copy-note').addEventListener('click', copyNoteContent);
       $('btn-delete-note').addEventListener('click', deleteActiveNote);
       $('btn-back-to-list').addEventListener('click', () => {
