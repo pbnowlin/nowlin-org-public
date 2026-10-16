@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const searchInput = document.getElementById("search-input");
     const searchSubmitBtn = document.getElementById("search-submit-btn");
     const searchResultsContainer = document.getElementById("search-results-container");
+    const decreaseScriptureSizeButton = document.getElementById("scripture-size-decrease");
+    const increaseScriptureSizeButton = document.getElementById("scripture-size-increase");
 
     // Select all Previous and Next buttons (top and bottom)
     const prevBtns = document.querySelectorAll(".prev-btn");
@@ -20,6 +22,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let bibleData = [];
     let currentBookIndex = -1;
     let currentChapterIndex = -1;
+    const minScriptureSize = 16;
+    const maxScriptureSize = 30;
+    const scriptureSizeStep = 2;
 
     // --- Data Extraction Helpers ---
     function getBooks(data) {
@@ -67,6 +72,29 @@ document.addEventListener("DOMContentLoaded", () => {
         applyTheme(!isDark);
     });
     // --- End Dark Mode Setup ---
+
+    function applyScriptureSize(size) {
+        const boundedSize = Math.min(maxScriptureSize, Math.max(minScriptureSize, Number(size)));
+        bibleTextContainer.style.setProperty("--scripture-font-size", `${boundedSize}px`);
+        decreaseScriptureSizeButton.disabled = boundedSize <= minScriptureSize;
+        increaseScriptureSizeButton.disabled = boundedSize >= maxScriptureSize;
+        decreaseScriptureSizeButton.title = `Decrease scripture text size (currently ${boundedSize}px)`;
+        increaseScriptureSizeButton.title = `Increase scripture text size (currently ${boundedSize}px)`;
+        decreaseScriptureSizeButton.setAttribute("aria-label", `Decrease scripture text size (currently ${boundedSize}px)`);
+        increaseScriptureSizeButton.setAttribute("aria-label", `Increase scripture text size (currently ${boundedSize}px)`);
+        localStorage.setItem("scripture-font-size", boundedSize);
+    }
+
+    const savedScriptureSize = Number(localStorage.getItem("scripture-font-size"));
+    applyScriptureSize(savedScriptureSize >= minScriptureSize && savedScriptureSize <= maxScriptureSize ? savedScriptureSize : 18);
+    decreaseScriptureSizeButton.addEventListener("click", () => {
+        const currentSize = Number(localStorage.getItem("scripture-font-size")) || 18;
+        applyScriptureSize(currentSize - scriptureSizeStep);
+    });
+    increaseScriptureSizeButton.addEventListener("click", () => {
+        const currentSize = Number(localStorage.getItem("scripture-font-size")) || 18;
+        applyScriptureSize(currentSize + scriptureSizeStep);
+    });
 
     // --- Search Modal Toggle ---
     function openSearchModal() {
@@ -154,113 +182,107 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function renderSearchResults(results, query) {
+        searchResultsContainer.scrollTop = 0;
         if (results.length === 0) {
-            searchResultsContainer.innerHTML = `<p class="search-placeholder">No results found for "${query}".</p>`;
+            searchResultsContainer.innerHTML = "";
+            const message = document.createElement("p");
+            message.className = "search-placeholder";
+            message.textContent = `No results found for "${query}".`;
+            searchResultsContainer.appendChild(message);
             return;
         }
 
         const pageSize = 50;
-        let currentPage = 0;
+        let currentPage = 1;
         const totalPages = Math.ceil(results.length / pageSize);
 
         searchResultsContainer.innerHTML = `
-            <div id="search-results-summary" class="search-placeholder" style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
-                <span>Found ${results.length} result(s)</span>
-                <span id="search-pagination-info" style="font-size: 0.85rem;">Page 1 of ${totalPages}</span>
+            <div id="search-results-summary" class="search-placeholder">
+                <span id="search-result-count"></span>
+                <span id="search-pagination-info" aria-live="polite" aria-atomic="true"></span>
             </div>
             <div id="search-results-list"></div>
-            <div id="search-load-more-container" style="text-align: center; margin: 15px 0;">
-                ${totalPages > 1 ? '<button id="search-load-more-btn" style="padding: 8px 16px; background: var(--primary-accent); color: white; border: none; border-radius: 4px; cursor: pointer;">Load More</button>' : ''}
-            </div>
+                <nav id="search-pagination-controls" aria-label="Search result pages">
+                <button id="search-previous-page" type="button">Previous</button>
+                <button id="search-next-page" type="button">Next</button>
+                </nav>
         `;
 
         const listContainer = searchResultsContainer.querySelector("#search-results-list");
-        const loadMoreBtn = searchResultsContainer.querySelector("#search-load-more-btn");
+        const count = searchResultsContainer.querySelector("#search-result-count");
         const paginationInfo = searchResultsContainer.querySelector("#search-pagination-info");
+        const previousPageButton = searchResultsContainer.querySelector("#search-previous-page");
+        const nextPageButton = searchResultsContainer.querySelector("#search-next-page");
+        count.textContent = `Found ${results.length} result(s)`;
 
-        function renderChunk() {
-            const start = currentPage * pageSize;
+        function renderPage() {
+            const start = (currentPage - 1) * pageSize;
             const end = Math.min(start + pageSize, results.length);
-            const chunk = results.slice(start, end);
+            listContainer.replaceChildren();
+            searchResultsContainer.scrollTop = 0;
 
-            let chunkHtml = "";
-            chunk.forEach(res => {
-                const regex = new RegExp(`(${escapeRegExp(query)})`, 'gi');
-                const highlightedText = res.verseText.replace(regex, `<span class="highlight">$1</span>`);
+            results.slice(start, end).forEach(result => {
+                const item = document.createElement("button");
+                item.type = "button";
+                item.className = "search-result-item";
+                const reference = document.createElement("span");
+                reference.className = "search-result-ref";
+                reference.textContent = `${result.bookName} ${result.chapterNum}:${result.verseNum}`;
+                const text = document.createElement("span");
+                text.className = "search-result-text";
+                const verseNumber = document.createElement("sup");
+                verseNumber.className = "verse-num";
+                verseNumber.textContent = result.verseNum;
+                text.append(verseNumber, document.createTextNode(" "));
+                appendHighlightedText(text, result.verseText, query);
+                item.append(reference, text);
 
-                chunkHtml += `
-                    <div class="search-result-item" data-book="${res.bookIndex}" data-chapter="${res.chapterIndex}">
-                        <div class="search-result-ref">${res.bookName} ${res.chapterNum}:${res.verseNum}</div>
-                        <div class="search-result-text"><sup class="verse-num">${res.verseNum}</sup> ${highlightedText}</div>
-                    </div>
-                `;
-            });
-
-            listContainer.insertAdjacentHTML('beforeend', chunkHtml);
-
-            // Attach click listeners to newly added items
-            const newItems = listContainer.querySelectorAll(".search-result-item:not(.bound)");
-            newItems.forEach(item => {
-                item.classList.add("bound");
                 item.addEventListener("click", () => {
-                    const bIdx = parseInt(item.getAttribute("data-book"), 10);
-                    const cIdx = parseInt(item.getAttribute("data-chapter"), 10);
-
-                    currentBookIndex = bIdx;
-                    currentChapterIndex = cIdx;
-
-                    bookSelect.value = bIdx;
-                    populateChapterSelect(bIdx);
-                    chapterSelect.value = cIdx;
-
-                    renderChapter(bIdx, cIdx);
+                    currentBookIndex = result.bookIndex;
+                    currentChapterIndex = result.chapterIndex;
+                    bookSelect.value = result.bookIndex;
+                    populateChapterSelect(result.bookIndex);
+                    chapterSelect.value = result.chapterIndex;
+                    renderChapter(result.bookIndex, result.chapterIndex);
                     closeSearchModal();
                 });
+                listContainer.appendChild(item);
             });
 
-            if (paginationInfo) {
-                paginationInfo.textContent = `Showing 1-${end} of ${results.length} (Page ${currentPage + 1} of ${totalPages})`;
-            }
-
-            if (loadMoreBtn) {
-                if (end >= results.length) {
-                    loadMoreBtn.style.display = "none";
-                } else {
-                    loadMoreBtn.style.display = "inline-block";
-                }
-            }
+            paginationInfo.textContent = `Showing ${start + 1}-${end} of ${results.length} (Page ${currentPage} of ${totalPages})`;
+            previousPageButton.disabled = currentPage === 1;
+            nextPageButton.disabled = currentPage === totalPages;
         }
 
-        renderChunk();
+        previousPageButton.addEventListener("click", () => {
+            currentPage--;
+            renderPage();
+        });
+        nextPageButton.addEventListener("click", () => {
+            currentPage++;
+            renderPage();
+        });
+        renderPage();
+    }
 
-        if (loadMoreBtn) {
-            loadMoreBtn.addEventListener("click", () => {
-                currentPage++;
-                renderChunk();
-            });
+    function appendHighlightedText(container, text, query) {
+        const matcher = new RegExp(escapeRegExp(query), "gi");
+        let lastIndex = 0;
+
+        for (const match of text.matchAll(matcher)) {
+            container.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
+            const highlight = document.createElement("span");
+            highlight.className = "highlight";
+            highlight.textContent = match[0];
+            container.appendChild(highlight);
+            lastIndex = match.index + match[0].length;
         }
 
-        // Store reference to scroll handler so we can remove it on re-search
-        if (searchResultsContainer._scrollHandler) {
-            searchResultsContainer.removeEventListener("scroll", searchResultsContainer._scrollHandler);
-        }
-
-        searchResultsContainer._scrollHandler = () => {
-            if (!loadMoreBtn || loadMoreBtn.style.display === "none") return;
-            const threshold = 100;
-            if (searchResultsContainer.scrollTop + searchResultsContainer.clientHeight >= searchResultsContainer.scrollHeight - threshold) {
-                if ((currentPage + 1) * pageSize < results.length) {
-                    currentPage++;
-                    renderChunk();
-                }
-            }
-        };
-
-        searchResultsContainer.addEventListener("scroll", searchResultsContainer._scrollHandler);
+        container.appendChild(document.createTextNode(text.slice(lastIndex)));
     }
 
     function escapeRegExp(string) {
-        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     }
 
     searchSubmitBtn.addEventListener("click", performSearch);

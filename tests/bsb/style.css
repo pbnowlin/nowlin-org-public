@@ -59,7 +59,7 @@ header h1 {
 }
 
 /* Header Action Buttons (Search & Dark Mode) */
-#dark-mode-toggle, #search-toggle-btn {
+#dark-mode-toggle, #search-toggle-btn, .scripture-size-button {
     font-size: 1.3rem;
     background: #ffffff;
     border: 1px solid #d1d1d1;
@@ -74,18 +74,18 @@ header h1 {
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-body.dark-mode #dark-mode-toggle, body.dark-mode #search-toggle-btn {
+body.dark-mode #dark-mode-toggle, body.dark-mode #search-toggle-btn, body.dark-mode .scripture-size-button {
     background: #2d3748;
     border-color: #4b5563;
     color: #d1d5db;
 }
 
-#dark-mode-toggle:hover, #search-toggle-btn:hover {
+#dark-mode-toggle:hover, #search-toggle-btn:hover, .scripture-size-button:hover:not(:disabled) {
     transform: scale(1.08);
     background-color: #f0f0f0;
 }
 
-body.dark-mode #dark-mode-toggle:hover, body.dark-mode #search-toggle-btn:hover {
+body.dark-mode #dark-mode-toggle:hover, body.dark-mode #search-toggle-btn:hover, body.dark-mode .scripture-size-button:hover:not(:disabled) {
     background-color: #374151;
 }
 
@@ -215,7 +215,30 @@ body.dark-mode #search-results-container {
     border-top-color: #374151;
 }
 
+#search-results-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+#search-pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0 5px;
+}
+
+#search-pagination-controls button {
+    padding: 8px 14px;
+    width: auto;
+}
+
 .search-result-item {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-align: left;
     padding: 12px;
     margin-bottom: 10px;
     border-radius: 6px;
@@ -292,6 +315,15 @@ body.dark-mode .controls {
 .control-group label {
     font-weight: 600;
     font-size: 0.95rem;
+}
+
+.scripture-size-button {
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+    padding: 0;
+    font-size: 1.2rem;
+    font-weight: 700;
 }
 
 /* Inputs & Buttons Mobile Optimization */
@@ -408,7 +440,7 @@ body.dark-mode #bible-text h2 {
 
 .verse {
     margin-bottom: 15px;
-    font-size: 1.15rem;
+    font-size: var(--scripture-font-size, 18px);
     text-align: left;
     color: #444;
 }
@@ -458,6 +490,7 @@ footer.bottom-nav .button-group {
     flex-direction: row;
     justify-content: center;
     gap: 12px;
+    width: 100%;
 }
 
 footer a {
@@ -533,6 +566,16 @@ footer a:hover {
         width: 40px;
         height: 40px;
         font-size: 1.15rem;
+    }
+
+    .header-actions {
+        gap: 6px;
+    }
+
+    .scripture-size-button {
+        width: 34px;
+        height: 34px;
+        min-height: 34px;
     }
 
     .search-modal-content {
