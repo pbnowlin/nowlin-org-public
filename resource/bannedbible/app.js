@@ -128,10 +128,9 @@ function setupHeaderScroll() {
 function setupThemeToggle() {
   if (!themeToggle) return;
 
-  // Check for saved theme preference or system preference
+  // Check for a saved theme preference, defaulting to dark mode.
   const savedTheme = localStorage.getItem('theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+  const initialTheme = savedTheme || 'dark';
 
   applyTheme(initialTheme);
 
@@ -142,12 +141,6 @@ function setupThemeToggle() {
     localStorage.setItem('theme', newTheme);
   });
 
-  // Listen for system theme changes
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-    if (!localStorage.getItem('theme')) {
-      applyTheme(e.matches ? 'dark' : 'light');
-    }
-  });
 }
 
 function setupAboutDialog() {
