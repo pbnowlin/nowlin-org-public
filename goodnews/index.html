@@ -1,714 +1,419 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Good News - Salvation</title>
-    <style>
-        :root {
-            --page-bg: #f5f2ec;
-            --page-bg-strong: #e8e0d5;
-            --surface: #ffffff;
-            --surface-soft: #f0ece7;
-            --border-color: #d8d0c5;
-            --gold-primary: #8b6a1f;
-            --gold-soft: #b9933b;
-            --gold-deep: #2f250f;
-            --text-main: #1d1a17;
-            --text-muted: #5a524d;
-            --focus-ring: #1d4ed8;
-            --shadow-soft: rgba(39, 28, 11, 0.08);
-            --system-serif: "Times New Roman", Times, "Noto Serif", serif;
-            --system-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>The GitHub Gospel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fbfaf7; --surface:#ffffff; --surface2:#f3f1ea; --ink:#1a1e24; --muted:#5b6470;
+    --line:#e2ded2; --green:#1f7a3a; --green-bright:#2ea043; --green-soft:#e6f4ea;
+    --gold:#8a5f1e; --gold-soft:#faf0d7; --code-bg:#0d1117; --code-ink:#e6edf3; --code-dim:#8b949e;
+    --red:#b42318; --red-soft:#fdecea; --radius:14px;
+    --serif:"Newsreader", Georgia, serif; --sans:"Source Sans 3", system-ui, sans-serif; --mono:"JetBrains Mono", ui-monospace, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0d1117; --surface:#161b22; --surface2:#1c2330; --ink:#e6edf3; --muted:#9aa7b4;
+      --line:#2b3442; --green:#3fb950; --green-bright:#3fb950; --green-soft:#12291a;
+      --gold:#d9a441; --gold-soft:#2a2110; --red:#f47067; --red-soft:#2d1512; }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{animation:none!important; transition:none!important} }
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+  button,[role="button"],summary{min-height:2.5rem}
+  a{color:var(--green)}
+  .wrap{max-width:760px;margin:0 auto;padding:0 20px}
+  .wide{max-width:1060px;margin:0 auto;padding:0 20px}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+  /* ---------- HERO / TERMINAL ---------- */
+  .hero{background:var(--code-bg);color:var(--code-ink);padding:22px 0 54px}
+  .hero-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .hero-top .mono{font-family:var(--mono);font-size:.82rem;color:var(--code-dim)}
+  .hero-top .mono b{color:#3fb950;font-weight:700}
+  .term{margin-top:26px;border:1px solid #30363d;border-radius:10px;overflow:hidden;background:#010409}
+  .term-bar{display:flex;align-items:center;gap:7px;padding:10px 14px;background:#161b22;border-bottom:1px solid #30363d}
+  .dot{width:11px;height:11px;border-radius:50%}
+  .term-bar span{font-family:var(--mono);font-size:.78rem;color:var(--code-dim);margin-left:8px}
+  .term-body{padding:18px 18px 20px;font-family:var(--mono);font-size:.86rem;line-height:1.9;overflow-x:auto}
+  .term-body .p{color:#3fb950}.term-body .c{color:#79c0ff}.term-body .dim{color:#8b949e}.term-body .gold{color:#e3b341}
+  .cursor{display:inline-block;width:8px;height:1.05em;background:#3fb950;vertical-align:text-bottom;animation:blink 1.1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .hero h1{font-family:var(--serif);font-weight:700;font-size:clamp(2.6rem,7vw,4.4rem);line-height:1.02;letter-spacing:-.01em;margin:34px 0 0}
+  .hero h1 em{font-style:italic;color:#3fb950}
+  .hero .lede{font-family:var(--serif);font-size:clamp(1.15rem,2.6vw,1.4rem);line-height:1.5;color:#c9d1d9;max-width:640px;margin:18px 0 0}
+  .hero-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+  .chip{font-family:var(--mono);font-size:.78rem;border:1px solid #30363d;border-radius:999px;padding:8px 14px;color:#c9d1d9;background:#161b22}
+  .chip b{color:#3fb950}
 
-        html {
-            background: var(--page-bg);
-        }
+  /* ---------- NAV ---------- */
+  nav.toc{position:sticky;top:0;z-index:20;background:color-mix(in srgb, var(--bg) 92%, transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav.toc .wide{display:flex;gap:4px;overflow-x:auto;padding-top:8px;padding-bottom:8px;scrollbar-width:none}
+  nav.toc::-webkit-scrollbar{display:none}
+  nav.toc a{white-space:nowrap;font-size:.86rem;font-weight:600;color:var(--muted);text-decoration:none;padding:9px 12px;border-radius:8px;min-height:2.5rem;display:inline-flex;align-items:center}
+  nav.toc a:hover,nav.toc a.active{color:var(--ink);background:var(--surface2)}
+  nav.toc a .n{font-family:var(--mono);font-size:.72rem;color:var(--green);margin-right:6px}
 
-        body {
-            background: linear-gradient(180deg, var(--page-bg) 0%, #faf8f5 100%);
-            color: var(--text-main);
-            font-family: var(--system-sans);
-            line-height: 1.7;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: clamp(0.75rem, 2vw, 1.5rem);
-        }
+  /* ---------- BODY TYPE ---------- */
+  section{padding:52px 0 8px}
+  .kicker{font-family:var(--mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-weight:700;margin:0 0 10px}
+  h2{font-family:var(--serif);font-weight:700;font-size:clamp(1.8rem,4.5vw,2.5rem);line-height:1.12;margin:0 0 14px;letter-spacing:-.01em}
+  h3{font-family:var(--serif);font-size:1.35rem;margin:30px 0 8px}
+  p{margin:0 0 16px}
+  p strong{font-weight:700}
+  .drop::first-letter{font-family:var(--serif);font-size:3.1em;float:left;line-height:.82;padding:4px 10px 0 0;color:var(--green);font-weight:700}
+  code, .git{font-family:var(--mono);font-size:.86em;background:var(--surface2);border:1px solid var(--line);border-radius:6px;padding:1px 6px;white-space:nowrap}
+  @media (prefers-color-scheme: dark){ code,.git{background:#1c2330} }
 
-        .container {
-            max-width: 760px;
-            margin: 0 auto;
-            width: 100%;
-        }
+  blockquote.verse{margin:26px 0;padding:20px 22px;background:var(--gold-soft);border-radius:var(--radius);border:1px solid color-mix(in srgb, var(--gold) 30%, transparent)}
+  blockquote.verse p{font-family:var(--serif);font-size:1.18rem;line-height:1.55;font-style:italic;margin:0}
+  blockquote.verse cite{display:block;margin-top:10px;font-family:var(--mono);font-style:normal;font-size:.8rem;color:var(--gold);font-weight:700;letter-spacing:.04em}
+  .aside{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;margin:24px 0}
+  .aside h4{margin:0 0 8px;font-family:var(--mono);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--green)}
+  .aside p:last-child{margin-bottom:0}
 
-        header {
-            text-align: center;
-            padding: 1rem 0 0.75rem;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: clamp(1.25rem, 4vw, 2rem);
-        }
+  /* ---------- KEY TABLE ---------- */
+  .key{display:grid;gap:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:22px 0}
+  .key-row{display:grid;grid-template-columns:1fr;gap:2px;padding:14px 18px;background:var(--surface)}
+  .key-row:nth-child(even){background:var(--surface2)}
+  .key-row .g{font-family:var(--mono);font-weight:700;font-size:.92rem;color:var(--green)}
+  .key-row .t{font-weight:600}
+  .key-row .d{color:var(--muted);font-size:.94rem}
+  @media(min-width:640px){ .key-row{grid-template-columns:170px 190px 1fr;gap:16px;align-items:baseline} }
 
-        .cross-icon {
-            color: var(--gold-primary);
-            font-size: 1.6rem;
-            line-height: 1;
-            margin-bottom: 0.55rem;
-            display: inline-block;
-        }
+  /* ---------- COMMIT GRAPH ---------- */
+  .graph-card{background:var(--code-bg);border-radius:var(--radius);padding:22px;margin:26px 0;color:var(--code-ink)}
+  .graph-card h4{margin:0 0 4px;font-family:var(--mono);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:#3fb950}
+  .graph-card p{color:#9aa7b4;font-size:.92rem}
+  .graph-card svg{width:100%;height:auto;display:block;margin-top:10px}
+  .graph-legend{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:.76rem;color:var(--code-dim);margin-top:10px}
+  .graph-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
 
-        .site-title {
-            font-family: var(--system-serif);
-            font-size: 0.9rem;
-            letter-spacing: 0.26em;
-            color: var(--gold-primary);
-            text-transform: uppercase;
-            font-weight: 700;
-        }
+  /* ---------- PR DEMO ---------- */
+  .pr{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--surface);margin:26px 0}
+  .pr-head{padding:18px 20px;border-bottom:1px solid var(--line)}
+  .pr-head .t{font-weight:700;font-size:1.05rem}
+  .pr-head .t .num{color:var(--muted);font-weight:400}
+  .pr-status{display:inline-flex;align-items:center;gap:7px;margin-top:10px;font-family:var(--mono);font-size:.8rem;font-weight:700;border-radius:999px;padding:6px 13px;background:var(--gold-soft);color:var(--gold);border:1px solid color-mix(in srgb, var(--gold) 35%, transparent)}
+  .pr-status.merged{background:var(--green-soft);color:var(--green);border-color:color-mix(in srgb, var(--green) 35%, transparent)}
+  .pr-body{padding:18px 20px}
+  .pr-files{font-family:var(--mono);font-size:.84rem;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:14px 0}
+  .pr-files div{padding:9px 13px;display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line)}
+  .pr-files div:last-child{border-bottom:none}
+  .add{color:var(--green);font-weight:700}.del{color:var(--red);font-weight:700}
+  .pr-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .btn{appearance:none;border:none;cursor:pointer;font-family:var(--sans);font-weight:700;font-size:.95rem;border-radius:10px;padding:12px 20px;min-height:3rem}
+  .btn-merge{background:var(--green);color:#fff}
+  .btn-merge:disabled{opacity:.55;cursor:default}
+  .btn-ghost{background:var(--surface2);color:var(--ink);border:1px solid var(--line)}
+  .pr-result{display:none;margin-top:16px;background:var(--green-soft);border:1px solid color-mix(in srgb, var(--green) 35%, transparent);border-radius:10px;padding:16px 18px}
+  .pr-result.show{display:block}
+  .pr-result ul{margin:8px 0 0;padding-left:20px}
+  .pr-result li{margin-bottom:6px}
 
-        .lang-nav {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
+  .two-col{display:grid;gap:16px;margin:22px 0}
+  @media(min-width:680px){ .two-col{grid-template-columns:1fr 1fr} }
+  .chair{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+  .chair .tag{font-family:var(--mono);font-size:.76rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 11px;border-radius:999px;display:inline-block;margin-bottom:12px}
+  .chair.maint .tag{background:var(--gold-soft);color:var(--gold)}
+  .chair.contrib .tag{background:var(--green-soft);color:var(--green)}
+  .chair h3{margin:0 0 8px}
+  .chair p{font-size:.96rem;color:var(--muted)}
+  .chair p:last-child{margin-bottom:0}
 
-        .lang-nav label {
-            background-color: var(--surface);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            min-height: 44px;
-            padding: 0.7rem 0.9rem;
-            border-radius: 999px;
-            font-size: 0.86rem;
-            font-weight: 600;
-            cursor: pointer;
-            user-select: none;
-            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
+  .word-grid{display:grid;gap:16px;margin:22px 0}
+  @media(min-width:680px){ .word-grid{grid-template-columns:repeat(3,1fr)} }
+  .word{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+  .word .w{font-family:var(--mono);font-size:1.5rem;font-weight:700;color:var(--green)}
+  .word p{font-size:.94rem;color:var(--muted);margin-top:8px}
+  .word p:last-child{margin-bottom:0}
 
-        .lang-nav label:hover {
-            border-color: var(--gold-soft);
-            background-color: var(--surface-soft);
-        }
+  .breakdown{border:1px dashed color-mix(in srgb, var(--gold) 55%, transparent);background:var(--gold-soft);border-radius:var(--radius);padding:22px;margin:24px 0}
+  .breakdown h3{margin-top:0}
+  .breakdown ul{margin:0;padding-left:20px}
+  .breakdown li{margin-bottom:8px}
 
-        .lang-nav label:active {
-            transform: translateY(1px);
-        }
-
-        input[type="radio"].lang-toggle {
-            display: none;
-        }
-
-        #lang-en:checked ~ header .lang-nav label[for="lang-en"],
-        #lang-es:checked ~ header .lang-nav label[for="lang-es"],
-        #lang-fa:checked ~ header .lang-nav label[for="lang-fa"],
-        #lang-ar:checked ~ header .lang-nav label[for="lang-ar"],
-        #lang-zh:checked ~ header .lang-nav label[for="lang-zh"],
-        #lang-ko:checked ~ header .lang-nav label[for="lang-ko"],
-        #lang-th:checked ~ header .lang-nav label[for="lang-th"],
-        #lang-lo:checked ~ header .lang-nav label[for="lang-lo"] {
-            border-color: var(--gold-primary);
-            color: #fff;
-            background-color: var(--gold-deep);
-            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
-        }
-
-        .lang-content {
-            display: none;
-            animation: fadeIn 0.25s ease-in-out;
-        }
-
-        #lang-en:checked ~ main #content-en,
-        #lang-es:checked ~ main #content-es,
-        #lang-fa:checked ~ main #content-fa,
-        #lang-ar:checked ~ main #content-ar,
-        #lang-zh:checked ~ main #content-zh,
-        #lang-ko:checked ~ main #content-ko,
-        #lang-th:checked ~ main #content-th,
-        #lang-lo:checked ~ main #content-lo {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0.65; }
-            to { opacity: 1; }
-        }
-
-        .badge {
-            display: inline-block;
-            background: var(--surface-soft);
-            border: 1px solid var(--gold-soft);
-            color: var(--gold-primary);
-            font-size: 0.73rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            padding: 0.35rem 0.75rem;
-            border-radius: 999px;
-            margin-bottom: 1rem;
-        }
-
-        h1 {
-            font-family: var(--system-serif);
-            color: var(--gold-primary);
-            font-size: clamp(2.2rem, 5vw, 3rem);
-            margin-bottom: 1.5rem;
-            text-align: center;
-            letter-spacing: 0.08em;
-            line-height: 1.2;
-        }
-
-        .prose p {
-            margin-bottom: 1.3rem;
-            font-size: clamp(1rem, 2vw, 1.08rem);
-            color: var(--text-main);
-            text-align: left;
-            max-width: 68ch;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .prose p.highlight {
-            color: var(--gold-primary);
-            font-style: italic;
-            font-weight: 600;
-        }
-
-        .divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border-color), transparent);
-            margin: 2.5rem 0;
-        }
-
-        h2 {
-            font-family: var(--system-serif);
-            color: var(--gold-primary);
-            font-size: clamp(1.3rem, 3vw, 1.7rem);
-            text-align: center;
-            margin-bottom: 1.5rem;
-            letter-spacing: 0.06em;
-            line-height: 1.3;
-        }
-
-        .steps-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        @media (min-width: 600px) {
-            .steps-grid {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-            }
-        }
-
-        .step-card {
-            background-color: var(--surface);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 1.2rem;
-            box-shadow: 0 8px 20px var(--shadow-soft);
-        }
-
-        .step-num {
-            color: var(--gold-primary);
-            font-family: var(--system-serif);
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .step-title {
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-
-        .step-desc {
-            font-size: 0.94rem;
-            color: var(--text-muted);
-        }
-
-        .summary-box {
-            background-color: var(--surface-soft);
-            border: 1px solid var(--border-color);
-            border-left: 4px solid var(--gold-primary);
-            border-radius: 14px;
-            padding: 1.2rem 1.1rem;
-            font-size: 1rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 6px 16px rgba(28, 22, 15, 0.03);
-        }
-
-        .download-box {
-            background-color: var(--surface);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 1.3rem 1rem;
-            text-align: center;
-            margin-top: 1rem;
-            box-shadow: 0 8px 20px var(--shadow-soft);
-        }
-
-        .download-box h3 {
-            font-family: var(--system-serif);
-            color: var(--gold-primary);
-            font-size: 1.1rem;
-            margin-bottom: 0.8rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        .download-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 48px;
-            background-color: var(--gold-primary);
-            color: #ffffff;
-            border: 1px solid var(--gold-primary);
-            padding: 0.75rem 1.2rem;
-            border-radius: 999px;
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 700;
-            transition: filter 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
-            box-shadow: 0 8px 18px rgba(139, 106, 31, 0.18);
-        }
-
-        .download-btn:hover {
-            filter: brightness(1.04);
-        }
-
-        .download-btn:active {
-            transform: translateY(1px);
-        }
-
-        a:focus-visible,
-        label:focus-visible,
-        button:focus-visible,
-        input:focus-visible {
-            outline: 3px solid var(--focus-ring);
-            outline-offset: 3px;
-        }
-
-        .rtl {
-            direction: rtl;
-            text-align: right;
-        }
-
-        .rtl .prose p {
-            text-align: right;
-        }
-
-        .rtl .summary-box {
-            border-left: 1px solid var(--border-color);
-            border-right: 4px solid var(--gold-primary);
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem 0 1rem;
-            border-top: 1px solid var(--border-color);
-            font-size: 0.82rem;
-            color: var(--text-muted);
-            margin-top: 3rem;
-        }
-
-        @media (max-width: 560px) {
-            body {
-                padding: 0.75rem;
-            }
-
-            .lang-nav {
-                gap: 0.4rem;
-            }
-
-            .lang-nav label {
-                flex: 1 1 calc(50% - 0.5rem);
-                min-width: 120px;
-            }
-
-            .summary-box,
-            .step-card,
-            .download-box {
-                border-radius: 12px;
-            }
-
-            .download-btn {
-                width: 100%;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-                scroll-behavior: auto !important;
-            }
-        }
-    </style>
+  footer{margin-top:60px;border-top:1px solid var(--line);padding:28px 0 48px;color:var(--muted);font-size:.9rem}
+  footer .mono{font-family:var(--mono);font-size:.8rem}
+  .endmark{text-align:center;font-family:var(--mono);color:var(--green);font-size:1.1rem;margin:44px 0 0;letter-spacing:.3em}
+</style>
 </head>
 <body>
 
-    <!-- Hidden CSS Radio Inputs for Language Switching -->
-    <input type="radio" name="lang" id="lang-en" class="lang-toggle" checked>
-    <input type="radio" name="lang" id="lang-es" class="lang-toggle">
-    <input type="radio" name="lang" id="lang-fa" class="lang-toggle">
-    <input type="radio" name="lang" id="lang-ar" class="lang-toggle">
-    <input type="radio" name="lang" id="lang-zh" class="lang-toggle">
-    <input type="radio" name="lang" id="lang-ko" class="lang-toggle">
-    <input type="radio" name="lang" id="lang-th" class="lang-toggle">
-    <input type="radio" name="lang" id="lang-lo" class="lang-toggle">
+<header class="hero">
+  <div class="wide">
+    <div class="hero-top">
+      <div class="mono">$ <b>sudo</b> gospel --in-plain-terms</div>
+      <div class="mono">ESV · one story, start to finish</div>
+    </div>
+    <div class="term" aria-hidden="true">
+      <div class="term-bar"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span>admin@the-good-news: ~/everyone</span></div>
+      <div class="term-body">
+        <div><span class="p">$</span> git log --oneline --all</div>
+        <div><span class="gold">a11ce5t</span> <span class="dim">(HEAD -&gt; you)</span> still running locally — no remote</div>
+        <div><span class="c">f41th01</span> the fix, authored by the Maintainer's Son</div>
+        <div><span class="c">crc55x9</span> conflicts resolved — every single one</div>
+        <div><span class="dim">s1n0001</span> corruption enters the history <span class="dim">#the-fall</span></div>
+        <div><span class="dim">gen1515</span> initial commit — <span class="gold">"very good"</span> <span class="cursor"></span></div>
+      </div>
+    </div>
+    <h1>The GitHub<br><em>Gospel</em></h1>
+    <p class="lede">The whole story of the Bible — Eden, the fall, the cross, the resurrection, and what it means to be saved — told in the language of repositories, commits, branches, and pull requests. Not because the Bible is about software, but because both are about the same thing: a history, a relationship, and whether you're still connected to the source.</p>
+    <div class="hero-meta">
+      <span class="chip">Status: <b>the PR is open</b></span>
+      <span class="chip">Author of the fix: <b>not you</b></span>
+      <span class="chip">Cost to accept: <b>faith, not works</b></span>
+    </div>
+  </div>
+</header>
 
-    <header>
-        <div class="container">
-            <div class="cross-icon">&#10013;</div>
-            <div class="site-title">GRACE</div>
+<nav class="toc" aria-label="Chapters">
+  <div class="wide">
+    <a href="#key"><span class="n">00</span>The Key</a>
+    <a href="#eden"><span class="n">01</span>Eden</a>
+    <a href="#fall"><span class="n">02</span>The Fall</a>
+    <a href="#waiting"><span class="n">03</span>The Long Wait</a>
+    <a href="#fix"><span class="n">04</span>The Fix</a>
+    <a href="#saved"><span class="n">05</span>Being Saved</a>
+    <a href="#refused"><span class="n">06</span>The PR Refused</a>
+    <a href="#predestination"><span class="n">07</span>Predestination &amp; Free Will</a>
+    <a href="#language"><span class="n">08</span>The Words Were Already There</a>
+    <a href="#limits"><span class="n">09</span>Where It Breaks Down</a>
+  </div>
+</nav>
 
-            <!-- CSS-only Tabs -->
-            <nav class="lang-nav" aria-label="Language selector">
-                <label for="lang-en">English</label>
-                <label for="lang-es">Español</label>
-                <label for="lang-fa">فارسی</label>
-                <label for="lang-ar">العربية</label>
-                <label for="lang-zh">中文</label>
-                <label for="lang-ko">한국어</label>
-                <label for="lang-th">ไทย</label>
-                <label for="lang-lo">ພາສາລາວ</label>
-            </nav>
-        </div>
-    </header>
+<main>
+<!-- KEY -->
+<section id="key"><div class="wrap">
+  <p class="kicker">Start here</p>
+  <h2>The analogy key</h2>
+  <p>Every person, in this telling, is a repository — a life with a history. God is the Maintainer and the remote: the source everything came from, and the only place a life is kept safe beyond its own machine. Keep this key in mind and the rest of the story reads itself.</p>
+  <div class="key">
+    <div class="key-row"><span class="g">repository</span><span class="t">A human life</span><span class="d">You — your whole history, not just your present state.</span></div>
+    <div class="key-row"><span class="g">commit</span><span class="t">A deed, entrusted</span><span class="d">Every act is recorded in the log. Nothing is ever truly un-committed.</span></div>
+    <div class="key-row"><span class="g">the remote</span><span class="t">God</span><span class="d">Upstream. The source, the standard, and the only durable backup.</span></div>
+    <div class="key-row"><span class="g">a fork, diverged</span><span class="t">A life cut off from God</span><span class="d">Still running — but local-only. When the machine dies, so does everything on it.</span></div>
+    <div class="key-row"><span class="g">corrupted commits</span><span class="t">Sin</span><span class="d">Damage in the history itself — which is why you can't fix it by behaving better from now on.</span></div>
+    <div class="key-row"><span class="g">pull request</span><span class="t">God's offer in Christ</span><span class="d">The fix, authored by someone else, waiting on your acceptance.</span></div>
+    <div class="key-row"><span class="g">accepting the merge</span><span class="t">Faith</span><span class="d">Not authoring the fix. Receiving it.</span></div>
+    <div class="key-row"><span class="g">Book of Life</span><span class="t">The collaborators list</span><span class="d">The register of everyone whose repo has been pushed to the remote, for good.</span></div>
+    <div class="key-row"><span class="g">the Holy Spirit</span><span class="t">A live sync, not a backup</span><span class="d">God doesn't just keep a copy of you. He dwells in you. The connection stays open.</span></div>
+  </div>
+</div></section>
 
-    
-    <main class="container" aria-live="polite">
-        <!-- English Section -->
-        <article id="content-en" class="lang-content" lang="en">
-            <div style="text-align: center;"><span class="badge">The Gift of Salvation</span></div>
-            <h1>GOOD NEWS</h1>
-            <div class="prose">
-                <p>You were made for a relationship with God, but sin broke that connection. Not just the big failures, but the quiet ways we fall short of love, of truth, of who we were meant to be. Left on our own, we can't fix that gap. No amount of good behavior closes it.</p>
-                <p>So God closed it himself. Jesus, fully God and fully human, lived the life we couldn't live, then died the death we deserved, taking our sin upon himself. Three days later, he rose from the grave, breaking death's hold for good.</p>
-                <p class="highlight">This is grace: not earned, not deserved, just given. Salvation isn't a reward for good people. It's a gift for anyone willing to receive it.</p>
-            </div>
-            <div class="divider"></div>
-            <h2>TO BE SAVED IS SIMPLE</h2>
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-num">01</div>
-                    <div class="step-title">Believe</div>
-                    <div class="step-desc">Trust that Jesus is who he said he is, and that his death and resurrection are enough to save you.</div>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">02</div>
-                    <div class="step-title">Turn</div>
-                    <div class="step-desc">Turn away from trying to save yourself, and turn toward him.</div>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">03</div>
-                    <div class="step-title">Receive</div>
-                    <div class="step-desc">Accept the gift. Ask him to forgive you and make you new.</div>
-                </div>
-            </div>
-            <div class="summary-box">
-                That's it. Not a burdensome checklist, not years of effort. Just faith, offered freely and received freely. For next steps: read the Bible daily, find a good local church, and continue to grow your faith.
-            </div>
+<!-- EDEN -->
+<section id="eden"><div class="wrap">
+  <p class="kicker">Chapter 01 · Genesis 1–2</p>
+  <h2>Eden: the initial commit was “very good”</h2>
+  <p class="drop">In the beginning, there was no divergence. Adam and Eve were created in the image of God — made from His own design, living in His garden, in unbroken connection with the Maintainer. Their history had no corruption in it. Every commit was clean. When God looked at everything He had made, the review was simple.</p>
+  <blockquote class="verse"><p>“And God saw everything that he had made, and behold, it was very good.”</p><cite>GENESIS 1:31 · ESV</cite></blockquote>
+  <p>There was only one protected rule — one file that was off-limits. The tree of the knowledge of good and evil wasn't a trap; it was the one place where trust was actually tested. Obedience you can't refuse isn't trust at all. Everything else in the garden was a gift. That one tree was the relationship, in a single command: <em>will you stay connected to the source, on the source's terms?</em></p>
+  <div class="aside"><h4>In repo terms</h4><p>Humanity begins as a perfect clone of the Maintainer's intent — <span class="git">0 conflicts</span>, full access, nothing hidden, nothing broken. The story doesn't start with a bug. It starts with a choice.</p></div>
+</div></section>
 
-            <div class="download-box">
-                <h3>DOWNLOAD A BIBLE</h3>
-                <a href="en.pdf" download class="download-btn">&#128214; Download Holy Bible (PDF)</a>
-            </div>
-        </article>
+<!-- FALL -->
+<section id="fall"><div class="wrap">
+  <p class="kicker">Chapter 02 · Genesis 3</p>
+  <h2>The Fall: corruption enters the log</h2>
+  <p>The serpent's pitch was, in essence, a promise of root access: <em>you will be like God.</em> You won't need upstream. You can be your own maintainer. Adam and Eve took the commit — and the corruption wasn't just in that one act. It entered the history itself, and everything built on top of it afterward.</p>
+  <blockquote class="verse"><p>“Therefore, just as sin came into the world through one man, and death through sin, and so death spread to all men because all sinned…”</p><cite>ROMANS 5:12 · ESV</cite></blockquote>
+  <p>This is the part the analogy explains better than almost anything else: <strong>you cannot fix a corrupted history by making good commits from now on.</strong> The bad commits are already in the log, and you cannot rewrite a log you don't own. Every descendant of Adam inherits the diverged fork — born local-only, born cut off, born with corrupted commits already in the history before they've typed a line themselves.</p>
+  <blockquote class="verse"><p>“For all have sinned and fall short of the glory of God.”</p><cite>ROMANS 3:23 · ESV</cite></blockquote>
+  <p>The immediate result in Eden was separation. Adam and Eve hid. Then they were sent out of the garden — not because God stopped loving the repo, but because a corrupted branch living forever in that state would be a curse, not a blessing. The exile was, in a strange way, mercy: the machine would one day die, but the story wasn't over.</p>
 
-        <!-- Spanish Section -->
-        <article id="content-es" class="lang-content" lang="es">
-            <div style="text-align: center;"><span class="badge">El Regalo de la Salvación</span></div>
-            <h1>BUENAS NUEVAS</h1>
-            <div class="prose">
-                <p>Fuiste creado para tener una relación con Dios, pero el pecado rompió esa conexión. No solo los grandes fallos, sino las formas silenciosas en que no alcanzamos el amor, la verdad y lo que debíamos ser. Por nuestra cuenta, no podemos reparar ese abismo. Ninguna cantidad de buenas acciones puede cerrarlo.</p>
-                <p>Así que Dios mismo lo cerró. Jesús, verdaderamente Dios y verdaderamente hombre, vivió la vida que no pudimos vivir y luego murió la muerte que merecíamos, tomando nuestro pecado sobre sí mismo. Tres días después, resucitó de la tumba, rompiendo el dominio de la muerte para siempre.</p>
-                <p class="highlight">Esto es la gracia: no se gana, no se merece, simplemente se da. La salvación no es un premio para la gente buena. Es un regalo para cualquiera que esté dispuesto a recibirlo.</p>
-            </div>
-            <div class="divider"></div>
-            <h2>SER SALVO ES SENCILLO</h2>
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-num">01</div>
-                    <div class="step-title">Cree</div>
-                    <div class="step-desc">Confía en que Jesús es quien dijo ser, y que su muerte y resurrección son suficientes para salvarte.</div>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">02</div>
-                    <div class="step-title">Vuélvete</div>
-                    <div class="step-desc">Deja de intentar salvarte a ti mismo y vuélvete hacia Él.</div>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">03</div>
-                    <div class="step-title">Recibe</div>
-                    <div class="step-desc">Acepta el regalo. Pídele que te perdone y te haga nuevo.</div>
-                </div>
-            </div>
-            <div class="summary-box">
-                Eso es todo. No es una lista de verificación pesada, ni años de esfuerzo. Solo fe, ofrecida gratuitamente y recibida gratuitamente. Para el siguiente paso: lee la Biblia cada día, encuentra una buena iglesia local y sigue creciendo en tu fe.
-            </div>
+  <div class="graph-card">
+    <h4>git graph — the divergence</h4>
+    <p>One history, then a fork that never reconciles on its own.</p>
+    <svg viewBox="0 0 720 190" role="img" aria-label="Diagram: a single line of commits splits at the Fall into God's line continuing above and humanity's diverged fork below, never rejoining on its own.">
+      <line x1="40" y1="60" x2="240" y2="60" stroke="#3fb950" stroke-width="3"/>
+      <line x1="240" y1="60" x2="680" y2="60" stroke="#3fb950" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round"/>
+      <path d="M240 60 C 340 60, 360 140, 470 140 L 680 140" fill="none" stroke="#f47067" stroke-width="3"/>
+      <circle cx="60" cy="60" r="10" fill="#0d1117" stroke="#e3b341" stroke-width="3"/>
+      <circle cx="150" cy="60" r="10" fill="#0d1117" stroke="#3fb950" stroke-width="3"/>
+      <circle cx="240" cy="60" r="10" fill="#f47067"/>
+      <circle cx="360" cy="140" r="9" fill="#0d1117" stroke="#f47067" stroke-width="3"/>
+      <circle cx="480" cy="140" r="9" fill="#0d1117" stroke="#f47067" stroke-width="3"/>
+      <circle cx="600" cy="140" r="9" fill="#0d1117" stroke="#f47067" stroke-width="3"/>
+      <text x="60" y="34" fill="#e3b341" font-family="JetBrains Mono" font-size="12" text-anchor="middle">EDEN</text>
+      <text x="240" y="34" fill="#f47067" font-family="JetBrains Mono" font-size="12" text-anchor="middle">THE FALL</text>
+      <text x="600" y="118" fill="#f47067" font-family="JetBrains Mono" font-size="12" text-anchor="middle">every generation since</text>
+      <text x="600" y="44" fill="#8b949e" font-family="JetBrains Mono" font-size="12" text-anchor="middle">God — unchanged, upstream</text>
+    </svg>
+    <div class="graph-legend"><span><i style="background:#e3b341"></i>creation</span><span><i style="background:#3fb950"></i>God's line</span><span><i style="background:#f47067"></i>humanity, diverged</span></div>
+  </div>
+</div></section>
 
-            <div class="download-box">
-                <h3>DESCARGAR LA BIBLIA</h3>
-                <a href="sp.pdf" download class="download-btn">&#128214; Descargar Santa Biblia (PDF)</a>
-            </div>
-        </article>
+<!-- WAITING -->
+<section id="waiting"><div class="wrap">
+  <p class="kicker">Chapter 03 · Genesis 4 — Malachi</p>
+  <h2>The long wait: God keeps the PR promised</h2>
+  <p>Most of the Old Testament is the long middle of this story. God doesn't abandon the fork. He chooses a people — Israel — gives them the Law, and keeps repeating a promise: a fix is coming, and it will come from <em>inside</em> the corrupted line itself. A descendant of Eve. A shoot from the stump of Jesse. A Branch.</p>
+  <p>The Law, in this analogy, works like a linter that never stops reporting errors. It is good — it shows exactly where the history is broken — but a linter has never once fixed the code it diagnoses. Sacrifices were a temporary patch, applied over and over, pointing forward to a permanent one.</p>
+  <blockquote class="verse"><p>“For by works of the law no human being will be justified in his sight, since through the law comes knowledge of sin.”</p><cite>ROMANS 3:20 · ESV</cite></blockquote>
+  <p>And through the prophets, God says the quiet part out loud about what the final fix will have to involve — not editing around the corrupted commits, but Someone taking them onto Himself.</p>
+  <blockquote class="verse"><p>“But he was pierced for our transgressions; he was crushed for our iniquities; upon him was the chastisement that brought us peace, and with his wounds we are healed.”</p><cite>ISAIAH 53:5 · ESV</cite></blockquote>
+</div></section>
 
-        <!-- Farsi Section -->
-        <article id="content-fa" class="lang-content rtl" lang="fa" dir="rtl">
-            <div style="text-align: center;"><span class="badge">هدیه نجات</span></div>
-            <h1>خبر خوش</h1>
-            <div class="prose">
-                <p>شما برای داشتن رابطه با خدا آفریده شده‌اید، اما گناه این پیوند را گسست. نه تنها لغزش‌های بزرگ، بلکه همان راه‌های آرامی که از محبت، حقیقت و آن کسی که قرار بود باشیم، کوتاه آمدیم. ما به تنهایی نمی‌توانیم این شکاف را ترمیم کنیم. هیچ مقدار از رفتار خوب نیز نمی‌‌تواند آن را پر کند.</p>
-                <p>پس خود خدا این شکاف را پر کرد. عیسی، که کاملاً خدا و کاملاً انسان بود، زیستی داشت که ما نتوانستیم داشته باشیم و سپس مرگی را که ما سزاوارش بودیم پذیرفت و گناه ما را بر خود گرفت. سه روز بعد، او از قبر برخاست و قدرت مرگ را برای همیشه شکست.</p>
-                <p class="highlight">این است فیض: نه به دست آمده، نه سزاوار آن بوده‌ایم، بلکه فقط بخشیده شده است. نجات پاداشی برای افراد خوب نیست؛ هدیه‌ای است برای هر کسی که خواهان دریافت آن باشد.</p>
-            </div>
-            <div class="divider"></div>
-            <h2>نجات یافتن ساده است</h2>
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-num">۰۱</div>
-                    <div class="step-title">ایمان بیاورید</div>
-                    <div class="step-desc">اعتماد کنید که عیسی همان کسی است که گفت، و مرگ و رستاخیز او برای نجات شما کافی است.</div>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">۰۲</div>
-                    <div class="step-title">بازگردید</div>
-                    <div class="step-desc">از تلاش برای نجات دادن خود دست بردارید و به سوی او بازگردید.</div>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">۰۳</div>
-                    <div class="step-title">دریافت کنید</div>
-                    <div class="step-desc">این هدیه را بپذیرید. از او بخواهید شما را ببخشد و تازه سازد.</div>
-                </div>
-            </div>
-            <div class="summary-box">
-                همین و بس. نه یک فهرست چک‌لیست سنگین و طاقت‌فرسا، نه سال‌ها تلاش. فقط ایمانی که به رایگان بخشیده شده و به رایگان دریافت می‌شود. برای گام‌های بعدی: هر روز کتاب مقدس را بخوانید، یک کلیسای خوب محلی پیدا کنید، و به رشد ایمان خود ادامه دهید.
-            </div>
+<!-- FIX -->
+<section id="fix"><div class="wrap">
+  <p class="kicker">Chapter 04 · The Gospels</p>
+  <h2>The Fix: authored by the Maintainer's Son</h2>
+  <p class="drop">Here is where the analogy turns into good news. The fix could not come from any of us — every one of us is working from inside the corrupted history. So God did the one thing no maintainer normally does: He entered the repository Himself. Jesus is God the Son, born into Adam's line, living inside the diverged fork — and committing a perfect history. No corruption. Not one bad commit, in thought, word, or deed, across an entire human life.</p>
+  <p>Then, at the cross, the exchange happened. The one clean history took on all the corrupted ones. Jesus didn't just die <em>near</em> our sin; the Bible says He was made sin for us, and that God laid on Him the iniquity of us all. His final words were, fittingly, a commit message:</p>
+  <blockquote class="verse"><p>“Father, into your hands I commit my spirit!”</p><cite>LUKE 23:46 · ESV</cite></blockquote>
+  <p>And then — the part that separates Christianity from every mere philosophy — the resurrection. Death tried to delete the one clean repo, and it couldn't hold it. The tomb came back empty because a history with no corruption in it has nothing for death to claim. The resurrection is God's own review stamp on the fix: <em>accepted, verified, it works.</em></p>
+  <blockquote class="verse"><p>“I am the resurrection and the life. Whoever believes in me, though he die, yet shall he live.”</p><cite>JOHN 11:25 · ESV</cite></blockquote>
+  <blockquote class="verse"><p>“For Christ also suffered once for sins, the righteous for the unrighteous, that he might bring us to God.”</p><cite>1 PETER 3:18 · ESV</cite></blockquote>
+  <div class="aside"><h4>Why it had to be Him</h4><p>A fix authored by a corrupted branch is just more corrupted commits. The fix had to be authored by someone with a clean history <em>and</em> with the authority to apply it to everyone else's. Only God, in the flesh, is both.</p></div>
+</div></section>
 
-            <div class="download-box">
-                <h3>دانلود کتاب مقدس</h3>
-                <a href="fa.pdf" download class="download-btn">&#128214; دانلود کتاب مقدس (PDF)</a>
-            </div>
-        </article>
+<!-- SAVED -->
+<section id="saved"><div class="wrap">
+  <p class="kicker">Chapter 05 · The offer</p>
+  <h2>Being saved: accepting a PR you didn't write</h2>
+  <p>So the fix exists. It is finished, reviewed, and raised from the dead. What does a person actually <em>do</em>? In the analogy: God sends you a pull request — and Christ is the fix in it. His life, death, and resurrection resolve every conflict in your branch, including the ones you could never resolve yourself.</p>
+  <p><strong>You don't author the fix. Faith is accepting the PR.</strong> That is precisely what “not by works” means:</p>
+  <blockquote class="verse"><p>“For by grace you have been saved through faith. And this is not your own doing; it is the gift of God, not a result of works, so that no one may boast.”</p><cite>EPHESIANS 2:8–9 · ESV</cite></blockquote>
+  <p>Try it, in miniature. This is the whole transaction:</p>
 
-        <!-- Arabic Section -->
-        <article id="content-ar" class="lang-content rtl" lang="ar" dir="rtl">
-            <div style="text-align: center;"><span class="badge">عطية الخلاص</span></div>
-            <h1>الأخبار السارة</h1>
-            <div class="prose">
-                <p>لقد خُلقت من أجل علاقة مع الله، لكن الخطية كسرت هذا التواصل. ليس فقط بالإخفاقات الكبيرة، بل بتلك الطرق الخفية التي نقصر فيها عن المحبة والحق وعن الصورة التي أُردنا أن نكون عليها. بمفردنا، لا يمكننا إصلاح هذه الفجوة، ولا يمكن لأي قدر من الأعمال الصالحة أن يردمها.</p>
-                <p>لذلك ردمها الله بنفسه. يسوع، الإله الكامل والإنسان الكامل، عاش الحياة التي لم نستطع أن نعيشها، ثم مات الموت الذي نستحقه، حاملاً خطايانا في جسده. وبعد ثلاثة أيام، قام من القبر، كاسراً شوكة الموت إلى الأبد.</p>
-                <p class="highlight">هذه هي النعمة: لا تُكتسب، ولا نُستحقها، بل تُوهب مجاناً. الخلاص ليس مكافأة للصالحين، بل هو هدیة لكل من يرغب في قبولها.</p>
-            </div>
-            <div class="divider"></div>
-            <h2>الخلاص بسيط جداً</h2>
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-num">٠١</div>
-                    <div class="step-title">آمن</div>
-                    <div class="step-desc">ثق بأن يسوع هو من قال عن نفسه، وأن موته وقِيامته كافيان لخلاصك.</div>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">٠٢</div>
-                    <div class="step-title">ارجع</div>
-                    <div class="step-desc">توقف عن محاولة خلاص نفسك، وارجع بكليتك إليه.</div>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">٠٣</div>
-                    <div class="step-title">اقبل</div>
-                    <div class="step-desc">اقبل هذه العطية. اطلب منه أن يغفر لك ويجدد حياتك.</div>
-                </div>
-            </div>
-            <div class="summary-box">
-                هذا كل شيء. ليس قائمة من المهام الشاقة، ولا سنوات من الجهد. إنه مجرد إيمان يُعطى مجاناً ويُقبل مجاناً. ولخطواتك القادمة: اقرأ الكتاب المقدس يومياً، وابحث عن كنيسة محلية جيدة، وواصل نمو إيمانك.
-            </div>
+  <div class="pr" id="prDemo">
+    <div class="pr-head">
+      <div class="t">fix: resolve every corrupted commit in your history <span class="num">#1</span></div>
+      <div style="color:var(--muted);font-size:.9rem;margin-top:4px"><b>jesus</b> wants to merge <span class="git">grace</span> into <span class="git">you:main</span> · authored 2,000 years ago · still open</div>
+      <span class="pr-status" id="prStatus">● OPEN — awaiting your review</span>
+    </div>
+    <div class="pr-body">
+      <div class="pr-files">
+        <div><span>your-history.log</span><span><span class="del">− every sin, unfixable by you</span></span></div>
+        <div><span>your-history.log</span><span><span class="add">+ blotted out — “I will not remember your sins”</span></span></div>
+        <div><span>book-of-life.txt</span><span><span class="add">+ your name, added</span></span></div>
+        <div><span>connection</span><span><span class="add">+ live sync opened — the Spirit dwells in you</span></span></div>
+      </div>
+      <p style="font-size:.94rem;color:var(--muted)">Merging does three things at once: your bad commits are blotted out (that's <strong>justification</strong> — the repo declared clean), your name is added to the collaborators list (that's the <strong>Book of Life</strong>), and your repo is pushed to the remote — backed up where the laptop dying can't touch it.</p>
+      <div class="pr-actions">
+        <button class="btn btn-merge" id="mergeBtn" type="button">Accept &amp; merge — by faith</button>
+        <button class="btn btn-ghost" id="resetBtn" type="button" hidden>Reset the illustration</button>
+      </div>
+      <div class="pr-result" id="prResult" role="status">
+        <strong>✓ Merged.</strong> And notice — it's more than a backup:
+        <ul>
+          <li><strong>Adopted, not just rescued</strong> — your repo moves into His organization: “he gave the right to become children of God” (John 1:12).</li>
+          <li><strong>A live sync, not a snapshot</strong> — the Holy Spirit indwells you; the connection stays open, and the slow work of cleaning up daily commits (sanctification) begins.</li>
+          <li><strong>A new creation</strong> — “If anyone is in Christ, he is a new creation” (2 Cor 5:17). Not a rescued file. A remade one.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <p>One honest note on the illustration above: clicking a button on a web page saves no one. The real merge happens the unglamorous way the Bible describes — a person hears what Christ has done, believes it, and entrusts themselves to Him. The button is just the analogy, doing its job: showing that your part is <em>receiving</em>, not achieving.</p>
+</div></section>
 
-            <div class="download-box">
-                <h3>تحميل الكتاب المقدس</h3>
-                <a href="ar.pdf" download class="download-btn">&#128214; تحميل الكتاب المقدس (PDF)</a>
-            </div>
-        </article>
+<!-- REFUSED -->
+<section id="refused"><div class="wrap">
+  <p class="kicker">Chapter 06 · The other outcome</p>
+  <h2>Those who don't accept: the PR stays open</h2>
+  <p>God doesn't force the merge. The fork owner has to accept it — that's what makes it a relationship instead of an overwrite. If a person never does, the branch stays diverged, the corrupted commits are never blotted out, and the name is never added to the collaborators list.</p>
+  <p>And when the laptop dies, there is no remote backup and no restore. That is the Bible's own Book of Life language:</p>
+  <blockquote class="verse"><p>“And if anyone's name was not found written in the book of life, he was thrown into the lake of fire.”</p><cite>REVELATION 20:15 · ESV</cite></blockquote>
+  <p>At the final audit — “the books were opened” (Rev 20:12) — the code gets reviewed as-is, because the fix was never applied. The traditional view, held by most churches through history, is that hell is eternal separation:</p>
+  <blockquote class="verse"><p>“They will suffer the punishment of eternal destruction, away from the presence of the Lord and from the glory of his might.”</p><cite>2 THESSALONIANS 1:9 · ESV</cite></blockquote>
+  <p>Notice what that means in the analogy: it's not God reaching in to corrupt someone's repo. It's the fork staying cut off from upstream, forever — the separation <em>is</em> the punishment. Christians do argue about the details — some hold that the wicked are finally destroyed rather than tormented forever — but the part they agree on is the separation itself, and that it follows from refusing the merge while it was offered.</p>
+</div></section>
 
-        <!-- Mandarin Section -->
-        <article id="content-zh" class="lang-content" lang="zh-Hans">
-            <div style="text-align: center;"><span class="badge">救恩的礼物</span></div>
-            <h1>福音</h1>
-            <div class="prose">
-                <p>你受造是为了与神建立亲密的关系，但罪破坏了这份连结。不仅是那些显而易见的过错，更是我们在爱、真理以及受造本意上的亏欠。凭我们自己的力量，无法弥补这个鸿沟，再多的善行也无法填补它。</p>
-                <p>因此，神亲自弥补了这个鸿沟。耶稣，既是完全的神，也是完全的人，活出了我们无法活出的完美生命，随后替我们承担了应得的死亡，将我们的罪担在他自己身上。三天后，他从死里复活，永远打破了死亡的权势。</p>
-                <p class="highlight">这就是恩典：不是赚取的，不是配得的，而是白白赐予的。救恩不是给好人的奖赏，而是给任何愿意接受之人的礼物。</p>
-            </div>
-            <div class="divider"></div>
-            <h2>得救其实很简单</h2>
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-num">01</div>
-                    <div class="step-title">信靠</div>
-                    <div class="step-desc">相信耶稣正如他所宣示的那样，并坚信他的死与复活足以拯救你。</div>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">02</div>
-                    <div class="step-title">悔转</div>
-                    <div class="step-desc">放下想要拯救自己的努力，转而面向他。</div>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">03</div>
-                    <div class="step-title">接受</div>
-                    <div class="step-desc">接受这份礼物。求他赦免你，使你获得新生。</div>
-                </div>
-            </div>
-            <div class="summary-box">
-                就是这么简单。不是沉重的清单，也不是多年的努力。只需凭着信心，白白地接受这份白白赐予的恩典。接下来的步骤：每天读圣经，寻找一间合适的当地教会，并继续成长你的信心。
-            </div>
+<!-- PREDESTINATION -->
+<section id="predestination"><div class="wrap">
+  <p class="kicker">Chapter 07 · The hardest question</p>
+  <h2>Predestination &amp; free will: two chairs, one repo</h2>
+  <p>Every Christian eventually hits the tension. The Bible says God chose His people before the foundation of the world (Eph 1:4–5) — and it also says “whoever believes” may come (John 3:16), as if the choice were really ours. Calvinists and Arminians have argued the point for five centuries. The repo analogy doesn't settle it — but it does show how both can be true at once, because <strong>they describe the same events from two different seats.</strong></p>
+  <div class="two-col">
+    <div class="chair maint">
+      <span class="tag">The Maintainer's chair</span>
+      <h3>God's-eye view</h3>
+      <p>The Maintainer wrote the codebase, owns the remote, and stands outside the commit timeline entirely. From His seat, nothing is uncertain and nothing is discovered as it happens — He authored the story, chose the collaborators before the first commit, and guarantees the final merge of everything He started. “Those whom he predestined he also called… and those whom he justified he also glorified” (Rom 8:30) — past tense, from a seat where it's already done.</p>
+    </div>
+    <div class="chair contrib">
+      <span class="tag">The contributor's keyboard</span>
+      <h3>Our-eye view</h3>
+      <p>From inside the repo, you experience real keystrokes. The PR genuinely arrives, the decision genuinely sits in front of you, and nobody accepts it on your behalf. When a person believes, they really believe — freely, willingly, as their own act. And here's the twist the Bible insists on: even the willingness was given. “No one can come to me unless the Father who sent me draws him” (John 6:44). The hand that clicks <em>merge</em> is yours. The drawing that brought you to the button was His.</p>
+    </div>
+  </div>
+  <p>An author and a character don't compete for credit for the same sentence. Shakespeare isn't diminished because Hamlet really deliberates; Hamlet's deliberation isn't fake because Shakespeare wrote it. God's sovereignty and human responsibility work the same way — not 50/50, but 100/100, at different levels of the same story.</p>
+  <blockquote class="verse"><p>“Work out your own salvation with fear and trembling, for it is God who works in you, both to will and to work for his good pleasure.”</p><cite>PHILIPPIANS 2:12–13 · ESV</cite></blockquote>
+  <p>Both halves of that verse, in one breath. Work it out — <em>for</em> God is the one working in you. The analogy's honest conclusion is the same one most thoughtful Christians land on: hold both, refuse to delete either, and let the tension be a sign you're describing something bigger than a flowchart.</p>
+</div></section>
 
-            <div class="download-box">
-                <h3>下载圣经</h3>
-                <a href="cn.pdf" download class="download-btn">&#128214; 下载中文圣经 (PDF)</a>
-            </div>
-        </article>
+<!-- LANGUAGE -->
+<section id="language"><div class="wrap">
+  <p class="kicker">Chapter 08 · A happy discovery</p>
+  <h2>The words were already in the Bible</h2>
+  <p>The strangest thing about this analogy is how often the Bible got there first. <em>Commit</em>, <em>branch</em>, and <em>pull</em> aren't modern words we pasted onto an ancient book — they're the book's own vocabulary.</p>
+  <div class="word-grid">
+    <div class="word"><div class="w">commit</div>
+      <p>“Commit your way to the LORD; trust in him, and he will act” (Ps 37:5). Committing is entrusting — handing your history over to someone else's keeping. It's what Jesus did on the cross (Luke 23:46), and it's what a believer does with their whole life.</p></div>
+    <div class="word"><div class="w">branch</div>
+      <p>A Messianic title, centuries before Git: “There shall come forth a shoot from the stump of Jesse, and a branch from his roots shall bear fruit” (Isa 11:1). And Jesus: “I am the vine; you are the branches” (John 15:5). Grafted into the living Branch — or a dead fork.</p></div>
+    <div class="word"><div class="w">pull</div>
+      <p>The Bible's word is <em>draw</em>: “No one can come to me unless the Father who sent me draws him” (John 6:44). God pulls. The pull request is His drawing; our acceptance is the merge. Both directions of the same word carry the whole doctrine of salvation.</p></div>
+  </div>
+  <p>The language fits because both vocabularies are about the same realities: a history you can't rewrite, a connection you can't live without, and a source you either stay joined to or drift from.</p>
+</div></section>
 
-        <!-- Korean Section -->
-        <article id="content-ko" class="lang-content" lang="ko">
-            <div style="text-align: center;"><span class="badge">구원의 선물</span></div>
-            <h1>복음</h1>
-            <div class="prose">
-                <p>당신은 하나님과 친밀한 관계를 맺도록 창조되었으나, 죄로 인해 그 관계가 깨어졌습니다. 커다란 잘못뿐만 아니라 사랑과 진리, 그리고 원래의 모습에 미치지 못한 모든 순간들이 그렇습니다. 우리 힘으로는 이 격차를 메울 수 없으며, 그 어떤 선행으로도 그것을 채울 수 없습니다.</p>
-                <p>그래서 하나님께서 직접 그 격차를 줄이셨습니다. 완전한 하나님이자 완전한 인간이신 예수님은 우리가 살 수 없었던 완벽한 삶을 사셨고, 우리가 받아야 할 죽음을 대신 맞이하시며 우리의 죄를 짊어지셨습니다. 그리고 사흘 만에 무덤에서 부활하셔서 죽음의 권세를 영원히 깨뜨리셨습니다.</p>
-                <p class="highlight">이것이 바로 은혜입니다. 노력으로 얻는 것도, 자격이 있어서 받는 것도 아닌, 그저 주어지는 선물입니다. 구원은 착한 사람에게 주는 상급이 아니라, 받기를 원하는 모든 이에게 주시는 하나님의 선물입니다.</p>
-            </div>
-            <div class="divider"></div>
-            <h2>구원은 단순합니다</h2>
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-num">01</div>
-                    <div class="step-title">믿으십시오</div>
-                    <div class="step-desc">예수님이 말씀하신 그분이심을 믿고, 그분의 죽으심과 부활이 당신을 구원하기에 충분함을 신뢰하십시오.</div>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">02</div>
-                    <div class="step-title">돌아서하십시오</div>
-                    <div class="step-desc">스스로를 구원하려는 노력을 내려놓고, 그분을 향해 돌아서십시오.</div>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">03</div>
-                    <div class="step-title">받으십시오</div>
-                    <div class="step-desc">이 선물을 받아들이십시오. 당신을 용서하시고 새롭게 해주시기를 기도하십시오.</div>
-                </div>
-            </div>
-            <div class="summary-box">
-                이것이 전부입니다. 부담스러운 체크리스트나 수년간의 노력이 아닙니다. 오직 믿음으로, 거저 주시는 은혜를 거저 받는 것입니다. 다음 단계: 매일 성경을 읽고, 좋은 지역 교회를 찾으며, 믿음을 계속 성장시키십시오.
-            </div>
+<!-- LIMITS -->
+<section id="limits"><div class="wrap">
+  <p class="kicker">Chapter 09 · Honesty about the tool</p>
+  <h2>Where the analogy breaks down</h2>
+  <p>Every analogy limps somewhere, and a good one says where. This one is a teaching tool, not a doctrine — the Bible is the authority, and where the picture and the Book disagree, the Book wins.</p>
+  <div class="breakdown">
+    <h3>Three honest limits</h3>
+    <ul>
+      <li><strong>A soul isn't a file.</strong> It's immaterial. “Stored with God” means <em>sustained</em> by Him, moment by moment — not parked on a disk somewhere. God is not a server, and heaven is not a data center.</li>
+      <li><strong>God is not distant.</strong> A remote repository is far away by definition. The real God is nearer than the analogy allows — He indwells believers, hears prayer, and is personally present in a way no sync connection imitates.</li>
+      <li><strong>The resurrection is more than a restore.</strong> A restore brings back the same files. The resurrection brings a new, glorified body — “sown in dishonor, raised in glory” (1 Cor 15:43). The end of the story isn't recovering the old repo. It's a new creation, where “the dwelling place of God is with man” (Rev 21:3) and no one needs a backup ever again.</li>
+    </ul>
+  </div>
+  <p>Which is, in the end, the best news in the whole story. Repositories crash, laptops die, companies fold, and formats rot. The promise underneath this analogy is that the people whose names are in that Book are kept by Someone who does none of those things.</p>
+  <blockquote class="verse"><p>“He will wipe away every tear from their eyes, and death shall be no more, neither shall there be mourning, nor crying, nor pain anymore, for the former things have passed away.”</p><cite>REVELATION 21:4 · ESV</cite></blockquote>
+  <p class="endmark">· ✦ ·</p>
+</div></section>
+</main>
 
-            <div class="download-box">
-                <h3>성경 다운로드</h3>
-                <a href="kr.pdf" download class="download-btn">&#128214; 성경 다운로드 (PDF)</a>
-            </div>
-        </article>
+<footer><div class="wrap">
+  <p><span class="mono">$ git status</span> — the PR is still open, and the Maintainer is still drawing people to it. If you've never accepted it, the analogy's whole point is that the only step left is yours — and it isn't a step of achieving. It's a step of receiving.</p>
+  <p class="mono" style="margin-top:14px">The GitHub Gospel · All Scripture quotations are from the ESV® Bible (The Holy Bible, English Standard Version®), © 2001 by Crossway. The repository analogy is an illustration, not a doctrine.</p>
+</div></footer>
 
-        <!-- Thai Section -->
-        <article id="content-th" class="lang-content" lang="th">
-            <div style="text-align: center;"><span class="badge">ของขวัญแห่งความรอด</span></div>
-            <h1>ข่าวดี</h1>
-            <div class="prose">
-                <p>คุณถูกสร้างมาเพื่อให้มีความสัมพันธ์กับพระเจ้า แต่ความบาปได้ทำลายความเชื่อมโยงนั้น ไม่ใช่แค่ความผิดพลาดใหญ่หลวงเท่านั้น แต่รวมถึงความบกพร่องในความรัก ความจริง และตัวตนที่เราควรจะเป็น ด้วยตัวเราเอง เราไม่สามารถประสานช่องว่างนั้นได้ ไม่มีการทำดีมากแค่ไหนที่จะปิดช่องว่างนั้นได้</p>
-                <p>พระเจ้าจึงทรงปิดช่องว่างนั้นด้วยพระองค์เอง พระเยซูทรงเป็นพระเจ้าแท้และมนุษย์แท้ ทรงดำเนินชีวิตในแบบที่เราไม่สามารถทำได้ และทรงยอมสิ้นพระชนม์แทนเรา รับเอาความบาปของเราไว้ที่พระองค์เอง สามวันหลังจากนั้น พระองค์ทรงฟื้นคืนพระชนม์จากความตาย ทำลายอำนาจแห่งความตายอย่างสิ้นเชิง</p>
-                <p class="highlight">นี่คือพระคุณ ไม่ใช่สิ่งที่เราไขว่คว้ามา ไม่ใช่สิ่งที่เราคู่ควร แต่เป็นสิ่งที่มอบให้ด้วยความรัก ความรอดไม่ใช่รางวัลสำหรับคนดี แต่เป็นของขวัญสำหรับทุกคนที่เต็มใจรับไว้</p>
-            </div>
-            <div class="divider"></div>
-            <h2>การได้รับความรอดนั้นเรียบง่าย</h2>
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-num">01</div>
-                    <div class="step-title">เชื่อ</div>
-                    <div class="step-desc">วางใจว่าพระเยซูทรงเป็นอย่างที่พระองค์ตรัสไว้ และการสิ้นพระชนม์และการฟื้นคืนพระชนม์ของพระองค์เพียงพอที่จะช่วยคุณให้รอด</div>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">02</div>
-                    <div class="step-title">หันกลับ</div>
-                    <div class="step-desc">หันหลังจากการพยายามพึ่งพาตัวเองในการพยายามช่วยตัวเองให้รอด และหันไปหาพระองค์</div>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">03</div>
-                    <div class="step-title">รับเอา</div>
-                    <div class="step-desc">ยอมรับของขวัญชิ้นนี้ ขอพระองค์ทรงให้อภัยและสร้างคุณใหม่</div>
-                </div>
-            </div>
-            <div class="summary-box">
-                เพียงเท่านี้เอง ไม่ใช่รายการสิ่งที่ต้องทำอันหนักหน่วง ไม่ใช่ความพยายามหลายปี เพียงแค่ความเชื่อ ที่มอบให้เปล่าๆ และรับไว้ด้วยความเต็มใจ สำหรับขั้นตอนต่อไป: อ่านพระคัมภีร์ทุกวัน ค้นหาโบสถ์ท้องถิ่นที่ดี และก้าวต่อไปเพื่อเติบโตในความเชื่อของคุณ
-            </div>
-
-            <div class="download-box">
-                <h3>ดาวน์โหลดพระคัมภีร์</h3>
-                <a href="th.pdf" download class="download-btn">&#128214; ดาวน์โหลดพระคัมภีร์ (PDF)</a>
-            </div>
-        </article>
-
-        <!-- Lao Section -->
-        <article id="content-lo" class="lang-content" lang="lo">
-            <div style="text-align: center;"><span class="badge">ຂອງຂວັນแห่งความรอด</span></div>
-            <h1>ຂ່າວດີ</h1>
-            <div class="prose">
-                <p>ທ່ານຖືກສ້າງມາເພື່ອມີສາຍສໍາພັນກັບພຣະເຈົ້າ, ແຕ່ຄວາມບາບໄດ້ທໍາລາຍຄວາມພັນທະນັ້ນ. ບໍ່ແມ່ນແຕ່ຄວາມຜິດພາດໃຫຍ່ຫຼວງ, ແຕ່ລວມເຖິງວິທີທີ່ສຸພາບທີ່ເຮົາຫຼຸດພົ້ນຈາກຄວາມຮັກ, ຄວາມຈິງ, ແລະສິ່ງທີ່ເຮົາຄວນจะเป็น. ດ້ວຍຕົວເຮົາເອງ, ເຮົາບໍ່ສາມາດແກ້ໄຂຊ່ອງຫວ່າງນັ້ນໄດ້. ບໍ່ມີຄວາມດີຫຼາຍປານໃດທີ່ຈະປິດມັນໄດ້.</p>
-                <p>ດັ່ງນັ້ນ, ພຣະເຈົ້າຈຶ່ງໄດ້ປິດຊ່ອງຫວ່າງນັ້ນດ້ວຍພຣະອົງເອງ. ພຣະເຢຊູ, ຜູ້ເປັນພຣະເຈົ້າຢ່າງສົມບູນ ແລະ ເປັນມະນຸດຢ່າງສົມບູນ, ໄດ້ດໍາເນີນຊີວິດທີ່ເຮົາບໍ່ສາມາດດໍາເນີນໄດ້, ແລ້ວໄດ້สิ้นພຣະຊົນແທນຄວາມຕາຍທີ່ເຮົາສົມຄວນໄດ້ຮັບ, ໂດຍຮັບເອົາຄວາມບາບຂອງເຮົາໄວ້ທີ່ພຣະອົງເອງ. ສາມມື້ຕໍ່ມາ, ພຣະອົງໄດ້ຟື້ນຄືນພຣະຊົນຈາກອຸມົງ, ທໍາລາຍອໍານາດຂອງຄວາມຕາຍຢ່າງสิ้นเชิง.</p>
-                <p class="highlight">ນີ້คือພຣະຄຸນ: ບໍ່ໄດ້ມາຈາກການກະທໍາ, ບໍ່ໄດ້ສົມຄວນໄດ້ຮັບ, ແຕ່ຖືກປະທານໃຫ້. ຄວາມຮອດບໍ່ແມ່ນລາງວັນສໍາລັບຄົນດີ. ມັນແມ່ນຂອງຂວັນສໍາລັບທຸກຄົນທີ່ເຕັມໃຈຮັບເອົາ.</p>
-            </div>
-            <div class="divider"></div>
-            <h2>ການໄດ້ຮັບຄວາມຮອດແມ່ນງ່າຍດາຍ</h2>
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-num">01</div>
-                    <div class="step-title">ເຊື່ອ</div>
-                    <div class="step-desc">ວາງໃຈວ່າ ພຣະເຢຊູ ທຣົງເປັນຜູ້ທີ່ພຣະອົງໄດ້ກ່າວໄວ້, ແລະ ການสิ้นພຣະຊົນ ແລະ ການຟື້ນຄືນພຣະຊົນຂອງພຣະອົງ ພຽງພໍທີ່ຈະຊ່ວຍທ່ານໃຫ້ຮອດ.</div>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">02</div>
-                    <div class="step-title">ຫັນກັບ</div>
-                    <div class="step-desc">ຫັນຫຼັງຈາກການພະຍາຍາມຊ່ວຍຕົວເອງໃຫ້ຮອດ, ແລະ ຫັນໄປຫາພຣະອົງ.</div>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">03</div>
-                    <div class="step-title">ຮັບເອົາ</div>
-                    <div class="step-desc">ຍອມຮັບຂອງຂວັນ. ຂໍໃຫ້ພຣະອົງອະໄພໂທດ ແລະ ສ້າງທ່ານໃຫມ່.</div>
-                </div>
-            </div>
-            <div class="summary-box">
-                ພຽງເທົ່ານີ້. ບໍ່ແມ່ນລາຍການກວດເຊັກທີ່ເປັນພາລະ, ບໍ່ແມ່ນຄວາມພະຍາຍາມຫຼາຍປີ. ພຽງແຕ່ຄວາມເຊື່ອ, ທີ່ມອບໃຫ້ໂດຍບໍ່ມີຄ່າ ແລະ ຮັບເອົາໂດຍບໍ່ມີຄ່າ. ສໍາລັບຂັ້ນຕອນຕໍ່ໄປ: ອ່ານພຣະຄໍາພີປະຈໍາວັນ, ຊອກຫາວັດທີ່ດີຂອງທ້ອງຖິ່ນ, ແລະ ສືບຕໍ່ຈະເຕີບໂຕໃນຄວາມເຊື່ອຂອງທ່ານ.
-            </div>
-
-            <div class="download-box">
-                <h3>ດາວໂຫລດ ພຣະຄໍາພີ</h3>
-                <a href="la.pdf" download class="download-btn">&#128214; ດາວໂຫລດ ພຣະຄໍາພີ (PDF)</a>
-            </div>
-        </article>
-    </main>
-
-    <footer>
-        <div class="container">
-            Also available via TOR at x3aguauayohj26fmerfoapxaw5xso2fv54cti4n5t7ydcgdzhakeqbad.onion/goodnews
-        </div>
-    </footer>
-
+<script>
+(function(){
+  var btn=document.getElementById('mergeBtn'), reset=document.getElementById('resetBtn'),
+      status=document.getElementById('prStatus'), result=document.getElementById('prResult');
+  btn.addEventListener('click',function(){
+    status.textContent='✓ MERGED — by grace, through faith';
+    status.classList.add('merged');
+    result.classList.add('show');
+    btn.disabled=true; btn.textContent='Merged ✓';
+    reset.hidden=false;
+  });
+  reset.addEventListener('click',function(){
+    status.textContent='● OPEN — awaiting your review';
+    status.classList.remove('merged');
+    result.classList.remove('show');
+    btn.disabled=false; btn.textContent='Accept & merge — by faith';
+    reset.hidden=true;
+  });
+  // TOC active state
+  var links=document.querySelectorAll('nav.toc a');
+  var secs=[].map.call(links,function(a){return document.querySelector(a.getAttribute('href'));});
+  function onScroll(){
+    var y=window.scrollY+120, cur=0;
+    secs.forEach(function(s,i){ if(s && s.offsetTop<=y) cur=i; });
+    links.forEach(function(a,i){ a.classList.toggle('active', i===cur); });
+  }
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+})();
+</script>
 </body>
 </html>
