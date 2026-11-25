@@ -100,7 +100,15 @@
     border-radius:12px;padding:12px 10px;font-size:14px;font-weight:700;cursor:pointer;
   }
   .controls button:hover:not(:disabled){background:#2a2f3d}
+  .controls button:active:not(:disabled){transform:scale(.97)}
   .controls button:disabled{opacity:.45;cursor:default}
+  /* On touch screens hover sticks after a tap, leaving the button looking
+     pressed. Only apply hover styles where a real hover exists. */
+  @media (hover:none){
+    .controls button:hover:not(:disabled){background:var(--panel2)}
+    .controls button.primary:hover{background:var(--gold)}
+    .promo-grid button:hover{border-color:#4b5563;background:var(--panel2)}
+  }
   .controls button.primary{background:var(--gold);border-color:var(--gold);color:#111827}
   .toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:11px 14px;margin-top:10px;font-size:14px}
   .toggle span small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
@@ -540,13 +548,21 @@
     if(captured) capturedBy[state.turn==='w'?'b':'w'].push(captured); // state.turn already flipped; capturer is the opposite of the new turn
     moveLabels.push(label);
     selected=null; legalForSelected=[];
+    blurActive();
     render();
     if(statusAfter.over){ setTimeout(showGameOver,350); return; }
     if($('autoFlip').checked){ flipped=!flipped; render(); }
   }
+  function blurActive(){
+    // A tapped button keeps focus (and its highlight) on iOS until something
+    // else is tapped. Blur it so no click indicator sticks around.
+    if(document.activeElement&&document.activeElement.blur) document.activeElement.blur();
+  }
   function onSquare(r,c){
     if(gameOver) return;
     var p=state.board[r][c];
+    // Tapping the selected piece again cancels the selection.
+    if(selected&&selected.r===r&&selected.c===c){ selected=null; legalForSelected=[]; blurActive(); render(); return; }
     if(selected){
       var mv=legalForSelected.find(function(m){return m.to.r===r&&m.to.c===c;});
       if(mv){
@@ -561,6 +577,7 @@
               $('promoOverlay').classList.remove('show');
               var chosen=legalMoves(state,state.turn).find(function(m){return m.from.r===pendingPromotion.from.r&&m.from.c===pendingPromotion.from.c&&m.to.r===pendingPromotion.to.r&&m.to.c===pendingPromotion.to.c&&m.promotion===pr;});
               pendingPromotion=null;
+              blurActive();
               if(chosen) doMove(chosen);
             });
             grid.appendChild(btn);
@@ -576,27 +593,29 @@
       legalForSelected=legalMoves(state,state.turn).filter(function(m){return m.from.r===r&&m.from.c===c;});
       render();
     } else {
-      selected=null; legalForSelected=[]; render();
+      selected=null; legalForSelected=[]; blurActive(); render();
     }
   }
   function newGame(){
     state=newState(); history=[]; capturedBy={w:[],b:[]}; moveLabels=[];
     selected=null; legalForSelected=[]; gameOver=null; flipped=false;
     $('overOverlay').classList.remove('show'); $('promoOverlay').classList.remove('show');
+    blurActive();
     render();
   }
   $('newBtn').addEventListener('click',newGame);
   $('againBtn').addEventListener('click',newGame);
-  $('reviewBtn').addEventListener('click',function(){ $('overOverlay').classList.remove('show'); });
+  $('reviewBtn').addEventListener('click',function(){ $('overOverlay').classList.remove('show'); blurActive(); });
   $('undoBtn').addEventListener('click',function(){
     if(!history.length) return;
     var h=history.pop();
     state=h.state; capturedBy=h.capturedBy; moveLabels=h.labels;
     selected=null; legalForSelected=[]; gameOver=null;
     $('overOverlay').classList.remove('show');
+    blurActive();
     render();
   });
-  $('flipBtn').addEventListener('click',function(){ flipped=!flipped; render(); });
+  $('flipBtn').addEventListener('click',function(){ flipped=!flipped; selected=null; legalForSelected=[]; blurActive(); render(); });
 
   window.__chess={newState:newState,cloneState:cloneState,legalMoves:legalMoves,applyMove:applyMove,gameStatus:gameStatus,isInCheck:isInCheck,moveLabel:moveLabel,initialBoard:initialBoard};
   render();
