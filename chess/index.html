@@ -112,6 +112,7 @@
   .controls button.primary{background:var(--gold);border-color:var(--gold);color:#111827}
   .toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:11px 14px;margin-top:10px;font-size:14px}
   .toggle span small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+  .save-note{font-size:12px;color:var(--muted);margin-top:10px;text-align:center;line-height:1.5}
   .switch{position:relative;width:48px;height:28px;flex:none}
   .switch input{opacity:0;width:100%;height:100%;position:absolute;margin:0;cursor:pointer;z-index:1}
   .switch i{position:absolute;inset:0;background:#374151;border-radius:99px;transition:.15s}
@@ -192,6 +193,7 @@
         <span>Auto-flip after each move<small>Board turns so the player to move is always at the bottom</small></span>
         <span class="switch"><input type="checkbox" id="autoFlip" checked><i aria-hidden="true"></i></span>
       </label>
+      <div class="save-note" id="saveNote">Autosave on — your game is saved on this device and picks up where you left it, even if you close the tab.</div>
     </div>
 
     <aside class="side">
@@ -430,6 +432,36 @@
     return pieceLetter+fromPart+capture+sqName(mv.to.r,mv.to.c)+promo+suffix;
   }
 
+  /* ---------- autosave (localStorage, this device only) ---------- */
+  var SAVE_KEY='nowlin-chess-game-v1';
+  var store=null;
+  try{ store=window.localStorage||null; }catch(e){ store=null; }
+  function serializeGame(){
+    return JSON.stringify({v:1,state:state,history:history,capturedBy:capturedBy,moveLabels:moveLabels,flipped:flipped,autoFlip:$('autoFlip').checked});
+  }
+  function deserializeGame(json){
+    try{
+      var d=JSON.parse(json);
+      if(!d||d.v!==1||!d.state||!Array.isArray(d.state.board)||d.state.board.length!==8) return null;
+      if(d.state.turn!=='w'&&d.state.turn!=='b') return null;
+      return d;
+    }catch(e){ return null; }
+  }
+  function saveGame(){
+    if(!store) return;
+    try{ store.setItem(SAVE_KEY,serializeGame()); }catch(e){}
+  }
+  function loadSavedGame(){
+    if(!store) return false;
+    var d=deserializeGame(store.getItem(SAVE_KEY));
+    if(!d) return false;
+    state=d.state; history=Array.isArray(d.history)?d.history:[];
+    capturedBy=d.capturedBy||{w:[],b:[]}; moveLabels=Array.isArray(d.moveLabels)?d.moveLabels:[];
+    flipped=!!d.flipped;
+    if(typeof d.autoFlip==='boolean') $('autoFlip').checked=d.autoFlip;
+    return true;
+  }
+
   /* ---------- game UI state ---------- */
   var state=newState();
   var history=[]; // {state, capturedBy, label}
@@ -549,6 +581,7 @@
     moveLabels.push(label);
     selected=null; legalForSelected=[];
     blurActive();
+    saveGame();
     render();
     if(statusAfter.over){ setTimeout(showGameOver,350); return; }
     if($('autoFlip').checked){ flipped=!flipped; render(); }
@@ -601,6 +634,7 @@
     selected=null; legalForSelected=[]; gameOver=null; flipped=false;
     $('overOverlay').classList.remove('show'); $('promoOverlay').classList.remove('show');
     blurActive();
+    saveGame();
     render();
   }
   $('newBtn').addEventListener('click',newGame);
@@ -613,11 +647,21 @@
     selected=null; legalForSelected=[]; gameOver=null;
     $('overOverlay').classList.remove('show');
     blurActive();
+    saveGame();
     render();
   });
-  $('flipBtn').addEventListener('click',function(){ flipped=!flipped; selected=null; legalForSelected=[]; blurActive(); render(); });
+  $('flipBtn').addEventListener('click',function(){ flipped=!flipped; selected=null; legalForSelected=[]; blurActive(); saveGame(); render(); });
+  $('autoFlip').addEventListener('change',saveGame);
 
-  window.__chess={newState:newState,cloneState:cloneState,legalMoves:legalMoves,applyMove:applyMove,gameStatus:gameStatus,isInCheck:isInCheck,moveLabel:moveLabel,initialBoard:initialBoard};
+  // Restore a saved game on load, if there is one. A finished game restores
+  // for review, with its result shown again.
+  var restored=loadSavedGame();
+  if(restored){
+    var st0=gameStatus(state);
+    if(st0.over){ gameOver=st0; setTimeout(showGameOver,400); }
+  }
+  if(!store) $('saveNote').textContent='Autosave is not available in this browser mode — your game will not survive closing the tab.';
+  window.__chess={newState:newState,cloneState:cloneState,legalMoves:legalMoves,applyMove:applyMove,gameStatus:gameStatus,isInCheck:isInCheck,moveLabel:moveLabel,initialBoard:initialBoard,serializeGame:serializeGame,deserializeGame:deserializeGame,saveGame:saveGame,loadSavedGame:loadSavedGame};
   render();
 })();
 </script>
