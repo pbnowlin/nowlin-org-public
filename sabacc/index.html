@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sabacc — Play Classic &amp; Corellian Spike | nowlin.org/sabacc</title>
+<meta name="description" content="Play Sabacc online at nowlin.org/sabacc: Classic Sabacc (target 23, Idiot's Array) and Corellian Spike (target 0, Sylop) with a switcher, AI opponents, betting and Sabacc Shifts. Free, no install." />
+<meta name="theme-color" content="#0b1220" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23f59e0b'/%3E%3Ctext x='16' y='22' font-size='15' font-weight='bold' text-anchor='middle' fill='%23111827'%3ES%3C/text%3E%3C/svg%3E" />
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--bg:#0b1220;--gold:#f59e0b;--gold2:#fbbf24;--green:#22c55e;--red:#ef4444;--blue:#3b82f6}
+  body{background:radial-gradient(900px 500px at 20% 0%,#1e293b 0%,transparent 60%),radial-gradient(800px 500px at 90% 100%,#3b2a0a 0%,transparent 55%),var(--bg);color:#e5e7eb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;min-height:100vh;padding:26px 14px 48px}
+  .wrap{max-width:1020px;margin:0 auto}
+  header{text-align:center;margin-bottom:16px}
+  header h1{font-size:15px;letter-spacing:.22em;text-transform:uppercase;color:#94a3b8;font-weight:600}
+  header h1 b{color:#f8fafc}
+  header p{margin-top:6px;color:#94a3b8;font-size:13px;line-height:1.5}
+  .switcher{display:flex;gap:8px;justify-content:center;margin:14px 0 18px;flex-wrap:wrap}
+  .switcher button{border:1px solid #4b5563;background:#1f2937;color:#d1d5db;border-radius:99px;padding:10px 18px;font-size:14px;font-weight:700;cursor:pointer}
+  .switcher button.active{background:var(--gold);border-color:var(--gold);color:#111827}
+  .switcher button:disabled{opacity:.6;cursor:default}
+  .table{background:linear-gradient(180deg,#14532d,#052e16 60%,#022c22);border:1px solid #365314;border-radius:24px;padding:18px;box-shadow:0 30px 60px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.12)}
+  .opponents{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+  @media(max-width:640px){.opponents{grid-template-columns:1fr}}
+  .opp{background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:10px 12px;min-height:108px}
+  .opp.active{border-color:var(--gold);box-shadow:0 0 0 2px rgba(245,158,11,.35)}
+  .opp.folded{opacity:.55}
+  .opp .name{font-weight:800;display:flex;justify-content:space-between;gap:8px}
+  .opp .credits{color:var(--gold2);font-family:ui-monospace,Menlo,monospace;font-size:13px}
+  .opp .status{color:#a7f3d0;font-size:12px;margin-top:4px;min-height:16px}
+  .opp .cards{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+  .center{text-align:center;padding:6px 0 12px}
+  .pots{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+  .pot{background:rgba(0,0,0,.4);border:1px solid rgba(245,158,11,.5);border-radius:12px;padding:8px 16px;font-family:ui-monospace,Menlo,monospace}
+  .pot b{color:var(--gold2)}
+  .dice{font-size:13px;color:#d1d5db;min-height:18px}
+  .dice b{color:#fff}
+  .log{background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:10px 12px;height:96px;overflow-y:auto;font-family:ui-monospace,Menlo,monospace;font-size:12px;line-height:1.6;color:#d1d5db;text-align:left;margin-top:10px}
+  .log div:first-child{color:#fde68a}
+  .you{margin-top:14px;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:14px}
+  .you .head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline}
+  .you h2{font-size:16px}
+  .you .total{font-family:ui-monospace,Menlo,monospace;font-size:14px}
+  .you .total b{color:var(--gold2);font-size:18px}
+  .handname{color:#a7f3d0;font-size:13px;margin-top:4px;min-height:18px}
+  .hand{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;min-height:112px}
+  .card{width:78px;height:112px;border-radius:10px;background:linear-gradient(180deg,#f8fafc,#e2e8f0);color:#111827;padding:8px 7px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;border:2px solid #94a3b8;box-shadow:0 6px 14px rgba(0,0,0,.4);user-select:none}
+  .card.selected{border-color:var(--gold);transform:translateY(-6px);box-shadow:0 10px 18px rgba(245,158,11,.4)}
+  .card.neg{background:linear-gradient(180deg,#fee2e2,#fecaca);border-color:#ef4444}
+  .card.zero{background:linear-gradient(180deg,#fef3c7,#fde68a);border-color:var(--gold)}
+  .card.back{background:repeating-linear-gradient(45deg,#1e3a8a,#1e3a8a 8px,#172554 8px,#172554 16px);border-color:#60a5fa;color:#dbeafe;cursor:default}
+  .card .val{font-size:22px;font-weight:800;line-height:1}
+  .card .nm{font-size:10px;font-weight:700;line-height:1.25;text-transform:uppercase;letter-spacing:.02em}
+  .card .suit{font-size:11px;color:#475569;text-align:right}
+  .card.back .nm{color:#dbeafe}
+  .mini{width:44px;height:62px;border-radius:7px;padding:5px 4px;cursor:default}
+  .mini .val{font-size:14px}
+  .mini .nm{font-size:8px}
+  .mini .suit{display:none}
+  .actions{display:flex;gap:8px;flex-wrap:wrap}
+  .actions button,.betrow button{border:1px solid #4b5563;background:#374151;color:#f8fafc;border-radius:10px;padding:10px 14px;font-size:14px;font-weight:700;cursor:pointer}
+  .actions button:hover:not(:disabled),.betrow button:hover:not(:disabled){background:#4b5563}
+  .actions button:disabled,.betrow button:disabled{opacity:.45;cursor:default}
+  .actions button.primary{background:var(--gold);border-color:var(--gold);color:#111827}
+  .actions button.danger{background:#7f1d1d;border-color:#991b1b}
+  .betrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
+  .betrow span{font-size:12px;color:#9ca3af}
+  .rules{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+  @media(max-width:760px){.rules{grid-template-columns:1fr}}
+  .rulecard{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:16px 18px}
+  .rulecard h2{font-size:15px;margin-bottom:8px;color:#fde68a}
+  .rulecard p,.rulecard li{color:#cbd5e1;font-size:13px;line-height:1.6}
+  .rulecard ul{padding-left:18px;margin:6px 0}
+  .rulecard code{background:#0f172a;border:1px solid #334155;border-radius:6px;padding:1px 6px;font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#fde68a}
+  footer{text-align:center;color:#64748b;font-size:12px;margin-top:22px;line-height:1.6}
+  footer a{color:#94a3b8}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1><b>nowlin.org</b> / sabacc</h1>
+    <p>The card game from a galaxy far, far away — played right here, in your browser.<br>Two variants, one table. No credits leave your device.</p>
+  </header>
+
+  <div class="switcher" role="tablist" aria-label="Sabacc variant">
+    <button type="button" id="btnClassic" data-variant="classic" class="active">Classic Sabacc · target 23</button>
+    <button type="button" id="btnSpike" data-variant="spike">Corellian Spike · target 0</button>
+  </div>
+
+  <main class="table" aria-label="Sabacc table">
+    <div class="opponents" id="opponents"></div>
+
+    <div class="center">
+      <div class="pots">
+        <div class="pot">Hand pot: <b id="handPot">0</b> credits</div>
+        <div class="pot">Sabacc pot: <b id="sabaccPot">0</b> credits</div>
+        <div class="pot">Round: <b id="roundLabel">—</b> / 3</div>
+      </div>
+      <div class="dice" id="diceLabel">Deal a hand to start.</div>
+      <div class="log" id="log" aria-live="polite"></div>
+    </div>
+
+    <section class="you">
+      <div class="head">
+        <h2>You <span style="color:#94a3b8;font-weight:400">· <span id="youCredits">1000</span> credits</span></h2>
+        <div class="total">Total: <b id="youTotal">—</b> <span id="youTarget"></span></div>
+      </div>
+      <div class="handname" id="handName"></div>
+      <div class="hand" id="yourHand"></div>
+      <div class="actions">
+        <button type="button" id="drawBtn" class="primary">Draw a card</button>
+        <button type="button" id="discardBtn">Discard selected</button>
+        <button type="button" id="standBtn">Stand</button>
+        <button type="button" id="callBtn">Call — showdown</button>
+        <button type="button" id="freezeBtn">Freeze hand · 10</button>
+        <button type="button" id="foldBtn" class="danger">Fold / Junk</button>
+        <button type="button" id="newHandBtn" class="primary">Deal a new hand</button>
+      </div>
+      <div class="betrow">
+        <span>Bet:</span>
+        <button type="button" data-bet="0">Check</button>
+        <button type="button" data-bet="10">Bet 10</button>
+        <button type="button" data-bet="25">Bet 25</button>
+        <button type="button" data-bet="50">Bet 50</button>
+        <span id="betNote">Betting is once per round, after you draw or stand.</span>
+      </div>
+    </section>
+  </main>
+
+  <div class="rules">
+    <section class="rulecard" id="rulesClassic">
+      <h2>Classic Sabacc — target 23</h2>
+      <p><b>Deck:</b> 76 cards. Four suits — Sabers, Flasks, Coins, Staves — 1–11, plus Commander (12), Mistress (13), Master (14), Ace (15). Plus 16 face cards, two each: Idiot (0), Queen of Air and Darkness (−2), Endurance (−8), Balance (−11), Demise (−13), Moderation (−14), Evil One (−15), Star (−17).</p>
+      <ul>
+        <li>Closest to <code>+23</code> or <code>−23</code> wins. Over 23, under −23, or exactly 0 <b>bombs out</b>.</li>
+        <li><b>Pure Sabacc</b> — exactly 23 or −23 — wins the hand pot <i>and</i> the Sabacc pot.</li>
+        <li><b>Idiot's Array</b> — Idiot + a 2 + a 3 — beats everything, even Pure Sabacc.</li>
+        <li>After each round the dice are rolled. Doubles = a <b>Sabacc Shift</b>: every unfrozen hand is redealt. Freeze yours for 10 credits.</li>
+        <li>At the same distance, positive beats negative: +21 beats −21, which beats +20.</li>
+      </ul>
+      <p>Sources: West End Games' <i>Crisis on Cloud City</i> rules, as summarised at pagat.com and sabacc.starwars.run. Face-card value for the Queen is −2 in those sources (some summaries say −1).</p>
+    </section>
+    <section class="rulecard" id="rulesSpike">
+      <h2>Corellian Spike — target 0</h2>
+      <p><b>Deck:</b> 62 cards. Three staves — Circles, Triangles, Squares — each +1 to +10 and −1 to −10. Plus two Sylops (0).</p>
+      <ul>
+        <li>Closest to <code>0</code> wins. Exactly 0 wins the hand pot <i>and</i> the Sabacc pot.</li>
+        <li><b>Pure Sabacc</b> — both Sylops, and nothing else — is the best hand.</li>
+        <li>Then <b>Full Sabacc</b> (+10, +10, −10, −10, Sylop), <b>Fleet</b> (Sylop + four of a kind), <b>Yehhaa</b> (Sylop + a pair). Then other zero hands, then closest to 0. Positive beats equal negative.</li>
+        <li>Three rounds. Each round: draw / swap / stand / junk, then the dice. Doubles = every hand is discarded and redealt.</li>
+        <li>No bomb-out in Spike — a big total just loses.</li>
+      </ul>
+      <p>Sources: the Galaxy's Edge boxed-set booklet (Disney/Lucasfilm), as checked at findtherules.com, and Wookieepedia's Corellian Spike entry. The official booklet has no betting; this version adds chips so the two variants play the same way.</p>
+    </section>
+  </div>
+
+  <footer>nowlin.org/sabacc — a fan-made Sabacc table, online.<br>Sabacc and Star Wars are trademarks of Lucasfilm / Disney. This is an independent fan game, not affiliated with or endorsed by them.</footer>
+</div>
+<script>
+(function(){
+  "use strict";
+  var $=function(id){return document.getElementById(id);};
+  var logEl=$('log'), opponentsEl=$('opponents'), yourHandEl=$('yourHand');
+
+  /* ---------- decks ---------- */
+  function buildClassicDeck(){
+    var suits=[{name:'Sabers',sym:'⚔'},{name:'Flasks',sym:'⚗'},{name:'Coins',sym:'●'},{name:'Staves',sym:'♣'}];
+    var deck=[];
+    suits.forEach(function(s){
+      for(var v=1;v<=11;v++) deck.push({name:String(v),value:v,suit:s.name,sym:s.sym});
+      deck.push({name:'Commander',value:12,suit:s.name,sym:s.sym});
+      deck.push({name:'Mistress',value:13,suit:s.name,sym:s.sym});
+      deck.push({name:'Master',value:14,suit:s.name,sym:s.sym});
+      deck.push({name:'Ace',value:15,suit:s.name,sym:s.sym});
+    });
+    var faces=[
+      {name:'Idiot',value:0},{name:'Queen of Air & Darkness',value:-2},
+      {name:'Endurance',value:-8},{name:'Balance',value:-11},
+      {name:'Demise',value:-13},{name:'Moderation',value:-14},
+      {name:'Evil One',value:-15},{name:'Star',value:-17}
+    ];
+    faces.forEach(function(f){ deck.push({name:f.name,value:f.value,suit:'Face',sym:'★'}); deck.push({name:f.name,value:f.value,suit:'Face',sym:'★'}); });
+    return deck; // 60 + 16 = 76
+  }
+  function buildSpikeDeck(){
+    var staves=[{name:'Circles',sym:'○'},{name:'Triangles',sym:'△'},{name:'Squares',sym:'□'}];
+    var deck=[];
+    staves.forEach(function(s){
+      for(var v=1;v<=10;v++){ deck.push({name:'+'+v,value:v,suit:s.name,sym:s.sym}); deck.push({name:'-'+v,value:-v,suit:s.name,sym:s.sym}); }
+    });
+    deck.push({name:'Sylop',value:0,suit:'Sylop',sym:'◎'});
+    deck.push({name:'Sylop',value:0,suit:'Sylop',sym:'◎'});
+    return deck; // 60 + 2 = 62
+  }
+  function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+  function total(hand){ return hand.reduce(function(s,c){return s+c.value;},0); }
+  function hasCard(hand,name){ return hand.some(function(c){return c.name===name;}); }
+  function hasValue(hand,v){ return hand.some(function(c){return c.value===v;}); }
+
+  /* ---------- scoring ---------- */
+  function scoreClassic(hand){
+    var t=total(hand);
+    if(t>23||t<-23||t===0) return {total:t,bomb:true,rank:-1,label:'Bombed out! ('+t+')'};
+    if(hasCard(hand,'Idiot')&&hasValue(hand,2)&&hasValue(hand,3))
+      return {total:t,bomb:false,idiots:true,rank:1000,label:"Idiot's Array! Beats everything"};
+    if(t===23) return {total:t,bomb:false,pure:true,rank:900,label:'Pure Sabacc! Exactly +23'};
+    if(t===-23) return {total:t,bomb:false,pure:true,rank:850,label:'Pure Sabacc! Exactly −23'};
+    return {total:t,bomb:false,rank:Math.abs(t)+(t>0?0.5:0),label:t+' — '+(23-Math.abs(t))+' away from '+(t>=0?'+23':'−23')};
+  }
+  function scoreSpike(hand){
+    var t=total(hand);
+    var vals=hand.map(function(c){return c.value;}).sort(function(a,b){return a-b;});
+    function counts(){ var m={}; vals.forEach(function(v){m[v]=(m[v]||0)+1;}); return m; }
+    if(hand.length===2&&hand.every(function(c){return c.value===0;}))
+      return {total:t,bomb:false,pure:true,rank:1000,label:'Pure Sabacc! Both Sylops'};
+    if(t===0&&hand.length===5&&JSON.stringify(vals)===JSON.stringify([-10,-10,0,10,10]))
+      return {total:t,bomb:false,rank:900,label:'Full Sabacc! +10, +10, −10, −10, Sylop'};
+    if(t===0&&hand.length===5){
+      // Fleet: Sylop + four cards of the same rank (same absolute value,
+      // e.g. +7, +7, −7, −7) — exact-value four of a kind could never total 0.
+      var absM={}; vals.forEach(function(v){var a=Math.abs(v); absM[a]=(absM[a]||0)+1;});
+      var fourAbs=Object.keys(absM).some(function(k){return absM[k]===4&&Number(k)!==0;});
+      if(fourAbs&&counts()[0]===1) return {total:t,bomb:false,rank:800,label:'Fleet! Sylop + four of a kind'};
+    }
+    if(t===0&&hand.length===3){
+      // Yehhaa: Sylop + a pair of the same rank, opposite signs (+7, −7).
+      var rest=hand.filter(function(c){return c.value!==0;});
+      if(rest.length===2&&Math.abs(rest[0].value)===Math.abs(rest[1].value)&&rest[0].value===-rest[1].value)
+        return {total:t,bomb:false,rank:700,label:'Yehhaa! Sylop + a pair'};
+    }
+    if(t===0) return {total:t,bomb:false,rank:600,label:'Sabacc! Exactly 0'};
+    return {total:t,bomb:false,rank:500-Math.abs(t)*10+(t>0?5:0),label:t+' — '+Math.abs(t)+' away from 0'};
+  }
+  function scoreHand(hand,variant){ return variant==='classic'?scoreClassic(hand):scoreSpike(hand); }
+  function strength(hand,variant){
+    var s=scoreHand(hand,variant);
+    if(s.bomb) return 0;
+    if(s.rank>=850) return 1;
+    if(variant==='classic') return Math.abs(s.total)/23;
+    return s.total===0?1:Math.max(0,1-Math.abs(s.total)/20);
+  }
+
+  /* ---------- state ---------- */
+  var variant='classic';
+  var players=[], deck=[], discardPile=[], handPot=0, sabaccPot=0, round=0, phase='idle';
+  var selectedIdx=null, currentBet=0, betDone=false, showdownDone=false;
+  var AI_NAMES=['Lando','Han','Leia'];
+
+  function log(msg){
+    var d=document.createElement('div'); d.textContent=msg; logEl.insertBefore(d,logEl.firstChild);
+    while(logEl.children.length>60) logEl.removeChild(logEl.lastChild);
+  }
+  function newPlayer(name,isAI){
+    return {name:name,isAI:!!isAI,credits:1000,hand:[],folded:false,frozen:false};
+  }
+  function drawCard(){
+    if(!deck.length){
+      deck=shuffle(discardPile.splice(0)); if(!deck.length) deck=shuffle(variant==='classic'?buildClassicDeck():buildSpikeDeck());
+      log('Deck reshuffled.');
+    }
+    return deck.pop();
+  }
+  function bestDiscard(hand,variant){
+    // Discard the card whose removal leaves the strongest hand.
+    var best=0,bestS=-1;
+    hand.forEach(function(_,i){
+      var rest=hand.filter(function(_,j){return j!==i;});
+      var s=rest.length?strength(rest,variant):0;
+      if(s>bestS){bestS=s;best=i;}
+    });
+    return best;
+  }
+
+  /* ---------- rendering ---------- */
+  function cardEl(c,mini,selectable,idx){
+    var d=document.createElement('div');
+    d.className='card'+(c.value<0?' neg':c.value===0?' zero':'')+(mini?' mini':'');
+    if(selectable&&idx===selectedIdx) d.classList.add('selected');
+    d.innerHTML='<div class="val">'+(c.value>0?'+':'')+c.value+'</div><div class="nm"></div><div class="suit"></div>';
+    d.querySelector('.nm').textContent=c.name;
+    d.querySelector('.suit').textContent=c.sym+' '+c.suit;
+    if(selectable) d.addEventListener('click',function(){
+      selectedIdx=(selectedIdx===idx)?null:idx; render();
+    });
+    return d;
+  }
+  function backEl(mini){
+    var d=document.createElement('div'); d.className='card back'+(mini?' mini':'');
+    d.innerHTML='<div class="val">?</div><div class="nm">Sabacc</div><div class="suit">★</div>';
+    return d;
+  }
+  function render(){
+    $('handPot').textContent=handPot;
+    $('sabaccPot').textContent=sabaccPot;
+    $('roundLabel').textContent=phase==='idle'?'—':round;
+    $('youCredits').textContent=players.length?players[0].credits:1000;
+    $('youTarget').textContent=variant==='classic'?'(target ±23)':'(target 0)';
+    // opponents
+    opponentsEl.innerHTML='';
+    players.slice(1).forEach(function(p){
+      var box=document.createElement('div');
+      box.className='opp'+(p.folded?' folded':'');
+      var head=document.createElement('div'); head.className='name';
+      var nm=document.createElement('span'); nm.textContent=p.name+(p.frozen?' ❄':'');
+      var cr=document.createElement('span'); cr.className='credits'; cr.textContent=p.credits+' cr';
+      head.appendChild(nm); head.appendChild(cr);
+      var st=document.createElement('div'); st.className='status';
+      st.textContent=p.folded?'Folded / junked':(showdownDone?scoreHand(p.hand,variant).label:(phase==='idle'?'Waiting…':'In the hand'));
+      var cards=document.createElement('div'); cards.className='cards';
+      if(showdownDone){ p.hand.forEach(function(c){cards.appendChild(cardEl(c,true,false));}); }
+      else { p.hand.forEach(function(){cards.appendChild(backEl(true));}); }
+      box.appendChild(head); box.appendChild(st); box.appendChild(cards);
+      opponentsEl.appendChild(box);
+    });
+    // you
+    yourHandEl.innerHTML='';
+    if(players.length){
+      var me=players[0];
+      var sc=me.hand.length?scoreHand(me.hand,variant):null;
+      $('youTotal').textContent=sc?sc.total:'—';
+      $('handName').textContent=sc?sc.label:(me.folded?'You folded.':'');
+      me.hand.forEach(function(c,i){ yourHandEl.appendChild(cardEl(c,false,phase==='yourTurn',i)); });
+    } else { $('youTotal').textContent='—'; $('handName').textContent=''; }
+    // buttons
+    var yourTurn=phase==='yourTurn';
+    $('drawBtn').disabled=!yourTurn||!players.length||players[0].hand.length>=5;
+    $('discardBtn').disabled=!yourTurn||selectedIdx===null||!players.length||players[0].hand.length<=2;
+    $('standBtn').disabled=!yourTurn;
+    $('callBtn').disabled=!yourTurn;
+    $('foldBtn').disabled=!yourTurn;
+    $('freezeBtn').disabled=!yourTurn||variant!=='classic'||!players.length||players[0].frozen||players[0].credits<10;
+    $('freezeBtn').textContent=variant==='classic'?'Freeze hand · 10':'Freeze — Classic only';
+    $('newHandBtn').disabled=phase!=='idle'&&phase!=='showdown';
+    document.querySelectorAll('[data-bet]').forEach(function(b){
+      b.disabled=!yourTurn||betDone;
+    });
+    $('betNote').textContent=betDone?'Bet placed this round.':(variant==='classic'?'Betting is once per round, after you draw or stand.':'Betting is once per round, after you draw or stand.');
+    document.querySelectorAll('.switcher button').forEach(function(b){
+      b.classList.toggle('active',b.dataset.variant===variant);
+      b.disabled=phase!=='idle'&&phase!=='showdown';
+    });
+  }
+
+  /* ---------- flow ---------- */
+  function newHand(){
+    if(players.length&&players.some(function(p){return p.credits<20;})){
+      log('Someone is out of credits — table reset to 1,000 each.');
+      players.forEach(function(p){p.credits=1000;});
+    }
+    if(!players.length){
+      players=[newPlayer('You',false)];
+      AI_NAMES.forEach(function(n){players.push(newPlayer(n,true));});
+    }
+    players.forEach(function(p){p.hand=[];p.folded=false;p.frozen=false;});
+    deck=shuffle(variant==='classic'?buildClassicDeck():buildSpikeDeck());
+    discardPile=[]; handPot=0; currentBet=0; betDone=false; selectedIdx=null; showdownDone=false;
+    // Ante: 10 to the hand pot each; 10 to the Sabacc pot each only if it is empty.
+    var sabaccAnte=(sabaccPot===0)?10:0;
+    players.forEach(function(p){ p.credits-=10+sabaccAnte; handPot+=10; sabaccPot+=sabaccAnte; });
+    for(var i=0;i<2;i++) players.forEach(function(p){p.hand.push(drawCard());});
+    round=1; phase='yourTurn';
+    log('— New hand · '+(variant==='classic'?'Classic Sabacc':'Corellian Spike')+' — Ante 10'+(sabaccAnte?' + 10 to the Sabacc pot':'')+'. You were dealt 2 cards.');
+    render();
+  }
+  function endYourTurn(){
+    phase='aiTurn'; selectedIdx=null; render();
+    setTimeout(aiTurns,500);
+  }
+  function aiTurns(){
+    var actives=players.slice(1).filter(function(p){return !p.folded;});
+    var i=0;
+    function next(){
+      if(i>=actives.length){ dicePhase(); return; }
+      var p=actives[i++], s=strength(p.hand,variant);
+      // Respond to a bet first.
+      if(currentBet>0&&p.credits>0){
+        if(s<0.35){ p.folded=true; log(p.name+' folds to your bet.'); next(); return; }
+        var call=Math.min(currentBet,p.credits); p.credits-=call; handPot+=call;
+        log(p.name+' calls '+call+'.');
+      }
+      if(s>0.85&&p.credits>=25&&Math.random()<0.5){
+        p.credits-=25; handPot+=25; log(p.name+' raises 25.');
+      } else if(s<0.6&&p.hand.length<5){
+        p.hand.push(drawCard());
+        if(p.hand.length>3){ var di=bestDiscard(p.hand,variant); discardPile.push(p.hand.splice(di,1)[0]); }
+        log(p.name+' draws a card.');
+      } else {
+        log(p.name+' stands.');
+      }
+      setTimeout(next,450);
+    }
+    next();
+  }
+  function dicePhase(){
+    var d1=1+Math.floor(Math.random()*6), d2=1+Math.floor(Math.random()*6);
+    var doubles=d1===d2;
+    $('diceLabel').innerHTML='Dice: <b>'+d1+' + '+d2+'</b>'+(doubles?' — <b>DOUBLES! Sabacc Shift!</b>':' — no shift.');
+    log('Dice: '+d1+' + '+d2+(doubles?' — doubles! Sabacc Shift.':' — no shift.'));
+    if(doubles){
+      players.forEach(function(p){
+        if(p.folded) return;
+        if(variant==='classic'&&p.frozen){ log(p.name+"'s hand is frozen — no shift."); return; }
+        var n=p.hand.length;
+        discardPile.push.apply(discardPile,p.hand.splice(0));
+        for(var k=0;k<n;k++) p.hand.push(drawCard());
+      });
+      log('Every unfrozen hand was redealt.');
+    }
+    currentBet=0; betDone=false;
+    if(round>=3){ showdown(); return; }
+    round++; phase='yourTurn';
+    log('Round '+round+' — your turn.');
+    render();
+  }
+  function showdown(){
+    phase='showdown'; showdownDone=true;
+    var alive=players.filter(function(p){return !p.folded;});
+    if(!alive.length){ log('Everyone folded.'); phase='idle'; render(); return; }
+    var scored=alive.map(function(p){return {p:p,s:scoreHand(p.hand,variant)};});
+    scored.sort(function(a,b){return b.s.rank-a.s.rank;});
+    var top=scored[0].s.rank;
+    var winners=scored.filter(function(x){return x.s.rank===top;});
+    var share=Math.floor(handPot/winners.length);
+    winners.forEach(function(w){ w.p.credits+=share; });
+    var names=winners.map(function(w){return w.p.name;}).join(' & ');
+    var winScore=winners[0].s;
+    var sabaccWin=false;
+    if(winners.length===1&&(winScore.pure||winScore.idiots||(variant==='spike'&&winScore.total===0))){
+      sabaccWin=true; winners[0].p.credits+=sabaccPot;
+      log(names+' wins the hand pot ('+share+') AND the Sabacc pot ('+sabaccPot+') — '+winScore.label);
+      sabaccPot=0;
+    } else {
+      log(names+' wins the hand pot ('+share+' each) — '+winScore.label+'. The Sabacc pot ('+sabaccPot+') carries over.');
+    }
+    scored.forEach(function(x){ log(x.p.name+': '+x.s.label+' (total '+x.s.total+')'); });
+    handPot=0;
+    log(sabaccWin?'Sabacc!':'Hand over. Deal a new hand when ready.');
+    phase='idle'; render();
+  }
+  function youFold(){
+    players[0].folded=true;
+    log('You junk your hand.');
+    phase='aiTurn'; render();
+    // The AI play out the hand among themselves.
+    setTimeout(function(){
+      var alive=players.slice(1).filter(function(p){return !p.folded;});
+      if(!alive.length){ phase='idle'; render(); return; }
+      // One quick AI draw round, then showdown.
+      alive.forEach(function(p){
+        if(strength(p.hand,variant)<0.6&&p.hand.length<5) p.hand.push(drawCard());
+      });
+      showdown();
+    },600);
+  }
+
+  /* ---------- your actions ---------- */
+  $('drawBtn').addEventListener('click',function(){
+    if(phase!=='yourTurn') return;
+    players[0].hand.push(drawCard());
+    log('You draw a card. Hand: '+total(players[0].hand)+'.');
+    render();
+  });
+  $('discardBtn').addEventListener('click',function(){
+    if(phase!=='yourTurn'||selectedIdx===null) return;
+    if(players[0].hand.length<=2){ log('You must hold at least 2 cards.'); return; }
+    var c=players[0].hand.splice(selectedIdx,1)[0];
+    discardPile.push(c); selectedIdx=null;
+    log('You discard the '+c.name+' ('+c.value+').');
+    render();
+  });
+  $('standBtn').addEventListener('click',function(){ if(phase==='yourTurn'){ log('You stand.'); endYourTurn(); } });
+  $('callBtn').addEventListener('click',function(){
+    if(phase!=='yourTurn') return;
+    log('You call — showdown!');
+    showdown();
+  });
+  $('freezeBtn').addEventListener('click',function(){
+    if(phase!=='yourTurn'||variant!=='classic') return;
+    if(players[0].credits<10) return;
+    players[0].credits-=10; handPot+=10; players[0].frozen=true;
+    log('You freeze your hand for 10 credits. It cannot shift.');
+    render();
+  });
+  $('foldBtn').addEventListener('click',function(){ if(phase==='yourTurn') youFold(); });
+  $('newHandBtn').addEventListener('click',function(){
+    if(phase==='idle'||phase==='showdown') newHand();
+  });
+  document.querySelectorAll('[data-bet]').forEach(function(b){
+    b.addEventListener('click',function(){
+      if(phase!=='yourTurn'||betDone) return;
+      var amt=parseInt(b.dataset.bet,10);
+      if(amt>0){
+        if(players[0].credits<amt){ log('Not enough credits to bet '+amt+'.'); return; }
+        players[0].credits-=amt; handPot+=amt; currentBet=amt;
+        log('You bet '+amt+'.');
+      } else {
+        log('You check.');
+      }
+      betDone=true; endYourTurn();
+    });
+  });
+  document.querySelectorAll('.switcher button').forEach(function(b){
+    b.addEventListener('click',function(){
+      if(phase!=='idle'&&phase!=='showdown') return;
+      variant=b.dataset.variant; handPot=0; sabaccPot=0; players=[]; phase='idle';
+      log('Switched to '+(variant==='classic'?'Classic Sabacc — target ±23.':'Corellian Spike — target 0.')+' Deal a new hand.');
+      render();
+    });
+  });
+
+  // Expose pure logic for testing; the game itself runs in the browser.
+  window.__sabacc={buildClassicDeck:buildClassicDeck,buildSpikeDeck:buildSpikeDeck,scoreClassic:scoreClassic,scoreSpike:scoreSpike,scoreHand:scoreHand,total:total,strength:strength};
+  render();
+})();
+</script>
+</body>
+</html>
